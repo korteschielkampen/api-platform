@@ -4,7 +4,7 @@ import Link from 'gatsby-link'
 import styles from './index.module.css'
 
 const lambdaURL =
-  process.env === ('production' || 'branch-deploy' || 'deploy-preview') ? '/.netlify/functions' : '/localhost:9000'
+  process.env.NODE_ENV === 'production' ? '/.netlify/functions' : '/localhost:9000'
 
 class IndexPage extends React.Component {
   constructor (props) {
@@ -28,7 +28,6 @@ class IndexPage extends React.Component {
           <button onClick={this.getData} className={styles.button}> Click me </button>
           <p>{this.state.response}</p>
         </div>
-
       </div>
     )
   }

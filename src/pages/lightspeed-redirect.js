@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'gatsby-link'
+import queryString from 'query-string'
 
 import styles from './index.module.css'
 
@@ -9,24 +10,30 @@ const lambdaURL =
 class IndexPage extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {response: "No response yet...."}
+    this.state = {permanentKey: "Wordt Aangevraagd"}
   }
 
-  getData = () => {
-    fetch(`${lambdaURL}/hello`)
+  getPermanentKey = () => {
+    let {code} = queryString.parse(this.props.location.search)
+    fetch(`${lambdaURL}/auth?code=${code}`)
     .then(res => res.json())
     .then(data => {
-      this.setState({response: data.body})
+      this.setState({permanentKey: data.body})
     })
     .catch(err => console.error(err))
+  }
+
+  componentDidMount() {
+    this.getPermanentKey();
   }
 
   render () {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <p> Redirect vanaf Lightspeed </p>
+          <p> Redirect vanaf Lightspeed. </p>
           <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen als we niet vooraf wisten dat u deze link ging gebruiken. </p>
+          <p> We vragen nu een permanente sleutel aan: {this.state.permanentKey} </p>
         </div>
       </div>
     )
@@ -34,3 +41,5 @@ class IndexPage extends React.Component {
 }
 
 export default IndexPage
+
+// lightspeed-redirect/?code=f6d386a76b699b78269b2ed89ac92873463fc737&state=korteschiel-kampen

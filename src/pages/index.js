@@ -4,7 +4,7 @@ import Link from 'gatsby-link'
 import styles from './index.module.css'
 
 const lambdaURL =
-  process.env === 'production' ? '/.netlify/functions' : '/localhost:9000'
+  process.env === ('production' || 'branch-deploy' || 'deploy-preview') ? '/.netlify/functions' : '/localhost:9000'
 
 class IndexPage extends React.Component {
   constructor (props) {

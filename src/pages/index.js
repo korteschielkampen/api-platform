@@ -12,7 +12,7 @@ class IndexPage extends React.Component {
     this.state = {response: "No response yet...."}
   }
 
-  getData = async () => {
+  getData = () => {
     fetch(`${lambdaURL}/hello`)
     .then(res => res.json())
     .then(data => {
@@ -33,4 +33,5 @@ class IndexPage extends React.Component {
     )
   }
 }
+
 export default IndexPage

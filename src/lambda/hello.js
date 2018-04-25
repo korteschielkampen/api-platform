@@ -20,3 +20,7 @@ exports.handler = function handler(event, context, callback) {
     }
   )();
 }
+
+// https://www.rjkorteschiel.nl
+
+// https://www.rjkorteschiel.nl/lightspeed-redirect/

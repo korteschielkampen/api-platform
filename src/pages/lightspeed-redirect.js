@@ -25,7 +25,8 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <p> Redirect vanaf Lightspeed</p>
+          <p> Redirect vanaf Lightspeed </p>
+          <p> Bent u per ongelijk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen als we niet vooraf wisten dat u deze link ging gebruiken. </p>
         </div>
       </div>
     )

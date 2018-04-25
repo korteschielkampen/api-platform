@@ -46,5 +46,3 @@ class IndexPage extends React.Component {
 }
 
 export default IndexPage
-
-// lightspeed-redirect/?code=f6d386a76b699b78269b2ed89ac92873463fc737&state=korteschiel-kampen

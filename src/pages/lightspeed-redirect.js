@@ -16,11 +16,15 @@ class IndexPage extends React.Component {
   getPermanentKey = () => {
     let {code} = queryString.parse(this.props.location.search)
     fetch(`${lambdaURL}/auth?code=${code}`)
-    .then(res => res.json())
-    .then(data => {
-      this.setState({permanentKey: data.body})
+    .then(res => {
+      return res.json()
     })
-    .catch(err => console.error(err))
+    .then(data => {
+      data.body && this.setState({permanentKey: data.body})
+    })
+    .catch(err => {
+      console.error(err)
+      this.setState({permanentKey: "Error"})})
   }
 
   componentDidMount() {
@@ -28,6 +32,7 @@ class IndexPage extends React.Component {
   }
 
   render () {
+    console.log(this.state.permanentKey)
     return (
       <div className={styles.container}>
         <div className={styles.content}>

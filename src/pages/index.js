@@ -16,8 +16,7 @@ class IndexPage extends React.Component {
     fetch(`${lambdaURL}/hello`)
     .then(res => res.json())
     .then(data => {
-      console.log(this)
-      this.setState({response: data.hello})
+      this.setState({response: data.body})
     })
     .catch(err => console.error(err))
   }
@@ -29,6 +28,7 @@ class IndexPage extends React.Component {
           <button onClick={this.getData} className={styles.button}> Click me </button>
           <p>{this.state.response}</p>
         </div>
+
       </div>
     )
   }

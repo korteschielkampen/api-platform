@@ -1,8 +1,22 @@
-const sayHello = require('./modules')
+const fetch = require('node-fetch');
 
 exports.handler = function handler(event, context, callback) {
-  callback(null, {
-    statusCode: 200,
-    body: JSON.stringify({ hello: sayHello() }, null, 2),
-  })
+  const respond = ({ status, body }) => {
+    callback(null, {
+      statusCode: status,
+      body: JSON.stringify({ body }),
+    });
+  };
+
+  (() => {
+      fetch('https://jsonplaceholder.typicode.com/posts/1')
+        .then(response => response.json())
+        .then(json => {
+          respond({ status: 200, body: json.body });
+        })
+        .catch(err => {
+          respond({ status: 422, body: "Couldn't get the data" });
+        });
+    }
+  )();
 }

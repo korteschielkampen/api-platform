@@ -25,7 +25,8 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <button onClick={this.getData} className={styles.button}> Start Integratie met Lightspeed Retail </button>
+          <button onClick={this.getData} className={styles.button}> Start integratie met Lightspeed Retail </button>
+          <p>Deze link vraagt toegang tot uw account op Lightspeed Retail, gebruik deze link alleen als hij voor u is bedoeld.</p>
           {/* <p>{this.state.response}</p> */}
         </div>
       </div>

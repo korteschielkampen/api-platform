@@ -15,7 +15,7 @@ exports.handler = function handler(event, context, callback) {
           respond({ status: 200, body: json.body });
         })
         .catch(err => {
-          respond({ status: 422, body: "Couldn't get the data" });
+          respond({ status: 422, body: "Couldn't  get the data" });
         });
     }
   )();

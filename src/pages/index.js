@@ -1,6 +1,8 @@
 import React from 'react'
 import Link from 'gatsby-link'
 
+import styles from './index.module.css'
+
 const lambdaURL =
   process.env === 'production' ? '/.netlify/functions' : '/localhost:9000'
 
@@ -10,7 +12,10 @@ fetch(`${lambdaURL}/hello`)
   .catch(err => console.error(err))
 
 const IndexPage = () => (
-  <div>
+  <div className={styles.container}>
+    <div className={styles.content}>
+      <button> Click me </button>
+    </div>
   </div>
 )
 

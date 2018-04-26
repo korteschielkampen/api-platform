@@ -15,7 +15,7 @@ class IndexPage extends React.Component {
 
   getPermanentKey = () => {
     let {code} = queryString.parse(this.props.location.search)
-    fetch(`${lambdaURL}/auth?code=${code}`)
+    fetch(`${lambdaURL}/auth-client?code=${code}`)
     .then(res => {
       return res.json()
     })
@@ -32,7 +32,6 @@ class IndexPage extends React.Component {
   }
 
   render () {
-    console.log(this.state.permanentKey)
     return (
       <div className={styles.container}>
         <div className={styles.content}>

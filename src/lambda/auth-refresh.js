@@ -26,11 +26,11 @@ exports.handler = function handler(event, context, callback) {
         .then(response => response.json())
         .then(json => {
           console.log(json);
-          respond({ status: 200, body: "Aangevraagd" });
+          respond({ status: 200, body: "Aangevraagd - (Status code: 200)" });
         })
         .catch(err => {
           console.log(err);
-          respond({ status: 422, body: "Mislukt" });
+          respond({ status: 422, body: "Mislukt - (Status code: 422)" });
         });
     }
   )();

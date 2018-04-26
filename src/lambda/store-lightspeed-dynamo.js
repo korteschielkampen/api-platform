@@ -24,13 +24,11 @@ exports.handler = function handler(event, context, callback) {
     Item: {
       'account_id' : {N: receivedPayload.accountID},
       'account_name' : {S: receivedPayload.accountName},
-      'account_name' : {S: receivedPayload.accountLink},
+      'account_link' : {S: receivedPayload.accountLink},
       'access_token' : {S: receivedPayload.access_token},
       'refresh_token' : {S: receivedPayload.refresh_token}
     }
   };
-
-  console.log(params);
 
   ddb.putItem(params, function(err, data) {
     if (err) {

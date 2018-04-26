@@ -17,7 +17,9 @@ class IndexPage extends React.Component {
       storageStatusColor: "grey",
       temporary_access_token: "onbekend",
       access_token: "onbekend",
-      refresh_token: "onbekend"
+      refresh_token: "onbekend",
+      account_id: "onbekend",
+      account_name: "onbekend",
     }
   }
 
@@ -95,6 +97,8 @@ class IndexPage extends React.Component {
           <p> Tijdelijke sleutel: {this.state.temporary_access_token} </p>
           <p> Permanente sleutel: {this.state.access_token} </p>
           <p> Refresh sleutel: {this.state.refresh_token} </p>
+          <p> Account ID: {this.state.account_id} </p>
+          <p> Account Name: {this.state.account_name} </p>
           <button style={{marginBottom: "2rem"}} onClick={this.storePermanentKeys}>Sla op in DynamoDB</button>
           <p
             style={{

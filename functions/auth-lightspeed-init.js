@@ -3737,7 +3737,24 @@ const getTokens = (() => {
 })();
 
 const getAccountDetails = (() => {
-  var _ref2 = _asyncToGenerator(function* (tokens, respond) {});
+  var _ref2 = _asyncToGenerator(function* (tokens, respond) {
+    readableLog("tokens", tokens);
+    const options = {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${tokens.body.access_token}`
+      }
+    };
+
+    try {
+      const response = yield fetch('https://api.lightspeedapp.com/API/Account.json', options);
+      const json = yield response.json();
+      readableLog("DETAILS", json);
+      return json;
+    } catch (err) {
+      respond({ status: 422, body: { error: "Connecting to the Lightspeed ACCOUNT API failed" } });
+    }
+  });
 
   return function getAccountDetails(_x3, _x4) {
     return _ref2.apply(this, arguments);
@@ -3749,7 +3766,7 @@ const getData = (() => {
     try {
       var tokens = yield getTokens(code, respond);
       var account = yield getAccountDetails(tokens, respond);
-      respond({ status: 200, body: tokens });
+      respond({ status: 200, body: { tokens: tokens, account: account } });
     } catch (err) {
       respond({ status: 422, body: { error: "Either OAUTH or ACCOUNT connections failed" } });
     }

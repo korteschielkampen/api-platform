@@ -31,17 +31,29 @@ const getTokens = async (code, respond) => {
 }
 
 const getAccountDetails = async (tokens, respond) => {
+  readableLog("tokens", tokens);
+  const options = {
+    method: "GET",
+    headers: {
+      'Authorization': `Bearer ${tokens.body.access_token}`
+    }
+  };
 
-
-
-
+  try {
+    const response = await fetch('https://api.lightspeedapp.com/API/Account.json', options);
+    const json = await response.json();
+    readableLog("DETAILS", json)
+    return json;
+  } catch(err) {
+    respond({ status: 422, body: {error: "Connecting to the Lightspeed ACCOUNT API failed"}});
+  }
 }
 
 const getData = async (code, respond) => {
   try {
     var tokens = await getTokens(code, respond);
     var account = await getAccountDetails(tokens, respond);
-    respond({ status: 200, body: tokens});
+    respond({ status: 200, body: {tokens: tokens, account: account}});
   } catch(err) {
     respond({ status: 422, body: {error: "Either OAUTH or ACCOUNT connections failed"}});
   }

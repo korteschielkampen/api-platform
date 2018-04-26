@@ -55,7 +55,10 @@ class IndexPage extends React.Component {
     const payload = {
       temporary_access_token: this.state.temporary_access_token,
       access_token: this.state.access_token,
-      refresh_token: this.state.refresh_token
+      refresh_token: this.state.refresh_token,
+      accountID: this.state.accountID,
+      accountName: this.state.accountName,
+      accountLink: this.state.accountLink
     };
 
     const options = {

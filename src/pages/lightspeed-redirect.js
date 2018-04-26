@@ -33,7 +33,6 @@ class IndexPage extends React.Component {
       return res.json()
     })
     .then(data => {
-      console.log(data);
       data.body && this.setState({
         status: "Aanvraag permanente sleutel succesvol",
         statusColor: "lightgreen",

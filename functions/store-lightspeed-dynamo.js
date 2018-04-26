@@ -33868,6 +33868,8 @@ exports.handler = function handler(event, context, callback) {
     }
   };
 
+  console.log(params);
+
   ddb.putItem(params, function (err, data) {
     if (err) {
       respond({ status: 400, body: { error: err } });

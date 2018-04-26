@@ -33849,7 +33849,6 @@ exports.handler = function handler(event, context, callback) {
 
   const receivedPayload = JSON.parse(event.body);
 
-  // Do AWS DynamoDB storage
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,
     secretAccessKey: process.env.aws_secret_access_key

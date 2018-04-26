@@ -13,8 +13,9 @@ class IndexPage extends React.Component {
     this.state = {permanentKey: "Wordt Aangevraagd"}
   }
 
-  getPermanentKey = () => {
-    let {code} = queryString.parse(this.props.location.search)
+  getPermanentKey () {
+    let {code} = queryString.parse(this.props.location.search);
+
     fetch(`${lambdaURL}/auth-client?code=${code}`)
     .then(res => {
       return res.json()
@@ -24,7 +25,7 @@ class IndexPage extends React.Component {
     })
     .catch(err => {
       console.log(err)
-      this.setState({permanentKey: data.body})})
+      this.setState({permanentKey: data.body})});
   }
 
   componentDidMount() {

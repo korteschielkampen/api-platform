@@ -70,15 +70,13 @@ exports.handler = function handler(event, context, callback) {
     client_secret: process.env.LIGHTSPEED,
     code: event.queryStringParameters.code,
     grant_type: "authorization_code",
-  }
+  };
 
   const options = {
     method: "POST",
     body: JSON.stringify(payload),
     headers: { 'Content-Type': 'application/json' }
-  }
-
-  console.log(options);
+  };
 
   (() => {
       fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options)

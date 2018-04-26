@@ -11924,8 +11924,6 @@ exports.handler = function handler(event, context, callback) {
     headers: { 'Content-Type': 'application/json' }
   };
 
-  console.log(options);
-
   (() => {
     fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options).then(response => response.json()).then(json => {
       readableLog("RESPONSE FROM LIGHTSPEED -- SUCCESSFULL", json);

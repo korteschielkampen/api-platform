@@ -20,7 +20,7 @@ class IndexPage extends React.Component {
       refresh_token: "onbekend",
       accountID: "onbekend",
       accountName: "onbekend",
-      link: "onbekend"
+      accountLink: "onbekend"
     }
   }
 
@@ -41,7 +41,7 @@ class IndexPage extends React.Component {
         refresh_token: data.body.tokens.access_token,
         accountID: data.body.account.Account.accountID,
         accountName: data.body.account.Account.name,
-        link: data.body.account.Account.link['@attributes'].href
+        accountLink: data.body.account.Account.link['@attributes'].href
     })})
     .catch(err => {
       console.log(err);
@@ -100,8 +100,9 @@ class IndexPage extends React.Component {
           <p> Tijdelijke sleutel: {this.state.temporary_access_token} </p>
           <p> Permanente sleutel: {this.state.access_token} </p>
           <p> Refresh sleutel: {this.state.refresh_token} </p>
-          <p> Account ID: {this.state.account_id} </p>
-          <p> Account Name: {this.state.account_name} </p>
+          <p> Account ID: {this.state.accountID} </p>
+          <p> Account Name: {this.state.accountName} </p>
+          <p> Account Link: {this.state.accountLink} </p>
           <button style={{marginBottom: "2rem"}} onClick={this.storePermanentKeys}>Sla op in DynamoDB</button>
           <p
             style={{

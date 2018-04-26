@@ -23,8 +23,8 @@ class IndexPage extends React.Component {
       data.body && this.setState({permanentKey: data.body})
     })
     .catch(err => {
-      console.error(err)
-      this.setState({permanentKey: "Mislukt"})})
+      console.log(err)
+      this.setState({permanentKey: data.body})})
   }
 
   componentDidMount() {

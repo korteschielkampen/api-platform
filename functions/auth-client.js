@@ -11922,10 +11922,14 @@ exports.handler = function handler(event, context, callback) {
     method: "POST",
     body: JSON.stringify(payload),
     headers: { 'Content-Type': 'application/json' }
-  }(() => {
+  };
+
+  console.log(options);
+
+  (() => {
     fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options).then(response => response.json()).then(json => {
       readableLog("RESPONSE FROM LIGHTSPEED -- SUCCESSFULL", json);
-      storeToAWS(json, respond);
+      // storeToAWS(json, respond);
     }).catch(err => {
       readableLog("RESPONSE FROM LIGHTSPEED -- FAILED", err);
       respond({ status: 422, body: "Mislukt - (Status code: 422)" });

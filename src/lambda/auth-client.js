@@ -2,6 +2,9 @@ const fetch = require('node-fetch');
 // Load the AWS SDK for Node.js
 const AWS = require("aws-sdk");
 
+
+
+
 const readableLog = (message, data) => {
   console.log("")
   console.log("")
@@ -16,6 +19,13 @@ const readableLog = (message, data) => {
   console.log("")
   console.log("")
 }
+
+
+
+
+
+
+
 
 const storeToAWS = (data, respond) => {
   // Do AWS DynamoDB storage
@@ -45,6 +55,8 @@ const storeToAWS = (data, respond) => {
 
 
 
+
+
 exports.handler = function handler(event, context, callback) {
   const respond = ({ status, body }) => {
     callback(null, {
@@ -66,13 +78,14 @@ exports.handler = function handler(event, context, callback) {
     headers: { 'Content-Type': 'application/json' }
   }
 
+  console.log(options);
 
   (() => {
       fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options)
         .then(response => response.json())
         .then(json => {
           readableLog("RESPONSE FROM LIGHTSPEED -- SUCCESSFULL", json)
-          storeToAWS(json, respond);
+          // storeToAWS(json, respond);
         })
         .catch(err => {
           readableLog("RESPONSE FROM LIGHTSPEED -- FAILED", err)

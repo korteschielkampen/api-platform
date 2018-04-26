@@ -66,8 +66,8 @@ class IndexPage extends React.Component {
       .then(data => {
         data.body.error && (() => { throw data.body.error })();
         data.body && this.setState({
-          storageStatus: "buzy",
-          storageStatusColor: "red"
+          storageStatus: "Succesvol opgeslagen in DynamoDB",
+          storageStatusColor: "lightgreen"
       })})
       .catch(err => {
         this.setState({

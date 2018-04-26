@@ -32,16 +32,15 @@ class IndexPage extends React.Component {
       return res.json()
     })
     .then(data => {
-      data.body.error && (() => { throw data.body.error })();
-      let refresh_token = data.body.refresh_token ?  data.body.refresh_token : data.body.error;
-      let access_token = data.body.access_token ?  data.body.access_token : data.body.error;
+      console.log(data);
       data.body && this.setState({
         status: "Aanvraag permanente sleutel succesvol",
         statusColor: "lightgreen",
-        access_token: access_token,
-        refresh_token: refresh_token,
+        access_token: data.body.refresh_token,
+        refresh_token: data.body.access_token,
     })})
     .catch(err => {
+      console.log(err);
       this.setState({
         status: `Error bij aanvraag permanente sleutel: ${err}`,
         statusColor: "red"

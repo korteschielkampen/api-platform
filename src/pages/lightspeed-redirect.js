@@ -21,7 +21,7 @@ class IndexPage extends React.Component {
     }
   }
 
-  getPermanentKey () {
+  getPermanentKey = () => {
     let {code} = queryString.parse(this.props.location.search);
     this.setState({temporary_access_token: code});
 
@@ -77,16 +77,13 @@ class IndexPage extends React.Component {
       });
   }
 
-  componentDidMount() {
-    this.getPermanentKey();
-  }
-
   render () {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
           <p> Redirect vanaf Lightspeed. </p>
           <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen tenzij u deze opslaat door op de "Sla op in DynamoDB" button klikt. </p>
+          <button style={{marginBottom: "2rem"}} onClick={this.getPermanentKey}>Verzegel uw tijdelijke key en vraag extra info aan</button>
           <p
             style={{
               backgroundColor: this.state.statusColor,

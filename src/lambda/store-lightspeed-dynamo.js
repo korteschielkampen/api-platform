@@ -2,9 +2,6 @@ const fetch = require('node-fetch');
 // Load the AWS SDK for Node.js
 const AWS = require("aws-sdk");
 
-
-
-
 const readableLog = (message, data) => {
   console.log("")
   console.log("")
@@ -44,5 +41,4 @@ exports.handler = function handler(event, context, callback) {
       respond({ status: 200, body: "Aangevraagd en opgeslagen - (Status code: 200)" });
     }
   });
-
 }

@@ -21,7 +21,7 @@ class IndexPage extends React.Component {
 
   getPermanentKey () {
     let {code} = queryString.parse(this.props.location.search);
-    this.setState({tempKey: code});
+    this.setState({temporary_access_token: code});
 
     fetch(`${lambdaURL}/auth-lightspeed-init?code=${code}`)
     .then(res => {

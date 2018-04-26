@@ -18,8 +18,9 @@ class IndexPage extends React.Component {
       temporary_access_token: "onbekend",
       access_token: "onbekend",
       refresh_token: "onbekend",
-      account_id: "onbekend",
-      account_name: "onbekend",
+      accountID: "onbekend",
+      accountName: "onbekend",
+      link: "onbekend"
     }
   }
 
@@ -36,8 +37,11 @@ class IndexPage extends React.Component {
       data.body && this.setState({
         status: "Aanvraag permanente sleutel succesvol",
         statusColor: "lightgreen",
-        access_token: data.body.refresh_token,
-        refresh_token: data.body.access_token,
+        access_token: data.body.tokens.refresh_token,
+        refresh_token: data.body.tokens.access_token,
+        accountID: data.body.account.Acccount.accountID,
+        accountName: data.body.account.Account.name,
+        link: data.body.account.Account.link['@attributes'].href
     })})
     .catch(err => {
       console.log(err);

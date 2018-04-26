@@ -19,6 +19,15 @@ const readableLog = (message, data) => {
 
 
 exports.handler = function handler(event, context, callback) {
+  const respond = ({ status, body }) => {
+    callback(null, {
+      statusCode: status,
+      body: JSON.stringify({ body }),
+    });
+  };
+
+  const receivedPayload = JSON.parse(event.body);
+
   // Do AWS DynamoDB storage
   AWS.config.update({region: 'eu-central-1'});
   const ddb = new AWS.DynamoDB({apiVersion: '2012-10-08'});
@@ -27,15 +36,18 @@ exports.handler = function handler(event, context, callback) {
     TableName: 'lightspeed-to-moneybird',
     Item: {
       'account_id' : {N: "12072434"},
-      'account_name' : {S: "Korteschiel Kampen"},
-      'access_token' : {S: "token"},
-      'refresh_token' : {S: "refresh"}
+      'account_name' : {S: "Korteschiel Kampen Test"},
+      'access_token' : {S: receivedPayload.access_token},
+      'refresh_token' : {S: receivedPayload.refresh_token}
     }
   };
+
+  console.log(params);
 
   ddb.putItem(params, function(err, data) {
     if (err) {
       readableLog("STORE TO AWS --- FAILED", err)
+      respond({ status: 400, body: err });
     } else {
       readableLog("STORE TO AWS --- SUCCESFULL")
       respond({ status: 200, body: "Aangevraagd en opgeslagen - (Status code: 200)" });

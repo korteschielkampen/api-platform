@@ -13,6 +13,8 @@ class IndexPage extends React.Component {
     this.state = {
       status: "Wordt Aangevraagd",
       statusColor: "grey",
+      storageStatus: "Nog niet aangevraagd",
+      storageStatusColor: "grey",
       temporary_access_token: "onbekend",
       access_token: "onbekend",
       refresh_token: "onbekend"
@@ -44,6 +46,38 @@ class IndexPage extends React.Component {
       })});
   }
 
+  storePermanentKeys = () => {
+    const payload = {
+      temporary_access_token: this.state.temporary_access_token,
+      access_token: this.state.access_token,
+      refresh_token: this.state.refresh_token
+    };
+
+    const options = {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    fetch(`${lambdaURL}/store-lightspeed-dynamo`, options)
+      .then(res => {
+        return res.json()
+      })
+      .then(data => {
+        data.body.error && (() => { throw data.body.error })();
+        data.body && this.setState({
+          storageStatus: "buzy",
+          storageStatusColor: "red"
+      })})
+      .catch(err => {
+        this.setState({
+          storageStatus: `Error bij aanvraag permanente sleutel: ${err}`,
+          storageStatusColor: "red"
+        })
+      });
+
+  }
+
   componentDidMount() {
     this.getPermanentKey();
   }
@@ -59,11 +93,21 @@ class IndexPage extends React.Component {
               backgroundColor: this.state.statusColor,
               padding: "1rem",
               borderRadius: "1rem"
-            }}> Status: {this.state.status} </p>
+            }}>
+            Status: {this.state.status}
+          </p>
           <p> Tijdelijke sleutel: {this.state.temporary_access_token} </p>
           <p> Permanente sleutel: {this.state.access_token} </p>
           <p> Refresh sleutel: {this.state.refresh_token} </p>
-          <button><a>Sla op in DynamoDB</a></button>
+          <button style={{marginBottom: "2rem"}} onClick={this.storePermanentKeys}>Sla op in DynamoDB</button>
+          <p
+            style={{
+              backgroundColor: this.state.storageStatusColor,
+              padding: "1rem",
+              borderRadius: "1rem"
+            }}>
+            Status: {this.state.storageStatus}
+          </p>
         </div>
       </div>
     )

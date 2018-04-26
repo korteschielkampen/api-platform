@@ -38,8 +38,6 @@ exports.handler = function handler(event, context, callback) {
     headers: { 'Content-Type': 'application/json' }
   };
 
-  readableLog("REQUESTING WITH THIS DATA TO LIGHTSPEED", options);
-
   (() => {
       fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options)
         .then(response => response.json())

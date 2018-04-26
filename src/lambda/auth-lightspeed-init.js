@@ -26,7 +26,7 @@ const getTokens = async (code, respond) => {
     const json = await response.json();
     return json;
   } catch(err) {
-    respond({ status: 422, body: {error: "Connecting to the Lightspeed OAUTH API failed"}});
+    respond({ status: 422, body: {error: err}});
   }
 }
 
@@ -35,7 +35,7 @@ const getAccountDetails = async (tokens, respond) => {
   const options = {
     method: "GET",
     headers: {
-      'Authorization': `Bearer ${tokens.body.access_token}`
+      'Authorization': `Bearer ${tokens.access_token}`
     }
   };
 
@@ -45,7 +45,7 @@ const getAccountDetails = async (tokens, respond) => {
     readableLog("DETAILS", json)
     return json;
   } catch(err) {
-    respond({ status: 422, body: {error: "Connecting to the Lightspeed ACCOUNT API failed"}});
+    respond({ status: 422, body: {error: err}});
   }
 }
 
@@ -55,7 +55,7 @@ const getData = async (code, respond) => {
     var account = await getAccountDetails(tokens, respond);
     respond({ status: 200, body: {tokens: tokens, account: account}});
   } catch(err) {
-    respond({ status: 422, body: {error: "Either OAUTH or ACCOUNT connections failed"}});
+    respond({ status: 422, body: {error: err}});
   }
 }
 

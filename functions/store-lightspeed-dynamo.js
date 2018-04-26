@@ -33837,7 +33837,6 @@ module.exports = {"pagination":{"ListChannels":{"input_token":"nextToken","outpu
 
 
 const fetch = __webpack_require__(99);
-// Load the AWS SDK for Node.js
 const AWS = __webpack_require__(125);
 
 const readableLog = (message, data) => {
@@ -33866,7 +33865,12 @@ exports.handler = function handler(event, context, callback) {
   const receivedPayload = JSON.parse(event.body);
 
   // Do AWS DynamoDB storage
+  AWS.config.update({
+    accessKeyId: process.env.aws_access_key_id,
+    secretAccessKey: process.env.aws_secret_access_key
+  });
   AWS.config.update({ region: 'eu-central-1' });
+
   const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
 
   var params = {

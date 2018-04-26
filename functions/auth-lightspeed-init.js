@@ -33835,24 +33835,72 @@ module.exports = {"pagination":{"ListChannels":{"input_token":"nextToken","outpu
 "use strict";
 
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 const fetch = __webpack_require__(99);
 // Load the AWS SDK for Node.js
 const AWS = __webpack_require__(125);
 
 const readableLog = (message, data) => {
   console.log("");
-  console.log("");
-  console.log("");
-  console.log("");
-  console.log("");
   console.log(` ------ ${message} ------- `);
-  console.log("");
   console.log("");
   data && console.log(data);
   console.log("");
-  console.log("");
-  console.log("");
+  console.log(" ------------------------- ");
 };
+
+const getTokens = (() => {
+  var _ref = _asyncToGenerator(function* (code, respond) {
+    const payload = {
+      client_id: "4c23f9e681c44d339359a38dc340522fae805ddab5e372c39762ef91c080179d",
+      client_secret: process.env.LIGHTSPEED,
+      code: code,
+      grant_type: "authorization_code"
+    };
+    const options = {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    try {
+      const response = yield fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options);
+      const json = yield response.json();
+      return json;
+    } catch (err) {
+      respond({ status: 422, body: { error: "Connecting to the Lightspeed OAUTH API failed" } });
+    }
+  });
+
+  return function getTokens(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+const getAccountDetails = (() => {
+  var _ref2 = _asyncToGenerator(function* (tokens, respond) {});
+
+  return function getAccountDetails(_x3, _x4) {
+    return _ref2.apply(this, arguments);
+  };
+})();
+
+const getData = (() => {
+  var _ref3 = _asyncToGenerator(function* (code, respond) {
+    try {
+      var tokens = yield getTokens(code, respond);
+      var account = yield getAccountDetails(tokens, respond);
+      respond({ status: 200, body: tokens });
+    } catch (err) {
+      respond({ status: 422, body: { error: "Either OAUTH or ACCOUNT connections failed" } });
+    }
+  });
+
+  return function getData(_x5, _x6) {
+    return _ref3.apply(this, arguments);
+  };
+})();
 
 exports.handler = function handler(event, context, callback) {
   const respond = ({ status, body }) => {
@@ -33862,28 +33910,7 @@ exports.handler = function handler(event, context, callback) {
     });
   };
 
-  const payload = {
-    client_id: "4c23f9e681c44d339359a38dc340522fae805ddab5e372c39762ef91c080179d",
-    client_secret: process.env.LIGHTSPEED,
-    code: event.queryStringParameters.code,
-    grant_type: "authorization_code"
-  };
-
-  const options = {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: { 'Content-Type': 'application/json' }
-  };
-
-  (() => {
-    fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options).then(response => response.json()).then(json => {
-      readableLog("RESPONSE FROM LIGHTSPEED -- SUCCESSFULL", json);
-      respond({ status: 200, body: json });
-    }).catch(err => {
-      readableLog("RESPONSE FROM LIGHTSPEED -- FAILED", err);
-      respond({ status: 422, body: "Mislukt - (Status code: 422)" });
-    });
-  })();
+  getData(event.queryStringParameters.code, respond);
 };
 
 /***/ })

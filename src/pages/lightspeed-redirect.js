@@ -64,18 +64,20 @@ class IndexPage extends React.Component {
         return res.json()
       })
       .then(data => {
-        data.body.error && (() => { throw data.body.error })();
+        console.log(data);
+        console.log("bye");
+        // data.headers && (() => { throw data.body.error })();
         data.body && this.setState({
           storageStatus: "Succesvol opgeslagen in DynamoDB",
           storageStatusColor: "lightgreen"
       })})
       .catch(err => {
+        console.log("bye2")
         this.setState({
           storageStatus: `Error bij aanvraag permanente sleutel: ${err}`,
           storageStatusColor: "red"
         })
       });
-
   }
 
   componentDidMount() {

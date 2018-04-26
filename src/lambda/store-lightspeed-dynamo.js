@@ -44,8 +44,8 @@ exports.handler = function handler(event, context, callback) {
 
   ddb.putItem(params, function(err, data) {
     if (err) {
-      readableLog("STORE TO AWS --- FAILED", err)
-      respond({ status: 400, body: {error: err });
+      readableLog("STORE TO AWS --- FAILED", err);
+      respond({ status: 400, body: {error: err }});
     } else {
       readableLog("STORE TO AWS --- SUCCESFULL")
       respond({ status: 200, body: "Aangevraagd en opgeslagen - (Status code: 200)" });

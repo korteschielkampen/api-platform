@@ -12,7 +12,9 @@ class IndexPage extends React.Component {
     super(props)
     this.state = {
       status: "Wordt Aangevraagd",
-      statusColor: "grey"
+      statusColor: "grey",
+      tempKey: "onbekend",
+      permantKey: "onbekend"
     }
   }
 
@@ -26,7 +28,7 @@ class IndexPage extends React.Component {
     })
     .then(data => {
       data.body && this.setState({
-        permanentKey: data.body,
+        permanentKey: "set by fetch response",
         status: "Aanvraag permanente sleutel succesvol",
         statusColor: "lightgreen"
     })})
@@ -54,6 +56,10 @@ class IndexPage extends React.Component {
               padding: "1rem",
               borderRadius: "1rem"
             }}> Status: {this.state.status} </p>
+          <p> Tijdelijke sleutel: {this.state.tempKey} </p>
+          <p> Permanente sleutel: {this.state.permanentKey} </p>
+          <p> Refresh sleutel: {this.state.refreshKey} </p>
+          <button><a>Sla op in DynamoDB Klik hier</a></button>
         </div>
       </div>
     )

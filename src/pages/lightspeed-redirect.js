@@ -39,7 +39,7 @@ class IndexPage extends React.Component {
         statusColor: "lightgreen",
         access_token: data.body.tokens.refresh_token,
         refresh_token: data.body.tokens.access_token,
-        accountID: data.body.account.Acccount.accountID,
+        accountID: data.body.account.Account.accountID,
         accountName: data.body.account.Account.name,
         link: data.body.account.Account.link['@attributes'].href
     })})

@@ -53,7 +53,7 @@ class IndexPage extends React.Component {
       <div className={styles.container}>
         <div className={styles.content}>
           <p> Redirect vanaf Lightspeed. </p>
-          <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen als we niet vooraf wisten dat u deze link ging gebruiken. </p>
+          <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen tenzij u deze opslaat door op de "Sla op in DynamoDB" button klikt. </p>
           <p
             style={{
               backgroundColor: this.state.statusColor,
@@ -63,7 +63,7 @@ class IndexPage extends React.Component {
           <p> Tijdelijke sleutel: {this.state.temporary_access_token} </p>
           <p> Permanente sleutel: {this.state.access_token} </p>
           <p> Refresh sleutel: {this.state.refresh_token} </p>
-          <button><a>Sla op in DynamoDB Klik hier</a></button>
+          <button><a>Sla op in DynamoDB</a></button>
         </div>
       </div>
     )

@@ -1,9 +1,6 @@
 const fetch = require('node-fetch');
-// Load the AWS SDK for Node.js
-const AWS = require("aws-sdk");
 
 const readableLog = (message, data) => {
-  console.log("")
   console.log(` ------ ${message} ------- `)
   console.log("")
   data && console.log(data)
@@ -33,18 +30,12 @@ const getTokens = async (code, respond) => {
   }
 }
 
-
-
-
 const getAccountDetails = async (tokens, respond) => {
 
 
 
 
 }
-
-
-
 
 const getData = async (code, respond) => {
   try {
@@ -55,10 +46,6 @@ const getData = async (code, respond) => {
     respond({ status: 422, body: {error: "Either OAUTH or ACCOUNT connections failed"}});
   }
 }
-
-
-
-
 
 exports.handler = function handler(event, context, callback) {
   const respond = ({ status, body }) => {

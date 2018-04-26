@@ -13,8 +13,9 @@ class IndexPage extends React.Component {
     this.state = {
       status: "Wordt Aangevraagd",
       statusColor: "grey",
-      tempKey: "onbekend",
-      permantKey: "onbekend"
+      temporary_access_token: "onbekend",
+      access_token: "onbekend",
+      refresh_token: "onbekend"
     }
   }
 
@@ -27,15 +28,18 @@ class IndexPage extends React.Component {
       return res.json()
     })
     .then(data => {
+      data.body.error && (() => { throw data.body.error })();
+      let refresh_token = data.body.refresh_token ?  data.body.refresh_token : data.body.error;
+      let access_token = data.body.access_token ?  data.body.access_token : data.body.error;
       data.body && this.setState({
-        permanentKey: "set by fetch response",
         status: "Aanvraag permanente sleutel succesvol",
-        statusColor: "lightgreen"
+        statusColor: "lightgreen",
+        access_token: access_token,
+        refresh_token: refresh_token,
     })})
     .catch(err => {
-      console.log(err)
       this.setState({
-        status: "Error bij aanvraag permanente sleutel",
+        status: `Error bij aanvraag permanente sleutel: ${err}`,
         statusColor: "red"
       })});
   }
@@ -56,9 +60,9 @@ class IndexPage extends React.Component {
               padding: "1rem",
               borderRadius: "1rem"
             }}> Status: {this.state.status} </p>
-          <p> Tijdelijke sleutel: {this.state.tempKey} </p>
-          <p> Permanente sleutel: {this.state.permanentKey} </p>
-          <p> Refresh sleutel: {this.state.refreshKey} </p>
+          <p> Tijdelijke sleutel: {this.state.temporary_access_token} </p>
+          <p> Permanente sleutel: {this.state.access_token} </p>
+          <p> Refresh sleutel: {this.state.refresh_token} </p>
           <button><a>Sla op in DynamoDB Klik hier</a></button>
         </div>
       </div>

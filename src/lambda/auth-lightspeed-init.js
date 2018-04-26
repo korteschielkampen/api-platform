@@ -27,35 +27,32 @@ const readableLog = (message, data) => {
 
 
 
-const storeToAWS = (data, respond) => {
-  // Do AWS DynamoDB storage
-  AWS.config.update({region: 'eu-central-1'});
-  const ddb = new AWS.DynamoDB({apiVersion: '2012-10-08'});
+// const storeToAWS = (data, respond) => {
+//   // Do AWS DynamoDB storage
+//   AWS.config.update({region: 'eu-central-1'});
+//   const ddb = new AWS.DynamoDB({apiVersion: '2012-10-08'});
+//
+//   var params = {
+//     TableName: 'lightspeed-to-moneybird',
+//     Item: {
+//       'account_id' : {N: "12072434"},
+//       'account_name' : {S: "Korteschiel Kampen"},
+//       'access_token' : {S: "token"},
+//       'refresh_token' : {S: "refresh"}
+//     }
+//   };
+//
+//   ddb.putItem(params, function(err, data) {
+//     if (err) {
+//       readableLog("STORE TO AWS --- FAILED", err)
+//     } else {
+//       readableLog("STORE TO AWS --- SUCCESFULL")
+//       respond({ status: 200, body: "Aangevraagd en opgeslagen - (Status code: 200)" });
+//     }
+//   });
+// }
 
-  var params = {
-    TableName: 'lightspeed-to-moneybird',
-    Item: {
-      'account_id' : {N: "12072434"},
-      'account_name' : {S: "Korteschiel Kampen"},
-      'access_token' : {S: "token"},
-      'refresh_token' : {S: "refresh"}
-    }
-  };
-
-  ddb.putItem(params, function(err, data) {
-    if (err) {
-      readableLog("STORE TO AWS --- FAILED", err)
-    } else {
-      readableLog("STORE TO AWS --- SUCCESFULL")
-      respond({ status: 200, body: "Aangevraagd en opgeslagen - (Status code: 200)" });
-    }
-  });
-}
-
-
-
-
-
+// storeToAWS(json, respond);
 
 exports.handler = function handler(event, context, callback) {
   const respond = ({ status, body }) => {
@@ -85,7 +82,7 @@ exports.handler = function handler(event, context, callback) {
         .then(response => response.json())
         .then(json => {
           readableLog("RESPONSE FROM LIGHTSPEED -- SUCCESSFULL", json)
-          // storeToAWS(json, respond);
+          respond({ status: 200, body: json});
         })
         .catch(err => {
           readableLog("RESPONSE FROM LIGHTSPEED -- FAILED", err)

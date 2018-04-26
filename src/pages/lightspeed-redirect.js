@@ -10,7 +10,10 @@ const lambdaURL =
 class IndexPage extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {permanentKey: "Wordt Aangevraagd"}
+    this.state = {
+      status: "Wordt Aangevraagd",
+      statusColor: "grey"
+    }
   }
 
   getPermanentKey () {
@@ -22,11 +25,17 @@ class IndexPage extends React.Component {
       return res.json()
     })
     .then(data => {
-      data.body && this.setState({permanentKey: data.body})
-    })
+      data.body && this.setState({
+        permanentKey: data.body,
+        status: "Aanvraag permanente sleutel succesvol",
+        statusColor: "lightgreen"
+    })})
     .catch(err => {
       console.log(err)
-      this.setState({permanentKey: data.body})});
+      this.setState({
+        status: "Error bij aanvraag permanente sleutel",
+        statusColor: "red"
+      })});
   }
 
   componentDidMount() {
@@ -39,7 +48,12 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <p> Redirect vanaf Lightspeed. </p>
           <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen als we niet vooraf wisten dat u deze link ging gebruiken. </p>
-          <p> We vragen nu een permanente sleutel aan: {this.state.permanentKey} </p>
+          <p
+            style={{
+              backgroundColor: this.state.statusColor,
+              padding: "1rem",
+              borderRadius: "1rem"
+            }}> Status: {this.state.status} </p>
         </div>
       </div>
     )

@@ -15,7 +15,6 @@ class IndexPage extends React.Component {
 
   getPermanentKey () {
     let {code} = queryString.parse(this.props.location.search);
-
     fetch(`${lambdaURL}/auth-client?code=${code}`)
     .then(res => {
       return res.json()

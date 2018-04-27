@@ -68,22 +68,27 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <p> Admin voor Lightspeed API naar Moneybird API integratie</p>
           <button style={{marginBottom: "2rem"}} onClick={this.getKeys}>Verkrijg data van DynamoDB</button>
-          <p
-            style={{
-              backgroundColor: this.state.statusColor,
-              padding: "1rem",
-              borderRadius: "1rem"
-            }}>
-            Status: {this.state.status}
-          </p>
-          <p> Access key: {this.state.access_token} </p>
-          <p> Access key expires in: {this.state.expires_in} </p>
-          <p> Refresh key: {this.state.refresh_token} </p>
-          <p> Account ID: {this.state.account_id} </p>
-          <p> Account Name: {this.state.account_name} </p>
-          <p> Account Link: {this.state.account_link} </p>
+
+          <h1>Authenticatie</h1>
+          <div className={styles.card}>
+            <p
+              style={{
+                backgroundColor: this.state.statusColor,
+                padding: "1rem",
+                borderRadius: "1rem"
+              }}>
+              Status: {this.state.status}
+            </p>
+            <p> Access key: {this.state.access_token} </p>
+            <p> Access key expires in: {this.state.expires_in} </p>
+            <p> Refresh key: {this.state.refresh_token} </p>
+            <p> Account ID: {this.state.account_id} </p>
+            <p> Account Name: {this.state.account_name} </p>
+            <p> Account Link: {this.state.account_link} </p>
+          </div>
         </div>
         <div className={styles.content}>
+          <h1>Data</h1>
           { (Array.reverse(Object.values(this.state.taxData))).map(((taxDay, key)=>{
             return (
               <div key={key} className={styles.card}>

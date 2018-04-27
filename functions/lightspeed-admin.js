@@ -33926,7 +33926,7 @@ exports.handler = (() => {
         (0, _update2.default)(_extends({}, authData, { access_token: tokens.access_token }));
       }
 
-      respond({ status: 200, body: { authData: authData } });
+      respond({ status: 200, body: { authData: _extends({}, authData, { expires_in: tokens.expires_in }) } });
     } catch (err) {
       respond({ status: 422, body: err });
     }

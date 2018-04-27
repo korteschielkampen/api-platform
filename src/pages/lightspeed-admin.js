@@ -16,7 +16,8 @@ class IndexPage extends React.Component {
       refresh_token: "onbekend",
       account_id: "onbekend",
       account_name: "onbekend",
-      account_link: "onbekend"
+      account_link: "onbekend",
+      expires_in: "onbekend"
     }
     this.getKeys = this.getKeys.bind(this);
   }
@@ -41,7 +42,8 @@ class IndexPage extends React.Component {
         refresh_token: data.body.authData.refresh_token,
         account_id: data.body.authData.account_id,
         account_name: data.body.authData.account_name,
-        account_link: data.body.authData.account_link
+        account_link: data.body.authData.account_link,
+        expires_in: data.body.authData.expires_in
       });
 
     } catch(err) {
@@ -69,6 +71,7 @@ class IndexPage extends React.Component {
             Status: {this.state.status}
           </p>
           <p> Access key: {this.state.access_token} </p>
+          <p> Access key expires in: {this.state.expires_in} </p>
           <p> Refresh key: {this.state.refresh_token} </p>
           <p> Account ID: {this.state.account_id} </p>
           <p> Account Name: {this.state.account_name} </p>

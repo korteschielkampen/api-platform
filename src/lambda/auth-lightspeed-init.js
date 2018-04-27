@@ -21,14 +21,6 @@ exports.handler = async (event, context, callback) => {
       'access_token' : tokens.access_token,
       'refresh_token' : tokens.refresh_token
     }
-    // let authData = {
-    //   'account_id' : "12345",
-    //   'account_name' : "korteschiel kampen",
-    //   'account_link' : "www.somthing.nl",
-    //   'access_token' : "longstring",
-    //   'refresh_token' : "anotherlongstring"
-    // }
-
     let dynamo = await updateDynamo(authData, respond);
     respond({ status: 200, body: {authData: authData, stored: dynamo}});
 

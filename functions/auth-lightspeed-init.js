@@ -33874,15 +33874,8 @@ exports.handler = (() => {
         'account_link': account.Account.link['@attributes'].href,
         'access_token': tokens.access_token,
         'refresh_token': tokens.refresh_token
-        // let authData = {
-        //   'account_id' : "12345",
-        //   'account_name' : "korteschiel kampen",
-        //   'account_link' : "www.somthing.nl",
-        //   'access_token' : "longstring",
-        //   'refresh_token' : "anotherlongstring"
-        // }
-
-      };let dynamo = yield (0, _update2.default)(authData, respond);
+      };
+      let dynamo = yield (0, _update2.default)(authData, respond);
       respond({ status: 200, body: { authData: authData, stored: dynamo } });
     } catch (err) {
       respond({ status: 422, body: { error: err } });

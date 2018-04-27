@@ -54,7 +54,7 @@ class IndexPage extends React.Component {
       <div className={styles.container}>
         <div className={styles.content}>
           <p> Redirect vanaf Lightspeed. </p>
-          <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen tenzij u deze opslaat door op de "Sla op in DynamoDB" button klikt. </p>
+          <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen tenzij u verder gaat </p>
           <p> De onderstaande knop verzegelt uw tijdelijke sleutel, vraagt details rondom uw account aan, en slaat deze op in onze DynamoDB.</p>
           <button style={{marginBottom: "2rem"}} onClick={this.getPermanentKey}>Verzegel uw tijdelijke key</button>
           <p
@@ -65,9 +65,9 @@ class IndexPage extends React.Component {
             }}>
             Status: {this.state.status}
           </p>
-          <p> Tijdelijke sleutel: {this.state.temporary_access_token} </p>
-          <p> Permanente sleutel: {this.state.access_token} </p>
-          <p> Refresh sleutel: {this.state.refresh_token} </p>
+          <p> Temporary access key: {this.state.temporary_access_token} </p>
+          <p> Access key: {this.state.access_token} </p>
+          <p> Refresh key: {this.state.refresh_token} </p>
           <p> Account ID: {this.state.accountID} </p>
           <p> Account Name: {this.state.accountName} </p>
           <p> Account Link: {this.state.accountLink} </p>

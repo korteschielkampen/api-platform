@@ -79,8 +79,6 @@ class IndexPage extends React.Component {
               }}>
               Status: {this.state.status}
             </p>
-            <p> Access key: {this.state.access_token} </p>
-            <p> Access key expires in: {this.state.expires_in} </p>
           </div>
         </div>
         <div className={styles.content}>

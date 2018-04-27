@@ -33905,6 +33905,10 @@ var _refreshTokens = __webpack_require__(752);
 
 var _refreshTokens2 = _interopRequireDefault(_refreshTokens);
 
+var _readReportsTaxbyday = __webpack_require__(756);
+
+var _readReportsTaxbyday2 = _interopRequireDefault(_readReportsTaxbyday);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -33919,14 +33923,34 @@ exports.handler = (() => {
     };
 
     try {
+      // Authentication and updating
       let authData = yield (0, _read2.default)(159502);
       let tokens = yield (0, _refreshTokens2.default)(authData.refresh_token);
-
       if (authData.access_token !== tokens.access_token) {
         (0, _update2.default)(_extends({}, authData, { access_token: tokens.access_token }));
       }
 
-      respond({ status: 200, body: { authData: _extends({}, authData, { expires_in: tokens.expires_in }) } });
+      // Get tax data
+      let startDate = new Date();
+      startDate.setDate(startDate.getDate() - 30);
+      startDate = startDate.toISOString();
+      const endDate = new Date().toISOString();
+
+      const dates = { start: startDate, end: endDate };
+      let taxData = yield (0, _readReportsTaxbyday2.default)(tokens.access_token, dates);
+
+      console.log("----------TAX--DATA------------");
+      console.log(taxData);
+      console.log("----------TAX--DATA------------");
+
+      respond({
+        status: 200,
+        body: {
+          authData: _extends({}, authData, {
+            expires_in: tokens.expires_in }),
+          taxData: _extends({}, taxData)
+        }
+      });
     } catch (err) {
       respond({ status: 422, body: err });
     }
@@ -34023,6 +34047,46 @@ exports.default = (() => {
   });
 
   return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 753 */,
+/* 754 */,
+/* 755 */,
+/* 756 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(16);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (access_token, dates) {
+    const options = {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${access_token}`
+      }
+    };
+    const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Reports/Accounting/TaxClassSalesByDay.json?startDate=${dates.start}&endDate=${dates.end}`;
+
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
+    }
+    return yield res.json();
+  });
+
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 })();

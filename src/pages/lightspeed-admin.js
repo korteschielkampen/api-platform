@@ -17,7 +17,8 @@ class IndexPage extends React.Component {
       account_id: "onbekend",
       account_name: "onbekend",
       account_link: "onbekend",
-      expires_in: "onbekend"
+      expires_in: "onbekend",
+      taxData: []
     }
     this.getKeys = this.getKeys.bind(this);
   }
@@ -34,6 +35,8 @@ class IndexPage extends React.Component {
       if (!res.ok) {throw await res.json();}
       let data = await res.json();
 
+      console.log(data);
+
       data.body && this.setState({
         ...data.body.Item,
         status: "Succesvol data opgehaald bij DynamoDB",
@@ -43,7 +46,8 @@ class IndexPage extends React.Component {
         account_id: data.body.authData.account_id,
         account_name: data.body.authData.account_name,
         account_link: data.body.authData.account_link,
-        expires_in: data.body.authData.expires_in
+        expires_in: data.body.authData.expires_in,
+        taxData: data.body.taxData.SalesDay
       });
 
     } catch(err) {
@@ -76,6 +80,15 @@ class IndexPage extends React.Component {
           <p> Account ID: {this.state.account_id} </p>
           <p> Account Name: {this.state.account_name} </p>
           <p> Account Link: {this.state.account_link} </p>
+        </div>
+        <div className={styles.content}>
+          { this.state.taxData.map((taxItem, key)=>{
+              return (<div key={key} style={{margin: "1rem 0 5rem", padding: "1rem", background: "lightgrey"}}>
+                <p> Date: {taxItem.date} </p>
+                <p> Taxclass: {taxItem.taxClassName} </p>
+                <p> Subtotaal: {taxItem.subtotal} </p>
+              </div>)
+          })}
         </div>
       </div>
     )

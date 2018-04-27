@@ -58,7 +58,7 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <p> Admin voor Lightspeed API -> Moneybird API</p>
+          <p> Admin voor Lightspeed API naar Moneybird API integratie</p>
           <button style={{marginBottom: "2rem"}} onClick={this.getKeys}>Verkrijg data van DynamoDB</button>
           <p
             style={{

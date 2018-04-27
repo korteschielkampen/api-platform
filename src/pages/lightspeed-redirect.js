@@ -66,7 +66,7 @@ class IndexPage extends React.Component {
       headers: { 'Content-Type': 'application/json' }
     };
 
-    fetch(`${lambdaURL}/store-lightspeed-dynamo`, options)
+    fetch(`${lambdaURL}/update-lightspeed-moneybird-dynamo`, options)
       .then(res => {
         return res.json()
       })

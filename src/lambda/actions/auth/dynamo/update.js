@@ -1,15 +1,8 @@
 const fetch = require('node-fetch');
 const AWS = require("aws-sdk");
 
-exports.handler = function handler(event, context, callback) {
-  const respond = ({ status, body }) => {
-    callback(null, {
-      statusCode: status,
-      body: JSON.stringify({ body }),
-    });
-  };
-
-  const receivedPayload = JSON.parse(event.body);
+export default updateDynamo = async (event, callback) => {
+  const payload = JSON.parse(event.body);
 
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,
@@ -22,11 +15,11 @@ exports.handler = function handler(event, context, callback) {
   var params = {
     TableName: 'lightspeed-to-moneybird',
     Item: {
-      'account_id' : {N: receivedPayload.accountID},
-      'account_name' : {S: receivedPayload.accountName},
-      'account_link' : {S: receivedPayload.accountLink},
-      'access_token' : {S: receivedPayload.access_token},
-      'refresh_token' : {S: receivedPayload.refresh_token}
+      'account_id' : {N: payload.accountID},
+      'account_name' : {S: payload.accountName},
+      'account_link' : {S: payload.accountLink},
+      'access_token' : {S: payload.access_token},
+      'refresh_token' : {S: payload.refresh_token}
     }
   };
 

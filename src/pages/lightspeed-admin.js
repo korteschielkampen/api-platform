@@ -18,9 +18,10 @@ class IndexPage extends React.Component {
       account_name: "onbekend",
       account_link: "onbekend"
     }
+    this.getKeys = this.getKeys.bind(this);
   }
 
-  async getKeys () {
+  getKeys = async () => {
     const options = {
       method: "GET"
     };

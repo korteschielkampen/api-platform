@@ -20,9 +20,10 @@ class IndexPage extends React.Component {
       account_name: "onbekend",
       account_link: "onbekend"
     }
+    this.getKeys = this.getKeys.bind(this);
   }
 
-  async getPermanentKey () {
+  async getKeys () {
     const {code} = queryString.parse(this.props.location.search);
     const apiUrl = `${lambdaURL}/lightspeed-auth-init?code=${code}`;
 
@@ -60,7 +61,7 @@ class IndexPage extends React.Component {
           <p> Redirect vanaf Lightspeed. </p>
           <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen tenzij u verder gaat </p>
           <p> De onderstaande knop verzegelt uw tijdelijke sleutel, vraagt details rondom uw account aan, en slaat deze op in onze DynamoDB.</p>
-          <button style={{marginBottom: "2rem"}} onClick={this.getPermanentKey}>Verzegel uw tijdelijke key</button>
+          <button style={{marginBottom: "2rem"}} onClick={this.getKeys}>Verzegel uw tijdelijke key</button>
           <p
             style={{
               backgroundColor: this.state.statusColor,

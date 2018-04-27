@@ -1,6 +1,5 @@
 import React from 'react'
 import Link from 'gatsby-link'
-import queryString from 'query-string'
 
 import styles from './index.module.css'
 
@@ -21,7 +20,7 @@ class IndexPage extends React.Component {
     }
   }
 
-  getKeys = async () => {
+  async getKeys () {
     const options = {
       method: "GET"
     };

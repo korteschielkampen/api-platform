@@ -22,7 +22,7 @@ class IndexPage extends React.Component {
     }
   }
 
-  getPermanentKey = async () => {
+  async getPermanentKey () {
     const {code} = queryString.parse(this.props.location.search);
     const apiUrl = `${lambdaURL}/auth-lightspeed-init?code=${code}`;
 

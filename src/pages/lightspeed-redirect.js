@@ -22,17 +22,19 @@ class IndexPage extends React.Component {
     }
   }
 
-  getPermanentKey = () => {
-    let {code} = queryString.parse(this.props.location.search);
+  getPermanentKey = async () => {
+    const {code} = queryString.parse(this.props.location.search);
+    const apiUrl = `${lambdaURL}/auth-lightspeed-init?code=${code}`;
+
     this.setState({temporary_access_token: code});
 
-    fetch(`${lambdaURL}/auth-lightspeed-init?code=${code}`)
-    .then(res => {
-      return res.json()
-    })
-    .then(data => {
-      if (data.body.error) {throw data.body}
-      data.body && this.setState({
+    try {
+
+      const res = await fetch(apiUrl);
+      if (!res.ok) {throw await res.json();}
+      let data = await res.json();
+
+      this.setState({
         status: "Aanvraag permanente sleutel succesvol",
         statusColor: "lightgreen",
         access_token: data.body.authData.access_token,
@@ -40,13 +42,15 @@ class IndexPage extends React.Component {
         account_id: data.body.authData.account_id,
         account_name: data.body.authData.account_name,
         account_link: data.body.authData.account_link
-    })})
-    .catch(err => {
-      console.log(err);
+      })
+
+    } catch(err) {
+
       this.setState({
         status: `${err.error} - ${err.error_description}`,
         statusColor: "red"
-      })});
+      });
+    }
   }
 
   render () {

@@ -33,7 +33,6 @@ class IndexPage extends React.Component {
       if (!res.ok) {throw await res.json();}
       let data = await res.json();
 
-      console.log(data);
       data.body && this.setState({
         ...data.body.Item,
         status: "Succesvol data opgehaald bij DynamoDB",

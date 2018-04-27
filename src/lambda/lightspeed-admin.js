@@ -23,5 +23,4 @@ exports.handler = async (event, context, callback) => {
   } catch(err) {
     respond({ status: 422, body: err });
   }
-
 }

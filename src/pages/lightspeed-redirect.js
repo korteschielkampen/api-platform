@@ -36,8 +36,8 @@ class IndexPage extends React.Component {
       data.body && this.setState({
         status: "Aanvraag permanente sleutel succesvol",
         statusColor: "lightgreen",
-        access_token: data.body.tokens.refresh_token,
-        refresh_token: data.body.tokens.access_token,
+        access_token: data.body.tokens.access_token,
+        refresh_token: data.body.tokens.refresh_token,
         accountID: data.body.account.Account.accountID,
         accountName: data.body.account.Account.name,
         accountLink: data.body.account.Account.link['@attributes'].href

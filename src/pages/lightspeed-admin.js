@@ -81,10 +81,6 @@ class IndexPage extends React.Component {
             </p>
             <p> Access key: {this.state.access_token} </p>
             <p> Access key expires in: {this.state.expires_in} </p>
-            <p> Refresh key: {this.state.refresh_token} </p>
-            <p> Account ID: {this.state.account_id} </p>
-            <p> Account Name: {this.state.account_name} </p>
-            <p> Account Link: {this.state.account_link} </p>
           </div>
         </div>
         <div className={styles.content}>

@@ -36,8 +36,8 @@ exports.handler = async (event, context, callback) => {
       status: 200,
       body: {
         authData: {
-          ...authData,
-          expires_in: tokens.expires_in},
+          access_token: authData.access_token,
+          expires_in: tokens.expires_in },
         taxData: {
           ...groupedTaxData
         }

@@ -33947,8 +33947,9 @@ exports.handler = (() => {
       respond({
         status: 200,
         body: {
-          authData: _extends({}, authData, {
-            expires_in: tokens.expires_in }),
+          authData: {
+            access_token: authData.access_token,
+            expires_in: tokens.expires_in },
           taxData: _extends({}, groupedTaxData)
         }
       });

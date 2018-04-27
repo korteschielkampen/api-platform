@@ -45,6 +45,10 @@ class IndexPage extends React.Component {
       });
   }
 
+  refreshKeys = () => {
+    
+  }
+
   render () {
     return (
       <div className={styles.container}>

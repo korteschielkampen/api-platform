@@ -26,20 +26,10 @@ exports.handler = function handler(event, context, callback) {
     }
   };
 
-  console.log("-----------")
-  console.log("PARAMS", params)
-  console.log("-----------")
-
   dcddb.get(params, function(err, data) {
     if (err) {
-      console.log("-----------")
-      console.log("FAILED BIGTIME", err)
-      console.log("-----------")
       respond({ status: 400, body: {error: err }});
     } else {
-      console.log("-----------")
-      console.log("YAY! SUCCESSS", data)
-      console.log("-----------")
       respond({ status: 200, body: data });
     }
   });

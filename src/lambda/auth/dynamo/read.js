@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
+const AWS = require("aws-sdk");
 
-export default readDynamo = async (account_id, callback) => {
+export default async (account_id, callback) => {
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,
     secretAccessKey: process.env.aws_secret_access_key
@@ -14,15 +15,14 @@ export default readDynamo = async (account_id, callback) => {
     TableName: 'lightspeed-to-moneybird',
     Key: {
       "account_id": account_id,
-      // "account_id": account_id,
     }
   };
 
-  dcddb.get(params, function(err, data) {
-    if (err) {
-      callback({ status: 400, body: {error: err }});
-    } else {
-      callback({ status: 200, body: data });
-    }
-  });
+  try {
+    var data = await dcddb.get(params).promise();
+    return data.Item;
+  } catch(err) {
+    throw err;
+  }
+
 }

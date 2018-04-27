@@ -21,32 +21,38 @@ class IndexPage extends React.Component {
     }
   }
 
-  getKeys = () => {
+  getKeys = async () => {
     const options = {
       method: "GET"
     };
+    const apiUrl = `${lambdaURL}/admin-read-auth`;
 
-    fetch(`${lambdaURL}/read-lightspeed-moneybird-dynamo`, options)
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        console.log(data);
-        data.body && this.setState({
-          ...data.body.Item,
-          status: "Succesvol data opgehaald bij DynamoDB",
-          statusColor: "lightgreen"
-      })})
-      .catch(err => {
-        this.setState({
-          storageStatus: `Error bij aanvraag van data: ${err}`,
-          storageStatusColor: "red"
-        })
+    try {
+
+      const res = await fetch(apiUrl, options);
+      if (!res.ok) {throw await res.json();}
+      let data = await res.json();
+
+      console.log(data);
+      data.body && this.setState({
+        ...data.body.Item,
+        status: "Succesvol data opgehaald bij DynamoDB",
+        statusColor: "lightgreen",
+        access_token: data.body.authData.access_token,
+        refresh_token: data.body.authData.refresh_token,
+        account_id: data.body.authData.account_id,
+        account_name: data.body.authData.account_name,
+        account_link: data.body.authData.account_link
       });
-  }
 
-  refreshKeys = () => {
+    } catch(err) {
 
+      this.setState({
+        status: `Error bij aanvraag van data: ${err}`,
+        statusColor: "red"
+      })
+
+    }
   }
 
   render () {

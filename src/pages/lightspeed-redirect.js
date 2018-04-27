@@ -16,9 +16,9 @@ class IndexPage extends React.Component {
       temporary_access_token: "onbekend",
       access_token: "onbekend",
       refresh_token: "onbekend",
-      accountID: "onbekend",
-      accountName: "onbekend",
-      accountLink: "onbekend"
+      account_id: "onbekend",
+      account_name: "onbekend",
+      account_link: "onbekend"
     }
   }
 
@@ -37,9 +37,9 @@ class IndexPage extends React.Component {
         statusColor: "lightgreen",
         access_token: data.body.authData.access_token,
         refresh_token: data.body.authData.refresh_token,
-        accountID: data.body.authData.account_id,
-        accountName: data.body.authData.account_name,
-        accountLink: data.body.authData.account_link
+        account_id: data.body.authData.account_id,
+        account_name: data.body.authData.account_name,
+        account_link: data.body.authData.account_link
     })})
     .catch(err => {
       console.log(err);
@@ -68,9 +68,9 @@ class IndexPage extends React.Component {
           <p> Temporary access key: {this.state.temporary_access_token} </p>
           <p> Access key: {this.state.access_token} </p>
           <p> Refresh key: {this.state.refresh_token} </p>
-          <p> Account ID: {this.state.accountID} </p>
-          <p> Account Name: {this.state.accountName} </p>
-          <p> Account Link: {this.state.accountLink} </p>
+          <p> Account ID: {this.state.account_id} </p>
+          <p> Account Name: {this.state.account_name} </p>
+          <p> Account Link: {this.state.account_link} </p>
 
         </div>
       </div>

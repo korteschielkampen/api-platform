@@ -1,8 +1,7 @@
-const fetch = require('node-fetch');
-const AWS = require("aws-sdk");
-// const readDynamo = require("./rest-actions/read-dynamo.js");
+import fetch from 'node-fetch'
+import readDynamo from './auth/dynamo/read.js'
 
-exports.handler = function handler(event, context, callback) {
+exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
     callback(null, {
       statusCode: status,
@@ -10,7 +9,13 @@ exports.handler = function handler(event, context, callback) {
     });
   };
 
-  // readDynamo(159502 , respond);  // Read Lightspeed from Dynamo
-  // readDynamo(159502 , respond);  // Read Moneybird from Dynamo
+  try {
+    let authData = await readDynamo(159502);  // Read Lightspeed from Dynamo
+    // let moneyBirdAuth = await readDynamo(1892373);  // Read Moneybird from Dynamo
+    respond({ status: 200, body: {authData: authData}});
+
+  } catch(err) {
+    respond({ status: 422, body: err });
+  }
 
 }

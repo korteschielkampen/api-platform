@@ -1,55 +1,8 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch'
+import createTokens from './auth/lightspeed/create-tokens.js'
+import readAccount from './api/lightspeed/read-account.js'
 
-const getTokens = async (code, respond) => {
-  const payload = {
-    client_id: "4c23f9e681c44d339359a38dc340522fae805ddab5e372c39762ef91c080179d",
-    client_secret: process.env.LIGHTSPEED,
-    code: code,
-    grant_type: "authorization_code",
-  };
-  const options = {
-    method: "POST",
-    body: JSON.stringify(payload),
-    headers: { 'Content-Type': 'application/json' }
-  };
-
-  try {
-    const response = await fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options);
-    const json = await response.json();
-    return json;
-  } catch(err) {
-    respond({ status: 422, body: {error: err}});
-  }
-}
-
-const getAccountDetails = async (tokens, respond) => {
-  const options = {
-    method: "GET",
-    headers: {
-      'Authorization': `Bearer ${tokens.access_token}`
-    }
-  };
-
-  try {
-    const response = await fetch('https://api.lightspeedapp.com/API/Account.json', options);
-    const json = await response.json();
-    return json;
-  } catch(err) {
-    respond({ status: 422, body: {error: err}});
-  }
-}
-
-const getData = async (code, respond) => {
-  try {
-    var tokens = await getTokens(code, respond);
-    var account = await getAccountDetails(tokens, respond);
-    respond({ status: 200, body: {tokens: tokens, account: account}});
-  } catch(err) {
-    respond({ status: 422, body: {error: err}});
-  }
-}
-
-exports.handler = function handler(event, context, callback) {
+exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
     callback(null, {
       statusCode: status,
@@ -57,6 +10,11 @@ exports.handler = function handler(event, context, callback) {
     });
   };
 
-  getData(event.queryStringParameters.code, respond);
-
+  try {
+    var tokens = await createTokens(event.queryStringParameters.code, respond);
+    var account = await readAccount(tokens, respond);
+    respond({ status: 200, body: {tokens: tokens, account: account}});
+  } catch(err) {
+    respond({ status: 422, body: {error: err}});
+  }
 }

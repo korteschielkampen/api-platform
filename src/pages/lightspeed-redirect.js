@@ -28,7 +28,7 @@ class IndexPage extends React.Component {
     let {code} = queryString.parse(this.props.location.search);
     this.setState({temporary_access_token: code});
 
-    fetch(`${lambdaURL}/auth-lightspeed-moneybird-init?code=${code}`)
+    fetch(`${lambdaURL}/auth-lightspeed-init?code=${code}`)
     .then(res => {
       return res.json()
     })

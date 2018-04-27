@@ -1,10 +1,10 @@
 const fetch = require('node-fetch');
 
-export default refreshTokens = async (code, callback) => {
+export default async (refresh_token) => {
   const payload = {
     client_id: process.env.LIGHTSPEED_CLIENT,
     client_secret: process.env.LIGHTSPEED_SECRET,
-    refresh_token: code,
+    code: temporary_access_token,
     grant_type: "refresh_token",
   };
   const options = {
@@ -12,12 +12,9 @@ export default refreshTokens = async (code, callback) => {
     body: JSON.stringify(payload),
     headers: { 'Content-Type': 'application/json' }
   };
+  const apiUrl = 'https://cloud.lightspeedapp.com/oauth/access_token.php';
 
-  try {
-    const response = await fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options);
-    const json = await response.json();
-    return json;
-  } catch(err) {
-    callback({ status: 422, body: {error: err}});
-  }
+  const res = await fetch(apiUrl, options);
+  if (!res.ok) {throw await res.json();}
+  return await res.json();
 }

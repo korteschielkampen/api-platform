@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'gatsby-link'
+import _ from 'underscore'
 
 import styles from './index.module.css'
 
@@ -47,7 +48,7 @@ class IndexPage extends React.Component {
         account_name: data.body.authData.account_name,
         account_link: data.body.authData.account_link,
         expires_in: data.body.authData.expires_in,
-        taxData: data.body.taxData.SalesDay
+        taxData: data.body.taxData
       });
 
     } catch(err) {
@@ -61,6 +62,7 @@ class IndexPage extends React.Component {
   }
 
   render () {
+    console.log(this.state.taxData)
     return (
       <div className={styles.container}>
         <div className={styles.content}>
@@ -82,13 +84,17 @@ class IndexPage extends React.Component {
           <p> Account Link: {this.state.account_link} </p>
         </div>
         <div className={styles.content}>
-          { this.state.taxData.map((taxItem, key)=>{
-              return (<div key={key} style={{margin: "1rem 0 5rem", padding: "1rem", background: "lightgrey"}}>
-                <p> Date: {taxItem.date} </p>
-                <p> Taxclass: {taxItem.taxClassName} </p>
-                <p> Subtotaal: {taxItem.subtotal} </p>
+          { (Array.reverse(Object.values(this.state.taxData))).map(((taxDay, key)=>{
+            return (
+              <div key={key} className={styles.card}>
+                <p className={styles.cardHeader}> Date: {taxDay[0].date} </p>
+                { taxDay.map((taxItem, key)=>{
+                  return (
+                    <p key={key} className={styles.cardText}> Taxclass: {taxItem.taxClassName} Subtotaal: {taxItem.subtotal} </p>
+                  )})}
               </div>)
-          })}
+          }))}
+
         </div>
       </div>
     )

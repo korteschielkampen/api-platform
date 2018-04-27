@@ -1,4 +1,6 @@
 import fetch from 'node-fetch'
+import _ from 'underscore'
+
 import readDynamo from './auth/dynamo/read.js'
 import updateDynamo from './auth/dynamo/update.js'
 import refreshTokens from './auth/lightspeed/refresh-tokens.js'
@@ -28,10 +30,7 @@ exports.handler = async (event, context, callback) => {
 
     const dates = {start: startDate, end: endDate};
     let taxData = await readTax(tokens.access_token, dates);
-
-    console.log("----------TAX--DATA------------")
-    console.log(taxData)
-    console.log("----------TAX--DATA------------")
+    let groupedTaxData =  _.groupBy(taxData.SalesDay, "date");
 
     respond({
       status: 200,
@@ -40,7 +39,7 @@ exports.handler = async (event, context, callback) => {
           ...authData,
           expires_in: tokens.expires_in},
         taxData: {
-          ...taxData
+          ...groupedTaxData
         }
       }
     });

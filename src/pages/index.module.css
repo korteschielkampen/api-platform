@@ -13,3 +13,25 @@
 .button {
   margin: 0 0 2rem 0;
 }
+
+.card {
+  margin: 1rem 0;
+  padding: 2rem;
+  background: lightgrey;
+  border-radius: 2rem;
+}
+
+.cardHeader {
+  background: grey;
+  padding: 1rem 1rem;
+  border-radius: 1rem;
+}
+
+.cardText {
+  padding: 0rem 0rem 1rem;
+  margin: 0;
+}
+
+.cardText:last-of-type {
+  padding: 0rem 0 0;
+}

@@ -1,13 +1,5 @@
 const fetch = require('node-fetch');
 
-const readableLog = (message, data) => {
-  console.log(` ------ ${message} ------- `)
-  console.log("")
-  data && console.log(data)
-  console.log("")
-  console.log(" ------------------------- ")
-}
-
 const getTokens = async (code, respond) => {
   const payload = {
     client_id: "4c23f9e681c44d339359a38dc340522fae805ddab5e372c39762ef91c080179d",
@@ -31,7 +23,6 @@ const getTokens = async (code, respond) => {
 }
 
 const getAccountDetails = async (tokens, respond) => {
-  readableLog("tokens", tokens);
   const options = {
     method: "GET",
     headers: {
@@ -42,7 +33,6 @@ const getAccountDetails = async (tokens, respond) => {
   try {
     const response = await fetch('https://api.lightspeedapp.com/API/Account.json', options);
     const json = await response.json();
-    readableLog("DETAILS", json)
     return json;
   } catch(err) {
     respond({ status: 422, body: {error: err}});

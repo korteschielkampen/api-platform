@@ -1,18 +1,16 @@
 const fetch = require('node-fetch');
 
-export default async (tokens, respond) => {
+export default async (access_token) => {
   const options = {
     method: "GET",
     headers: {
       'Authorization': `Bearer ${tokens.access_token}`
     }
   };
+  const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';
 
-  try {
-    const response = await fetch('https://api.lightspeedapp.com/API/Account.json', options);
-    const json = await response.json();
-    return json;
-  } catch(err) {
-    respond({ status: 422, body: {error: err}});
-  }
+  const res = await fetch(apiUrl, options);
+  if (!res.ok) {throw await res.json();}
+  return await res.json();
+
 }

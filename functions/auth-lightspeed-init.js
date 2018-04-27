@@ -33866,8 +33866,8 @@ exports.handler = (() => {
     };
 
     try {
-      let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code, respond);
-      let account = yield (0, _readAccount2.default)(tokens, respond);
+      let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
+      let account = yield (0, _readAccount2.default)(tokens.access_token);
       let authData = {
         'account_id': account.Account.accountID,
         'account_name': account.Account.name,
@@ -33875,10 +33875,11 @@ exports.handler = (() => {
         'access_token': tokens.access_token,
         'refresh_token': tokens.refresh_token
       };
-      let dynamo = yield (0, _update2.default)(authData, respond);
+      let dynamo = yield (0, _update2.default)(authData);
+
       respond({ status: 200, body: { authData: authData, stored: dynamo } });
     } catch (err) {
-      respond({ status: 422, body: { error: err } });
+      respond({ status: 422, body: err });
     }
   });
 
@@ -33903,7 +33904,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 const fetch = __webpack_require__(49);
 
 exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (temporary_access_token, respond) {
+  var _ref = _asyncToGenerator(function* (temporary_access_token) {
     const payload = {
       client_id: "4c23f9e681c44d339359a38dc340522fae805ddab5e372c39762ef91c080179d",
       client_secret: process.env.LIGHTSPEED,
@@ -33915,17 +33916,16 @@ exports.default = (() => {
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     };
+    const apiUrl = 'https://cloud.lightspeedapp.com/oauth/access_token.php';
 
-    try {
-      const response = yield fetch('https://cloud.lightspeedapp.com/oauth/access_token.php', options);
-      const json = yield response.json();
-      return json;
-    } catch (err) {
-      respond({ status: 422, body: { error: err } });
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
     }
+    return yield res.json();
   });
 
-  return function (_x, _x2) {
+  return function (_x) {
     return _ref.apply(this, arguments);
   };
 })();
@@ -33946,24 +33946,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 const fetch = __webpack_require__(49);
 
 exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (tokens, respond) {
+  var _ref = _asyncToGenerator(function* (access_token) {
     const options = {
       method: "GET",
       headers: {
         'Authorization': `Bearer ${tokens.access_token}`
       }
     };
+    const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';
 
-    try {
-      const response = yield fetch('https://api.lightspeedapp.com/API/Account.json', options);
-      const json = yield response.json();
-      return json;
-    } catch (err) {
-      respond({ status: 422, body: { error: err } });
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
     }
+    return yield res.json();
   });
 
-  return function (_x, _x2) {
+  return function (_x) {
     return _ref.apply(this, arguments);
   };
 })();
@@ -33985,7 +33984,7 @@ const fetch = __webpack_require__(49);
 const AWS = __webpack_require__(125);
 
 exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (payload, callback) {
+  var _ref = _asyncToGenerator(function* (payload) {
 
     AWS.config.update({
       accessKeyId: process.env.aws_access_key_id,
@@ -33994,7 +33993,6 @@ exports.default = (() => {
     AWS.config.update({ region: 'eu-central-1' });
 
     const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
-    const dcddb = new AWS.DynamoDB.DocumentClient();
 
     var params = {
       TableName: 'lightspeed-to-moneybird',
@@ -34009,14 +34007,14 @@ exports.default = (() => {
 
     ddb.putItem(params, function (err, data) {
       if (err) {
-        return err;
+        throw err;
       } else {
         return true;
       }
     });
   });
 
-  return function (_x, _x2) {
+  return function (_x) {
     return _ref.apply(this, arguments);
   };
 })();

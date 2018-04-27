@@ -12,8 +12,8 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    let tokens = await createTokens(event.queryStringParameters.code, respond);
-    let account = await readAccount(tokens, respond);
+    let tokens = await createTokens(event.queryStringParameters.code);
+    let account = await readAccount(tokens.access_token);
     let authData = {
       'account_id' : account.Account.accountID,
       'account_name' : account.Account.name,
@@ -21,10 +21,12 @@ exports.handler = async (event, context, callback) => {
       'access_token' : tokens.access_token,
       'refresh_token' : tokens.refresh_token
     }
-    let dynamo = await updateDynamo(authData, respond);
-    respond({ status: 200, body: {authData: authData, stored: dynamo}});
+    let dynamo = await updateDynamo(authData);
 
+    respond({ status: 200, body: {authData: authData, stored: dynamo}});
+    
   } catch(err) {
-    respond({ status: 422, body: {error: err}});
+    respond({status: 422, body: err});
   }
+
 }

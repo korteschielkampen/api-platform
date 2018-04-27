@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const AWS = require("aws-sdk");
 
-export default async (payload, callback) => {
+export default async (payload) => {
 
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,
@@ -10,7 +10,6 @@ export default async (payload, callback) => {
   AWS.config.update({region: 'eu-central-1'});
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-10-08'});
-  const dcddb = new AWS.DynamoDB.DocumentClient();
 
   var params = {
     TableName: 'lightspeed-to-moneybird',
@@ -25,10 +24,10 @@ export default async (payload, callback) => {
 
   ddb.putItem(params, function(err, data) {
     if (err) {
-      return err;
+      throw err;
     } else {
       return true;
     }
   });
-  
+
 }

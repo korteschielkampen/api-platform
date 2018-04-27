@@ -13,8 +13,6 @@ class IndexPage extends React.Component {
     this.state = {
       status: "Wordt Aangevraagd",
       statusColor: "grey",
-      storageStatus: "Nog niet aangevraagd",
-      storageStatusColor: "grey",
       temporary_access_token: "onbekend",
       access_token: "onbekend",
       refresh_token: "onbekend",
@@ -33,55 +31,22 @@ class IndexPage extends React.Component {
       return res.json()
     })
     .then(data => {
+      if (data.body.error) {throw data.body}
       data.body && this.setState({
         status: "Aanvraag permanente sleutel succesvol",
         statusColor: "lightgreen",
-        access_token: data.body.tokens.access_token,
-        refresh_token: data.body.tokens.refresh_token,
-        accountID: data.body.account.Account.accountID,
-        accountName: data.body.account.Account.name,
-        accountLink: data.body.account.Account.link['@attributes'].href
+        access_token: data.body.authData.access_token,
+        refresh_token: data.body.authData.refresh_token,
+        accountID: data.body.authData.account_id,
+        accountName: data.body.authData.account_name,
+        accountLink: data.body.authData.account_link
     })})
     .catch(err => {
       console.log(err);
       this.setState({
-        status: `Error bij aanvraag permanente sleutel: ${err}`,
+        status: `${err.error} - ${err.error_description}`,
         statusColor: "red"
       })});
-  }
-
-  storePermanentKeys = () => {
-    const payload = {
-      temporary_access_token: this.state.temporary_access_token,
-      access_token: this.state.access_token,
-      refresh_token: this.state.refresh_token,
-      accountID: this.state.accountID,
-      accountName: this.state.accountName,
-      accountLink: this.state.accountLink
-    };
-
-    const options = {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' }
-    };
-
-    fetch(`${lambdaURL}/update-lightspeed-moneybird-dynamo`, options)
-      .then(res => {
-        return res.json()
-      })
-      .then(data => {
-        data.headers && (() => { throw data.body.error })();
-        data.body && this.setState({
-          storageStatus: "Succesvol opgeslagen in DynamoDB",
-          storageStatusColor: "lightgreen"
-      })})
-      .catch(err => {
-        this.setState({
-          storageStatus: `Error bij aanvraag permanente sleutel: ${err}`,
-          storageStatusColor: "red"
-        })
-      });
   }
 
   render () {
@@ -90,7 +55,8 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <p> Redirect vanaf Lightspeed. </p>
           <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen tenzij u deze opslaat door op de "Sla op in DynamoDB" button klikt. </p>
-          <button style={{marginBottom: "2rem"}} onClick={this.getPermanentKey}>Verzegel uw tijdelijke key en vraag extra info aan</button>
+          <p> De onderstaande knop verzegelt uw tijdelijke sleutel, vraagt details rondom uw account aan, en slaat deze op in onze DynamoDB.</p>
+          <button style={{marginBottom: "2rem"}} onClick={this.getPermanentKey}>Verzegel uw tijdelijke key</button>
           <p
             style={{
               backgroundColor: this.state.statusColor,
@@ -105,15 +71,7 @@ class IndexPage extends React.Component {
           <p> Account ID: {this.state.accountID} </p>
           <p> Account Name: {this.state.accountName} </p>
           <p> Account Link: {this.state.accountLink} </p>
-          <button style={{marginBottom: "2rem"}} onClick={this.storePermanentKeys}>Sla op in DynamoDB</button>
-          <p
-            style={{
-              backgroundColor: this.state.storageStatusColor,
-              padding: "1rem",
-              borderRadius: "1rem"
-            }}>
-            Status: {this.state.storageStatus}
-          </p>
+
         </div>
       </div>
     )

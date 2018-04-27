@@ -1,7 +1,10 @@
 const fetch = require('node-fetch');
 const AWS = require("aws-sdk");
 
-export default async (payload) => {
+export default async (authData) => {
+  console.log("---------INSIDE UPDATE---------")
+  console.log(authData)
+  console.log("---------INSIDE UPDATE---------")
 
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,
@@ -10,19 +13,20 @@ export default async (payload) => {
   AWS.config.update({region: 'eu-central-1'});
 
   const ddb = new AWS.DynamoDB({apiVersion: '2012-10-08'});
+  const dcddb = new AWS.DynamoDB.DocumentClient();
 
   var params = {
     TableName: 'lightspeed-to-moneybird',
     Item: {
-      'account_id' : {N: payload.account_id},
-      'account_name' : {S: payload.account_name},
-      'account_link' : {S: payload.account_link},
-      'access_token' : {S: payload.access_token},
-      'refresh_token' : {S: payload.refresh_token}
+      'account_id' : authData.account_id,
+      'account_name' : authData.account_name,
+      'account_link' : authData.account_link,
+      'access_token' : authData.access_token,
+      'refresh_token' : authData.refresh_token
     }
   };
 
-  ddb.putItem(params, function(err, data) {
+  dcddb.put(params, function(err, data) {
     if (err) {
       throw err;
     } else {

@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
 const AWS = require("aws-sdk");
 
-export default async (account_id, callback) => {
+export default async (account_id) => {
+
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,
     secretAccessKey: process.env.aws_secret_access_key

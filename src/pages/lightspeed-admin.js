@@ -21,7 +21,7 @@ class IndexPage extends React.Component {
     this.getKeys = this.getKeys.bind(this);
   }
 
-  getKeys = async () => {
+  async getKeys () {
     const options = {
       method: "GET"
     };

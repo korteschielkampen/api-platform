@@ -26,7 +26,7 @@ class IndexPage extends React.Component {
       method: "GET"
     };
 
-    fetch(`${lambdaURL}/get-lightspeed-moneybird-dynamo`, options)
+    fetch(`${lambdaURL}/read-lightspeed-moneybird-dynamo`, options)
       .then(res => {
         return res.json()
       })
@@ -46,7 +46,7 @@ class IndexPage extends React.Component {
   }
 
   refreshKeys = () => {
-    
+
   }
 
   render () {

@@ -33846,9 +33846,6 @@ const AWS = __webpack_require__(100);
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (authData) {
-    console.log("---------INSIDE UPDATE---------");
-    console.log(authData);
-    console.log("---------INSIDE UPDATE---------");
 
     AWS.config.update({
       accessKeyId: process.env.aws_access_key_id,

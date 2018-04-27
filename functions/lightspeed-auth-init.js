@@ -33867,13 +33867,12 @@ exports.default = (() => {
       }
     };
 
-    dcddb.put(params, function (err, data) {
-      if (err) {
-        throw err;
-      } else {
-        return true;
-      }
-    });
+    try {
+      var data = yield dcddb.put(params).promise();
+      return true;
+    } catch (err) {
+      throw err;
+    }
   });
 
   return function (_x) {

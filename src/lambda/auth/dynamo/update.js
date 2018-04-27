@@ -23,12 +23,11 @@ export default async (authData) => {
     }
   };
 
-  dcddb.put(params, function(err, data) {
-    if (err) {
-      throw err;
-    } else {
-      return true;
-    }
-  });
+  try {
+    var data = await dcddb.put(params).promise();
+    return true;
+  } catch(err) {
+    throw err;
+  }
 
 }

@@ -26,7 +26,7 @@ class IndexPage extends React.Component {
     const options = {
       method: "GET"
     };
-    const apiUrl = `${lambdaURL}/lightspeed-admin`;
+    const apiUrl = `${lambdaURL}/lightspeed-admin-auth`;
 
     try {
 

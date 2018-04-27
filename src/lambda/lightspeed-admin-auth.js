@@ -20,6 +20,7 @@ exports.handler = async (event, context, callback) => {
     }
 
     respond({ status: 200, body: {authData: {...authData, expires_in: tokens.expires_in}}});
+    
   } catch(err) {
     respond({ status: 422, body: err });
   }

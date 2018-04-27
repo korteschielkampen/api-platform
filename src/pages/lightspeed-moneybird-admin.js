@@ -69,8 +69,8 @@ class IndexPage extends React.Component {
             }}>
             Status: {this.state.status}
           </p>
-          <p> Permanente sleutel: {this.state.access_token} </p>
-          <p> Refresh sleutel: {this.state.refresh_token} </p>
+          <p> Access key: {this.state.access_token} </p>
+          <p> Refresh key: {this.state.refresh_token} </p>
           <p> Account ID: {this.state.account_id} </p>
           <p> Account Name: {this.state.account_name} </p>
           <p> Account Link: {this.state.account_link} </p>

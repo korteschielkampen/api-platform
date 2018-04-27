@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 751);
+/******/ 	return __webpack_require__(__webpack_require__.s = 750);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -33830,8 +33830,7 @@ module.exports = {"pagination":{"ListChannels":{"input_token":"nextToken","outpu
 
 /***/ }),
 /* 749 */,
-/* 750 */,
-/* 751 */
+/* 750 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33848,8 +33847,6 @@ exports.handler = function handler(event, context, callback) {
     });
   };
 
-  const receivedPayload = JSON.parse(event.body);
-
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,
     secretAccessKey: process.env.aws_secret_access_key
@@ -33858,22 +33855,30 @@ exports.handler = function handler(event, context, callback) {
 
   const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
 
+  const dcddb = new AWS.DynamoDB.DocumentClient();
+
   var params = {
     TableName: 'lightspeed-to-moneybird',
-    Item: {
-      'account_id': { N: receivedPayload.accountID },
-      'account_name': { S: receivedPayload.accountName },
-      'account_link': { S: receivedPayload.accountLink },
-      'access_token': { S: receivedPayload.access_token },
-      'refresh_token': { S: receivedPayload.refresh_token }
+    Key: {
+      "account_id": 159502
     }
   };
 
-  ddb.putItem(params, function (err, data) {
+  console.log("-----------");
+  console.log("PARAMS", params);
+  console.log("-----------");
+
+  dcddb.get(params, function (err, data) {
     if (err) {
+      console.log("-----------");
+      console.log("FAILED BIGTIME", err);
+      console.log("-----------");
       respond({ status: 400, body: { error: err } });
     } else {
-      respond({ status: 200, body: "Aangevraagd en opgeslagen - (Status code: 200)" });
+      console.log("-----------");
+      console.log("YAY! SUCCESSS", data);
+      console.log("-----------");
+      respond({ status: 200, body: data });
     }
   });
 };

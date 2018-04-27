@@ -33950,7 +33950,7 @@ exports.default = (() => {
     const options = {
       method: "GET",
       headers: {
-        'Authorization': `Bearer ${tokens.access_token}`
+        'Authorization': `Bearer ${access_token}`
       }
     };
     const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';

@@ -53,7 +53,7 @@ class IndexPage extends React.Component {
     } catch(err) {
 
       this.setState({
-        status: `${err.body.error} - ${err.body.error_description}`,
+        status: `${JSON.stringify(err.body)}`,
         statusColor: "red"
       })
 

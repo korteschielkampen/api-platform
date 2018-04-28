@@ -13,25 +13,29 @@ exports.handler = async (event, context, callback) => {
 
   try {
     let tokens = await createTokens(event.queryStringParameters.code);
-    // let account = await readAccount("eebd32a1070b07a8cc835ec15d7752d5fdc7501e1965ac393b638d91b4c5cbd4");
     let account = await readAccount(tokens.access_token);
-    // let authData = {
-    //   'account_id' : parseInt(account.Account.accountID),
-    //   'account_name' : account.Account.name,
-    //   'account_link' : account.Account.link['@attributes'].href,
-    //   'access_token' : tokens.access_token,
-    //   'refresh_token' : tokens.refresh_token
-    // }
-    // let dynamo = await updateDynamo(authData);
+    let authData = {
+      'account_id' : parseInt(account.account.id),
+      'account_name' : account.account.name,
+      'access_token' : tokens.access_token,
+      'refresh_token' : tokens.refresh_token
+    }
+    let dynamo = await updateDynamo(authData);
 
-    respond({ status: 422, body: {account: account}});
-    // respond({ status: 200, body: {authData: authData}});
-    // respond({ status: 200, body: {authData: authData, stored: dynamo}});
-
+    respond({ status: 200, body: {authData: authData, stored: dynamo}});
   } catch(err) {
     respond({ status: 422, body: err });
   }
 }
+
+
+{"account":[{
+  "id":"211688738215954171",
+  "name":"A. Korteschiel",
+  "language":"nl",
+  "currency":"EUR",
+  "country":"NL",
+  "time_zone":"Europe/Amsterdam"}]}
 
 // {"tokens":{
 //   "access_token":"eebd32a1070b07a8cc835ec15d7752d5fdc7501e1965ac393b638d91b4c5cbd4",

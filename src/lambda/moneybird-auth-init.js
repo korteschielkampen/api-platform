@@ -14,8 +14,11 @@ exports.handler = async (event, context, callback) => {
   try {
     let tokens = await createTokens(event.queryStringParameters.code);
     let account = await readAccount(tokens.access_token);
+    console.log("-------------ACOUNTDATA UNFILTERED---------------")
+    console.log(account)
+    console.log("-------------ACOUNTDATA UNFILTERED---------------")
     let auth = {
-      'account_id' : +account[0].id,
+      'account_id' : account[0].id,
       'account_name' : account[0].name,
       'access_token' : tokens.access_token,
       'refresh_token' : tokens.refresh_token

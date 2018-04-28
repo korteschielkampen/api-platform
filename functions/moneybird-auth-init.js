@@ -33944,8 +33944,8 @@ exports.handler = (() => {
       console.log(account);
       console.log("----------------ACCOUNT HMM HMMM----------------");
       let authData = {
-        'account_id': parseInt(account.account.id),
-        'account_name': account.account.name,
+        'account_id': parseInt(account.account[0].id),
+        'account_name': account.account[0].name,
         'access_token': tokens.access_token,
         'refresh_token': tokens.refresh_token
       };

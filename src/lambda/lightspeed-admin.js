@@ -44,7 +44,7 @@ exports.handler = async (event, context, callback) => {
         payments: groupedPayments[k]
       }
     }));
-    let invoices = _.merge(Object.keys(nestedTax), nestedTax, nestedPayments);
+    let invoices = _.merge({}, ...nestedTax, ...nestedPayments);
 
     console.log(invoices)
 

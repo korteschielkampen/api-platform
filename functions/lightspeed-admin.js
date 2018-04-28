@@ -33971,7 +33971,7 @@ exports.handler = (() => {
           }
         };
       });
-      let invoices = _lodash2.default.merge(Object.keys(nestedTax), nestedTax, nestedPayments);
+      let invoices = _lodash2.default.merge({}, ...nestedTax, ...nestedPayments);
 
       console.log(invoices);
 

@@ -4,9 +4,10 @@ import classNames from 'classnames'
 
 import styles from './index.module.css'
 
-const client_id = "";
-const scope = ""
-const temporaryTokenLink = `${client_id}&scope=${scope}`
+const client_id = "64e1b03a820d8c9585cb7521cbc8605e";
+const scope = "sales_invoices+bank"
+const redirect_uri = encodeURI("https://rjkorteschiel.nl/moneybird-redirect/");
+const temporaryTokenLink = `https://moneybird.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}`
 
 class IndexPage extends React.Component {
   render () {

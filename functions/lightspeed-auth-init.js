@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 758);
+/******/ 	return __webpack_require__(__webpack_require__.s = 756);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -33889,7 +33889,72 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 750 */
+/* 750 */,
+/* 751 */,
+/* 752 */,
+/* 753 */,
+/* 754 */,
+/* 755 */,
+/* 756 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _nodeFetch = __webpack_require__(16);
+
+var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
+
+var _createTokens = __webpack_require__(757);
+
+var _createTokens2 = _interopRequireDefault(_createTokens);
+
+var _readAccount = __webpack_require__(758);
+
+var _readAccount2 = _interopRequireDefault(_readAccount);
+
+var _update = __webpack_require__(749);
+
+var _update2 = _interopRequireDefault(_update);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.handler = (() => {
+  var _ref = _asyncToGenerator(function* (event, context, callback) {
+    const respond = function ({ status, body }) {
+      callback(null, {
+        statusCode: status,
+        body: JSON.stringify({ body })
+      });
+    };
+
+    try {
+      let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
+      let account = yield (0, _readAccount2.default)(tokens.access_token);
+      let authData = {
+        'account_id': parseInt(account.Account.accountID),
+        'account_name': account.Account.name,
+        'account_link': account.Account.link['@attributes'].href,
+        'access_token': tokens.access_token,
+        'refresh_token': tokens.refresh_token
+      };
+      let dynamo = yield (0, _update2.default)(authData);
+
+      respond({ status: 200, body: { authData: authData, stored: dynamo } });
+    } catch (err) {
+      respond({ status: 422, body: err });
+    }
+  });
+
+  return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 757 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33931,7 +33996,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 751 */
+/* 758 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33963,71 +34028,6 @@ exports.default = (() => {
   });
 
   return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 752 */,
-/* 753 */,
-/* 754 */,
-/* 755 */,
-/* 756 */,
-/* 757 */,
-/* 758 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _nodeFetch = __webpack_require__(16);
-
-var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
-
-var _createTokens = __webpack_require__(750);
-
-var _createTokens2 = _interopRequireDefault(_createTokens);
-
-var _readAccount = __webpack_require__(751);
-
-var _readAccount2 = _interopRequireDefault(_readAccount);
-
-var _update = __webpack_require__(749);
-
-var _update2 = _interopRequireDefault(_update);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.handler = (() => {
-  var _ref = _asyncToGenerator(function* (event, context, callback) {
-    const respond = function ({ status, body }) {
-      callback(null, {
-        statusCode: status,
-        body: JSON.stringify({ body })
-      });
-    };
-
-    try {
-      let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
-      let account = yield (0, _readAccount2.default)(tokens.access_token);
-      let authData = {
-        'account_id': parseInt(account.Account.accountID),
-        'account_name': account.Account.name,
-        'account_link': account.Account.link['@attributes'].href,
-        'access_token': tokens.access_token,
-        'refresh_token': tokens.refresh_token
-      };
-      let dynamo = yield (0, _update2.default)(authData);
-
-      respond({ status: 200, body: { authData: authData, stored: dynamo } });
-    } catch (err) {
-      respond({ status: 422, body: err });
-    }
-  });
-
-  return function (_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 })();

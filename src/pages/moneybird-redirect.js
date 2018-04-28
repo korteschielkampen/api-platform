@@ -24,13 +24,14 @@ class IndexPage extends React.Component {
     this.getKeys = this.getKeys.bind(this);
   }
 
-  async getKeys () {
+  componentDidMount(){
     const {code} = queryString.parse(this.props.location.search);
-    const apiUrl = `${lambdaURL}/moneybird-auth-init?code=${code}`;
-
     this.setState({temporary_access_token: code});
+  }
 
+  async getKeys () {
     try {
+      const apiUrl = `${lambdaURL}/moneybird-auth-init?code=${this.state.temporary_access_token}`;
 
       const res = await fetch(apiUrl);
       if (!res.ok) {throw await res.json();}

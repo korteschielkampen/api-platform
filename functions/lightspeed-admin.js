@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 752);
+/******/ 	return __webpack_require__(__webpack_require__.s = 750);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -33889,9 +33889,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 750 */,
-/* 751 */,
-/* 752 */
+/* 750 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33903,11 +33901,11 @@ var _nodeFetch = __webpack_require__(16);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
 
-var _lodash = __webpack_require__(753);
+var _lodash = __webpack_require__(751);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _read = __webpack_require__(754);
+var _read = __webpack_require__(752);
 
 var _read2 = _interopRequireDefault(_read);
 
@@ -33915,15 +33913,15 @@ var _update = __webpack_require__(749);
 
 var _update2 = _interopRequireDefault(_update);
 
-var _refreshTokens = __webpack_require__(755);
+var _refreshTokens = __webpack_require__(753);
 
 var _refreshTokens2 = _interopRequireDefault(_refreshTokens);
 
-var _readReportsTaxbyday = __webpack_require__(756);
+var _readReportsTaxbyday = __webpack_require__(754);
 
 var _readReportsTaxbyday2 = _interopRequireDefault(_readReportsTaxbyday);
 
-var _readReportsPaymentsbyday = __webpack_require__(757);
+var _readReportsPaymentsbyday = __webpack_require__(755);
 
 var _readReportsPaymentsbyday2 = _interopRequireDefault(_readReportsPaymentsbyday);
 
@@ -33994,7 +33992,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 753 */
+/* 751 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -51107,7 +51105,7 @@ exports.handler = (() => {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
 
 /***/ }),
-/* 754 */
+/* 752 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51155,7 +51153,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 755 */
+/* 753 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51197,7 +51195,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 756 */
+/* 754 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51234,7 +51232,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 757 */
+/* 755 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

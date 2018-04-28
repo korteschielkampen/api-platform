@@ -33889,85 +33889,8 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 750 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const fetch = __webpack_require__(16);
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (temporary_access_token) {
-    const payload = {
-      client_id: process.env.LIGHTSPEED_CLIENT,
-      client_secret: process.env.LIGHTSPEED_SECRET,
-      code: temporary_access_token,
-      grant_type: "authorization_code"
-    };
-    const options = {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' }
-    };
-    const apiUrl = 'https://cloud.lightspeedapp.com/oauth/access_token.php';
-
-    const res = yield fetch(apiUrl, options);
-    if (!res.ok) {
-      throw yield res.json();
-    }
-    return yield res.json();
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 751 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const fetch = __webpack_require__(16);
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (access_token) {
-    const options = {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${access_token}`
-      }
-    };
-    const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';
-
-    const res = yield fetch(apiUrl, options);
-    if (!res.ok) {
-      throw yield res.json();
-    }
-    return yield res.json();
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
+/* 750 */,
+/* 751 */,
 /* 752 */,
 /* 753 */,
 /* 754 */,
@@ -33985,11 +33908,11 @@ var _nodeFetch = __webpack_require__(16);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
 
-var _createTokens = __webpack_require__(750);
+var _createTokens = __webpack_require__(760);
 
 var _createTokens2 = _interopRequireDefault(_createTokens);
 
-var _readAccount = __webpack_require__(751);
+var _readAccount = __webpack_require__(761);
 
 var _readAccount2 = _interopRequireDefault(_readAccount);
 
@@ -34012,23 +33935,114 @@ exports.handler = (() => {
 
     try {
       let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
-      let account = yield (0, _readAccount2.default)(tokens.access_token);
-      let authData = {
-        'account_id': parseInt(account.Account.accountID),
-        'account_name': account.Account.name,
-        'account_link': account.Account.link['@attributes'].href,
-        'access_token': tokens.access_token,
-        'refresh_token': tokens.refresh_token
-      };
-      let dynamo = yield (0, _update2.default)(authData);
+      console.log("-------------------");
+      console.log(tokens);
+      console.log("-------------------");
+      // let account = await readAccount(tokens.access_token);
+      // let authData = {
+      //   'account_id' : parseInt(account.Account.accountID),
+      //   'account_name' : account.Account.name,
+      //   'account_link' : account.Account.link['@attributes'].href,
+      //   'access_token' : tokens.access_token,
+      //   'refresh_token' : tokens.refresh_token
+      // }
+      // let dynamo = await updateDynamo(authData);
 
-      respond({ status: 200, body: { authData: authData, stored: dynamo } });
+      respond({ status: 422, body: { tokens: tokens } });
+      // respond({ status: 200, body: {authData: authData}});
+      // respond({ status: 200, body: {authData: authData, stored: dynamo}});
     } catch (err) {
       respond({ status: 422, body: err });
     }
   });
 
   return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 760 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+// client_id=9a833de2d13b07dfdfb50a8124b148d8
+// client_secret=b376c8fbed732a5d1495a510a2f7d2738cdd4986516f1d34dd5cc00de4dcfe11
+// code=1192e141cfd1839e1d477ac0f91268deec523fae5d14748547a8a22fc3a5b39b
+// redirect_uri=urn:ietf:wg:oauth:2.0:oob
+// grant_type=authorization_code
+
+const fetch = __webpack_require__(16);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (temporary_access_token) {
+    const payload = {
+      client_id: process.env.MONEYBIRD_CLIENT,
+      client_secret: process.env.MONEYBIRD_SECRET,
+      redirect_uri: encodeURI("https://rjkorteschiel.nl/moneybird-redirect/"),
+      code: temporary_access_token,
+      grant_type: "authorization_code"
+    };
+    const options = {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' }
+    };
+    const apiUrl = 'https://moneybird.com/oauth/token';
+
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
+    }
+    return yield res.json();
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 761 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(16);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (access_token) {
+    const options = {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${access_token}`
+      }
+    };
+    const apiUrl = '';
+
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
+    }
+    return yield res.json();
+  });
+
+  return function (_x) {
     return _ref.apply(this, arguments);
   };
 })();

@@ -51101,9 +51101,14 @@ exports.handler = (() => {
     try {
       // Authentication and updating
       let auth = yield (0, _read2.default)(211688738215954180);
+      console.log("-------AUTH--------");
       console.log(auth);
+      console.log("-------AUTH--------");
       let tokens = yield (0, _refreshTokens2.default)(auth.refresh_token);
+      console.log("-------TOKENS--------");
       console.log(tokens);
+      console.log("-------TOKENS--------");
+
       if (auth.access_token !== tokens.access_token) {
         (0, _update2.default)(_extends({}, auth, { access_token: tokens.access_token }));
       }
@@ -51160,8 +51165,6 @@ exports.default = (() => {
       headers: { 'Content-Type': 'application/json' }
     };
     const apiUrl = 'https://moneybird.com/oauth/token';
-
-    console.log(options, apiUrl);
 
     const res = yield fetch(apiUrl, options);
     if (!res.ok) {

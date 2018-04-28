@@ -19,8 +19,6 @@ export default async (refresh_token) => {
   };
   const apiUrl = 'https://moneybird.com/oauth/token';
 
-  console.log(options, apiUrl)
-
   const res = await fetch(apiUrl, options);
   if (!res.ok) {throw await res.json();}
   return await res.json();

@@ -14,12 +14,6 @@ class IndexPage extends React.Component {
     this.state = {
       status: "onbekend",
       statusColor: "grey",
-      access_token: "onbekend",
-      refresh_token: "onbekend",
-      account_id: "onbekend",
-      account_name: "onbekend",
-      account_link: "onbekend",
-      expires_in: "onbekend",
       invoices: {}
     }
     this.getKeys = this.getKeys.bind(this);
@@ -41,12 +35,6 @@ class IndexPage extends React.Component {
         ...data.body.Item,
         status: "Succesvol geauthenticeerd en data opgehaald bij Lightspeed",
         statusColor: "lightgreen",
-        access_token: data.body.authData.access_token,
-        refresh_token: data.body.authData.refresh_token,
-        account_id: data.body.authData.account_id,
-        account_name: data.body.authData.account_name,
-        account_link: data.body.authData.account_link,
-        expires_in: data.body.authData.expires_in,
         invoices: data.body.invoices
       });
 

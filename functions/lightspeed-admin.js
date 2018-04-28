@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 750);
+/******/ 	return __webpack_require__(__webpack_require__.s = 752);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -33892,109 +33892,6 @@ exports.default = (() => {
 /* 750 */
 /***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _nodeFetch = __webpack_require__(16);
-
-var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
-
-var _lodash = __webpack_require__(751);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _read = __webpack_require__(752);
-
-var _read2 = _interopRequireDefault(_read);
-
-var _update = __webpack_require__(749);
-
-var _update2 = _interopRequireDefault(_update);
-
-var _refreshTokens = __webpack_require__(753);
-
-var _refreshTokens2 = _interopRequireDefault(_refreshTokens);
-
-var _readReportsTaxbyday = __webpack_require__(754);
-
-var _readReportsTaxbyday2 = _interopRequireDefault(_readReportsTaxbyday);
-
-var _readReportsPaymentsbyday = __webpack_require__(755);
-
-var _readReportsPaymentsbyday2 = _interopRequireDefault(_readReportsPaymentsbyday);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.handler = (() => {
-  var _ref = _asyncToGenerator(function* (event, context, callback) {
-    const respond = function ({ status, body }) {
-      callback(null, {
-        statusCode: status,
-        body: JSON.stringify({ body })
-      });
-    };
-
-    try {
-      // Authentication and updating
-      let authData = yield (0, _read2.default)(159502);
-      let tokens = yield (0, _refreshTokens2.default)(authData.refresh_token);
-      if (authData.access_token !== tokens.access_token) {
-        (0, _update2.default)(_extends({}, authData, { access_token: tokens.access_token }));
-      }
-
-      // set dates to last 30 days
-      let startDate = new Date();
-      startDate.setDate(startDate.getDate() - 5);
-      startDate = startDate.toISOString();
-      const endDate = new Date().toISOString();
-      const dates = { start: startDate, end: endDate };
-
-      // Get tax and payment data
-      let tax = yield (0, _readReportsTaxbyday2.default)(tokens.access_token, dates);
-      let payments = yield (0, _readReportsPaymentsbyday2.default)(tokens.access_token, dates);
-
-      // Group by day, nest and merge
-      let groupedTax = _lodash2.default.groupBy(tax.SalesDay, "date");
-      let groupedPayments = _lodash2.default.groupBy(payments.Payments, "date");
-      let nestedTax = Object.keys(groupedTax).map(function (k) {
-        return { [k]: { tax: groupedTax[k] } };
-      });
-      let nestedPayments = Object.keys(groupedPayments).map(function (k) {
-        return {
-          [k]: {
-            payments: groupedPayments[k]
-          }
-        };
-      });
-      let invoices = _lodash2.default.merge({}, ...nestedTax, ...nestedPayments);
-
-      respond({
-        status: 200,
-        body: {
-          authData: {
-            truncated: "A lot here, but not for the client to view"
-          },
-          invoices: invoices
-        }
-      });
-    } catch (err) {
-      respond({ status: 422, body: err });
-    }
-  });
-
-  return function (_x, _x2, _x3) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 751 */
-/***/ (function(module, exports, __webpack_require__) {
-
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
  * @license
  * Lodash <https://lodash.com/>
@@ -51105,7 +51002,7 @@ exports.handler = (() => {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(50)(module)))
 
 /***/ }),
-/* 752 */
+/* 751 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51148,6 +51045,109 @@ exports.default = (() => {
   });
 
   return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 752 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _nodeFetch = __webpack_require__(16);
+
+var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
+
+var _lodash = __webpack_require__(750);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _read = __webpack_require__(751);
+
+var _read2 = _interopRequireDefault(_read);
+
+var _update = __webpack_require__(749);
+
+var _update2 = _interopRequireDefault(_update);
+
+var _refreshTokens = __webpack_require__(753);
+
+var _refreshTokens2 = _interopRequireDefault(_refreshTokens);
+
+var _readReportsTaxbyday = __webpack_require__(754);
+
+var _readReportsTaxbyday2 = _interopRequireDefault(_readReportsTaxbyday);
+
+var _readReportsPaymentsbyday = __webpack_require__(755);
+
+var _readReportsPaymentsbyday2 = _interopRequireDefault(_readReportsPaymentsbyday);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.handler = (() => {
+  var _ref = _asyncToGenerator(function* (event, context, callback) {
+    const respond = function ({ status, body }) {
+      callback(null, {
+        statusCode: status,
+        body: JSON.stringify({ body })
+      });
+    };
+
+    try {
+      // Authentication and updating
+      let authData = yield (0, _read2.default)(159502);
+      let tokens = yield (0, _refreshTokens2.default)(authData.refresh_token);
+      if (authData.access_token !== tokens.access_token) {
+        (0, _update2.default)(_extends({}, authData, { access_token: tokens.access_token }));
+      }
+
+      // set dates to last 30 days
+      let startDate = new Date();
+      startDate.setDate(startDate.getDate() - 5);
+      startDate = startDate.toISOString();
+      const endDate = new Date().toISOString();
+      const dates = { start: startDate, end: endDate };
+
+      // Get tax and payment data
+      let tax = yield (0, _readReportsTaxbyday2.default)(tokens.access_token, dates);
+      let payments = yield (0, _readReportsPaymentsbyday2.default)(tokens.access_token, dates);
+
+      // Group by day, nest and merge
+      let groupedTax = _lodash2.default.groupBy(tax.SalesDay, "date");
+      let groupedPayments = _lodash2.default.groupBy(payments.Payments, "date");
+      let nestedTax = Object.keys(groupedTax).map(function (k) {
+        return { [k]: { tax: groupedTax[k] } };
+      });
+      let nestedPayments = Object.keys(groupedPayments).map(function (k) {
+        return {
+          [k]: {
+            payments: groupedPayments[k]
+          }
+        };
+      });
+      let invoices = _lodash2.default.merge({}, ...nestedTax, ...nestedPayments);
+
+      respond({
+        status: 200,
+        body: {
+          authData: {
+            truncated: "A lot here, but not for the client to view"
+          },
+          invoices: invoices
+        }
+      });
+    } catch (err) {
+      respond({ status: 422, body: err });
+    }
+  });
+
+  return function (_x, _x2, _x3) {
     return _ref.apply(this, arguments);
   };
 })();

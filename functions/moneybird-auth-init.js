@@ -33938,6 +33938,9 @@ exports.handler = (() => {
     try {
       let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
       let account = yield (0, _readAdministration2.default)(tokens.access_token);
+      console.log("-------------ACOUNTDATA UNFILTERED---------------");
+      console.log(account);
+      console.log("-------------ACOUNTDATA UNFILTERED---------------");
       let authData = {
         'account_id': parseInt(account[0].id, 10),
         'account_name': account[0].name,
@@ -34029,9 +34032,6 @@ exports.default = (() => {
     if (!res.ok) {
       throw yield res.json();
     }
-    console.log("-------------READ ADMINISTRATION WHY---------------------");
-    console.log((yield res.json()));
-    console.log("-------------READ ADMINISTRATION WHY---------------------");
     return yield res.json();
   });
 

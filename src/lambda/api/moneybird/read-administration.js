@@ -11,8 +11,5 @@ export default async (access_token) => {
 
   const res = await fetch(apiUrl, options);
   if (!res.ok) {throw await res.json();}
-  console.log("-------------READ ADMINISTRATION WHY---------------------")
-  console.log(await res.json());
-  console.log("-------------READ ADMINISTRATION WHY---------------------")
   return await res.json();
 }

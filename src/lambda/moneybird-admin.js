@@ -23,7 +23,7 @@ exports.handler = async (event, context, callback) => {
 
 
     // Authentication and updating - WORKING
-    let auth = await readDynamo(211688738215954180);
+    let auth = await readDynamo("211688738215954171");
     let tokens = await refreshTokens(auth.refresh_token);
     auth = {
       ...auth,

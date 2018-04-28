@@ -51101,7 +51101,7 @@ exports.handler = (() => {
 
     try {
       // Authentication and updating
-      let authData = yield (0, _read2.default)(159502);
+      let authData = yield (0, _read2.default)("159502");
       let tokens = yield (0, _refreshTokens2.default)(authData.refresh_token);
       if (authData.access_token !== tokens.access_token) {
         (0, _update2.default)(_extends({}, authData, { access_token: tokens.access_token }));

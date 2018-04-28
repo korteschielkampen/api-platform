@@ -17,7 +17,7 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Authentication and updating
-    let authData = await readDynamo(159502);
+    let authData = await readDynamo("159502");
     let tokens = await refreshTokens(authData.refresh_token);
     if (authData.access_token !== tokens.access_token) {
       updateDynamo({...authData, access_token: tokens.access_token});

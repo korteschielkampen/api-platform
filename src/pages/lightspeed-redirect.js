@@ -11,7 +11,7 @@ class IndexPage extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      status: "Wordt Aangevraagd",
+      status: "Nog niet aangevraagd",
       statusColor: "grey",
       temporary_access_token: "onbekend",
       access_token: "onbekend",
@@ -46,9 +46,8 @@ class IndexPage extends React.Component {
       })
 
     } catch(err) {
-
       this.setState({
-        status: `${err.error} - ${err.error_description}`,
+        status: `${err.body.error} - ${err.body.error_description}`,
         statusColor: "red"
       });
     }
@@ -60,16 +59,18 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <p> Redirect vanaf Lightspeed. </p>
           <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen tenzij u verder gaat </p>
-          <p> De onderstaande knop verzegelt uw tijdelijke sleutel, vraagt details rondom uw account aan, en slaat deze op in onze DynamoDB.</p>
-          <button className={styles.button} onClick={this.getKeys}>Verzegel uw tijdelijke key</button>
-          <p styles={{backgroundColor: this.state.statusColor}} className={styles.statusBar}>{this.state.status}</p>
-          <p> Temporary access key: {this.state.temporary_access_token} </p>
-          <p> Access key: {this.state.access_token} </p>
-          <p> Refresh key: {this.state.refresh_token} </p>
-          <p> Account ID: {this.state.account_id} </p>
-          <p> Account Name: {this.state.account_name} </p>
-          <p> Account Link: {this.state.account_link} </p>
-
+          <h1>Status</h1>
+          <p style={{backgroundColor: this.state.statusColor}} className={styles.statusBar}>{this.state.status}</p>
+          <h1>Data</h1>
+          <button className={styles.button} onClick={this.getKeys}>Verzegel uw tijdelijke toegangssleutel</button>
+          <div className={styles.card}>
+            <p> Temporary access key: {this.state.temporary_access_token} </p>
+            <p> Access key: {this.state.access_token} </p>
+            <p> Refresh key: {this.state.refresh_token} </p>
+            <p> Account ID: {this.state.account_id} </p>
+            <p> Account Name: {this.state.account_name} </p>
+            <p> Account Link: {this.state.account_link} </p>
+          </div>
         </div>
       </div>
     )

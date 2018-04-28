@@ -53,7 +53,7 @@ class IndexPage extends React.Component {
     } catch(err) {
 
       this.setState({
-        status: `Error bij aanvraag van data: ${err}`,
+        status: `${err.body.error} - ${err.body.error_description}`,
         statusColor: "red"
       })
 
@@ -66,7 +66,7 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <p> Admin voor Lightspeed API naar Moneybird API integratie</p>
           <h1>Status</h1>
-          <p styles={{backgroundColor: this.state.statusColor}} className={styles.statusBar}>{this.state.status}</p>
+          <p style={{backgroundColor: this.state.statusColor}} className={styles.statusBar}>{this.state.status}</p>
         </div>
         <div className={styles.content}>
           <h1>Data</h1>

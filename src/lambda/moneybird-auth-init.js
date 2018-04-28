@@ -27,19 +27,3 @@ exports.handler = async (event, context, callback) => {
     respond({ status: 422, body: err });
   }
 }
-
-
-{"account":[{
-  "id":"211688738215954171",
-  "name":"A. Korteschiel",
-  "language":"nl",
-  "currency":"EUR",
-  "country":"NL",
-  "time_zone":"Europe/Amsterdam"}]}
-
-// {"tokens":{
-//   "access_token":"eebd32a1070b07a8cc835ec15d7752d5fdc7501e1965ac393b638d91b4c5cbd4",
-//   "token_type":"bearer",
-//   "refresh_token":"aeea3743caa5cf6ee1cbdfd815b6b0a7d060ce76b5acc2097e4951dfa959ea14",
-//   "scope":"sales_invoices bank",
-//   "created_at":1524928069}}

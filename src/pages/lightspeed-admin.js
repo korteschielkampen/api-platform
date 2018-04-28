@@ -85,7 +85,7 @@ class IndexPage extends React.Component {
             return (
               <div key={key} className={styles.card}>
                 <div className={styles.cardHeader}>
-                  <p className={styles.cardHeading}> Date: {invoice.tax[0].date} </p>
+                  <p className={styles.cardHeading}> Datum: {invoice.tax[0].date} </p>
                   <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.getKeys}>Sla op in Moneybird</button>
                 </div>
                 <div className={styles.cardBody}>

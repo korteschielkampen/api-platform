@@ -43,8 +43,7 @@ class IndexPage extends React.Component {
         access_token: data.body.authData.access_token,
         refresh_token: data.body.authData.refresh_token,
         account_id: data.body.authData.account_id,
-        account_name: data.body.authData.account_name,
-        account_link: data.body.authData.account_link
+        account_name: data.body.authData.account_name
       })
 
     } catch(err) {
@@ -71,7 +70,6 @@ class IndexPage extends React.Component {
             <p> Refresh key: {this.state.refresh_token} </p>
             <p> Account ID: {this.state.account_id} </p>
             <p> Account Name: {this.state.account_name} </p>
-            <p> Account Link: {this.state.account_link} </p>
           </div>
         </div>
       </div>

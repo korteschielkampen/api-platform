@@ -12,7 +12,9 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <button style={{marginBottom: "1rem"}}><a href={temporaryTokenLink}> Start integratie met Lightspeed Retail </a></button>
+          <div className={styles.cardHeader}>
+            <a href={temporaryTokenLink}><button className={styles.button}> Start integratie met Lightspeed Retail </button></a>
+          </div>
           <p>Deze link vraagt toegang tot uw account op Lightspeed Retail, gebruik deze link alleen als hij voor u is bedoeld.</p>
         </div>
       </div>

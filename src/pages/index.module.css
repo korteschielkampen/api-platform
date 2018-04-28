@@ -26,6 +26,11 @@
   background-color: rgb(64,139, 232);
 }
 
+.statusBar {
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
 .card {
   margin: 1rem 0;
   padding: 2rem;

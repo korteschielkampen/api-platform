@@ -66,14 +66,7 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <p> Admin voor Lightspeed API naar Moneybird API integratie</p>
           <h1>Status</h1>
-          <p
-            style={{
-              backgroundColor: this.state.statusColor,
-              padding: "1rem",
-              borderRadius: "1rem"
-            }}>
-            Status: {this.state.status}
-          </p>
+          <p styles={{backgroundColor: this.state.statusColor}} className={styles.statusBar}>{this.state.status}</p>
         </div>
         <div className={styles.content}>
           <h1>Data</h1>

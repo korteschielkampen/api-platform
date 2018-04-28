@@ -61,15 +61,8 @@ class IndexPage extends React.Component {
           <p> Redirect vanaf Lightspeed. </p>
           <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen tenzij u verder gaat </p>
           <p> De onderstaande knop verzegelt uw tijdelijke sleutel, vraagt details rondom uw account aan, en slaat deze op in onze DynamoDB.</p>
-          <button style={{marginBottom: "2rem"}} onClick={this.getKeys}>Verzegel uw tijdelijke key</button>
-          <p
-            style={{
-              backgroundColor: this.state.statusColor,
-              padding: "1rem",
-              borderRadius: "1rem"
-            }}>
-            Status: {this.state.status}
-          </p>
+          <button className={styles.button} onClick={this.getKeys}>Verzegel uw tijdelijke key</button>
+          <p styles={{backgroundColor: this.state.statusColor}} className={styles.statusBar}>{this.state.status}</p>
           <p> Temporary access key: {this.state.temporary_access_token} </p>
           <p> Access key: {this.state.access_token} </p>
           <p> Refresh key: {this.state.refresh_token} </p>

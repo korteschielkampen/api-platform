@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import createTokens from './auth/moneybird/create-tokens.js'
-import readAccount from './api/moneybird/read-account.js'
+import readAccount from './api/moneybird/read-administration.js'
 import updateDynamo from './auth/dynamo/update.js'
 
 exports.handler = async (event, context, callback) => {
@@ -13,10 +13,8 @@ exports.handler = async (event, context, callback) => {
 
   try {
     let tokens = await createTokens(event.queryStringParameters.code);
-    console.log("-------------------");
-    console.log(tokens);
-    console.log("-------------------");
-    // let account = await readAccount(tokens.access_token);
+    // let account = await readAccount("eebd32a1070b07a8cc835ec15d7752d5fdc7501e1965ac393b638d91b4c5cbd4");
+    let account = await readAccount(tokens.access_token);
     // let authData = {
     //   'account_id' : parseInt(account.Account.accountID),
     //   'account_name' : account.Account.name,
@@ -26,7 +24,7 @@ exports.handler = async (event, context, callback) => {
     // }
     // let dynamo = await updateDynamo(authData);
 
-    respond({ status: 422, body: {tokens: tokens}});
+    respond({ status: 422, body: {account: account}});
     // respond({ status: 200, body: {authData: authData}});
     // respond({ status: 200, body: {authData: authData, stored: dynamo}});
 
@@ -34,3 +32,10 @@ exports.handler = async (event, context, callback) => {
     respond({ status: 422, body: err });
   }
 }
+
+// {"tokens":{
+//   "access_token":"eebd32a1070b07a8cc835ec15d7752d5fdc7501e1965ac393b638d91b4c5cbd4",
+//   "token_type":"bearer",
+//   "refresh_token":"aeea3743caa5cf6ee1cbdfd815b6b0a7d060ce76b5acc2097e4951dfa959ea14",
+//   "scope":"sales_invoices bank",
+//   "created_at":1524928069}}

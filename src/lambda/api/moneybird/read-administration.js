@@ -4,10 +4,10 @@ export default async (access_token) => {
   const options = {
     method: "GET",
     headers: {
-      'Authorization': `Bearer ${access_token}`
+      'authorization': `Bearer ${access_token}`
     }
   };
-  const apiUrl = '';
+  const apiUrl = 'https://moneybird.com/api/v2/administrations.json';
 
   const res = await fetch(apiUrl, options);
   if (!res.ok) {throw await res.json();}

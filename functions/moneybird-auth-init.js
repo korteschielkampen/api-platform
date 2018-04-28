@@ -33912,9 +33912,9 @@ var _createTokens = __webpack_require__(760);
 
 var _createTokens2 = _interopRequireDefault(_createTokens);
 
-var _readAccount = __webpack_require__(761);
+var _readAdministration = __webpack_require__(762);
 
-var _readAccount2 = _interopRequireDefault(_readAccount);
+var _readAdministration2 = _interopRequireDefault(_readAdministration);
 
 var _update = __webpack_require__(749);
 
@@ -33935,10 +33935,8 @@ exports.handler = (() => {
 
     try {
       let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
-      console.log("-------------------");
-      console.log(tokens);
-      console.log("-------------------");
-      // let account = await readAccount(tokens.access_token);
+      // let account = await readAccount("eebd32a1070b07a8cc835ec15d7752d5fdc7501e1965ac393b638d91b4c5cbd4");
+      let account = yield (0, _readAdministration2.default)(tokens.access_token);
       // let authData = {
       //   'account_id' : parseInt(account.Account.accountID),
       //   'account_name' : account.Account.name,
@@ -33948,7 +33946,7 @@ exports.handler = (() => {
       // }
       // let dynamo = await updateDynamo(authData);
 
-      respond({ status: 422, body: { tokens: tokens } });
+      respond({ status: 422, body: { account: account } });
       // respond({ status: 200, body: {authData: authData}});
       // respond({ status: 200, body: {authData: authData, stored: dynamo}});
     } catch (err) {
@@ -33960,6 +33958,13 @@ exports.handler = (() => {
     return _ref.apply(this, arguments);
   };
 })();
+
+// {"tokens":{
+//   "access_token":"eebd32a1070b07a8cc835ec15d7752d5fdc7501e1965ac393b638d91b4c5cbd4",
+//   "token_type":"bearer",
+//   "refresh_token":"aeea3743caa5cf6ee1cbdfd815b6b0a7d060ce76b5acc2097e4951dfa959ea14",
+//   "scope":"sales_invoices bank",
+//   "created_at":1524928069}}
 
 /***/ }),
 /* 760 */
@@ -34011,7 +34016,8 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 761 */
+/* 761 */,
+/* 762 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34030,10 +34036,10 @@ exports.default = (() => {
     const options = {
       method: "GET",
       headers: {
-        'Authorization': `Bearer ${access_token}`
+        'authorization': `Bearer ${access_token}`
       }
     };
-    const apiUrl = '';
+    const apiUrl = 'https://moneybird.com/api/v2/administrations.json';
 
     const res = yield fetch(apiUrl, options);
     if (!res.ok) {

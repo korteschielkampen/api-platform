@@ -34029,6 +34029,9 @@ exports.default = (() => {
     if (!res.ok) {
       throw yield res.json();
     }
+    console.log("-------------READ ADMINISTRATION WHY---------------------");
+    console.log((yield res.json()));
+    console.log("-------------READ ADMINISTRATION WHY---------------------");
     return yield res.json();
   });
 

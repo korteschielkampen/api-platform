@@ -19,7 +19,7 @@ class IndexPage extends React.Component {
       account_name: "onbekend",
       account_link: "onbekend",
       expires_in: "onbekend",
-      taxData: []
+      invoices: {}
     }
     this.getKeys = this.getKeys.bind(this);
   }
@@ -48,7 +48,7 @@ class IndexPage extends React.Component {
         account_name: data.body.authData.account_name,
         account_link: data.body.authData.account_link,
         expires_in: data.body.authData.expires_in,
-        taxData: data.body.taxData
+        invoices: data.body.invoices
       });
 
     } catch(err) {
@@ -62,37 +62,36 @@ class IndexPage extends React.Component {
   }
 
   render () {
-    console.log(this.state.taxData)
+    console.log(this.state.invoices)
     return (
       <div className={styles.container}>
         <div className={styles.content}>
           <p> Admin voor Lightspeed API naar Moneybird API integratie</p>
           <button style={{marginBottom: "2rem"}} onClick={this.getKeys}>Verkrijg data van DynamoDB</button>
-
           <h1>Authenticatie</h1>
-          <div className={styles.card}>
-            <p
-              style={{
-                backgroundColor: this.state.statusColor,
-                padding: "1rem",
-                borderRadius: "1rem"
-              }}>
-              Status: {this.state.status}
-            </p>
-          </div>
+          <p
+            style={{
+              backgroundColor: this.state.statusColor,
+              padding: "1rem",
+              borderRadius: "1rem"
+            }}>
+            Status: {this.state.status}
+          </p>
         </div>
         <div className={styles.content}>
           <h1>Data</h1>
-          { (Array.reverse(Object.values(this.state.taxData))).map(((taxDay, key)=>{
+
+
+          {/* { (Array.reverse(Object.values(this.state.taxData))).map(((taxDay, key)=>{
             return (
               <div key={key} className={styles.card}>
                 <p className={styles.cardHeader}> Date: {taxDay[0].date} </p>
                 { taxDay.map((taxItem, key)=>{
                   return (
-                    <p key={key} className={styles.cardText}> Taxclass: {taxItem.taxClassName} Subtotaal: {taxItem.subtotal} </p>
+                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {taxItem.taxClassName}: {taxItem.subtotal} </p>
                   )})}
               </div>)
-          }))}
+          }))} */}
 
         </div>
       </div>

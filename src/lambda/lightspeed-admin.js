@@ -1,10 +1,11 @@
 import fetch from 'node-fetch'
-import _ from 'underscore'
+import _ from 'lodash'
 
 import readDynamo from './auth/dynamo/read.js'
 import updateDynamo from './auth/dynamo/update.js'
 import refreshTokens from './auth/lightspeed/refresh-tokens.js'
 import readTax from './api/lightspeed/read-reports-taxbyday.js'
+import readPayments from './api/lightspeed/read-reports-paymentsbyday.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -22,15 +23,30 @@ exports.handler = async (event, context, callback) => {
       updateDynamo({...authData, access_token: tokens.access_token});
     }
 
-    // Get tax data
+    // set dates to last 30 days
     let startDate = new Date();
-    startDate.setDate(startDate.getDate() - 30);
+    startDate.setDate(startDate.getDate() - 5);
     startDate = startDate.toISOString();
     const endDate = (new Date).toISOString();
-
     const dates = {start: startDate, end: endDate};
-    let taxData = await readTax(tokens.access_token, dates);
-    let groupedTaxData =  _.groupBy(taxData.SalesDay, "date");
+
+    // Get tax and payment data
+    let tax = await readTax(tokens.access_token, dates);
+    let payments = await readPayments(tokens.access_token, dates);
+
+    // Group by day, nest and merge
+    let groupedTax =  _.groupBy(tax.SalesDay, "date");
+    let groupedPayments =  _.groupBy(payments.Payments, "date");
+
+    let nestedTax = Object.keys(groupedTax).map(k => ({[k]: {tax: groupedTax[k]}}));
+    let nestedPayments = Object.keys(groupedPayments).map(k => ({
+      [k]: {
+        payments: groupedPayments[k]
+      }
+    }));
+    let invoices = _.merge(Object.keys(nestedTax), nestedTax, nestedPayments);
+
+    console.log(invoices)
 
     respond({
       status: 200,
@@ -38,9 +54,7 @@ exports.handler = async (event, context, callback) => {
         authData: {
           truncated: "A lot here, but not for the client to view"
         },
-        taxData: {
-          ...groupedTaxData
-        }
+        invoices: invoices
       }
     });
 

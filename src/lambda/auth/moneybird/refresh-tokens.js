@@ -1,10 +1,6 @@
 const fetch = require('node-fetch');
 
 export default async (refresh_token) => {
-  console.log(refresh_token)
-  console.log(refresh_token)
-  console.log(refresh_token)
-  console.log(refresh_token)
   const payload = {
     client_id: process.env.MONEYBIRD_CLIENT,
     client_secret: process.env.MONEYBIRD_SECRET,

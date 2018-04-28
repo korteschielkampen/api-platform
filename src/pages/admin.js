@@ -47,9 +47,16 @@ class IndexPage extends React.Component {
     }
   }
 
-  async createInvoice () {
+  async createInvoice (invoice) {
+    console.log(invoice)
+
+    const payload = {
+      ...invoice
+    }
     const options = {
-      method: "POST"
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' }
     };
     const apiUrl = `${lambdaURL}/moneybird-admin`;
 
@@ -84,13 +91,12 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <h1>Data</h1>
           <button className={styles.button} onClick={this.getKeys}>Verkrijg data van Lightspeed</button>
-          <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice}>Sla op in Moneybird</button>
           { Object.values(this.state.invoices).map(((invoice, key)=>{
             return (
               <div key={key} className={styles.card}>
                 <div className={styles.cardHeader}>
                   <p className={styles.cardHeading}> Datum: {invoice.tax[0].date} </p>
-                  <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice}>Sla op in Moneybird</button>
+                  <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, invoice)}>Sla op in Moneybird</button>
                 </div>
                 <div className={styles.cardBody}>
                   <div className={styles.cardItem}>

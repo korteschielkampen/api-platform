@@ -51085,6 +51085,10 @@ var _refreshTokens = __webpack_require__(760);
 
 var _refreshTokens2 = _interopRequireDefault(_refreshTokens);
 
+var _createInvoice = __webpack_require__(764);
+
+var _createInvoice2 = _interopRequireDefault(_createInvoice);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -51099,20 +51103,40 @@ exports.handler = (() => {
     };
 
     try {
-      // Authentication and updating
+      // Restructuring a invoice to Moneybird
+      let invoice = JSON.parse(event.body);
+
+      // Authentication and updating - WORKING
       let auth = yield (0, _read2.default)(211688738215954180);
       let tokens = yield (0, _refreshTokens2.default)(auth.refresh_token);
-      (0, _update2.default)(_extends({}, auth, {
+      auth = _extends({}, auth, {
         access_token: tokens.access_token,
         refresh_token: tokens.refresh_token
-      }));
+      });
+      (0, _update2.default)(auth);
+
+      // Sending an invoice to Moneybird
+      let validInvoice = {
+        "sales_invoice": {
+          "reference": "My first API invoice",
+          "contact_id": 31742,
+          "details_attributes": {
+            "0": {
+              "description": "Table",
+              "price": "10.5"
+            }
+          }
+        }
+      };
+
+      console.log(validInvoice);
+      let created = yield (0, _createInvoice2.default)(auth.access_token, validInvoice);
 
       respond({
         status: 200,
         body: {
-          authData: {
-            truncated: "A lot here, but not for the client to view"
-          }
+          message: "Invoice is succesfully created"
+          // created: created
         }
       });
     } catch (err) {
@@ -51142,10 +51166,6 @@ const fetch = __webpack_require__(16);
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (refresh_token) {
-    console.log(refresh_token);
-    console.log(refresh_token);
-    console.log(refresh_token);
-    console.log(refresh_token);
     const payload = {
       client_id: process.env.MONEYBIRD_CLIENT,
       client_secret: process.env.MONEYBIRD_SECRET,
@@ -51168,6 +51188,51 @@ exports.default = (() => {
   });
 
   return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 761 */,
+/* 762 */,
+/* 763 */,
+/* 764 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(16);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (access_token, invoice) {
+    const options = {
+      method: "POST",
+      body: JSON.stringify(invoice),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${access_token}` }
+    };
+    const apiUrl = 'https://moneybird.com/api/v2/211688738215954180/sales_invoices.json';
+
+    console.log("------------BEFORE MB---------------");
+    console.log(apiUrl, options);
+    console.log("------------BEFORE MB---------------");
+
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
+    }
+    return yield res.json();
+  });
+
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 })();

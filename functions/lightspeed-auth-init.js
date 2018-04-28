@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 756);
+/******/ 	return __webpack_require__(__webpack_require__.s = 758);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1743,6 +1743,157 @@ module.exports = AWS.STS;
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var Symbol = __webpack_require__(21),
+    getRawTag = __webpack_require__(130),
+    objectToString = __webpack_require__(131);
+
+/** `Object#toString` result references. */
+var nullTag = '[object Null]',
+    undefinedTag = '[object Undefined]';
+
+/** Built-in value references. */
+var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
+
+/**
+ * The base implementation of `getTag` without fallbacks for buggy environments.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  return (symToStringTag && symToStringTag in Object(value))
+    ? getRawTag(value)
+    : objectToString(value);
+}
+
+module.exports = baseGetTag;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isFunction = __webpack_require__(20),
+    isLength = __webpack_require__(37);
+
+/**
+ * Checks if `value` is array-like. A value is considered array-like if it's
+ * not a function and has a `value.length` that's an integer greater than or
+ * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+ * @example
+ *
+ * _.isArrayLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isArrayLike(document.body.children);
+ * // => true
+ *
+ * _.isArrayLike('abc');
+ * // => true
+ *
+ * _.isArrayLike(_.noop);
+ * // => false
+ */
+function isArrayLike(value) {
+  return value != null && isLength(value.length) && !isFunction(value);
+}
+
+module.exports = isArrayLike;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayLikeKeys = __webpack_require__(143),
+    baseKeys = __webpack_require__(68),
+    isArrayLike = __webpack_require__(13);
+
+/**
+ * Creates an array of the own enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects. See the
+ * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * for more details.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keys(new Foo);
+ * // => ['a', 'b'] (iteration order is not guaranteed)
+ *
+ * _.keys('hi');
+ * // => ['0', '1']
+ */
+function keys(object) {
+  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+}
+
+module.exports = keys;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
+}
+
+module.exports = isObjectLike;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
 
 /**
  * index.js
@@ -2014,157 +2165,6 @@ Fetch.Promise = global.Promise;
 Fetch.Response = Response;
 Fetch.Headers = Headers;
 Fetch.Request = Request;
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Symbol = __webpack_require__(21),
-    getRawTag = __webpack_require__(130),
-    objectToString = __webpack_require__(131);
-
-/** `Object#toString` result references. */
-var nullTag = '[object Null]',
-    undefinedTag = '[object Undefined]';
-
-/** Built-in value references. */
-var symToStringTag = Symbol ? Symbol.toStringTag : undefined;
-
-/**
- * The base implementation of `getTag` without fallbacks for buggy environments.
- *
- * @private
- * @param {*} value The value to query.
- * @returns {string} Returns the `toStringTag`.
- */
-function baseGetTag(value) {
-  if (value == null) {
-    return value === undefined ? undefinedTag : nullTag;
-  }
-  return (symToStringTag && symToStringTag in Object(value))
-    ? getRawTag(value)
-    : objectToString(value);
-}
-
-module.exports = baseGetTag;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isFunction = __webpack_require__(20),
-    isLength = __webpack_require__(37);
-
-/**
- * Checks if `value` is array-like. A value is considered array-like if it's
- * not a function and has a `value.length` that's an integer greater than or
- * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
- * @example
- *
- * _.isArrayLike([1, 2, 3]);
- * // => true
- *
- * _.isArrayLike(document.body.children);
- * // => true
- *
- * _.isArrayLike('abc');
- * // => true
- *
- * _.isArrayLike(_.noop);
- * // => false
- */
-function isArrayLike(value) {
-  return value != null && isLength(value.length) && !isFunction(value);
-}
-
-module.exports = isArrayLike;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var arrayLikeKeys = __webpack_require__(143),
-    baseKeys = __webpack_require__(68),
-    isArrayLike = __webpack_require__(14);
-
-/**
- * Creates an array of the own enumerable property names of `object`.
- *
- * **Note:** Non-object values are coerced to objects. See the
- * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
- * for more details.
- *
- * @static
- * @since 0.1.0
- * @memberOf _
- * @category Object
- * @param {Object} object The object to query.
- * @returns {Array} Returns the array of property names.
- * @example
- *
- * function Foo() {
- *   this.a = 1;
- *   this.b = 2;
- * }
- *
- * Foo.prototype.c = 3;
- *
- * _.keys(new Foo);
- * // => ['a', 'b'] (iteration order is not guaranteed)
- *
- * _.keys('hi');
- * // => ['0', '1']
- */
-function keys(object) {
-  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
-}
-
-module.exports = keys;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports) {
-
-/**
- * Checks if `value` is object-like. A value is object-like if it's not `null`
- * and has a `typeof` result of "object".
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
-module.exports = isObjectLike;
 
 
 /***/ }),
@@ -2685,7 +2685,7 @@ module.exports = {
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(13),
+var baseGetTag = __webpack_require__(12),
     isObject = __webpack_require__(5);
 
 /** `Object#toString` result references. */
@@ -3672,7 +3672,7 @@ module.exports = isPrototype;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsArguments = __webpack_require__(145),
-    isObjectLike = __webpack_require__(16);
+    isObjectLike = __webpack_require__(15);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -3877,8 +3877,8 @@ module.exports = isKey;
 /* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(13),
-    isObjectLike = __webpack_require__(16);
+var baseGetTag = __webpack_require__(12),
+    isObjectLike = __webpack_require__(15);
 
 /** `Object#toString` result references. */
 var symbolTag = '[object Symbol]';
@@ -6431,7 +6431,7 @@ module.exports = copyObject;
 /***/ (function(module, exports, __webpack_require__) {
 
 var eq = __webpack_require__(22),
-    isArrayLike = __webpack_require__(14),
+    isArrayLike = __webpack_require__(13),
     isIndex = __webpack_require__(38),
     isObject = __webpack_require__(5);
 
@@ -6578,7 +6578,7 @@ var DataView = __webpack_require__(157),
     Promise = __webpack_require__(158),
     Set = __webpack_require__(159),
     WeakMap = __webpack_require__(160),
-    baseGetTag = __webpack_require__(13),
+    baseGetTag = __webpack_require__(12),
     toSource = __webpack_require__(65);
 
 /** `Object#toString` result references. */
@@ -6889,7 +6889,7 @@ module.exports = Stack;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsEqualDeep = __webpack_require__(194),
-    isObjectLike = __webpack_require__(16);
+    isObjectLike = __webpack_require__(15);
 
 /**
  * The base implementation of `_.isEqual` which supports partial comparisons
@@ -12051,9 +12051,9 @@ module.exports = XmlBuilder;
 var assignValue = __webpack_require__(61),
     copyObject = __webpack_require__(66),
     createAssigner = __webpack_require__(135),
-    isArrayLike = __webpack_require__(14),
+    isArrayLike = __webpack_require__(13),
     isPrototype = __webpack_require__(39),
-    keys = __webpack_require__(15);
+    keys = __webpack_require__(14);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -12641,8 +12641,8 @@ module.exports = baseTimes;
 /* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(13),
-    isObjectLike = __webpack_require__(16);
+var baseGetTag = __webpack_require__(12),
+    isObjectLike = __webpack_require__(15);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]';
@@ -12689,9 +12689,9 @@ module.exports = stubFalse;
 /* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(13),
+var baseGetTag = __webpack_require__(12),
     isLength = __webpack_require__(37),
-    isObjectLike = __webpack_require__(16);
+    isObjectLike = __webpack_require__(15);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]',
@@ -13097,7 +13097,7 @@ module.exports = overArg;
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(66),
-    keys = __webpack_require__(15);
+    keys = __webpack_require__(14);
 
 /**
  * The base implementation of `_.assign` without support for multiple sources
@@ -13159,7 +13159,7 @@ var baseKeys = __webpack_require__(68),
     getTag = __webpack_require__(70),
     isArguments = __webpack_require__(40),
     isArray = __webpack_require__(6),
-    isArrayLike = __webpack_require__(14),
+    isArrayLike = __webpack_require__(13),
     isBuffer = __webpack_require__(41),
     isPrototype = __webpack_require__(39),
     isTypedArray = __webpack_require__(42);
@@ -13429,7 +13429,7 @@ module.exports = baseEach;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFor = __webpack_require__(166),
-    keys = __webpack_require__(15);
+    keys = __webpack_require__(14);
 
 /**
  * The base implementation of `_.forOwn` without support for iteratee shorthands.
@@ -13503,7 +13503,7 @@ module.exports = createBaseFor;
 /* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArrayLike = __webpack_require__(14);
+var isArrayLike = __webpack_require__(13);
 
 /**
  * Creates a `baseEach` or `baseEachRight` function.
@@ -14748,7 +14748,7 @@ module.exports = equalObjects;
 
 var baseGetAllKeys = __webpack_require__(206),
     getSymbols = __webpack_require__(208),
-    keys = __webpack_require__(15);
+    keys = __webpack_require__(14);
 
 /**
  * Creates an array of own enumerable property names and symbols of `object`.
@@ -14917,7 +14917,7 @@ module.exports = stubArray;
 /***/ (function(module, exports, __webpack_require__) {
 
 var isStrictComparable = __webpack_require__(75),
-    keys = __webpack_require__(15);
+    keys = __webpack_require__(14);
 
 /**
  * Gets the property names, values, and compare flags of `object`.
@@ -33849,7 +33849,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-const fetch = __webpack_require__(12);
+const fetch = __webpack_require__(16);
 const AWS = __webpack_require__(100);
 
 exports.default = (() => {
@@ -33889,27 +33889,106 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 750 */,
-/* 751 */,
-/* 752 */,
-/* 753 */,
-/* 754 */,
-/* 755 */,
-/* 756 */
+/* 750 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _nodeFetch = __webpack_require__(12);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(16);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (temporary_access_token) {
+    const payload = {
+      client_id: process.env.LIGHTSPEED_CLIENT,
+      client_secret: process.env.LIGHTSPEED_SECRET,
+      code: temporary_access_token,
+      grant_type: "authorization_code"
+    };
+    const options = {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' }
+    };
+    const apiUrl = 'https://cloud.lightspeedapp.com/oauth/access_token.php';
+
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
+    }
+    return yield res.json();
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 751 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(16);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (access_token) {
+    const options = {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${access_token}`
+      }
+    };
+    const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';
+
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
+    }
+    return yield res.json();
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 752 */,
+/* 753 */,
+/* 754 */,
+/* 755 */,
+/* 756 */,
+/* 757 */,
+/* 758 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _nodeFetch = __webpack_require__(16);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
 
-var _createTokens = __webpack_require__(757);
+var _createTokens = __webpack_require__(750);
 
 var _createTokens2 = _interopRequireDefault(_createTokens);
 
-var _readAccount = __webpack_require__(758);
+var _readAccount = __webpack_require__(751);
 
 var _readAccount2 = _interopRequireDefault(_readAccount);
 
@@ -33949,85 +34028,6 @@ exports.handler = (() => {
   });
 
   return function (_x, _x2, _x3) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 757 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const fetch = __webpack_require__(12);
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (temporary_access_token) {
-    const payload = {
-      client_id: process.env.LIGHTSPEED_CLIENT,
-      client_secret: process.env.LIGHTSPEED_SECRET,
-      code: temporary_access_token,
-      grant_type: "authorization_code"
-    };
-    const options = {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' }
-    };
-    const apiUrl = 'https://cloud.lightspeedapp.com/oauth/access_token.php';
-
-    const res = yield fetch(apiUrl, options);
-    if (!res.ok) {
-      throw yield res.json();
-    }
-    return yield res.json();
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 758 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const fetch = __webpack_require__(12);
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (access_token) {
-    const options = {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${access_token}`
-      }
-    };
-    const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';
-
-    const res = yield fetch(apiUrl, options);
-    if (!res.ok) {
-      throw yield res.json();
-    }
-    return yield res.json();
-  });
-
-  return function (_x) {
     return _ref.apply(this, arguments);
   };
 })();

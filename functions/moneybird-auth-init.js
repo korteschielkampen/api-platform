@@ -33942,11 +33942,14 @@ exports.handler = (() => {
       console.log(account);
       console.log("-------------ACOUNTDATA UNFILTERED---------------");
       let authData = {
-        'account_id': parseFloat(account[0].id, 10),
+        'account_id': parseInt(account[0].id, 10),
         'account_name': account[0].name,
         'access_token': tokens.access_token,
         'refresh_token': tokens.refresh_token
       };
+      console.log("-------------ACOUNTDATA WHOISTOBLAME---------------");
+      console.log(account);
+      console.log("-------------ACOUNTDATA WHOISTOBLAME---------------");
       let dynamo = yield (0, _update2.default)(authData);
 
       respond({ status: 200, body: { authData: authData, stored: dynamo } });

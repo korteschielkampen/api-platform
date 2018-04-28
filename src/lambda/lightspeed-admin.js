@@ -37,7 +37,6 @@ exports.handler = async (event, context, callback) => {
     // Group by day, nest and merge
     let groupedTax =  _.groupBy(tax.SalesDay, "date");
     let groupedPayments =  _.groupBy(payments.Payments, "date");
-
     let nestedTax = Object.keys(groupedTax).map(k => ({[k]: {tax: groupedTax[k]}}));
     let nestedPayments = Object.keys(groupedPayments).map(k => ({
       [k]: {
@@ -45,8 +44,6 @@ exports.handler = async (event, context, callback) => {
       }
     }));
     let invoices = _.merge({}, ...nestedTax, ...nestedPayments);
-
-    console.log(invoices)
 
     respond({
       status: 200,

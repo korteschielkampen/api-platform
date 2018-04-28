@@ -11,7 +11,19 @@
 }
 
 .button {
-  margin: 0 0 2rem 0;
+  margin: 0;
+  padding: 1rem;
+  border-radius: 2rem;
+  background-color: rgb(220,92, 89);
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
+
+.buttonBlue {
+  background-color: rgb(64,139, 232);
 }
 
 .card {
@@ -22,9 +34,21 @@
 }
 
 .cardHeader {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 2rem 0;
+}
+
+.cardHeading  {
   background: grey;
   padding: 1rem 1rem;
-  border-radius: 1rem;
+  margin-bottom: 0;
+  border-radius: 2rem;
+}
+
+.cardBody {
+  display: flex;
+  justify-content: space-between;
 }
 
 .cardText {

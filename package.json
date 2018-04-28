@@ -6,6 +6,7 @@
   "dependencies": {
     "aws-sdk": "^2.229.1",
     "babel-plugin-transform-regenerator": "^6.26.0",
+    "classnames": "^2.2.5",
     "gatsby": "^1.9.241",
     "gatsby-link": "^1.6.39",
     "gatsby-plugin-netlify": "^1.0.19",

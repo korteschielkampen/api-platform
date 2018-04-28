@@ -33960,7 +33960,6 @@ exports.handler = (() => {
       // Group by day, nest and merge
       let groupedTax = _lodash2.default.groupBy(tax.SalesDay, "date");
       let groupedPayments = _lodash2.default.groupBy(payments.Payments, "date");
-
       let nestedTax = Object.keys(groupedTax).map(function (k) {
         return { [k]: { tax: groupedTax[k] } };
       });
@@ -33972,8 +33971,6 @@ exports.handler = (() => {
         };
       });
       let invoices = _lodash2.default.merge({}, ...nestedTax, ...nestedPayments);
-
-      console.log(invoices);
 
       respond({
         status: 200,

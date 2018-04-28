@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'gatsby-link'
 import _ from 'underscore'
+import classNames from 'classNames'
 
 import styles from './index.module.css'
 
@@ -67,8 +68,7 @@ class IndexPage extends React.Component {
       <div className={styles.container}>
         <div className={styles.content}>
           <p> Admin voor Lightspeed API naar Moneybird API integratie</p>
-          <button style={{marginBottom: "2rem"}} onClick={this.getKeys}>Verkrijg data van DynamoDB</button>
-          <h1>Authenticatie</h1>
+          <h1>Status</h1>
           <p
             style={{
               backgroundColor: this.state.statusColor,
@@ -80,19 +80,30 @@ class IndexPage extends React.Component {
         </div>
         <div className={styles.content}>
           <h1>Data</h1>
-
-
-          {/* { (Array.reverse(Object.values(this.state.taxData))).map(((taxDay, key)=>{
+          <button className={styles.button} onClick={this.getKeys}>Verkrijg data van Lightspeed</button>
+          { Object.values(this.state.invoices).map(((invoice, key)=>{
             return (
               <div key={key} className={styles.card}>
-                <p className={styles.cardHeader}> Date: {taxDay[0].date} </p>
-                { taxDay.map((taxItem, key)=>{
-                  return (
-                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {taxItem.taxClassName}: {taxItem.subtotal} </p>
-                  )})}
+                <div className={styles.cardHeader}>
+                  <p className={styles.cardHeading}> Date: {invoice.tax[0].date} </p>
+                  <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.getKeys}>Sla op in Moneybird</button>
+                </div>
+                <div className={styles.cardBody}>
+                  <div className={styles.cardItem}>
+                    { invoice.tax.map((tax, key)=>{
+                      return (
+                        <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {tax.taxClassName}: {tax.subtotal} </p>
+                    )})}
+                  </div>
+                  <div className={styles.cardItem}>
+                    { invoice.payments.map((payment, key)=>{
+                      return (
+                        <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Betalingen -</span> {payment.paymentTypeName}: {payment.amount} </p>
+                    )})}
+                  </div>
+                </div>
               </div>)
-          }))} */}
-
+          }))}
         </div>
       </div>
     )

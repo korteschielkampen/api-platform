@@ -33934,7 +33934,7 @@ exports.handler = (() => {
       let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
       let account = yield (0, _readAccount2.default)(tokens.access_token);
       let authData = {
-        'account_id': account.Account.accountID,
+        'account_id': parseInt(account.Account.accountID),
         'account_name': account.Account.name,
         'account_link': account.Account.link['@attributes'].href,
         'access_token': tokens.access_token,

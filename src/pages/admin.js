@@ -12,11 +12,12 @@ class IndexPage extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      status: "onbekend",
+      status: "Nog geen data aangevraagd",
       statusColor: "grey",
       invoices: {}
     }
     this.getKeys = this.getKeys.bind(this);
+    this.createInvoice = this.createInvoice.bind(this);
   }
 
   async getKeys () {
@@ -39,12 +40,36 @@ class IndexPage extends React.Component {
       });
 
     } catch(err) {
-
       this.setState({
         status: `${JSON.stringify(err.body)}`,
         statusColor: "red"
       })
+    }
+  }
 
+  async createInvoice () {
+    const options = {
+      method: "POST"
+    };
+    const apiUrl = `${lambdaURL}/moneybird-admin`;
+
+    try {
+
+      const res = await fetch(apiUrl, options);
+      if (!res.ok) {throw await res.json();}
+      let data = await res.json();
+
+      data.body && this.setState({
+        ...data.body.Item,
+        status: "Succesvol verzonden met Moneybird",
+        statusColor: "lightgreen"
+      });
+
+    } catch(err) {
+      this.setState({
+        status: `${JSON.stringify(err.body)}`,
+        statusColor: "red"
+      })
     }
   }
 
@@ -59,12 +84,13 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <h1>Data</h1>
           <button className={styles.button} onClick={this.getKeys}>Verkrijg data van Lightspeed</button>
+          <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice}>Sla op in Moneybird</button>
           { Object.values(this.state.invoices).map(((invoice, key)=>{
             return (
               <div key={key} className={styles.card}>
                 <div className={styles.cardHeader}>
                   <p className={styles.cardHeading}> Datum: {invoice.tax[0].date} </p>
-                  <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.getKeys}>Sla op in Moneybird</button>
+                  <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice}>Sla op in Moneybird</button>
                 </div>
                 <div className={styles.cardBody}>
                   <div className={styles.cardItem}>

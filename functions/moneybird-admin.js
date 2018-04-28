@@ -51100,8 +51100,10 @@ exports.handler = (() => {
 
     try {
       // Authentication and updating
-      let auth = yield (0, _read2.default)(159502);
+      let auth = yield (0, _read2.default)(211688738215954180);
+      console.log(auth);
       let tokens = yield (0, _refreshTokens2.default)(auth.refresh_token);
+      console.log(tokens);
       if (auth.access_token !== tokens.access_token) {
         (0, _update2.default)(_extends({}, auth, { access_token: tokens.access_token }));
       }
@@ -51111,8 +51113,7 @@ exports.handler = (() => {
         body: {
           authData: {
             truncated: "A lot here, but not for the client to view"
-          },
-          invoices: invoices
+          }
         }
       });
     } catch (err) {
@@ -51142,6 +51143,10 @@ const fetch = __webpack_require__(16);
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (refresh_token) {
+    console.log(refresh_token);
+    console.log(refresh_token);
+    console.log(refresh_token);
+    console.log(refresh_token);
     const payload = {
       client_id: process.env.MONEYBIRD_CLIENT,
       client_secret: process.env.MONEYBIRD_SECRET,
@@ -51155,6 +51160,8 @@ exports.default = (() => {
       headers: { 'Content-Type': 'application/json' }
     };
     const apiUrl = 'https://moneybird.com/oauth/token';
+
+    console.log(options, apiUrl);
 
     const res = yield fetch(apiUrl, options);
     if (!res.ok) {

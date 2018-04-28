@@ -15,8 +15,10 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Authentication and updating
-    let auth = await readDynamo(159502);
+    let auth = await readDynamo(211688738215954180);
+    console.log(auth)
     let tokens = await refreshTokens(auth.refresh_token);
+    console.log(tokens)
     if (auth.access_token !== tokens.access_token) {
       updateDynamo({...auth, access_token: tokens.access_token});
     }
@@ -26,8 +28,7 @@ exports.handler = async (event, context, callback) => {
       body: {
         authData: {
           truncated: "A lot here, but not for the client to view"
-        },
-        invoices: invoices
+        }
       }
     });
 

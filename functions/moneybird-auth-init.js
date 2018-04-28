@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 761);
+/******/ 	return __webpack_require__(__webpack_require__.s = 762);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -33900,7 +33900,8 @@ exports.default = (() => {
 /* 758 */,
 /* 759 */,
 /* 760 */,
-/* 761 */
+/* 761 */,
+/* 762 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33910,11 +33911,11 @@ var _nodeFetch = __webpack_require__(16);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
 
-var _createTokens = __webpack_require__(762);
+var _createTokens = __webpack_require__(763);
 
 var _createTokens2 = _interopRequireDefault(_createTokens);
 
-var _readAdministration = __webpack_require__(763);
+var _readAdministration = __webpack_require__(764);
 
 var _readAdministration2 = _interopRequireDefault(_readAdministration);
 
@@ -33938,11 +33939,8 @@ exports.handler = (() => {
     try {
       let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
       let account = yield (0, _readAdministration2.default)(tokens.access_token);
-      console.log("-------------ACOUNTDATA UNFILTERED---------------");
-      console.log(account);
-      console.log("-------------ACOUNTDATA UNFILTERED---------------");
       let auth = {
-        'account_id': parseInt(account[0].id, 10),
+        'account_id': +account[0].id,
         'account_name': account[0].name,
         'access_token': tokens.access_token,
         'refresh_token': tokens.refresh_token
@@ -33964,7 +33962,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 762 */
+/* 763 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34007,7 +34005,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 763 */
+/* 764 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

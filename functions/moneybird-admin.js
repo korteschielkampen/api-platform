@@ -51110,7 +51110,10 @@ exports.handler = (() => {
       console.log("-------TOKENS--------");
 
       if (auth.access_token !== tokens.access_token) {
-        (0, _update2.default)(_extends({}, auth, { access_token: tokens.access_token }));
+        (0, _update2.default)(_extends({}, auth, {
+          access_token: tokens.access_token,
+          refresh_token: tokens.refresh_token
+        }));
       }
 
       respond({

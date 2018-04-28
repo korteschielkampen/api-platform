@@ -25,7 +25,11 @@ exports.handler = async (event, context, callback) => {
     console.log("-------TOKENS--------")
 
     if (auth.access_token !== tokens.access_token) {
-      updateDynamo({...auth, access_token: tokens.access_token});
+      updateDynamo({
+        ...auth,
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token
+      });
     }
 
     respond({

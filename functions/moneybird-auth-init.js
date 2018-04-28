@@ -33939,7 +33939,7 @@ exports.handler = (() => {
       let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
       let account = yield (0, _readAdministration2.default)(tokens.access_token);
       let authData = {
-        'account_id': parseInt(account[0].id),
+        'account_id': parseInt(account[0].id, 10),
         'account_name': account[0].name,
         'access_token': tokens.access_token,
         'refresh_token': tokens.refresh_token

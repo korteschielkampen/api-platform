@@ -15,7 +15,7 @@ exports.handler = async (event, context, callback) => {
     let tokens = await createTokens(event.queryStringParameters.code);
     let account = await readAccount(tokens.access_token);
     let authData = {
-      'account_id' : parseInt(account[0].id),
+      'account_id' : parseInt(account[0].id, 10),
       'account_name' : account[0].name,
       'access_token' : tokens.access_token,
       'refresh_token' : tokens.refresh_token

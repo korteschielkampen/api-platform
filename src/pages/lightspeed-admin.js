@@ -37,11 +37,9 @@ class IndexPage extends React.Component {
       if (!res.ok) {throw await res.json();}
       let data = await res.json();
 
-      console.log(data);
-
       data.body && this.setState({
         ...data.body.Item,
-        status: "Succesvol data opgehaald bij DynamoDB",
+        status: "Succesvol geauthenticeerd en data opgehaald bij Lightspeed",
         statusColor: "lightgreen",
         access_token: data.body.authData.access_token,
         refresh_token: data.body.authData.refresh_token,
@@ -63,7 +61,6 @@ class IndexPage extends React.Component {
   }
 
   render () {
-    console.log(this.state.invoices)
     return (
       <div className={styles.container}>
         <div className={styles.content}>

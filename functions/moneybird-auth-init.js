@@ -33934,14 +33934,24 @@ exports.handler = (() => {
     };
 
     try {
+      console.log("----------------INVOCATION HMM HMMM----------------");
       let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
+      console.log("----------------TOKENS HMM HMMM----------------");
+      console.log(tokens);
+      console.log("----------------TOKENS HMM HMMM----------------");
       let account = yield (0, _readAdministration2.default)(tokens.access_token);
+      console.log("----------------ACCOUNT HMM HMMM----------------");
+      console.log(account);
+      console.log("----------------ACCOUNT HMM HMMM----------------");
       let authData = {
         'account_id': parseInt(account.account.id),
         'account_name': account.account.name,
         'access_token': tokens.access_token,
         'refresh_token': tokens.refresh_token
       };
+      console.log("----------------AUTHDATA HMM HMMM----------------");
+      console.log(authData);
+      console.log("----------------AUTHDATA HMM HMMM----------------");
       let dynamo = yield (0, _update2.default)(authData);
 
       respond({ status: 200, body: { authData: authData, stored: dynamo } });

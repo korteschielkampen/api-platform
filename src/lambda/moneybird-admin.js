@@ -1,10 +1,16 @@
 import fetch from 'node-fetch'
 import _ from 'lodash'
+import moment from 'moment'
+
+const util = require('util')
 
 import readDynamo from './auth/dynamo/read.js'
 import updateDynamo from './auth/dynamo/update.js'
 import refreshTokens from './auth/moneybird/refresh-tokens.js'
-import createInvoice from './api/moneybird/create-invoice.js'
+import createInvoice from './api/moneybird/create-sales-invoice.js'
+import sendInvoice from './api/moneybird/update-sales-invoice.js'
+import createMutation from './api/moneybird/create-financial-statement.js'
+import updateMutation from './api/moneybird/update-financial-statement.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -15,14 +21,7 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    // Restructuring a invoice to Moneybird
-    let invoice = JSON.parse(event.body);
-
-
-
-
-
-    // Authentication and updating - WORKING
+    // Authentication and updating
     let auth = await readDynamo("211688738215954171");
     let tokens = await refreshTokens(auth.refresh_token);
     auth = {
@@ -32,28 +31,104 @@ exports.handler = async (event, context, callback) => {
     };
     updateDynamo(auth);
 
-    // Sending an invoice to Moneybird
-    let validInvoice = {
+    // Restructuring a invoice to Moneybird
+    const invoice = JSON.parse(event.body);
+    let financialStatement = {};
+    let moneybirdInvoice = {
       "sales_invoice": {
-        "reference": "My first API invoice",
-        "contact_id": 31742,
-        "details_attributes": {
-          "0":{
-            "description":"Table",
-            "price":"10.5"
-          }
-        }
+        "reference": `Automated Lightspeed Invoice - ${invoice.payments[0].date}`,
+        "contact_id": "211718269128672982",
+        "invoice_date": moment(invoice.payments[0].date, "MM/DD/YYYY").format("YYYY-MM-DD"),
+        "state": "open",
+        "prices_are_incl_tax": false,
+        "details_attributes": []
       }
     };
 
-    console.log(validInvoice);
-    let created = await createInvoice(auth.access_token, validInvoice);
+    invoice.tax.map((tax, key)=>{
+      // Hoog BTW
+      if (tax.taxClassID == 1) {
+        moneybirdInvoice.sales_invoice.details_attributes.push({
+          "description": "Hoog BTW tarief",
+          "tax_rate_id": "211688738873410854",
+          ledger_account_id: "218027560947156696",
+          "price": tax.subtotal
+        })
+      }
+      // Laag BTW
+      if (tax.taxClassID == 3) {
+        moneybirdInvoice.sales_invoice.details_attributes.push({
+          "description": "Laag BTW tarief",
+          "tax_rate_id": "211688738875508007",
+          ledger_account_id: "218027538317837859",
+          "price": tax.subtotal
+        })
+      }
+      // Nul BTW
+      if (tax.taxClassID == 6) {
+        moneybirdInvoice.sales_invoice.details_attributes.push({
+          "description": "Onbelast BTW tarief",
+          "tax_rate_id": "212145631538448378",
+          ledger_account_id: "218027616763905200",
+          "price": tax.subtotal
+        })
+      }
+    })
+
+    invoice.payments.map((payment, key)=>{
+      // Cadeaukaart
+      if (payment.paymentTypeID == 5) {
+        moneybirdInvoice.sales_invoice.details_attributes.push({
+          "description": "Betalingen met of uitgifte van cadeaukaarten",
+          "tax_rate_id": "212145631538448378",
+          "ledger_account_id": "212771713877804212",
+          "price": -payment.amount
+        })
+      }
+      // Kredietaccount
+      if (payment.paymentTypeID == 4 ) {
+        moneybirdInvoice.sales_invoice.details_attributes.push({
+          "description": "Betalingen met of uitgifte van klantkredieten",
+          "price": payment.amount
+        })
+      }
+      if (payment.paymentTypeID == 1 ) {
+        financialStatement = {
+          "financial_statement": {
+            "reference": `Kasboek - Lightspeed Dagontvangst - ${moment(payment.date, "MM/DD/YYYY").format("YYYY-MM-DD")}`,
+            "financial_account_id": "211688922621675193",
+            "financial_mutations_attributes": {
+              "1": {
+                "date": moment(invoice.payments[0].date, "MM/DD/YYYY").format("YYYY-MM-DD"),
+                "message": "Winkelontvangsten",
+                "amount": payment.amount
+              }
+            }
+          }
+        };
+      }
+    })
+
+    // Creating and sending invoice in Moneybird
+    let createdInvoice = await createInvoice(auth.access_token, moneybirdInvoice);
+    let sendedInvoice = await sendInvoice(auth.access_token, createdInvoice.id);
+    let createdMutation = await createMutation(auth.access_token, financialStatement);
+
+    // Linking the booking
+    let booking = {
+      "booking_type": "SalesInvoice",
+      "booking_id": createdInvoice.id,
+      "price_base": createdMutation.financial_mutations[0].amount
+    };
+    let createdBooking = await updateMutation(auth.access_token, createdMutation.financial_mutations[0].id, booking);
 
     respond({
       status: 200,
       body: {
         message: "Invoice is succesfully created",
-        // created: created
+        createdInvoice: createdInvoice,
+        createdMutation: createMutation,
+        createdBooking: createdBooking
       }
     });
 

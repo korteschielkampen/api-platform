@@ -51109,7 +51109,7 @@ exports.handler = (() => {
 
       // set dates to last 30 days
       let startDate = new Date();
-      startDate.setDate(startDate.getDate() - 5);
+      startDate.setDate(startDate.getDate() - 14);
       startDate = startDate.toISOString();
       const endDate = new Date().toISOString();
       const dates = { start: startDate, end: endDate };

@@ -36,9 +36,7 @@ class IndexPage extends React.Component {
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     };
-    const apiUrl = `${lambdaURL}/lightspeed-admin-get-sales`;
-
-    console.log(options)
+    const apiUrl = `${lambdaURL}/lightspeed-admin-sales`;
 
     try {
       const res = await fetch(apiUrl, options);
@@ -69,7 +67,7 @@ class IndexPage extends React.Component {
     const options = {
       method: "GET"
     };
-    const apiUrl = `${lambdaURL}/lightspeed-admin-get-reports`;
+    const apiUrl = `${lambdaURL}/lightspeed-admin-reports`;
 
     try {
 

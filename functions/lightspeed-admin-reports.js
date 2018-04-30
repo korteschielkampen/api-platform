@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 879);
+/******/ 	return __webpack_require__(__webpack_require__.s = 878);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -33893,6 +33893,177 @@ exports.default = (() => {
 /* 751 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(13);
+const AWS = __webpack_require__(101);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (account_id) {
+
+    AWS.config.update({
+      accessKeyId: process.env.aws_access_key_id,
+      secretAccessKey: process.env.aws_secret_access_key
+    });
+    AWS.config.update({ region: 'eu-central-1' });
+
+    const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
+    const dcddb = new AWS.DynamoDB.DocumentClient();
+
+    var params = {
+      TableName: 'lightspeed-to-moneybird',
+      Key: {
+        "account_id": account_id
+      }
+    };
+
+    try {
+      var data = yield dcddb.get(params).promise();
+      return data.Item;
+    } catch (err) {
+      throw err;
+    }
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 752 */,
+/* 753 */,
+/* 754 */,
+/* 755 */,
+/* 756 */,
+/* 757 */,
+/* 758 */,
+/* 759 */,
+/* 760 */,
+/* 761 */,
+/* 762 */,
+/* 763 */,
+/* 764 */,
+/* 765 */,
+/* 766 */,
+/* 767 */,
+/* 768 */,
+/* 769 */,
+/* 770 */,
+/* 771 */,
+/* 772 */,
+/* 773 */,
+/* 774 */,
+/* 775 */,
+/* 776 */,
+/* 777 */,
+/* 778 */,
+/* 779 */,
+/* 780 */,
+/* 781 */,
+/* 782 */,
+/* 783 */,
+/* 784 */,
+/* 785 */,
+/* 786 */,
+/* 787 */,
+/* 788 */,
+/* 789 */,
+/* 790 */,
+/* 791 */,
+/* 792 */,
+/* 793 */,
+/* 794 */,
+/* 795 */,
+/* 796 */,
+/* 797 */,
+/* 798 */,
+/* 799 */,
+/* 800 */,
+/* 801 */,
+/* 802 */,
+/* 803 */,
+/* 804 */,
+/* 805 */,
+/* 806 */,
+/* 807 */,
+/* 808 */,
+/* 809 */,
+/* 810 */,
+/* 811 */,
+/* 812 */,
+/* 813 */,
+/* 814 */,
+/* 815 */,
+/* 816 */,
+/* 817 */,
+/* 818 */,
+/* 819 */,
+/* 820 */,
+/* 821 */,
+/* 822 */,
+/* 823 */,
+/* 824 */,
+/* 825 */,
+/* 826 */,
+/* 827 */,
+/* 828 */,
+/* 829 */,
+/* 830 */,
+/* 831 */,
+/* 832 */,
+/* 833 */,
+/* 834 */,
+/* 835 */,
+/* 836 */,
+/* 837 */,
+/* 838 */,
+/* 839 */,
+/* 840 */,
+/* 841 */,
+/* 842 */,
+/* 843 */,
+/* 844 */,
+/* 845 */,
+/* 846 */,
+/* 847 */,
+/* 848 */,
+/* 849 */,
+/* 850 */,
+/* 851 */,
+/* 852 */,
+/* 853 */,
+/* 854 */,
+/* 855 */,
+/* 856 */,
+/* 857 */,
+/* 858 */,
+/* 859 */,
+/* 860 */,
+/* 861 */,
+/* 862 */,
+/* 863 */,
+/* 864 */,
+/* 865 */,
+/* 866 */,
+/* 867 */,
+/* 868 */,
+/* 869 */,
+/* 870 */,
+/* 871 */,
+/* 872 */,
+/* 873 */,
+/* 874 */,
+/* 875 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
  * @license
  * Lodash <https://lodash.com/>
@@ -51003,55 +51174,7 @@ exports.default = (() => {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)(module)))
 
 /***/ }),
-/* 752 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const fetch = __webpack_require__(13);
-const AWS = __webpack_require__(101);
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (account_id) {
-
-    AWS.config.update({
-      accessKeyId: process.env.aws_access_key_id,
-      secretAccessKey: process.env.aws_secret_access_key
-    });
-    AWS.config.update({ region: 'eu-central-1' });
-
-    const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
-    const dcddb = new AWS.DynamoDB.DocumentClient();
-
-    var params = {
-      TableName: 'lightspeed-to-moneybird',
-      Key: {
-        "account_id": account_id
-      }
-    };
-
-    try {
-      var data = yield dcddb.get(params).promise();
-      return data.Item;
-    } catch (err) {
-      throw err;
-    }
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 753 */
+/* 876 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51093,204 +51216,8 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 754 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const fetch = __webpack_require__(13);
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (access_token, dates) {
-    const options = {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${access_token}`
-      }
-    };
-    const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Reports/Accounting/TaxClassSalesByDay.json?startDate=${dates.start}&endDate=${dates.end}`;
-
-    const res = yield fetch(apiUrl, options);
-    if (!res.ok) {
-      throw yield res.json();
-    }
-    return yield res.json();
-  });
-
-  return function (_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 755 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const fetch = __webpack_require__(13);
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (access_token, dates) {
-    const options = {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${access_token}`
-      }
-    };
-    const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Reports/Accounting/PaymentsByDay.json?startDate=${dates.start}&endDate=${dates.end}`;
-
-    const res = yield fetch(apiUrl, options);
-    if (!res.ok) {
-      throw yield res.json();
-    }
-    return yield res.json();
-  });
-
-  return function (_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 756 */,
-/* 757 */,
-/* 758 */,
-/* 759 */,
-/* 760 */,
-/* 761 */,
-/* 762 */,
-/* 763 */,
-/* 764 */,
-/* 765 */,
-/* 766 */,
-/* 767 */,
-/* 768 */,
-/* 769 */,
-/* 770 */,
-/* 771 */,
-/* 772 */,
-/* 773 */,
-/* 774 */,
-/* 775 */,
-/* 776 */,
-/* 777 */,
-/* 778 */,
-/* 779 */,
-/* 780 */,
-/* 781 */,
-/* 782 */,
-/* 783 */,
-/* 784 */,
-/* 785 */,
-/* 786 */,
-/* 787 */,
-/* 788 */,
-/* 789 */,
-/* 790 */,
-/* 791 */,
-/* 792 */,
-/* 793 */,
-/* 794 */,
-/* 795 */,
-/* 796 */,
-/* 797 */,
-/* 798 */,
-/* 799 */,
-/* 800 */,
-/* 801 */,
-/* 802 */,
-/* 803 */,
-/* 804 */,
-/* 805 */,
-/* 806 */,
-/* 807 */,
-/* 808 */,
-/* 809 */,
-/* 810 */,
-/* 811 */,
-/* 812 */,
-/* 813 */,
-/* 814 */,
-/* 815 */,
-/* 816 */,
-/* 817 */,
-/* 818 */,
-/* 819 */,
-/* 820 */,
-/* 821 */,
-/* 822 */,
-/* 823 */,
-/* 824 */,
-/* 825 */,
-/* 826 */,
-/* 827 */,
-/* 828 */,
-/* 829 */,
-/* 830 */,
-/* 831 */,
-/* 832 */,
-/* 833 */,
-/* 834 */,
-/* 835 */,
-/* 836 */,
-/* 837 */,
-/* 838 */,
-/* 839 */,
-/* 840 */,
-/* 841 */,
-/* 842 */,
-/* 843 */,
-/* 844 */,
-/* 845 */,
-/* 846 */,
-/* 847 */,
-/* 848 */,
-/* 849 */,
-/* 850 */,
-/* 851 */,
-/* 852 */,
-/* 853 */,
-/* 854 */,
-/* 855 */,
-/* 856 */,
-/* 857 */,
-/* 858 */,
-/* 859 */,
-/* 860 */,
-/* 861 */,
-/* 862 */,
-/* 863 */,
-/* 864 */,
-/* 865 */,
-/* 866 */,
-/* 867 */,
-/* 868 */,
-/* 869 */,
-/* 870 */,
-/* 871 */,
-/* 872 */,
-/* 873 */,
-/* 874 */,
-/* 875 */,
-/* 876 */,
 /* 877 */,
-/* 878 */,
-/* 879 */
+/* 878 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51302,11 +51229,11 @@ var _nodeFetch = __webpack_require__(13);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
 
-var _lodash = __webpack_require__(751);
+var _lodash = __webpack_require__(875);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _read = __webpack_require__(752);
+var _read = __webpack_require__(751);
 
 var _read2 = _interopRequireDefault(_read);
 
@@ -51314,15 +51241,15 @@ var _update = __webpack_require__(750);
 
 var _update2 = _interopRequireDefault(_update);
 
-var _refreshTokens = __webpack_require__(753);
+var _refreshTokens = __webpack_require__(876);
 
 var _refreshTokens2 = _interopRequireDefault(_refreshTokens);
 
-var _readReportsTaxbyday = __webpack_require__(754);
+var _readReportsTaxbyday = __webpack_require__(879);
 
 var _readReportsTaxbyday2 = _interopRequireDefault(_readReportsTaxbyday);
 
-var _readReportsPaymentsbyday = __webpack_require__(755);
+var _readReportsPaymentsbyday = __webpack_require__(880);
 
 var _readReportsPaymentsbyday2 = _interopRequireDefault(_readReportsPaymentsbyday);
 
@@ -51388,6 +51315,80 @@ exports.handler = (() => {
   });
 
   return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 879 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(13);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (access_token, dates) {
+    const options = {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${access_token}`
+      }
+    };
+    const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Reports/Accounting/TaxClassSalesByDay.json?startDate=${dates.start}&endDate=${dates.end}`;
+
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
+    }
+    return yield res.json();
+  });
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 880 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(13);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (access_token, dates) {
+    const options = {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${access_token}`
+      }
+    };
+    const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Reports/Accounting/PaymentsByDay.json?startDate=${dates.start}&endDate=${dates.end}`;
+
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
+    }
+    return yield res.json();
+  });
+
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 })();

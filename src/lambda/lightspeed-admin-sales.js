@@ -13,12 +13,10 @@ exports.handler = async (event, context, callback) => {
   try {
     let sales = await readSales(JSON.parse(event.body).date);
 
-    console.log(sales)
-
     respond({
       status: 200,
       body: {
-        sales: sales
+        ...sales
       }
     });
   } catch(err) {

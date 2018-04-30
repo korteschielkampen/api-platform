@@ -1,9 +1,17 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
+import moment from 'moment';
+import strictUriEncode from 'strict-uri-encode';
+
 import readAccessToken from '../../auth/lightspeed/read-access-token.js'
 import request from '../../general/request.js';
 
-export default async (dates) => {
-  let access_token = readAccessToken();
+export default async (inputDate) => {
+  let dates = {
+    start:  strictUriEncode(moment(inputDate).startOf("d").format("YYYY-MM-DDTHH:mm:ssZ")),
+    end: strictUriEncode(moment(inputDate).endOf("d").format("YYYY-MM-DDTHH:mm:ssZ"))
+  };
+
+  let access_token = await readAccessToken();
   const options = {
     method: "GET",
     headers: {
@@ -12,5 +20,5 @@ export default async (dates) => {
   };
   const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines"]&orderby=completeTime&orderby_desc=1&timeStamp=><,${dates.start},${dates.end}`;
 
-  request(apiUrl, options);
+  return await request(apiUrl, options);
 }

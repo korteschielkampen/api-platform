@@ -11,12 +11,9 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    // Read sales from dates
-    let dates = {
-      start: "2018-04-30T00:00:00-02:00",
-      end: "2018-04-31T00:00:00-02:00"
-    };
-    let sales = readSales(dates)
+    let sales = await readSales(JSON.parse(event.body).date);
+
+    console.log(sales)
 
     respond({
       status: 200,

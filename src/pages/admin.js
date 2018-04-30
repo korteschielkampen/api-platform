@@ -14,22 +14,31 @@ const lambdaURL =
 class IndexPage extends React.Component {
   constructor (props) {
     super(props)
-    console.log(moment())
     this.state = {
-      initDate: moment(),
+      sales: {},
+      date: moment(),
       status: "Nog geen data aangevraagd",
       statusColor: "grey",
       invoices: {}
     }
     this.getInvoices = this.getInvoices.bind(this);
     this.createInvoice = this.createInvoice.bind(this);
+    this.updateSales = this.updateSales.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
   }
 
   async updateSales () {
+    const payload = {
+      date: this.state.date.format(moment().ISO_8601)
+    }
     const options = {
-      method: "GET"
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' }
     };
     const apiUrl = `${lambdaURL}/lightspeed-admin-get-sales`;
+
+    console.log(options)
 
     try {
       const res = await fetch(apiUrl, options);
@@ -37,7 +46,7 @@ class IndexPage extends React.Component {
       let data = await res.json();
 
       data.body && this.setState({
-        ...data.body.Item,
+        sales: {...data.body},
         status: "Succesvolle update van sales",
         statusColor: "lightgreen"
       });
@@ -50,6 +59,11 @@ class IndexPage extends React.Component {
     }
   }
 
+  handleDateChange(date) {
+    this.setState({
+      date: date
+    })
+  }
 
   async getInvoices () {
     const options = {
@@ -79,6 +93,7 @@ class IndexPage extends React.Component {
   }
 
   async createInvoice (invoice) {
+
     const payload = {
       ...invoice
     }
@@ -110,6 +125,7 @@ class IndexPage extends React.Component {
   }
 
   render () {
+    console.log(this.state.sales)
     return (
       <div className={styles.container}>
         <div className={styles.content}>
@@ -122,7 +138,7 @@ class IndexPage extends React.Component {
           <div className={styles.box}>
             <DatePicker
                 className={styles.datepicker}
-                selected={this.state.initDate}
+                selected={this.state.date}
                 onChange={this.handleDateChange}
             />
             <button className={styles.button} onClick={this.updateSales}>Update sales</button>

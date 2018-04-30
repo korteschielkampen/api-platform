@@ -2,8 +2,11 @@ import React from 'react'
 import Link from 'gatsby-link'
 import _ from 'underscore'
 import classNames from 'classnames'
+import moment from 'moment';
+import DatePicker from 'react-datepicker'
 
 import styles from './index.module.css'
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
 const lambdaURL =
   process.env.NODE_ENV === 'production' ? '/.netlify/functions' : '/localhost:9000'
@@ -11,20 +14,48 @@ const lambdaURL =
 class IndexPage extends React.Component {
   constructor (props) {
     super(props)
+    console.log(moment())
     this.state = {
+      initDate: moment(),
       status: "Nog geen data aangevraagd",
       statusColor: "grey",
       invoices: {}
     }
-    this.getKeys = this.getKeys.bind(this);
+    this.getInvoices = this.getInvoices.bind(this);
     this.createInvoice = this.createInvoice.bind(this);
   }
 
-  async getKeys () {
+  async updateSales () {
     const options = {
       method: "GET"
     };
-    const apiUrl = `${lambdaURL}/lightspeed-admin`;
+    const apiUrl = `${lambdaURL}/lightspeed-admin-get-sales`;
+
+    try {
+      const res = await fetch(apiUrl, options);
+      if (!res.ok) {throw await res.json();}
+      let data = await res.json();
+
+      data.body && this.setState({
+        ...data.body.Item,
+        status: "Succesvolle update van sales",
+        statusColor: "lightgreen"
+      });
+
+    } catch(err) {
+      this.setState({
+        status: `${JSON.stringify(err.body)}`,
+        statusColor: "red"
+      })
+    }
+  }
+
+
+  async getInvoices () {
+    const options = {
+      method: "GET"
+    };
+    const apiUrl = `${lambdaURL}/lightspeed-admin-get-reports`;
 
     try {
 
@@ -82,13 +113,24 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <p> Admin voor Lightspeed API naar Moneybird API integratie</p>
+          <p>Admin voor Lightspeed API naar Moneybird API integratie</p>
           <h1>Status</h1>
           <p style={{backgroundColor: this.state.statusColor}} className={styles.statusBar}>{this.state.status}</p>
         </div>
         <div className={styles.content}>
-          <h1>Data</h1>
-          <button className={styles.button} onClick={this.getKeys}>Verkrijg data van Lightspeed</button>
+          <h1>Sales</h1>
+          <div className={styles.box}>
+            <DatePicker
+                className={styles.datepicker}
+                selected={this.state.initDate}
+                onChange={this.handleDateChange}
+            />
+            <button className={styles.button} onClick={this.updateSales}>Update sales</button>
+          </div>
+        </div>
+        <div className={styles.content}>
+          <h1>Reports</h1>
+          <button className={styles.button} onClick={this.getInvoices}>Verkrijg reports</button>
           { Object.values(this.state.invoices).reverse().map(((invoice, key)=>{
             return (
               <div key={key} className={styles.card}>

@@ -10,7 +10,14 @@
   padding: 2rem 2rem 0;
 }
 
+.box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .button {
+  outline: 0;
   margin: 0;
   padding: 1rem;
   border-radius: 2rem;
@@ -29,6 +36,12 @@
 .statusBar {
   padding: 1rem;
   border-radius: 2rem;
+}
+
+.datepicker {
+  padding: 1rem;
+  border-radius: 2rem;
+  outline: 0;
 }
 
 .card {

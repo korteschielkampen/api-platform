@@ -48,8 +48,6 @@ class IndexPage extends React.Component {
   }
 
   async createInvoice (invoice) {
-    console.log(invoice)
-
     const payload = {
       ...invoice
     }
@@ -91,7 +89,7 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <h1>Data</h1>
           <button className={styles.button} onClick={this.getKeys}>Verkrijg data van Lightspeed</button>
-          { Object.values(this.state.invoices).map(((invoice, key)=>{
+          { Object.values(this.state.invoices).reverse().map(((invoice, key)=>{
             return (
               <div key={key} className={styles.card}>
                 <div className={styles.cardHeader}>

@@ -50753,10 +50753,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = _asyncToGenerator(function* () {
-  let authData = yield (0, _read2.default)("159502");
-  let tokens = yield (0, _refreshTokens2.default)(authData.refresh_token);
-  if (authData.access_token !== tokens.access_token) {
-    (0, _update2.default)(_extends({}, authData, { access_token: tokens.access_token }));
+  let auth = yield (0, _read2.default)("159502");
+  let tokens = yield (0, _refreshTokens2.default)(auth.refresh_token);
+  if (auth.access_token !== tokens.access_token) {
+    (0, _update2.default)(_extends({}, auth, { access_token: tokens.access_token }));
   }
   return tokens.access_token;
 });

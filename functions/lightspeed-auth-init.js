@@ -34024,7 +34024,35 @@ exports.default = (() => {
 /* 882 */,
 /* 883 */,
 /* 884 */,
-/* 885 */,
+/* 885 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(13);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (apiUrl, options) {
+    const res = yield fetch(apiUrl, options);
+    if (!res.ok) {
+      throw yield res.json();
+    }
+    return yield res.json();
+  });
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
 /* 886 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -34136,6 +34164,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _request = __webpack_require__(885);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 const fetch = __webpack_require__(13);
@@ -34150,11 +34184,7 @@ exports.default = (() => {
     };
     const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';
 
-    const res = yield fetch(apiUrl, options);
-    if (!res.ok) {
-      throw yield res.json();
-    }
-    return yield res.json();
+    return yield (0, _request2.default)(apiUrl, options);
   });
 
   return function (_x) {

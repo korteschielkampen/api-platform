@@ -100,7 +100,7 @@ class IndexPage extends React.Component {
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     };
-    const apiUrl = `${lambdaURL}/moneybird-admin`;
+    const apiUrl = `${lambdaURL}/moneybird-admin-invoice-payment`;
 
     try {
 

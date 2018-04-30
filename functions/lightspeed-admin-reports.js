@@ -51223,8 +51223,6 @@ exports.default = (() => {
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _nodeFetch = __webpack_require__(13);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
@@ -51267,13 +51265,6 @@ exports.handler = (() => {
     };
 
     try {
-      // Authentication and updating
-      let authData = yield (0, _read2.default)("159502");
-      let tokens = yield (0, _refreshTokens2.default)(authData.refresh_token);
-      if (authData.access_token !== tokens.access_token) {
-        (0, _update2.default)(_extends({}, authData, { access_token: tokens.access_token }));
-      }
-
       // set dates to last 30 days
       let startDate = new Date();
       startDate.setDate(startDate.getDate() - 21);
@@ -51282,8 +51273,8 @@ exports.handler = (() => {
       const dates = { start: startDate, end: endDate };
 
       // Get tax and payment data
-      let tax = yield (0, _readReportsTaxbyday2.default)(tokens.access_token, dates);
-      let payments = yield (0, _readReportsPaymentsbyday2.default)(tokens.access_token, dates);
+      let tax = yield (0, _readReportsTaxbyday2.default)(dates);
+      let payments = yield (0, _readReportsPaymentsbyday2.default)(dates);
 
       // Group by day, nest and merge
       let groupedTax = _lodash2.default.groupBy(tax.SalesDay, "date");
@@ -51330,12 +51321,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _readAccessToken = __webpack_require__(884);
+
+var _readAccessToken2 = _interopRequireDefault(_readAccessToken);
+
+var _request = __webpack_require__(885);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 const fetch = __webpack_require__(13);
 
 exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (access_token, dates) {
+  var _ref = _asyncToGenerator(function* (dates) {
+    let access_token = yield (0, _readAccessToken2.default)();
     const options = {
       method: "GET",
       headers: {
@@ -51343,15 +51345,10 @@ exports.default = (() => {
       }
     };
     const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Reports/Accounting/TaxClassSalesByDay.json?startDate=${dates.start}&endDate=${dates.end}`;
-
-    const res = yield fetch(apiUrl, options);
-    if (!res.ok) {
-      throw yield res.json();
-    }
-    return yield res.json();
+    return yield (0, _request2.default)(apiUrl, options);
   });
 
-  return function (_x, _x2) {
+  return function (_x) {
     return _ref.apply(this, arguments);
   };
 })();
@@ -51367,12 +51364,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _readAccessToken = __webpack_require__(884);
+
+var _readAccessToken2 = _interopRequireDefault(_readAccessToken);
+
+var _request = __webpack_require__(885);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 const fetch = __webpack_require__(13);
 
 exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (access_token, dates) {
+  var _ref = _asyncToGenerator(function* (dates) {
+    let access_token = yield (0, _readAccessToken2.default)();
     const options = {
       method: "GET",
       headers: {
@@ -51380,7 +51388,72 @@ exports.default = (() => {
       }
     };
     const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Reports/Accounting/PaymentsByDay.json?startDate=${dates.start}&endDate=${dates.end}`;
+    return yield (0, _request2.default)(apiUrl, options);
+  });
 
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 881 */,
+/* 882 */,
+/* 883 */,
+/* 884 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _read = __webpack_require__(751);
+
+var _read2 = _interopRequireDefault(_read);
+
+var _update = __webpack_require__(750);
+
+var _update2 = _interopRequireDefault(_update);
+
+var _refreshTokens = __webpack_require__(876);
+
+var _refreshTokens2 = _interopRequireDefault(_refreshTokens);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = _asyncToGenerator(function* () {
+  let auth = yield (0, _read2.default)("159502");
+  let tokens = yield (0, _refreshTokens2.default)(auth.refresh_token);
+  if (auth.access_token !== tokens.access_token) {
+    (0, _update2.default)(_extends({}, auth, { access_token: tokens.access_token }));
+  }
+  return tokens.access_token;
+});
+
+/***/ }),
+/* 885 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(13);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (apiUrl, options) {
     const res = yield fetch(apiUrl, options);
     if (!res.ok) {
       throw yield res.json();

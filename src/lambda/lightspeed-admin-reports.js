@@ -16,13 +16,6 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    // Authentication and updating
-    let authData = await readDynamo("159502");
-    let tokens = await refreshTokens(authData.refresh_token);
-    if (authData.access_token !== tokens.access_token) {
-      updateDynamo({...authData, access_token: tokens.access_token});
-    }
-
     // set dates to last 30 days
     let startDate = new Date();
     startDate.setDate(startDate.getDate() - 21);
@@ -31,8 +24,8 @@ exports.handler = async (event, context, callback) => {
     const dates = {start: startDate, end: endDate};
 
     // Get tax and payment data
-    let tax = await readTax(tokens.access_token, dates);
-    let payments = await readPayments(tokens.access_token, dates);
+    let tax = await readTax(dates);
+    let payments = await readPayments(dates);
 
     // Group by day, nest and merge
     let groupedTax =  _.groupBy(tax.SalesDay, "date");

@@ -1,6 +1,10 @@
 const fetch = require('node-fetch');
 
-export default async (access_token, dates) => {
+import readAccessToken from '../../auth/lightspeed/read-access-token.js'
+import request from '../../general/request.js';
+
+export default async (dates) => {
+  let access_token = await readAccessToken();
   const options = {
     method: "GET",
     headers: {
@@ -8,8 +12,5 @@ export default async (access_token, dates) => {
     }
   };
   const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Reports/Accounting/TaxClassSalesByDay.json?startDate=${dates.start}&endDate=${dates.end}`;
-
-  const res = await fetch(apiUrl, options);
-  if (!res.ok) {throw await res.json();}
-  return await res.json();
+  return await request(apiUrl, options);
 }

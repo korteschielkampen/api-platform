@@ -50639,6 +50639,7 @@ exports.handler = (() => {
     };
 
     try {
+
       let sales = yield (0, _readSales2.default)(JSON.parse(event.body).date);
 
       respond({

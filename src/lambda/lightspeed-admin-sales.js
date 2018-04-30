@@ -11,6 +11,7 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
+    
     let sales = await readSales(JSON.parse(event.body).date);
 
     respond({

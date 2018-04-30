@@ -34091,16 +34091,16 @@ exports.handler = (() => {
     try {
       let tokens = yield (0, _createTokens2.default)(event.queryStringParameters.code);
       let account = yield (0, _readAccount2.default)(tokens.access_token);
-      let authData = {
+      let auth = {
         'account_id': account.Account.accountID,
         'account_name': account.Account.name,
         'account_link': account.Account.link['@attributes'].href,
         'access_token': tokens.access_token,
         'refresh_token': tokens.refresh_token
       };
-      let dynamo = yield (0, _update2.default)(authData);
+      let dynamo = yield (0, _update2.default)(auth);
 
-      respond({ status: 200, body: { authData: authData, stored: dynamo } });
+      respond({ status: 200, body: { authData: auth, stored: dynamo } });
     } catch (err) {
       respond({ status: 422, body: err });
     }

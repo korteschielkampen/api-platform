@@ -24,6 +24,7 @@ exports.handler = async (event, context, callback) => {
 
     respond({ status: 200, body: {authData: auth, stored: dynamo}});
   } catch(err) {
+    console.log(err);
     respond({ status: 422, body: err });
   }
 }

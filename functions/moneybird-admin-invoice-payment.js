@@ -38043,6 +38043,7 @@ exports.handler = (() => {
         }
       });
     } catch (err) {
+      console.log(err);
       respond({ status: 422, body: err });
     }
   });

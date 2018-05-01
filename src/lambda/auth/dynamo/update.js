@@ -2,7 +2,6 @@ const fetch = require('node-fetch');
 const AWS = require("aws-sdk");
 
 export default async (authData) => {
-
   // AWS configuration
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,
@@ -12,6 +11,7 @@ export default async (authData) => {
   const ddb = new AWS.DynamoDB({apiVersion: '2012-10-08'});
   const dcddb = new AWS.DynamoDB.DocumentClient();
 
+  // Configure request
   var params = {
     TableName: 'lightspeed-to-moneybird',
     Item: {
@@ -25,8 +25,7 @@ export default async (authData) => {
 
   // Send request
   try {
-    var data = await dcddb.put(params).promise();
-    return true;
+    return await dcddb.put(params).promise();
   } catch(err) {
     throw err;
   }

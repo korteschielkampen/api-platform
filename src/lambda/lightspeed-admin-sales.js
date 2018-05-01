@@ -11,7 +11,6 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    
     let sales = await readSales(JSON.parse(event.body).date);
 
     respond({
@@ -21,6 +20,7 @@ exports.handler = async (event, context, callback) => {
       }
     });
   } catch(err) {
+    console.log(err);
     respond({ status: 422, body: err });
   }
 }

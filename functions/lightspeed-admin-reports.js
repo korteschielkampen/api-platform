@@ -33888,7 +33888,6 @@ const AWS = __webpack_require__(127);
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (authData) {
-
     // AWS configuration
     AWS.config.update({
       accessKeyId: process.env.aws_access_key_id,
@@ -33898,6 +33897,7 @@ exports.default = (() => {
     const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
     const dcddb = new AWS.DynamoDB.DocumentClient();
 
+    // Configure request
     var params = {
       TableName: 'lightspeed-to-moneybird',
       Item: {
@@ -33911,8 +33911,7 @@ exports.default = (() => {
 
     // Send request
     try {
-      var data = yield dcddb.put(params).promise();
-      return true;
+      return yield dcddb.put(params).promise();
     } catch (err) {
       throw err;
     }
@@ -51215,16 +51214,16 @@ const AWS = __webpack_require__(127);
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (account_id) {
-
+    // Configure AWS
     AWS.config.update({
       accessKeyId: process.env.aws_access_key_id,
       secretAccessKey: process.env.aws_secret_access_key
     });
     AWS.config.update({ region: 'eu-central-1' });
-
     const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
     const dcddb = new AWS.DynamoDB.DocumentClient();
 
+    // Configure request
     var params = {
       TableName: 'lightspeed-to-moneybird',
       Key: {
@@ -51232,6 +51231,7 @@ exports.default = (() => {
       }
     };
 
+    // Get request
     try {
       var data = yield dcddb.get(params).promise();
       return data.Item;
@@ -51361,6 +51361,7 @@ exports.handler = (() => {
         }
       });
     } catch (err) {
+      console.log(err);
       respond({ status: 422, body: err });
     }
   });

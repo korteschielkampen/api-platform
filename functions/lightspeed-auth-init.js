@@ -33888,7 +33888,6 @@ const AWS = __webpack_require__(127);
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (authData) {
-
     // AWS configuration
     AWS.config.update({
       accessKeyId: process.env.aws_access_key_id,
@@ -33898,6 +33897,7 @@ exports.default = (() => {
     const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
     const dcddb = new AWS.DynamoDB.DocumentClient();
 
+    // Configure request
     var params = {
       TableName: 'lightspeed-to-moneybird',
       Item: {
@@ -33911,8 +33911,7 @@ exports.default = (() => {
 
     // Send request
     try {
-      var data = yield dcddb.put(params).promise();
-      return true;
+      return yield dcddb.put(params).promise();
     } catch (err) {
       throw err;
     }
@@ -34095,13 +34094,13 @@ exports.handler = (() => {
 
     try {
       let token = yield (0, _createToken2.default)(event.queryStringParameters.code);
-      let account = yield (0, _readAccount2.default)(tokens.access_token);
+      let account = yield (0, _readAccount2.default)(token.access_token);
       let auth = {
         'account_id': account.Account.accountID,
         'account_name': account.Account.name,
         'account_link': account.Account.link['@attributes'].href,
-        'access_token': tokens.access_token,
-        'refresh_token': tokens.refresh_token
+        'access_token': token.access_token,
+        'refresh_token': token.refresh_token
       };
       let dynamo = yield (0, _update2.default)(auth);
 

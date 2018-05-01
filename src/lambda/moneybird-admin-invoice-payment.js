@@ -117,8 +117,8 @@ exports.handler = async (event, context, callback) => {
         createdBooking: createdBooking
       }
     });
-
   } catch(err) {
+    console.log(err);
     respond({ status: 422, body: err });
   }
 }

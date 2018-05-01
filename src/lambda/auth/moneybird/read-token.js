@@ -15,7 +15,7 @@ export default async () => {
   console.log(auth);
   console.log("-----endauth-------");
   console.log("-----tokens-------");
-  console.log(token);
+  console.log(tokens);
   console.log("-----endtokens-------");
   return tokens.access_token;
 }

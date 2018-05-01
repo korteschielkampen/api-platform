@@ -97,8 +97,11 @@ exports.handler = async (event, context, callback) => {
 
     // Creating and sending invoice in Moneybird
     let createdInvoice = await createInvoice(moneybirdInvoice);
+    console.log("invoice created")
     let sendedInvoice = await sendInvoice(createdInvoice.id);
+    console.log("invoice send")
     let createdMutation = await createMutation(financialStatement);
+    console.log("mutation created")
 
     // Linking the booking
     let booking = {
@@ -107,6 +110,8 @@ exports.handler = async (event, context, callback) => {
       "price_base": createdMutation.financial_mutations[0].amount
     };
     let createdBooking = await updateMutation(createdMutation.financial_mutations[0].id, booking);
+    console.log("mutation coupled")
+
 
     respond({
       status: 200,

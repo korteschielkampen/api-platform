@@ -55,6 +55,7 @@ class IndexPage extends React.Component {
       data.body && this.setState({
         sales: {...data.body.sales.sales},
         taxrates: data.body.taxrates,
+        payments: data.body.payments,
         status: "Succesvolle update van sales",
         statusColor: "lightgreen"
       });
@@ -127,6 +128,7 @@ class IndexPage extends React.Component {
   }
 
   render () {
+    console.log(this.state)
     return (
       <div className={styles.container}>
         <div className={styles.content}>

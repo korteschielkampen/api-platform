@@ -76,6 +76,7 @@ exports.handler = async (event, context, callback) => {
           "price": payment.amount
         })
       }
+      // Cash
       if (payment.paymentTypeID == 1 ) {
         financialStatement = {
           "financial_statement": {

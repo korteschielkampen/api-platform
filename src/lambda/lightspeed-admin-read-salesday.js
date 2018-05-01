@@ -32,14 +32,17 @@ exports.handler = async (event, context, callback) => {
       laag: {name: "laag", amount: 0},
       onbelast: {name: "onbelast", amount: 0}
     };
+
+    let payments = {
+      cash: {name: "cash", amount: 0},
+      pin: {name: "pin", amount: 0},
+      credit: {name: "credit", amount: 0},
+      gift: {name: "gift", amount: 0},
+    }
+
     _.map(salesDay.sales, (sale, saleID)=>{
-      console.log(sale.completed, sale.calcTotal)
       if (sale.completed == "true" && sale.SaleLines) {
-        // Account for API inconsistency: Returns single value as object
-        if (!(sale.SaleLines.SaleLine.constructor === Array)) {
-          sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine];
-        }
-        // Do the accounting
+        // Do the taxes
         _.map(sale.SaleLines.SaleLine, (line, lineID)=>{
           switch (line.taxClassID) {
             case "1":
@@ -55,11 +58,38 @@ exports.handler = async (event, context, callback) => {
           }
         })
       }
+
+      // Do the payments
+      if (sale.completed == "true" && sale.SalePayments) {
+        _.map(sale.SalePayments.SalePayment, (line, lineID)=>{
+          console.log(line)
+          switch (line.paymentTypeID) {
+            case "1":
+              payments.cash.amount += parseFloat(line.amount);
+              break;
+            case "11":
+              payments.pin.amount += parseFloat(line.amount);
+              break;
+            case "4":
+              payments.credit.amount += parseFloat(line.amount);
+              break;
+            case "5":
+              payments.gift.amount += parseFloat(line.amount);
+              break;
+            default:
+          }
+        })
+      }
     });
 
     taxrates.hoog.amount = taxrates.hoog.amount.toFixed(2)
     taxrates.laag.amount = taxrates.laag.amount.toFixed(2)
     taxrates.onbelast.amount = taxrates.onbelast.amount.toFixed(2)
+
+    payments.cash.amount = payments.cash.amount.toFixed(2)
+    payments.pin.amount = payments.pin.amount.toFixed(2)
+    payments.credit.amount = payments.credit.amount.toFixed(2)
+    payments.gift.amount = payments.gift.amount.toFixed(2)
 
     respond({
       status: 200,
@@ -68,6 +98,7 @@ exports.handler = async (event, context, callback) => {
           ...salesDay
         },
         taxrates: taxrates,
+        payments: payments,
         lightspeed: lsRequested
       }
     });

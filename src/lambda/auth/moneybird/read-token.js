@@ -11,5 +11,6 @@ export default async () => {
     refresh_token: token.refresh_token
   };
   updateDynamo(auth);
+  console.log(auth);
   return token.access_token;
 }

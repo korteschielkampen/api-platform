@@ -34102,6 +34102,7 @@ exports.handler = (() => {
 
     try {
       let tokens = yield (0, _createToken2.default)(event.queryStringParameters.code);
+      console.log(tokens);
       let account = yield (0, _readAdministration2.default)(tokens.access_token);
       let auth = {
         'account_id': account[0].id,
@@ -34110,7 +34111,6 @@ exports.handler = (() => {
         'refresh_token': tokens.refresh_token
       };
       let dynamo = yield (0, _update2.default)(auth);
-
       respond({ status: 200, body: { authData: auth, stored: dynamo } });
     } catch (err) {
       console.log(err);

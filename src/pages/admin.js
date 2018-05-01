@@ -127,7 +127,6 @@ class IndexPage extends React.Component {
   }
 
   render () {
-    console.log(this.state.taxrates)
     return (
       <div className={styles.container}>
         <div className={styles.content}>
@@ -147,7 +146,7 @@ class IndexPage extends React.Component {
           </div>
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <p className={styles.cardHeading}> Datum: {this.state.date.format()} </p>
+              <p className={styles.cardHeading}> Datum: {this.state.date.format("MM/DD/YYYY")} </p>
               <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, this.state.taxrates)}>Sla op in Moneybird</button>
             </div>
             <div className={styles.cardBody}>

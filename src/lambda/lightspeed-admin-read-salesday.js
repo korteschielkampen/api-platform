@@ -33,7 +33,8 @@ exports.handler = async (event, context, callback) => {
       onbelast: {name: "onbelast", amount: 0}
     };
     _.map(salesDay.sales, (sale, saleID)=>{
-      if (sale.SaleLines) {
+      console.log(sale.completed, sale.calcTotal)
+      if (sale.completed == "true" && sale.SaleLines) {
         // Account for API inconsistency: Returns single value as object
         if (!(sale.SaleLines.SaleLine.constructor === Array)) {
           sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine];
@@ -55,6 +56,10 @@ exports.handler = async (event, context, callback) => {
         })
       }
     });
+
+    taxrates.hoog.amount = taxrates.hoog.amount.toFixed(2)
+    taxrates.laag.amount = taxrates.laag.amount.toFixed(2)
+    taxrates.onbelast.amount = taxrates.onbelast.amount.toFixed(2)
 
     respond({
       status: 200,

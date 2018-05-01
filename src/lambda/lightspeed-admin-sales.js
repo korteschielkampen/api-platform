@@ -1,6 +1,6 @@
-import fetch from 'node-fetch'
+import _ from 'lodash'
 
-import readSales from './api/lightspeed/read-sales.js'
+import readSalesDay from './api/lightspeed/read-sales-day.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -11,7 +11,7 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    let sales = await readSales(JSON.parse(event.body).date);
+    let sales = await readSalesDay(JSON.parse(event.body).date);
 
     respond({
       status: 200,

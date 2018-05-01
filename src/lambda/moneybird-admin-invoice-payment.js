@@ -1,8 +1,6 @@
 import _ from 'lodash'
 import moment from 'moment'
 
-const util = require('util')
-
 import createInvoice from './api/moneybird/create-sales-invoice.js'
 import sendInvoice from './api/moneybird/update-sales-invoice.js'
 import createMutation from './api/moneybird/create-financial-statement.js'

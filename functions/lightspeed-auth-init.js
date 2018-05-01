@@ -34046,10 +34046,6 @@ exports.default = (() => {
 "use strict";
 
 
-var _nodeFetch = __webpack_require__(18);
-
-var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
-
 var _createToken = __webpack_require__(887);
 
 var _createToken2 = _interopRequireDefault(_createToken);

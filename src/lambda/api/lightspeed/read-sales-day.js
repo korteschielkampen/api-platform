@@ -19,5 +19,15 @@ export default async (inputDate) => {
   };
   const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines"]&orderby=completeTime&orderby_desc=1&timeStamp=><,${dates.start},${dates.end}`;
 
-  return await request(apiUrl, options);
+  let sales = [];
+  let offset = 0;
+  let count = 1;
+  while (offset < count) {
+    let tempSales = await request(apiUrl, options);
+    sales = _.concat(sales, tempSales);
+    count = tempSales["@attributes"].count;
+    offset += tempSales["@attributes"].limit;
+  }
+
+  return await sales;
 }

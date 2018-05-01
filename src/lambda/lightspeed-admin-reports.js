@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 import _ from 'lodash'
 
 import readTax from './api/lightspeed/read-reports-taxbyday.js'

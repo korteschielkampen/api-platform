@@ -34054,10 +34054,6 @@ exports.default = (() => {
 "use strict";
 
 
-var _nodeFetch = __webpack_require__(18);
-
-var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
-
 var _createToken = __webpack_require__(895);
 
 var _createToken2 = _interopRequireDefault(_createToken);
@@ -34085,7 +34081,6 @@ exports.handler = (() => {
 
     try {
       let tokens = yield (0, _createToken2.default)(event.queryStringParameters.code);
-      console.log(tokens);
       let account = yield (0, _readAdministration2.default)(tokens.access_token);
       let auth = {
         'account_id': account[0].id,

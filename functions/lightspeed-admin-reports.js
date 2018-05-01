@@ -51264,10 +51264,6 @@ exports.default = (() => {
 "use strict";
 
 
-var _nodeFetch = __webpack_require__(18);
-
-var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
-
 var _lodash = __webpack_require__(876);
 
 var _lodash2 = _interopRequireDefault(_lodash);

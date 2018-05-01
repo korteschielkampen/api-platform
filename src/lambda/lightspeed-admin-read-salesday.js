@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import moment from 'moment';
 
 import readSalesDay from './api/lightspeed/read-sales-day.js'
 import updateDynamo from './api/dynamo/update-sales.js'
@@ -14,7 +15,7 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Read from Dynamo
-    let date = JSON.parse(event.body).date;
+    let date = moment(JSON.parse(event.body).date).startOf('day').format();
     let lsRequested = false;
     let salesDay = await readDynamo(date);
 
@@ -26,30 +27,34 @@ exports.handler = async (event, context, callback) => {
     }
 
     // Calculate taxes
-    // let taxrates = {"hoog": 0, "laag": 0, "onbelast": 0};
-    // _.map(salesDay.sales, (sale, saleID)=>{
-    //   if (sale.SaleLines) {
-    //     // Account for API inconsistency: Returns single value as object
-    //     if (!(sale.SaleLines.SaleLine.constructor === Array)) {
-    //       sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine];
-    //     }
-    //     // Do the accounting
-    //     _.map(sale.SaleLines.SaleLine, (line, lineID)=>{
-    //       switch (line.taxClassID) {
-    //         case "1":
-    //           taxrates.hoog += parseFloat(line.calcTotal);
-    //           break;
-    //         case "3":
-    //           taxrates.laag += parseFloat(line.calcTotal);
-    //           break;
-    //         case "6":
-    //           taxrates.onbelast += parseFloat(line.calcTotal);
-    //           break;
-    //         default:
-    //       }
-    //     })
-    //   }
-    // });
+    let taxrates = {
+      hoog: {name: "hoog", amount: 0},
+      laag: {name: "laag", amount: 0},
+      onbelast: {name: "onbelast", amount: 0}
+    };
+    _.map(salesDay.sales, (sale, saleID)=>{
+      if (sale.SaleLines) {
+        // Account for API inconsistency: Returns single value as object
+        if (!(sale.SaleLines.SaleLine.constructor === Array)) {
+          sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine];
+        }
+        // Do the accounting
+        _.map(sale.SaleLines.SaleLine, (line, lineID)=>{
+          switch (line.taxClassID) {
+            case "1":
+              taxrates.hoog.amount += parseFloat(line.calcTotal);
+              break;
+            case "3":
+              taxrates.laag.amount += parseFloat(line.calcTotal);
+              break;
+            case "6":
+              taxrates.onbelast.amount += parseFloat(line.calcTotal);
+              break;
+            default:
+          }
+        })
+      }
+    });
 
     respond({
       status: 200,

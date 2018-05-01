@@ -33949,6 +33949,47 @@ exports.default = (() => {
 /* 753 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(52);
+const AWS = __webpack_require__(102);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (params) {
+    // Configure AWS
+    AWS.config.update({
+      accessKeyId: process.env.aws_access_key_id,
+      secretAccessKey: process.env.aws_secret_access_key
+    });
+    AWS.config.update({ region: 'eu-central-1' });
+    const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
+    const dcddb = new AWS.DynamoDB.DocumentClient();
+
+    // Get request
+    try {
+      var data = yield dcddb.get(params).promise();
+      return data.Item;
+    } catch (err) {
+      throw err;
+    }
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 754 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
  * @license
  * Lodash <https://lodash.com/>
@@ -51059,7 +51100,7 @@ exports.default = (() => {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)(module)))
 
 /***/ }),
-/* 754 */
+/* 755 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51069,7 +51110,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _read = __webpack_require__(755);
+var _read = __webpack_require__(753);
 
 var _read2 = _interopRequireDefault(_read);
 
@@ -51086,47 +51127,6 @@ exports.default = (() => {
       }
     };
     return yield (0, _read2.default)(params);
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 755 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const fetch = __webpack_require__(52);
-const AWS = __webpack_require__(102);
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (params) {
-    // Configure AWS
-    AWS.config.update({
-      accessKeyId: process.env.aws_access_key_id,
-      secretAccessKey: process.env.aws_secret_access_key
-    });
-    AWS.config.update({ region: 'eu-central-1' });
-    const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
-    const dcddb = new AWS.DynamoDB.DocumentClient();
-
-    // Get request
-    try {
-      var data = yield dcddb.get(params).promise();
-      return data.Item;
-    } catch (err) {
-      throw err;
-    }
   });
 
   return function (_x) {
@@ -51270,7 +51270,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _read = __webpack_require__(754);
+var _read = __webpack_require__(755);
 
 var _read2 = _interopRequireDefault(_read);
 
@@ -51346,7 +51346,7 @@ exports.default = (() => {
 "use strict";
 
 
-var _lodash = __webpack_require__(753);
+var _lodash = __webpack_require__(754);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 

@@ -28,9 +28,15 @@ class IndexPage extends React.Component {
     this.handleDateChange = this.handleDateChange.bind(this);
   }
 
+  handleDateChange(date) {
+    this.setState({
+      date: date
+    })
+  }
+
   async updateSales () {
     const payload = {
-      date: this.state.date.format(moment().ISO_8601)
+      date: this.state.date.format()
     }
     const options = {
       method: "POST",
@@ -48,6 +54,7 @@ class IndexPage extends React.Component {
 
       data.body && this.setState({
         sales: {...data.body.sales.sales},
+        taxrates: data.body.taxrates,
         status: "Succesvolle update van sales",
         statusColor: "lightgreen"
       });
@@ -58,12 +65,6 @@ class IndexPage extends React.Component {
         statusColor: "red"
       })
     }
-  }
-
-  handleDateChange(date) {
-    this.setState({
-      date: date
-    })
   }
 
   async getInvoices () {
@@ -126,7 +127,7 @@ class IndexPage extends React.Component {
   }
 
   render () {
-    console.log(this.state.sales)
+    console.log(this.state.taxrates)
     return (
       <div className={styles.container}>
         <div className={styles.content}>
@@ -151,9 +152,9 @@ class IndexPage extends React.Component {
             </div>
             <div className={styles.cardBody}>
               <div className={styles.cardItem}>
-                { Object.values(this.state.taxrates).map((tax, key)=>{
+                { Object.keys(this.state.taxrates).map((key)=>{
                   return (
-                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {key}: {tax} </p>
+                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {key}: {this.state.taxrates[key].amount} </p>
                 )})}
               </div>
               <div className={styles.cardItem}>

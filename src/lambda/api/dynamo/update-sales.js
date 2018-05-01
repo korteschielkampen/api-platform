@@ -3,7 +3,6 @@ import updateDynamo from '../../general/dynamo/update.js'
 export default async (sales, date) => {
   _.each(sales, (sale)=>{
     _.each(sale, (value, key)=>{
-      console.log(key, ": ", value)
       if (value === "" || value === null) {
         delete sale[key];
       }
@@ -17,6 +16,6 @@ export default async (sales, date) => {
       sales: sales
     }
   };
-  await updateDynamo(params);
+  await updateDynamo(salesDay);
   return salesDay.Item;
 }

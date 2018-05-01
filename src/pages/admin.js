@@ -15,8 +15,10 @@ class IndexPage extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      sales: {},
-      taxrates: {},
+      dayreport: {
+        payments: {},
+        tax: {},
+      },
       date: moment(),
       status: "Nog geen data aangevraagd",
       statusColor: "grey",
@@ -53,9 +55,7 @@ class IndexPage extends React.Component {
       console.log("retrieved data from LS: ", data.body.lightspeed)
 
       data.body && this.setState({
-        sales: {...data.body.sales.sales},
-        taxrates: data.body.taxrates,
-        payments: data.body.payments,
+        dayreport: data.body.dayreport,
         status: "Succesvolle update van sales",
         statusColor: "lightgreen"
       });
@@ -149,20 +149,20 @@ class IndexPage extends React.Component {
           <div className={styles.card}>
             <div className={styles.cardHeader}>
               <p className={styles.cardHeading}> Datum: {this.state.date.format("MM/DD/YYYY")} </p>
-              <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, this.state.taxrates)}>Sla op in Moneybird</button>
+              <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, this.state.tax)}>Sla op in Moneybird</button>
             </div>
             <div className={styles.cardBody}>
               <div className={styles.cardItem}>
-                { Object.keys(this.state.taxrates).map((key)=>{
+                { Object.keys(this.state.dayreport.tax).map((key)=>{
                   return (
-                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {key}: {this.state.taxrates[key].amount} </p>
+                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {key}: {this.state.dayreport.tax[key].amount} </p>
                 )})}
               </div>
               <div className={styles.cardItem}>
-                {/* { invoice.payments.map((payment, key)=>{
+                { Object.keys(this.state.dayreport.payments).map((key)=>{
                   return (
-                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Betalingen -</span> {payment.paymentTypeName}: {payment.amount} </p>
-                )})} */}
+                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Betalingen -</span> {key}: {this.state.dayreport.payments[key].amount} </p>
+                )})}
               </div>
             </div>
           </div>

@@ -34106,6 +34106,7 @@ exports.handler = (() => {
 
       respond({ status: 200, body: { authData: auth, stored: dynamo } });
     } catch (err) {
+      console.log(err);
       respond({ status: 422, body: err });
     }
   });

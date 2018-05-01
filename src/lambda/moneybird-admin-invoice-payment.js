@@ -1,12 +1,8 @@
-import fetch from 'node-fetch'
 import _ from 'lodash'
 import moment from 'moment'
 
 const util = require('util')
 
-import readDynamo from './auth/dynamo/read.js'
-import updateDynamo from './auth/dynamo/update.js'
-import refreshTokens from './auth/moneybird/refresh-tokens.js'
 import createInvoice from './api/moneybird/create-sales-invoice.js'
 import sendInvoice from './api/moneybird/update-sales-invoice.js'
 import createMutation from './api/moneybird/create-financial-statement.js'
@@ -21,16 +17,6 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    // Authentication and updating
-    let auth = await readDynamo("211688738215954171");
-    let tokens = await refreshTokens(auth.refresh_token);
-    auth = {
-      ...auth,
-      access_token: tokens.access_token,
-      refresh_token: tokens.refresh_token
-    };
-    updateDynamo(auth);
-
     // Restructuring a invoice to Moneybird
     const invoice = JSON.parse(event.body);
     let financialStatement = {};

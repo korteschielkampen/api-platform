@@ -1,7 +1,7 @@
 import moment from 'moment';
 import strictUriEncode from 'strict-uri-encode';
 
-import readAccessToken from '../../auth/lightspeed/read-access-token.js'
+import readAccessToken from '../../auth/lightspeed/read-token.js'
 import request from '../../general/request.js';
 
 export default async (inputDate) => {

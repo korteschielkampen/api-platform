@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import createTokens from './auth/lightspeed/create-tokens.js'
+import createToken from './auth/lightspeed/create-token.js'
 import readAccount from './api/lightspeed/read-account.js'
 import updateDynamo from './auth/dynamo/update.js'
 
@@ -12,7 +12,7 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    let tokens = await createTokens(event.queryStringParameters.code);
+    let token = await createToken(event.queryStringParameters.code);
     let account = await readAccount(tokens.access_token);
     let auth = {
       'account_id' : account.Account.accountID,

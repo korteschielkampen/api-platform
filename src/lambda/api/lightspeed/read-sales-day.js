@@ -17,16 +17,16 @@ export default async (inputDate) => {
       'Authorization': `Bearer ${access_token}`
     }
   };
-  const apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines"]&orderby=completeTime&orderby_desc=1&timeStamp=><,${dates.start},${dates.end}`;
 
   let sales = [];
   let offset = 0;
   let count = 1;
   while (offset < count) {
+    let apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines"]&offset=${offset}&timeStamp=><,${dates.start},${dates.end}`;
     let tempSales = await request(apiUrl, options);
-    sales = _.concat(sales, tempSales);
-    count = tempSales["@attributes"].count;
-    offset += tempSales["@attributes"].limit;
+    sales = _.concat(sales, tempSales.Sale);
+    count = parseInt(tempSales["@attributes"].count);
+    offset += parseInt(tempSales["@attributes"].limit);
   }
 
   return await sales;

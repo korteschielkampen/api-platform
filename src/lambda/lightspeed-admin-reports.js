@@ -15,9 +15,10 @@ exports.handler = async (event, context, callback) => {
     // set dates to last 30 days
     let startDate = new Date();
     startDate.setDate(startDate.getDate() - 21);
-    startDate = startDate.toISOString();
-    const endDate = (new Date).toISOString();
-    const dates = {start: startDate, end: endDate};
+    const dates = {
+      start: startDate.toISOString(), 
+      end: (new Date).toISOString()
+    };
 
     // Get tax and payment data
     let tax = await readTax(dates);

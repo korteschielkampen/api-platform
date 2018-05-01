@@ -1,6 +1,8 @@
 import request from '../../general/request.js';
+import readAccessToken from '../../auth/moneybird/read-token.js'
 
-export default async (access_token, invoice) => {
+export default async (invoice) => {
+  let access_token = await readAccessToken();
   const options = {
     method: "POST",
     body: JSON.stringify(invoice),

@@ -1,6 +1,8 @@
 import request from '../../general/request.js';
+import readAccessToken from '../../auth/moneybird/read-token.js'
 
-export default async (access_token, invoice_id) => {
+export default async (invoice_id) => {
+  let access_token = await readAccessToken();
   const options = {
     method: "PATCH",
     headers: {

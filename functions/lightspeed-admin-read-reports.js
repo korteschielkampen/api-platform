@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 886);
+/******/ 	return __webpack_require__(__webpack_require__.s = 883);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -51059,8 +51059,82 @@ exports.default = (() => {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)(module)))
 
 /***/ }),
-/* 754 */,
-/* 755 */,
+/* 754 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _read = __webpack_require__(755);
+
+var _read2 = _interopRequireDefault(_read);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (account_id) {
+    var params = {
+      TableName: 'lightspeed-to-moneybird',
+      Key: {
+        "account_id": account_id
+      }
+    };
+    return yield (0, _read2.default)(params);
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 755 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+const fetch = __webpack_require__(52);
+const AWS = __webpack_require__(102);
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (params) {
+    // Configure AWS
+    AWS.config.update({
+      accessKeyId: process.env.aws_access_key_id,
+      secretAccessKey: process.env.aws_secret_access_key
+    });
+    AWS.config.update({ region: 'eu-central-1' });
+    const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
+    const dcddb = new AWS.DynamoDB.DocumentClient();
+
+    // Get request
+    try {
+      var data = yield dcddb.get(params).promise();
+      return data.Item;
+    } catch (err) {
+      throw err;
+    }
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
 /* 756 */,
 /* 757 */,
 /* 758 */,
@@ -51182,82 +51256,8 @@ exports.default = (() => {
 /* 874 */,
 /* 875 */,
 /* 876 */,
-/* 877 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _read = __webpack_require__(878);
-
-var _read2 = _interopRequireDefault(_read);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (account_id) {
-    var params = {
-      TableName: 'lightspeed-to-moneybird',
-      Key: {
-        "account_id": account_id
-      }
-    };
-    return yield (0, _read2.default)(params);
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 878 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-const fetch = __webpack_require__(52);
-const AWS = __webpack_require__(102);
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (params) {
-    // Configure AWS
-    AWS.config.update({
-      accessKeyId: process.env.aws_access_key_id,
-      secretAccessKey: process.env.aws_secret_access_key
-    });
-    AWS.config.update({ region: 'eu-central-1' });
-    const ddb = new AWS.DynamoDB({ apiVersion: '2012-10-08' });
-    const dcddb = new AWS.DynamoDB.DocumentClient();
-
-    // Get request
-    try {
-      var data = yield dcddb.get(params).promise();
-      return data.Item;
-    } catch (err) {
-      throw err;
-    }
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
+/* 877 */,
+/* 878 */,
 /* 879 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -51270,7 +51270,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _read = __webpack_require__(877);
+var _read = __webpack_require__(754);
 
 var _read2 = _interopRequireDefault(_read);
 
@@ -51278,7 +51278,7 @@ var _update = __webpack_require__(752);
 
 var _update2 = _interopRequireDefault(_update);
 
-var _refreshToken = __webpack_require__(882);
+var _refreshToken = __webpack_require__(881);
 
 var _refreshToken2 = _interopRequireDefault(_refreshToken);
 
@@ -51297,8 +51297,7 @@ exports.default = _asyncToGenerator(function* () {
 
 /***/ }),
 /* 880 */,
-/* 881 */,
-/* 882 */
+/* 881 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51340,10 +51339,8 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 883 */,
-/* 884 */,
-/* 885 */,
-/* 886 */
+/* 882 */,
+/* 883 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51353,11 +51350,11 @@ var _lodash = __webpack_require__(753);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _readReportsTaxbyday = __webpack_require__(887);
+var _readReportsTaxbyday = __webpack_require__(884);
 
 var _readReportsTaxbyday2 = _interopRequireDefault(_readReportsTaxbyday);
 
-var _readReportsPaymentsbyday = __webpack_require__(888);
+var _readReportsPaymentsbyday = __webpack_require__(885);
 
 var _readReportsPaymentsbyday2 = _interopRequireDefault(_readReportsPaymentsbyday);
 
@@ -51423,7 +51420,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 887 */
+/* 884 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51464,7 +51461,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 888 */
+/* 885 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

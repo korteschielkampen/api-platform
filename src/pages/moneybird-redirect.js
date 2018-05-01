@@ -31,7 +31,7 @@ class IndexPage extends React.Component {
 
   async getKeys () {
     try {
-      const apiUrl = `${lambdaURL}/moneybird-auth-init?code=${this.state.temporary_access_token}`;
+      const apiUrl = `${lambdaURL}/moneybird-auth-create?code=${this.state.temporary_access_token}`;
 
       const res = await fetch(apiUrl);
       if (!res.ok) {throw await res.json();}

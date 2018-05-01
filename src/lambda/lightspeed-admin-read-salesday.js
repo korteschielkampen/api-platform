@@ -1,8 +1,8 @@
 import _ from 'lodash'
 
 import readSalesDay from './api/lightspeed/read-sales-day.js'
-import updateDynamo from './general/dynamo/update.js'
-import readDynamo from './general/dynamo/read.js'
+import updateDynamo from './api/dynamo/update-sales.js'
+import readDynamo from './api/dynamo/read-sales.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -13,43 +13,43 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
+    // Read from Dynamo
     let date = JSON.parse(event.body).date;
     let lsRequested = false;
-
-    // Download day from Dynamo
-    var params = {
-      TableName: 'lightspeed-sales-day',
-      Key: {
-        "timeStamp": date,
-      }
-    };
-    let salesDay = await readDynamo(params);
+    let salesDay = await readDynamo(date);
 
     //  When not in Dynamo download from Lightspeed and put in Dynamo
-    let lsRequest = !salesDay;
-    if (lsRequest) {
+    if (!salesDay) {
       lsRequested = true;
       let sales = await readSalesDay(date);
-
-      _.each(sales, (sale)=>{
-        _.each(sale, (value, key)=>{
-          console.log(key, ": ", value)
-          if (value === "" || value === null) {
-            delete sale[key];
-          }
-        })
-      })
-
-      salesDay = {
-        TableName: 'lightspeed-sales-day',
-        Item: {
-          timeStamp: date,
-          sales: sales
-        }
-      };
-      await updateDynamo(salesDay);
-      salesDay = salesDay.Item
+      salesDay = await updateDynamo(sales, date);
     }
+
+    // Calculate taxes
+    // let taxrates = {"hoog": 0, "laag": 0, "onbelast": 0};
+    // _.map(salesDay.sales, (sale, saleID)=>{
+    //   if (sale.SaleLines) {
+    //     // Account for API inconsistency: Returns single value as object
+    //     if (!(sale.SaleLines.SaleLine.constructor === Array)) {
+    //       sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine];
+    //     }
+    //     // Do the accounting
+    //     _.map(sale.SaleLines.SaleLine, (line, lineID)=>{
+    //       switch (line.taxClassID) {
+    //         case "1":
+    //           taxrates.hoog += parseFloat(line.calcTotal);
+    //           break;
+    //         case "3":
+    //           taxrates.laag += parseFloat(line.calcTotal);
+    //           break;
+    //         case "6":
+    //           taxrates.onbelast += parseFloat(line.calcTotal);
+    //           break;
+    //         default:
+    //       }
+    //     })
+    //   }
+    // });
 
     respond({
       status: 200,
@@ -57,6 +57,7 @@ exports.handler = async (event, context, callback) => {
         sales: {
           ...salesDay
         },
+        taxrates: taxrates,
         lightspeed: lsRequested
       }
     });

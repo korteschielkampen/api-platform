@@ -16,6 +16,7 @@ class IndexPage extends React.Component {
     super(props)
     this.state = {
       sales: {},
+      taxrates: {},
       date: moment(),
       status: "Nog geen data aangevraagd",
       statusColor: "grey",
@@ -43,8 +44,10 @@ class IndexPage extends React.Component {
       if (!res.ok) {throw await res.json();}
       let data = await res.json();
 
+      console.log("retrieved data from LS: ", data.body.lightspeed)
+
       data.body && this.setState({
-        sales: {...data.body},
+        sales: {...data.body.sales.sales},
         status: "Succesvolle update van sales",
         statusColor: "lightgreen"
       });
@@ -140,6 +143,26 @@ class IndexPage extends React.Component {
                 onChange={this.handleDateChange}
             />
             <button className={styles.button} onClick={this.updateSales}>Update sales</button>
+          </div>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <p className={styles.cardHeading}> Datum: {this.state.date.format()} </p>
+              <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, this.state.taxrates)}>Sla op in Moneybird</button>
+            </div>
+            <div className={styles.cardBody}>
+              <div className={styles.cardItem}>
+                { Object.values(this.state.taxrates).map((tax, key)=>{
+                  return (
+                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {key}: {tax} </p>
+                )})}
+              </div>
+              <div className={styles.cardItem}>
+                {/* { invoice.payments.map((payment, key)=>{
+                  return (
+                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Betalingen -</span> {payment.paymentTypeName}: {payment.amount} </p>
+                )})} */}
+              </div>
+            </div>
           </div>
         </div>
         <div className={styles.content}>

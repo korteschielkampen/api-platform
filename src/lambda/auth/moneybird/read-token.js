@@ -4,13 +4,18 @@ import refreshToken from './refresh-token.js'
 
 export default async () => {
   let auth = await readDynamo("211688738215954171");
-  let token = await refreshToken(auth.refresh_token);
+  let tokens = await refreshToken(auth.refresh_token);
   auth = {
     ...auth,
-    access_token: token.access_token,
-    refresh_token: token.refresh_token
+    access_token: tokens.access_token,
+    refresh_token: tokens.refresh_token
   };
   updateDynamo(auth);
+  console.log("-----auth-------");
   console.log(auth);
+  console.log("-----endauth-------");
+  console.log("-----tokens-------");
+  console.log(token);
+  console.log("-----endtokens-------");
   return token.access_token;
 }

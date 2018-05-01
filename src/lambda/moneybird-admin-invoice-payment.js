@@ -112,7 +112,6 @@ exports.handler = async (event, context, callback) => {
     let createdBooking = await updateMutation(createdMutation.financial_mutations[0].id, booking);
     console.log("mutation coupled")
 
-
     respond({
       status: 200,
       body: {

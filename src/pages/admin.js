@@ -36,7 +36,7 @@ class IndexPage extends React.Component {
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     };
-    const apiUrl = `${lambdaURL}/lightspeed-admin-sales`;
+    const apiUrl = `${lambdaURL}/lightspeed-admin-read-salesday`;
 
     try {
       const res = await fetch(apiUrl, options);
@@ -100,7 +100,7 @@ class IndexPage extends React.Component {
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     };
-    const apiUrl = `${lambdaURL}/moneybird-admin-invoice-payment`;
+    const apiUrl = `${lambdaURL}/moneybird-admin-create-invoice`;
 
     try {
 

@@ -1,7 +1,6 @@
-const fetch = require('node-fetch');
+import request from '../../general/request.js';
 
 import readAccessToken from '../../auth/lightspeed/read-access-token.js'
-import request from '../../general/request.js';
 
 export default async (dates) => {
   let access_token = await readAccessToken();

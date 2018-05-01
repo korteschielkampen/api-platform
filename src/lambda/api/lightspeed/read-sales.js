@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 import moment from 'moment';
 import strictUriEncode from 'strict-uri-encode';
 

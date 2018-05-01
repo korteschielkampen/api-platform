@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import request from '../../general/request.js';
 
 export default async (access_token, financial_statement) => {
   const options = {
@@ -10,7 +10,5 @@ export default async (access_token, financial_statement) => {
   };
   const apiUrl = 'https://moneybird.com/api/v2/211688738215954171/financial_statements.json';
 
-  const res = await fetch(apiUrl, options);
-  if (!res.ok) {throw await res.json();}
-  return await res.json();
+  return await request(apiUrl, options);
 }

@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 import request from '../../general/request.js';
 
 export default async (access_token) => {

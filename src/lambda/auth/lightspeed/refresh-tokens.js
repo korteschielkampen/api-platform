@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import request from '../../general/request.js';
 
 export default async (refresh_token) => {
   const payload = {
@@ -14,7 +14,5 @@ export default async (refresh_token) => {
   };
   const apiUrl = 'https://cloud.lightspeedapp.com/oauth/access_token.php';
 
-  const res = await fetch(apiUrl, options);
-  if (!res.ok) {throw await res.json();}
-  return await res.json();
+  return await request(apiUrl, options);
 }

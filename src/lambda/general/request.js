@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 export default async (apiUrl, options) => {
   const res = await fetch(apiUrl, options);

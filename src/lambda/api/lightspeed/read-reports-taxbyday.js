@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 import readAccessToken from '../../auth/lightspeed/read-access-token.js'
 import request from '../../general/request.js';
 

@@ -26,5 +26,4 @@ export default async (account_id) => {
   } catch(err) {
     throw err;
   }
-
 }

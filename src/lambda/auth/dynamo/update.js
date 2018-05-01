@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const AWS = require("aws-sdk");
 
-export default async (authData) => {
+export default async (auth) => {
   // AWS configuration
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,
@@ -14,13 +14,7 @@ export default async (authData) => {
   // Configure request
   var params = {
     TableName: 'lightspeed-to-moneybird',
-    Item: {
-      'account_id' : authData.account_id,
-      'account_name' : authData.account_name,
-      'account_link' : authData.account_link,
-      'access_token' : authData.access_token,
-      'refresh_token' : authData.refresh_token
-    }
+    Item: {...auth}
   };
 
   // Send request

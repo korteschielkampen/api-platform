@@ -33881,13 +33881,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 const fetch = __webpack_require__(18);
 const AWS = __webpack_require__(127);
 
 exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (authData) {
+  var _ref = _asyncToGenerator(function* (auth) {
     // AWS configuration
     AWS.config.update({
       accessKeyId: process.env.aws_access_key_id,
@@ -33900,13 +33902,7 @@ exports.default = (() => {
     // Configure request
     var params = {
       TableName: 'lightspeed-to-moneybird',
-      Item: {
-        'account_id': authData.account_id,
-        'account_name': authData.account_name,
-        'account_link': authData.account_link,
-        'access_token': authData.access_token,
-        'refresh_token': authData.refresh_token
-      }
+      Item: _extends({}, auth)
     };
 
     // Send request

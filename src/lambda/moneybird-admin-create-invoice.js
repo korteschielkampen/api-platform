@@ -20,7 +20,7 @@ exports.handler = async (event, context, callback) => {
     const dayreport = JSON.parse(event.body);
     let date = moment(dayreport.date).format("YYYY-MM-DD");
 
-    console.log(dayreport)
+    // console.log(dayreport)
 
     let financialStatement = {};
     let invoice = {
@@ -29,7 +29,7 @@ exports.handler = async (event, context, callback) => {
         "contact_id": "211718269128672982",
         "invoice_date": moment(dayreport.date).format("YYYY-MM-DD"),
         "state": "open",
-        "prices_are_incl_tax": false,
+        "prices_are_incl_tax": true,
         "details_attributes": []
       }
     };
@@ -82,11 +82,11 @@ exports.handler = async (event, context, callback) => {
     if (parseFloat(dayreport.payments.cash.amount)) {
       financialStatement = {
         "financial_statement": {
-          "reference": `Kasboek - Lightspeed Dagontvangst - ${moment(dayreport.date, "MM/DD/YYYY").format("YYYY-MM-DD")}`,
+          "reference": `Kasboek - Lightspeed Dagontvangst - ${moment(dayreport.date).format("YYYY-MM-DD")}`,
           "financial_account_id": "211688922621675193",
           "financial_mutations_attributes": {
             "1": {
-              "date": moment(dayreport.date, "MM/DD/YYYY").format("YYYY-MM-DD"),
+              "date": moment(dayreport.date).format("YYYY-MM-DD"),
               "message": "Winkelontvangsten",
               "amount": dayreport.payments.cash.amount
             }
@@ -99,8 +99,11 @@ exports.handler = async (event, context, callback) => {
     // console.log(util.inspect(financialStatement, false, null))
 
     // Creating and sending invoice in Moneybird
-    let createdInvoice = await createInvoice(moneybirdInvoice);
+    console.log("creating invoice")
+    let createdInvoice = await createInvoice(invoice);
+    console.log("sending invoice")
     let sendedInvoice = await sendInvoice(createdInvoice.id);
+    console.log("creating mutation")
     let createdMutation = await createMutation(financialStatement);
 
     // Linking the booking
@@ -109,6 +112,7 @@ exports.handler = async (event, context, callback) => {
       "booking_id": createdInvoice.id,
       "price_base": createdMutation.financial_mutations[0].amount
     };
+    console.log("creating booking")
     let createdBooking = await updateMutation(createdMutation.financial_mutations[0].id, booking);
 
     respond({

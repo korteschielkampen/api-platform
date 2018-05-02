@@ -15,5 +15,5 @@ export default async () => {
   // };
   // updateDynamo(auth);
 
-  return tokens.access_token;
+  return auth.access_token;
 }

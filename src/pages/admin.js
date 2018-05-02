@@ -16,16 +16,14 @@ class IndexPage extends React.Component {
     super(props)
     this.state = {
       dayreports: [],
-      invoices: {}, // Reports legacy
       dates: {start: moment(), end: moment()},
       status: "Nog geen data aangevraagd",
       statusColor: "grey",
     }
-    this.getInvoices = this.getInvoices.bind(this);
-    this.createInvoice = this.createInvoice.bind(this);
-    this.getReports = this.getReports.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
+    this.createInvoice = this.createInvoice.bind(this);
+    this.getReports = this.getReports.bind(this);
   }
 
   handleStartDateChange (startdate) {

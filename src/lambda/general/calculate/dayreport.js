@@ -13,10 +13,8 @@ export default (salesDay) => {
   }
 
   if (salesDay.sales.length > 0) {
-    console.log(salesDay)
     _.map(salesDay.sales, (sale, saleID)=>{
       // Do the taxes
-      console.log(sale)
       if (sale.completed == "true" && sale.SaleLines) {
         _.map(sale.SaleLines.SaleLine, (line, lineID)=>{
           switch (line.taxClassID) {

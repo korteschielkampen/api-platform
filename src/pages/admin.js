@@ -17,13 +17,11 @@ class IndexPage extends React.Component {
     this.state = {
       dayreports: [],
       dates: {start: moment(), end: moment()},
-      refreshDate: "",
       status: "Nog geen data aangevraagd",
       statusColor: "grey",
     }
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
-    this.handleLsRefresh = this.handleLsRefresh.bind(this);
     this.createInvoice = this.createInvoice.bind(this);
     this.getReports = this.getReports.bind(this);
   }
@@ -52,13 +50,8 @@ class IndexPage extends React.Component {
     })
   }
 
-  handleLsRefresh (dayreport) {
-    this.setState({
-      refreshDate: dayreport.date
-    })
-  }
-
   async getReports (dayreport) {
+    // Construct dates to get
     let datesArray = [];
     let days = Math.abs(this.state.dates.start.diff(this.state.dates.end, 'days')) + 1;
     let dayreports = await _.times(days, (index) => {
@@ -69,14 +62,15 @@ class IndexPage extends React.Component {
       });
     });
 
+    // Check if one needs a refresh from Lightspeed
     datesArray = datesArray.map((date, key)=>{
       if (dayreport.date && moment(date.date).isSame(dayreport.date, "day")) {
-        console.log("match days")
         date.lsRefresh = true;
       }
       return date
     })
 
+    // Send off the request
     const payload = {
       datesArray: datesArray
     }

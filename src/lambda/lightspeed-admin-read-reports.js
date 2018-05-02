@@ -16,7 +16,12 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Read from Dynamo
-    let date = moment(JSON.parse(event.body).date).startOf('day').format();
+    let dates = {
+      start: moment(JSON.parse(event.body).dates.start).startOf('day').format(),
+      end:  moment(JSON.parse(event.body).dates.end).startOf('day').format()
+    }
+
+    let date = moment(JSON.parse(event.body).dates.start).startOf('day').format();
     let lsRequested = false;
     let salesDay = await readDynamo(date);
 
@@ -26,6 +31,8 @@ exports.handler = async (event, context, callback) => {
       let sales = await readSalesDay(date);
       salesDay = await updateDynamo(sales, date);
     }
+    console.log(salesDay);
+    console.log(salesDay.length);
 
     let dayreport = calculateDayreport(salesDay);
 

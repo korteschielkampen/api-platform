@@ -2,7 +2,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import {asyncify, times} from 'async'
 import {promisify} from 'util'
-const patimes = promisify(times);
+const ptimes = promisify(times);
 
 import readSalesDay from './api/lightspeed/read-sales-day.js'
 import updateDynamo from './api/dynamo/update-sales.js'
@@ -20,16 +20,14 @@ exports.handler = async (event, context, callback) => {
   try {
     let dates = {
       start: moment(JSON.parse(event.body).dates.start).startOf('day'),
-      end:  moment(JSON.parse(event.body).dates.end).startOf('day')
+      end:  moment(JSON.parse(event.body).dates.end).endOf('day')
     }
     let datesArray = [];
-    let days = Math.abs(dates.start.diff(dates.end, 'days'));
+    let days = Math.abs(dates.start.diff(dates.end, 'days')) + 1;
 
-    console.log(days);
-
-    let dayreports = await patimes(days, asyncify(async (index) => {
+    let dayreports = await ptimes(days, asyncify(async (index) => {
       // Setup variables
-      let date = dates.start.add(index, 'days').format();
+      let date = moment(dates.start).add(index, 'days').format();
       let lsRequested = false;
 
       console.log(date)
@@ -52,6 +50,8 @@ exports.handler = async (event, context, callback) => {
       }
       return dayreport
     }));
+
+    console.log(dayreports)
 
     respond({
       status: 200,

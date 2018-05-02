@@ -71,10 +71,8 @@ class IndexPage extends React.Component {
       if (!res.ok) {throw await res.json();}
       let data = await res.json();
 
-      console.log("retrieved data from LS: ", data.body.lightspeed)
-
       data.body && this.setState({
-        dayreport: data.body.dayreport,
+        dayreports: data.body.dayreports,
         status: "Succesvolle update van sales",
         statusColor: "lightgreen"
       });
@@ -147,6 +145,7 @@ class IndexPage extends React.Component {
   }
 
   render () {
+    console.log(this.state.dayreports)
     return (
       <div className={styles.container}>
         <div className={styles.content}>

@@ -85,33 +85,6 @@ class IndexPage extends React.Component {
     }
   }
 
-  async getInvoices () {
-    const options = {
-      method: "GET"
-    };
-    const apiUrl = `${lambdaURL}/lightspeed-admin-read-reports-legacy`;
-
-    try {
-
-      const res = await fetch(apiUrl, options);
-      if (!res.ok) {throw await res.json();}
-      let data = await res.json();
-
-      data.body && this.setState({
-        ...data.body.Item,
-        status: "Succesvol geauthenticeerd en data opgehaald bij Lightspeed",
-        statusColor: "lightgreen",
-        invoices: data.body.invoices
-      });
-
-    } catch(err) {
-      this.setState({
-        status: `${JSON.stringify(err.body)}`,
-        statusColor: "red"
-      })
-    }
-  }
-
   async createInvoice (dayreport) {
 
     const payload = {
@@ -197,33 +170,6 @@ class IndexPage extends React.Component {
               </div>
             </div>)
           })}
-        </div>
-        <div className={styles.content}>
-          <h1>Reports Legacy</h1>
-          <button className={styles.button} onClick={this.getInvoices}>Verkrijg reports</button>
-          { Object.values(this.state.invoices).reverse().map(((invoice, key)=>{
-            return (
-              <div key={key} className={styles.card}>
-                <div className={styles.cardHeader}>
-                  <p className={styles.cardHeading}> Datum: {invoice.tax[0].date} </p>
-                  <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, invoice)}>Sla op in Moneybird</button>
-                </div>
-                <div className={styles.cardBody}>
-                  <div className={styles.cardItem}>
-                    { invoice.tax.map((tax, key)=>{
-                      return (
-                        <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {tax.taxClassName}: {tax.subtotal} </p>
-                    )})}
-                  </div>
-                  <div className={styles.cardItem}>
-                    { invoice.payments.map((payment, key)=>{
-                      return (
-                        <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Betalingen -</span> {payment.paymentTypeName}: {payment.amount} </p>
-                    )})}
-                  </div>
-                </div>
-              </div>)
-          }))}
         </div>
       </div>
     )

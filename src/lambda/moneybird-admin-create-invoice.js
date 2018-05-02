@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import moment from 'moment'
+import util from 'util'
 
 import createInvoice from './api/moneybird/create-sales-invoice.js'
 import sendInvoice from './api/moneybird/update-sales-invoice.js'
@@ -16,83 +17,86 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Restructuring a invoice to Moneybird
-    const invoice = JSON.parse(event.body);
+    const dayreport = JSON.parse(event.body);
+    let date = moment(dayreport.date).format("YYYY-MM-DD");
+
+    console.log(dayreport)
+
     let financialStatement = {};
-    let moneybirdInvoice = {
+    let invoice = {
       "sales_invoice": {
-        "reference": `Automated Lightspeed Invoice - ${invoice.payments[0].date}`,
+        "reference": `Automated Lightspeed Invoice - ${moment(dayreport.date).format()}`,
         "contact_id": "211718269128672982",
-        "invoice_date": moment(invoice.payments[0].date, "MM/DD/YYYY").format("YYYY-MM-DD"),
+        "invoice_date": moment(dayreport.date).format("YYYY-MM-DD"),
         "state": "open",
         "prices_are_incl_tax": false,
         "details_attributes": []
       }
     };
 
-    invoice.tax.map((tax, key)=>{
-      // Hoog BTW
-      if (tax.taxClassID == 1) {
-        moneybirdInvoice.sales_invoice.details_attributes.push({
-          "description": "Hoog BTW tarief",
-          "tax_rate_id": "211688738873410854",
-          ledger_account_id: "218027560947156696",
-          "price": tax.subtotal
-        })
-      }
-      // Laag BTW
-      if (tax.taxClassID == 3) {
-        moneybirdInvoice.sales_invoice.details_attributes.push({
-          "description": "Laag BTW tarief",
-          "tax_rate_id": "211688738875508007",
-          ledger_account_id: "218027538317837859",
-          "price": tax.subtotal
-        })
-      }
-      // Nul BTW
-      if (tax.taxClassID == 6) {
-        moneybirdInvoice.sales_invoice.details_attributes.push({
-          "description": "Onbelast BTW tarief",
-          "tax_rate_id": "212145631538448378",
-          ledger_account_id: "218027616763905200",
-          "price": tax.subtotal
-        })
-      }
-    })
+    // Hoog BTW
+    if (parseFloat(dayreport.tax.hoog.amount) >= 0) {
+      invoice.sales_invoice.details_attributes.push({
+        "description": "Hoog BTW tarief",
+        "tax_rate_id": "211688738873410854",
+        ledger_account_id: "218027560947156696",
+        "price": dayreport.tax.hoog.amount
+      })
+    }
+    // Laag BTW
+    if (parseFloat(dayreport.tax.laag.amount) >= 0) {
+      invoice.sales_invoice.details_attributes.push({
+        "description": "Laag BTW tarief",
+        "tax_rate_id": "211688738875508007",
+        ledger_account_id: "218027538317837859",
+        "price": dayreport.tax.laag.amount
+      })
+    }
+    // Nul BTW
+    if (parseFloat(dayreport.tax.onbelast.amount) >= 0) {
+      invoice.sales_invoice.details_attributes.push({
+        "description": "Onbelast BTW tarief",
+        "tax_rate_id": "212145631538448378",
+        ledger_account_id: "218027616763905200",
+        "price": dayreport.tax.onbelast.amount
+      })
+    }
 
-    invoice.payments.map((payment, key)=>{
-      // Cadeaukaart
-      if (payment.paymentTypeID == 5) {
-        moneybirdInvoice.sales_invoice.details_attributes.push({
-          "description": "Betalingen met of uitgifte van cadeaukaarten",
-          "tax_rate_id": "212145631538448378",
-          "ledger_account_id": "212771713877804212",
-          "price": -payment.amount
-        })
-      }
-      // Kredietaccount
-      if (payment.paymentTypeID == 4 ) {
-        moneybirdInvoice.sales_invoice.details_attributes.push({
-          "description": "Betalingen met of uitgifte van klantkredieten",
-          "price": payment.amount
-        })
-      }
-      // Cash
-      if (payment.paymentTypeID == 1 ) {
-        financialStatement = {
-          "financial_statement": {
-            "reference": `Kasboek - Lightspeed Dagontvangst - ${moment(payment.date, "MM/DD/YYYY").format("YYYY-MM-DD")}`,
-            "financial_account_id": "211688922621675193",
-            "financial_mutations_attributes": {
-              "1": {
-                "date": moment(invoice.payments[0].date, "MM/DD/YYYY").format("YYYY-MM-DD"),
-                "message": "Winkelontvangsten",
-                "amount": payment.amount
-              }
+    // Cadeaukaart
+    if (parseFloat(dayreport.payments.gift.amount) >= 0) {
+      invoice.sales_invoice.details_attributes.push({
+        "description": "Betalingen met of uitgifte van cadeaukaarten",
+        "tax_rate_id": "212145631538448378",
+        "ledger_account_id": "212771713877804212",
+        "price": -dayreport.payments.gift.amount
+      })
+    }
+    // Kredietaccount
+    if (parseFloat(dayreport.payments.credit.amount)) {
+      invoice.sales_invoice.details_attributes.push({
+        "description": "Betalingen met of uitgifte van klantkredieten",
+        "price": dayreport.payments.credit.amount
+      })
+    }
+    // Cash
+    if (parseFloat(dayreport.payments.cash.amount)) {
+      financialStatement = {
+        "financial_statement": {
+          "reference": `Kasboek - Lightspeed Dagontvangst - ${moment(dayreport.date, "MM/DD/YYYY").format("YYYY-MM-DD")}`,
+          "financial_account_id": "211688922621675193",
+          "financial_mutations_attributes": {
+            "1": {
+              "date": moment(dayreport.date, "MM/DD/YYYY").format("YYYY-MM-DD"),
+              "message": "Winkelontvangsten",
+              "amount": dayreport.payments.cash.amount
             }
           }
-        };
-      }
-    })
+        }
+      };
+    }
+
+    // console.log(util.inspect(invoice, false, null))
+    // console.log(util.inspect(financialStatement, false, null))
 
     // Creating and sending invoice in Moneybird
     let createdInvoice = await createInvoice(moneybirdInvoice);

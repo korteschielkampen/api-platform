@@ -112,10 +112,10 @@ class IndexPage extends React.Component {
     }
   }
 
-  async createInvoice (invoice) {
+  async createInvoice (dayreport) {
 
     const payload = {
-      ...invoice
+      ...dayreport
     }
     const options = {
       method: "POST",
@@ -131,7 +131,6 @@ class IndexPage extends React.Component {
       let data = await res.json();
 
       data.body && this.setState({
-        ...data.body.Item,
         status: "Succesvol verzonden met Moneybird",
         statusColor: "lightgreen"
       });
@@ -181,7 +180,7 @@ class IndexPage extends React.Component {
               <div className={styles.cardHeader}>
                 <p className={styles.cardHeading}> Start: {moment(dayreport.date).format("MM/DD/YYYY")} </p>
                 <p className={styles.cardHeadingText}> Datasource: {dayreport.lsRequested ? "Lightspeed" : "DynamoDB"} </p>
-                <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, this.state.createInvoice)}>Sla op in Moneybird</button>
+                <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, dayreport)}>Sla op in Moneybird</button>
               </div>
               <div className={styles.cardBody}>
                 <div className={styles.cardItem}>

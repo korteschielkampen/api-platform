@@ -20,7 +20,7 @@ exports.handler = async (event, context, callback) => {
     const dayreport = JSON.parse(event.body);
     let date = moment(dayreport.date).format("YYYY-MM-DD");
 
-    // console.log(dayreport)
+    console.log(dayreport)
 
     let financialStatement = {};
     let invoice = {
@@ -35,7 +35,7 @@ exports.handler = async (event, context, callback) => {
     };
 
     // Hoog BTW
-    if (parseFloat(dayreport.tax.hoog.amount) >= 0) {
+    if (parseFloat(dayreport.tax.hoog.amount) !== 0) {
       invoice.sales_invoice.details_attributes.push({
         "description": "Hoog BTW tarief",
         "tax_rate_id": "211688738873410854",
@@ -44,7 +44,7 @@ exports.handler = async (event, context, callback) => {
       })
     }
     // Laag BTW
-    if (parseFloat(dayreport.tax.laag.amount) >= 0) {
+    if (parseFloat(dayreport.tax.laag.amount) !== 0) {
       invoice.sales_invoice.details_attributes.push({
         "description": "Laag BTW tarief",
         "tax_rate_id": "211688738875508007",
@@ -53,7 +53,7 @@ exports.handler = async (event, context, callback) => {
       })
     }
     // Nul BTW
-    if (parseFloat(dayreport.tax.onbelast.amount) >= 0) {
+    if (parseFloat(dayreport.tax.onbelast.amount) !== 0) {
       invoice.sales_invoice.details_attributes.push({
         "description": "Onbelast BTW tarief",
         "tax_rate_id": "212145631538448378",
@@ -63,7 +63,8 @@ exports.handler = async (event, context, callback) => {
     }
 
     // Cadeaukaart
-    if (parseFloat(dayreport.payments.gift.amount) >= 0) {
+    if (parseFloat(dayreport.payments.gift.amount) !== 0) {
+      console.log("giftcard run")
       invoice.sales_invoice.details_attributes.push({
         "description": "Betalingen met of uitgifte van cadeaukaarten",
         "tax_rate_id": "212145631538448378",
@@ -72,14 +73,14 @@ exports.handler = async (event, context, callback) => {
       })
     }
     // Kredietaccount
-    if (parseFloat(dayreport.payments.credit.amount)) {
+    if (parseFloat(dayreport.payments.credit.amount) !== 0) {
       invoice.sales_invoice.details_attributes.push({
         "description": "Betalingen met of uitgifte van klantkredieten",
         "price": dayreport.payments.credit.amount
       })
     }
     // Cash
-    if (parseFloat(dayreport.payments.cash.amount)) {
+    if (parseFloat(dayreport.payments.cash.amount) !== 0) {
       financialStatement = {
         "financial_statement": {
           "reference": `Kasboek - Lightspeed Dagontvangst - ${moment(dayreport.date).format("YYYY-MM-DD")}`,
@@ -95,8 +96,8 @@ exports.handler = async (event, context, callback) => {
       };
     }
 
-    // console.log(util.inspect(invoice, false, null))
-    // console.log(util.inspect(financialStatement, false, null))
+    console.log(util.inspect(invoice, false, null))
+    console.log(util.inspect(financialStatement, false, null))
 
     // Creating and sending invoice in Moneybird
     console.log("creating invoice")

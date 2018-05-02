@@ -24,6 +24,7 @@ exports.handler = async (event, context, callback) => {
     }
     let datesArray = [];
     let days = Math.abs(dates.start.diff(dates.end, 'days'));
+
     console.log(days);
 
     let dayreports = await patimes(days, asyncify(async (index) => {

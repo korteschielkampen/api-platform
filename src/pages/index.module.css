@@ -34,8 +34,8 @@
 }
 
 .statusBar {
-  padding: 1rem;
   border-radius: 2rem;
+  padding: 1rem;
 }
 
 .datepickerWrapper {
@@ -43,11 +43,12 @@
   border: solid black 1px;
   border-radius: 2rem;
   overflow: hidden;
+  padding: 1rem;
 }
 
 .datepicker {
-  padding: 0.5rem;
-  width: 7rem;
+  padding: 0rem;
+  width: 6rem;
   outline: 0;
   border: none;
 }

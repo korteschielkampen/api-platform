@@ -17,11 +17,13 @@ class IndexPage extends React.Component {
     this.state = {
       dayreports: [],
       dates: {start: moment(), end: moment()},
+      refreshDate: "",
       status: "Nog geen data aangevraagd",
       statusColor: "grey",
     }
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
+    this.handleLsRefresh = this.handleLsRefresh.bind(this);
     this.createInvoice = this.createInvoice.bind(this);
     this.getReports = this.getReports.bind(this);
   }
@@ -50,7 +52,32 @@ class IndexPage extends React.Component {
     })
   }
 
-  async getReports () {
+  handleLsRefresh (dayreport) {
+    this.setState({
+      refreshDate: dayreport.date
+    })
+  }
+
+  async getReports (dayreport) {
+    let datesArray = [];
+    let days = Math.abs(this.state.dates.start.diff(this.state.dates.end, 'days')) + 1;
+    let dayreports = await _.times(days, (index) => {
+      let date = moment(this.state.dates.start).add(index, 'days').startOf("day").format();
+      datesArray.push({
+        date: date,
+        lsRefresh: false
+      });
+    });
+
+    datesArray = datesArray.map((date, key)=>{
+      if (moment(dayreport.date).isSame(date.date, "day")) {
+        date.lsRefresh = true;
+      }
+      return date
+    })
+
+    console.log(datesArray);
+
     const payload = {
       dates: {
         start: this.state.dates.start.format(),
@@ -84,7 +111,6 @@ class IndexPage extends React.Component {
   }
 
   async createInvoice (dayreport) {
-
     const payload = {
       ...dayreport
     }
@@ -143,13 +169,14 @@ class IndexPage extends React.Component {
                   selectsEnd
               />
             </div>
-            <button className={styles.button} onClick={this.getReports}>Verkrijg reports</button>
+            <button className={styles.button} onClick={this.getReports}>Verkrijg rapporten</button>
           </div>
           {this.state.dayreports.map((dayreport, key)=>{
             return (<div key={key} className={styles.card}>
               <div className={styles.cardHeader}>
                 <p className={styles.cardHeading}> Start: {moment(dayreport.date).format("MM/DD/YYYY")} </p>
-                <p className={styles.cardHeadingText}> Datasource: {dayreport.lsRequested ? "Lightspeed" : "DynamoDB"} </p>
+                <p className={styles.cardHeadingText}> {dayreport.lsRequested ? "Lightspeed" : "DynamoDB"} </p>
+                <button className={classNames(styles.button)} onClick={this.getReports.bind(this, dayreport)}>Refresh</button>
                 <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, dayreport)}>Sla op in Moneybird</button>
               </div>
               <div className={styles.cardBody}>

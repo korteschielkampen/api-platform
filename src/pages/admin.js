@@ -19,14 +19,14 @@ class IndexPage extends React.Component {
         payments: {},
         tax: {},
       },
+      invoices: {}, // Reports legacy
       dates: {start: moment(), end: moment()},
       status: "Nog geen data aangevraagd",
       statusColor: "grey",
-      invoices: {}
     }
     this.getInvoices = this.getInvoices.bind(this);
     this.createInvoice = this.createInvoice.bind(this);
-    this.updateSales = this.updateSales.bind(this);
+    this.getReports = this.getReports.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
   }
@@ -55,9 +55,12 @@ class IndexPage extends React.Component {
     })
   }
 
-  async updateSales () {
+  async getReports () {
     const payload = {
-      date: this.state.date.format()
+      dates: {
+        start: this.state.dates.start.format(),
+        end: this.state.dates.end.format()
+      }
     }
     const options = {
       method: "POST",
@@ -156,7 +159,7 @@ class IndexPage extends React.Component {
           <p style={{backgroundColor: this.state.statusColor}} className={styles.statusBar}>{this.state.status}</p>
         </div>
         <div className={styles.content}>
-          <h1>Sales</h1>
+          <h1>Reports</h1>
           <div className={styles.box}>
             <div className={styles.datepickerWrapper}>
               <DatePicker
@@ -176,7 +179,7 @@ class IndexPage extends React.Component {
                   selectsEnd
               />
             </div>
-            <button className={styles.button} onClick={this.updateSales}>Update sales</button>
+            <button className={styles.button} onClick={this.getReports}>Verkrijg reports</button>
           </div>
           <div className={styles.card}>
             <div className={styles.cardHeader}>
@@ -200,7 +203,7 @@ class IndexPage extends React.Component {
           </div>
         </div>
         <div className={styles.content}>
-          <h1>Reports</h1>
+          <h1>Reports Legacy</h1>
           <button className={styles.button} onClick={this.getInvoices}>Verkrijg reports</button>
           { Object.values(this.state.invoices).reverse().map(((invoice, key)=>{
             return (

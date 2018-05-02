@@ -20,8 +20,6 @@ exports.handler = async (event, context, callback) => {
     const dayreport = JSON.parse(event.body);
     let date = moment(dayreport.date).format("YYYY-MM-DD");
 
-    console.log(dayreport)
-
     let financialStatement = {};
     let invoice = {
       "sales_invoice": {
@@ -95,9 +93,6 @@ exports.handler = async (event, context, callback) => {
         }
       };
     }
-
-    console.log(util.inspect(invoice, false, null))
-    console.log(util.inspect(financialStatement, false, null))
 
     // Creating and sending invoice in Moneybird
     console.log("creating invoice")

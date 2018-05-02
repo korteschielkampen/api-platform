@@ -62,6 +62,7 @@
 .cardHeader {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin: 0 0 2rem 0;
 }
 
@@ -70,6 +71,10 @@
   padding: 1rem 1rem;
   margin-bottom: 0;
   border-radius: 2rem;
+}
+
+.cardHeadingText {
+  margin: 0;
 }
 
 .cardBody {

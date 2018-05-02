@@ -30,19 +30,21 @@ exports.handler = async (event, context, callback) => {
       let date = moment(dates.start).add(index, 'days').format();
       let lsRequested = false;
 
-      console.log(date)
-
       // Read from Dynamo
+      console.log("Request Dynamo")
       let salesDay = await readDynamo(date);
 
       // When not in Dynamo download from Lightspeed and put in Dynamo
       if (!salesDay) {
         lsRequested = true;
+        console.log("Request Lightspeed")
         let sales = await readSalesDay(date);
+        console.log("Update Dynamo")
         salesDay = await updateDynamo(sales, date);
       }
 
       // Calculate the dayreport
+      console.log("Calculate Dayreturn")
       let dayreport = {
         date: date,
         lsRequested: lsRequested,
@@ -50,8 +52,6 @@ exports.handler = async (event, context, callback) => {
       }
       return dayreport
     }));
-
-    console.log(dayreports)
 
     respond({
       status: 200,

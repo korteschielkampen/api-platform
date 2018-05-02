@@ -3,8 +3,11 @@ const util = require('util')
 
 export default async (sales, date) => {
   // Normalize object/array output and the empty strings for Dynamo
-  _.each(sales, (sale)=>{
-    // Normalize sale empties
+  let cleanSales = _.filter(sales, (sale)=>{
+    // Normalize sale empty keys for dynamo
+    if (sale === undefined) {
+      return false
+    }
     if (sale) {
       _.each(sale, (saleValue, saleKey)=>{
         if (saleValue === "" || saleValue === null) {
@@ -20,7 +23,7 @@ export default async (sales, date) => {
         sale.SalePayments.SalePayment = [sale.SalePayments.SalePayment];
       }
 
-      // Normalize payment empties
+      // Normalize payment empty keys for dynamo
       sale.SalePayments && _.each(sale.SalePayments.SalePayment, (payment)=>{
         _.each(payment, (paymentValue, paymentKey)=>{
           if (paymentValue === "" || paymentValue === null) {
@@ -29,13 +32,14 @@ export default async (sales, date) => {
         })
       })
     }
+    return sale;
   })
 
   let salesDay = {
     TableName: 'lightspeed-sales-day',
     Item: {
       timeStamp: date,
-      sales: sales
+      sales: cleanSales
     }
   };
 

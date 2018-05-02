@@ -176,26 +176,29 @@ class IndexPage extends React.Component {
             </div>
             <button className={styles.button} onClick={this.getReports}>Verkrijg reports</button>
           </div>
-          {/* <div className={styles.card}>
-            <div className={styles.cardHeader}>
-              <p className={styles.cardHeading}> Start: {this.state.dates.start.format("MM/DD/YYYY")} </p>
-              <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, this.state.tax)}>Sla op in Moneybird</button>
-            </div>
-            <div className={styles.cardBody}>
-              <div className={styles.cardItem}>
-                { Object.keys(this.state.dayreport.tax).map((key)=>{
-                  return (
-                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {key}: {this.state.dayreport.tax[key].amount} </p>
-                )})}
+          {this.state.dayreports.map((dayreport, key)=>{
+            return (<div key={key} className={styles.card}>
+              <div className={styles.cardHeader}>
+                <p className={styles.cardHeading}> Start: {moment(dayreport.date).format("MM/DD/YYYY")} </p>
+                <p className={styles.cardHeadingText}> Datasource: {dayreport.lsRequested ? "Lightspeed" : "DynamoDB"} </p>
+                <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, this.state.createInvoice)}>Sla op in Moneybird</button>
               </div>
-              <div className={styles.cardItem}>
-                { Object.keys(this.state.dayreport.payments).map((key)=>{
-                  return (
-                    <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Betalingen -</span> {key}: {this.state.dayreport.payments[key].amount} </p>
-                )})}
+              <div className={styles.cardBody}>
+                <div className={styles.cardItem}>
+                  { Object.keys(dayreport.tax).map((key)=>{
+                    return (
+                      <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Belastingtype -</span> {key}: {dayreport.tax[key].amount} </p>
+                  )})}
+                </div>
+                <div className={styles.cardItem}>
+                  { Object.keys(dayreport.payments).map((key)=>{
+                    return (
+                      <p key={key} className={styles.cardText}> <span style={{color: "grey"}}>Betalingen -</span> {key}: {dayreport.payments[key].amount} </p>
+                  )})}
+                </div>
               </div>
-            </div>
-          </div> */}
+            </div>)
+          })}
         </div>
         <div className={styles.content}>
           <h1>Reports Legacy</h1>

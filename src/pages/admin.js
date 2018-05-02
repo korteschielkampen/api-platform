@@ -19,7 +19,7 @@ class IndexPage extends React.Component {
         payments: {},
         tax: {},
       },
-      date: moment(),
+      dates: {start: moment(), end: moment()},
       status: "Nog geen data aangevraagd",
       statusColor: "grey",
       invoices: {}
@@ -27,12 +27,31 @@ class IndexPage extends React.Component {
     this.getInvoices = this.getInvoices.bind(this);
     this.createInvoice = this.createInvoice.bind(this);
     this.updateSales = this.updateSales.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleStartDateChange = this.handleStartDateChange.bind(this);
+    this.handleEndDateChange = this.handleEndDateChange.bind(this);
   }
 
-  handleDateChange(date) {
-    this.setState({
-      date: date
+  handleStartDateChange (startdate) {
+    this.setState(prevState => {
+        return {
+          ...prevState,
+          dates: {
+            ...prevState.dates,
+            start: startdate
+          }
+        }
+    })
+  }
+
+  handleEndDateChange (enddate) {
+    this.setState(prevState => {
+        return {
+          ...prevState,
+          dates: {
+            ...prevState.dates,
+            end: enddate
+          }
+        }
     })
   }
 
@@ -45,7 +64,7 @@ class IndexPage extends React.Component {
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     };
-    const apiUrl = `${lambdaURL}/lightspeed-admin-read-salesday`;
+    const apiUrl = `${lambdaURL}/lightspeed-admin-read-reports`;
 
     try {
       const res = await fetch(apiUrl, options);
@@ -72,7 +91,7 @@ class IndexPage extends React.Component {
     const options = {
       method: "GET"
     };
-    const apiUrl = `${lambdaURL}/lightspeed-admin-read-reports`;
+    const apiUrl = `${lambdaURL}/lightspeed-admin-read-reports-legacy`;
 
     try {
 
@@ -128,7 +147,7 @@ class IndexPage extends React.Component {
   }
 
   render () {
-    console.log(this.state)
+    console.log(this.state.dates)
     return (
       <div className={styles.container}>
         <div className={styles.content}>
@@ -139,16 +158,29 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <h1>Sales</h1>
           <div className={styles.box}>
-            <DatePicker
-                className={styles.datepicker}
-                selected={this.state.date}
-                onChange={this.handleDateChange}
-            />
+            <div className={styles.datepickerWrapper}>
+              <DatePicker
+                  className={styles.datepicker}
+                  selected={this.state.dates.start}
+                  startDate={this.state.dates.start}
+                  endDate={this.state.dates.end}
+                  onChange={this.handleStartDateChange}
+                  selectsStart
+              />
+              <DatePicker
+                  className={styles.datepicker}
+                  selected={this.state.dates.end}
+                  startDate={this.state.dates.start}
+                  endDate={this.state.dates.end}
+                  onChange={this.handleEndDateChange}
+                  selectsEnd
+              />
+            </div>
             <button className={styles.button} onClick={this.updateSales}>Update sales</button>
           </div>
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <p className={styles.cardHeading}> Datum: {this.state.date.format("MM/DD/YYYY")} </p>
+              <p className={styles.cardHeading}> Start: {this.state.dates.start.format("MM/DD/YYYY")} </p>
               <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, this.state.tax)}>Sla op in Moneybird</button>
             </div>
             <div className={styles.cardBody}>

@@ -38,10 +38,18 @@
   border-radius: 2rem;
 }
 
-.datepicker {
-  padding: 1rem;
+.datepickerWrapper {
+  display: flex;
+  border: solid black 1px;
   border-radius: 2rem;
+  overflow: hidden;
+}
+
+.datepicker {
+  padding: 0.5rem;
+  width: 7rem;
   outline: 0;
+  border: none;
 }
 
 .card {

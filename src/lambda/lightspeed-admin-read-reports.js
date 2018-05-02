@@ -1,7 +1,10 @@
 import _ from 'lodash'
+import moment from 'moment';
 
-import readTax from './api/lightspeed/read-reports-taxbyday.js'
-import readPayments from './api/lightspeed/read-reports-paymentsbyday.js'
+import readSalesDay from './api/lightspeed/read-sales-day.js'
+import updateDynamo from './api/dynamo/update-sales.js'
+import readDynamo from './api/dynamo/read-sales.js'
+import calculateDayreport from './general/calculate/dayreport.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -12,36 +15,25 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    // set dates to last 30 days
-    let startDate = new Date();
-    startDate.setDate(startDate.getDate() - 21);
-    const dates = {
-      start: startDate.toISOString(), 
-      end: (new Date).toISOString()
-    };
+    // Read from Dynamo
+    let date = moment(JSON.parse(event.body).date).startOf('day').format();
+    let lsRequested = false;
+    let salesDay = await readDynamo(date);
 
-    // Get tax and payment data
-    let tax = await readTax(dates);
-    let payments = await readPayments(dates);
+    //  When not in Dynamo download from Lightspeed and put in Dynamo
+    if (!salesDay) {
+      lsRequested = true;
+      let sales = await readSalesDay(date);
+      salesDay = await updateDynamo(sales, date);
+    }
 
-    // Group by day, nest and merge
-    let groupedTax =  _.groupBy(tax.SalesDay, "date");
-    let groupedPayments =  _.groupBy(payments.Payments, "date");
-    let nestedTax = Object.keys(groupedTax).map(k => ({[k]: {tax: groupedTax[k]}}));
-    let nestedPayments = Object.keys(groupedPayments).map(k => ({
-      [k]: {
-        payments: groupedPayments[k]
-      }
-    }));
-    let invoices = _.merge({}, ...nestedTax, ...nestedPayments);
+    let dayreport = calculateDayreport(salesDay);
 
     respond({
       status: 200,
       body: {
-        authData: {
-          truncated: "A lot here, but not for the client to view"
-        },
-        invoices: invoices
+        dayreport: dayreport,
+        lightspeed: lsRequested
       }
     });
 
@@ -49,4 +41,5 @@ exports.handler = async (event, context, callback) => {
     console.log(err);
     respond({ status: 422, body: err });
   }
+
 }

@@ -15,10 +15,7 @@ class IndexPage extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      dayreport: {
-        payments: {},
-        tax: {},
-      },
+      dayreports: [],
       invoices: {}, // Reports legacy
       dates: {start: moment(), end: moment()},
       status: "Nog geen data aangevraagd",
@@ -150,7 +147,6 @@ class IndexPage extends React.Component {
   }
 
   render () {
-    console.log(this.state.dates)
     return (
       <div className={styles.container}>
         <div className={styles.content}>
@@ -181,7 +177,7 @@ class IndexPage extends React.Component {
             </div>
             <button className={styles.button} onClick={this.getReports}>Verkrijg reports</button>
           </div>
-          <div className={styles.card}>
+          {/* <div className={styles.card}>
             <div className={styles.cardHeader}>
               <p className={styles.cardHeading}> Start: {this.state.dates.start.format("MM/DD/YYYY")} </p>
               <button className={classNames(styles.button, styles.buttonBlue)} onClick={this.createInvoice.bind(this, this.state.tax)}>Sla op in Moneybird</button>
@@ -200,7 +196,7 @@ class IndexPage extends React.Component {
                 )})}
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className={styles.content}>
           <h1>Reports Legacy</h1>

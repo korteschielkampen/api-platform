@@ -11,6 +11,7 @@ export default (salesDay) => {
     credit: {name: "credit", amount: 0},
     gift: {name: "gift", amount: 0},
   }
+  
   if (salesDay.sales.length > 0) {
     _.map(salesDay.sales, (sale, saleID)=>{
       // Do the taxes

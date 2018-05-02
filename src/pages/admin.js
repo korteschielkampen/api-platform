@@ -70,19 +70,15 @@ class IndexPage extends React.Component {
     });
 
     datesArray = datesArray.map((date, key)=>{
-      if (moment(dayreport.date).isSame(date.date, "day")) {
+      if (dayreport.date && moment(date.date).isSame(dayreport.date, "day")) {
+        console.log("match days")
         date.lsRefresh = true;
       }
       return date
     })
 
-    console.log(datesArray);
-
     const payload = {
-      dates: {
-        start: this.state.dates.start.format(),
-        end: this.state.dates.end.format()
-      }
+      datesArray: datesArray
     }
     const options = {
       method: "POST",

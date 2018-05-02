@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import moment from 'moment'
-import {asyncify, times} from 'async'
+import {asyncify, map} from 'async'
 import {promisify} from 'util'
-const ptimes = promisify(times);
+const pmap = promisify(map);
 
 import readSalesDay from './api/lightspeed/read-sales-day.js'
 import updateDynamo from './api/dynamo/update-sales.js'
@@ -18,24 +18,22 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    let dates = {
-      start: moment(JSON.parse(event.body).dates.start).startOf('day'),
-      end:  moment(JSON.parse(event.body).dates.end).endOf('day')
-    }
-    let datesArray = [];
-    let days = Math.abs(dates.start.diff(dates.end, 'days')) + 1;
+    let datesArray = (JSON.parse(event.body)).datesArray;
 
-    let dayreports = await ptimes(days, asyncify(async (index) => {
+    let dayreports = await pmap(datesArray, asyncify(async (dateObject, key) => {
       // Setup variables
-      let date = moment(dates.start).add(index, 'days').format();
+      let date = moment(dateObject.date).format();
       let lsRequested = false;
+      let salesDay;
 
       // Read from Dynamo
-      console.log("Request Dynamo")
-      let salesDay = await readDynamo(date);
+      if (!dateObject.lsRefresh){
+        console.log("Request Dynamo")
+        salesDay = await readDynamo(date);
+      }
 
       // When not in Dynamo download from Lightspeed and put in Dynamo
-      if (!salesDay) {
+      if (!salesDay || dateObject.lsRefresh) {
         lsRequested = true;
         console.log("Request Lightspeed")
         let sales = await readSalesDay(date);

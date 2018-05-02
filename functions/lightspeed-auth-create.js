@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 893);
+/******/ 	return __webpack_require__(__webpack_require__.s = 890);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -5573,6 +5573,12 @@ module.exports = require("fs");
 
 /***/ }),
 /* 51 */
+/***/ (function(module, exports) {
+
+module.exports = require("util");
+
+/***/ }),
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5582,7 +5588,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _nodeFetch = __webpack_require__(52);
+var _nodeFetch = __webpack_require__(53);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
 
@@ -5605,7 +5611,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -5882,12 +5888,6 @@ Fetch.Request = Request;
 
 
 /***/ }),
-/* 53 */
-/***/ (function(module, exports) {
-
-module.exports = require("util");
-
-/***/ }),
 /* 54 */
 /***/ (function(module, exports) {
 
@@ -5941,7 +5941,7 @@ function FetchError(message, type, systemError) {
 	Error.captureStackTrace(this, this.constructor);
 }
 
-__webpack_require__(53).inherits(FetchError, Error);
+__webpack_require__(51).inherits(FetchError, Error);
 
 
 /***/ }),
@@ -8831,7 +8831,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-const fetch = __webpack_require__(52);
+const fetch = __webpack_require__(53);
 const AWS = __webpack_require__(102);
 
 exports.default = (() => {
@@ -17739,7 +17739,7 @@ AWS.EventListeners = {
           var inputShape = req.service.api.operations[req.operation].input;
           censoredParams = filterSensitiveLog(inputShape, req.params);
         }
-        var params = __webpack_require__(53).inspect(censoredParams, true, null);
+        var params = __webpack_require__(51).inspect(censoredParams, true, null);
         var message = '';
         if (ansi) message += '\x1B[33m';
         message += '[AWS ' + req.service.serviceIdentifier + ' ' + status;
@@ -34083,20 +34083,17 @@ exports.default = (() => {
 /* 887 */,
 /* 888 */,
 /* 889 */,
-/* 890 */,
-/* 891 */,
-/* 892 */,
-/* 893 */
+/* 890 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _createToken = __webpack_require__(894);
+var _createToken = __webpack_require__(891);
 
 var _createToken2 = _interopRequireDefault(_createToken);
 
-var _readAccount = __webpack_require__(895);
+var _readAccount = __webpack_require__(892);
 
 var _readAccount2 = _interopRequireDefault(_readAccount);
 
@@ -34142,7 +34139,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 894 */
+/* 891 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34152,7 +34149,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(51);
+var _request = __webpack_require__(52);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -34184,7 +34181,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 895 */
+/* 892 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34194,7 +34191,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(51);
+var _request = __webpack_require__(52);
 
 var _request2 = _interopRequireDefault(_request);
 

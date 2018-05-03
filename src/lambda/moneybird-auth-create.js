@@ -1,6 +1,6 @@
-import createToken from './auth/moneybird/create-token.js'
+import createToken from './api/moneybird-auth/create-token.js'
 import readAccount from './api/moneybird/read-administration.js'
-import updateDynamo from './auth/dynamo/update.js'
+import updateDynamo from './store/dynamo/auth/update.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {

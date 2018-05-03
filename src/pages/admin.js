@@ -24,6 +24,7 @@ class IndexPage extends React.Component {
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
     this.createInvoice = this.createInvoice.bind(this);
     this.getReports = this.getReports.bind(this);
+    this.testAutomate = this.testAutomate.bind(this);
   }
 
   handleStartDateChange (startdate) {
@@ -130,6 +131,30 @@ class IndexPage extends React.Component {
     }
   }
 
+  async testAutomate () {
+    const options = {
+      method: "GET"
+    };
+    const apiUrl = `${lambdaURL}/lightspeed-automated-invoice`;
+
+    try {
+      const res = await fetch(apiUrl, options);
+      if (!res.ok) {throw await res.json();}
+      let data = await res.json();
+
+      data.body && this.setState({
+        status: "Testing returns positive: 200",
+        statusColor: "lightgreen"
+      });
+
+    } catch(err) {
+      this.setState({
+        status: `${JSON.stringify(err.body)}`,
+        statusColor: "red"
+      })
+    }
+  }
+
   render () {
     return (
       <div className={styles.container}>
@@ -160,6 +185,7 @@ class IndexPage extends React.Component {
               />
             </div>
             <button className={styles.button} onClick={this.getReports}>Verkrijg rapporten</button>
+            <button className={styles.button} onClick={this.testAutomate}>Test automate</button>
           </div>
           {this.state.dayreports.map((dayreport, key)=>{
             return (<div key={key} className={styles.card}>

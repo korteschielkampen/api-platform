@@ -4,10 +4,10 @@ import {asyncify, map} from 'async'
 import {promisify} from 'util'
 const pmap = promisify(map);
 
-import readSalesDay from './api/lightspeed/read-sales-day.js'
-import updateDynamo from './api/dynamo/update-sales.js'
-import readDynamo from './api/dynamo/read-sales.js'
-import calculateDayreport from './general/calculate/dayreport.js'
+import readSalesDay from './api/lightspeed/read-salesday.js'
+import updateDynamo from './store/dynamo/salesday/update.js'
+import readDynamo from './store/dynamo/salesday/read.js'
+import calculateDayreport from './transformation/lightspeed-sales--to--dayreport.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {

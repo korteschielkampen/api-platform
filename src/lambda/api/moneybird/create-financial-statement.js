@@ -1,5 +1,5 @@
-import request from '../../general/request.js';
-import readAccessToken from '../../auth/moneybird/read-token.js'
+import request from '../general/request.js';
+import readAccessToken from '../moneybird-auth/read-token.js'
 
 export default async (financial_statement) => {
   let access_token = await readAccessToken();

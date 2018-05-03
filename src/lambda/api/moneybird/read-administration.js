@@ -1,4 +1,4 @@
-import request from '../../general/request.js';
+import request from '../general/request.js';
 
 export default async (access_token) => {
   const options = {

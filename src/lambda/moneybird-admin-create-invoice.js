@@ -102,7 +102,7 @@ exports.handler = async (event, context, callback) => {
           }
         }
       };
-      financialStatement.financial_statement["1"].amount = dayreport.payments.cash.amount;
+      financialStatement.financial_statement.financial_mutations_attributes["1"].amount = dayreport.payments.cash.amount;
 
       // Creating Mutation
       let createdMutation = await createMutation(financialStatement);

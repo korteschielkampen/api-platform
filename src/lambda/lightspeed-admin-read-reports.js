@@ -22,7 +22,7 @@ exports.handler = async (event, context, callback) => {
 
     let dayreports = await pmap(datesArray, asyncify(async (dateObject, key) => {
       // Setup variables
-      let date = moment(dateObject.date).format();
+      let date = moment(dateObject.date).startOf('day').format();
       let lsRequested = false;
       let salesDay;
 

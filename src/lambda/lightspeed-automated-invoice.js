@@ -13,7 +13,7 @@ import moneybirdCreate from './action/moneybird-create.js'
 exports.handler = async (event, context, callback) => {
   try {
     // Setup variables
-    let date = moment().format();
+    let date = moment().startOf('day').format();
 
     // Download sales from Lightspeed and put in Dynamo
     console.log("request lightspeed")

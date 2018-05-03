@@ -20,7 +20,6 @@ exports.handler = async (event, context, callback) => {
     const dayreport = JSON.parse(event.body);
     let date = moment(dayreport.date).format("YYYY-MM-DD");
 
-    let financialStatement = {};
     let invoice = {
       "sales_invoice": {
         "reference": `Automated Lightspeed Invoice - ${moment(dayreport.date).format()}`,
@@ -78,8 +77,19 @@ exports.handler = async (event, context, callback) => {
       })
     }
     // Cash
+
+
+    // Creating and sending invoice in Moneybird
+    console.log("creating invoice")
+    let createdInvoice = await createInvoice(invoice);
+    console.log("sending invoice")
+    let sendedInvoice = await sendInvoice(createdInvoice.id);
+
+    // Doing financial mutations if there are cash transactions
     if (parseFloat(dayreport.payments.cash.amount) !== 0) {
-      financialStatement = {
+
+      console.log("creating mutation")
+      let financialStatement = {
         "financial_statement": {
           "reference": `Kasboek - Lightspeed Dagontvangst - ${moment(dayreport.date).format("YYYY-MM-DD")}`,
           "financial_account_id": "211688922621675193",
@@ -92,24 +102,23 @@ exports.handler = async (event, context, callback) => {
           }
         }
       };
+      financialStatement.financial_statement["1"].amount = dayreport.payments.cash.amount;
+
+      // Creating Mutation
+      let createdMutation = await createMutation(financialStatement);
+
+      // Linking the booking
+      console.log("creating booking")
+      let booking = {
+        "booking_type": "SalesInvoice",
+        "booking_id": createdInvoice.id,
+        "price_base": createdMutation.financial_mutations[0].amount
+      };
+      let createdBooking = await updateMutation(createdMutation.financial_mutations[0].id, booking);
+
+    } else {
+      console.log("No cash transactions, skipping")
     }
-
-    // Creating and sending invoice in Moneybird
-    console.log("creating invoice")
-    let createdInvoice = await createInvoice(invoice);
-    console.log("sending invoice")
-    let sendedInvoice = await sendInvoice(createdInvoice.id);
-    console.log("creating mutation")
-    let createdMutation = await createMutation(financialStatement);
-
-    // Linking the booking
-    let booking = {
-      "booking_type": "SalesInvoice",
-      "booking_id": createdInvoice.id,
-      "price_base": createdMutation.financial_mutations[0].amount
-    };
-    console.log("creating booking")
-    let createdBooking = await updateMutation(createdMutation.financial_mutations[0].id, booking);
 
     respond({
       status: 200,

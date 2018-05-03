@@ -2,10 +2,13 @@ import _ from 'lodash'
 import moment from 'moment'
 import util from 'util'
 
+import parseInvoice from './transformation/dayreport--to--moneybird-invoice.js'
+import parseStatement from './transformation/dayreport--to--moneybird-statement.js'
+import parseBooking from './transformation/moneybird-invoice-and-mutation--to--moneybird-invoice.js'
 import createInvoice from './api/moneybird/create-sales-invoice.js'
 import sendInvoice from './api/moneybird/update-sales-invoice.js'
 import createMutation from './api/moneybird/create-financial-statement.js'
-import updateMutation from './api/moneybird/update-financial-statement.js'
+import updateMutation from './api/moneybird/update-financial-mutation.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -16,71 +19,12 @@ exports.handler = async (event, context, callback) => {
   };
 
   try {
-    // Restructuring a invoice to Moneybird
+    // Parse payload
     const dayreport = JSON.parse(event.body);
-    let date = moment(dayreport.date).format("YYYY-MM-DD");
-
-    let invoice = {
-      "sales_invoice": {
-        "reference": `Automated Lightspeed Invoice - ${moment(dayreport.date).format()}`,
-        "contact_id": "211718269128672982",
-        "invoice_date": moment(dayreport.date).format("YYYY-MM-DD"),
-        "state": "open",
-        "prices_are_incl_tax": true,
-        "details_attributes": []
-      }
-    };
-
-    // Hoog BTW
-    if (parseFloat(dayreport.tax.hoog.amount) !== 0) {
-      invoice.sales_invoice.details_attributes.push({
-        "description": "Hoog BTW tarief",
-        "tax_rate_id": "211688738873410854",
-        ledger_account_id: "218027560947156696",
-        "price": dayreport.tax.hoog.amount
-      })
-    }
-    // Laag BTW
-    if (parseFloat(dayreport.tax.laag.amount) !== 0) {
-      invoice.sales_invoice.details_attributes.push({
-        "description": "Laag BTW tarief",
-        "tax_rate_id": "211688738875508007",
-        ledger_account_id: "218027538317837859",
-        "price": dayreport.tax.laag.amount
-      })
-    }
-    // Nul BTW
-    if (parseFloat(dayreport.tax.onbelast.amount) !== 0) {
-      invoice.sales_invoice.details_attributes.push({
-        "description": "Onbelast BTW tarief",
-        "tax_rate_id": "212145631538448378",
-        ledger_account_id: "218027616763905200",
-        "price": dayreport.tax.onbelast.amount
-      })
-    }
-
-    // Cadeaukaart
-    if (parseFloat(dayreport.payments.gift.amount) !== 0) {
-      console.log("giftcard run")
-      invoice.sales_invoice.details_attributes.push({
-        "description": "Betalingen met of uitgifte van cadeaukaarten",
-        "tax_rate_id": "212145631538448378",
-        "ledger_account_id": "212771713877804212",
-        "price": -dayreport.payments.gift.amount
-      })
-    }
-    // Kredietaccount
-    if (parseFloat(dayreport.payments.credit.amount) !== 0) {
-      invoice.sales_invoice.details_attributes.push({
-        "description": "Betalingen met of uitgifte van klantkredieten",
-        "price": -dayreport.payments.credit.amount
-      })
-    }
-    // Cash
-
 
     // Creating and sending invoice in Moneybird
     console.log("creating invoice")
+    const invoice = parseInvoice(dayreport);
     let createdInvoice = await createInvoice(invoice);
     console.log("sending invoice")
     let sendedInvoice = await sendInvoice(createdInvoice.id);
@@ -88,36 +32,20 @@ exports.handler = async (event, context, callback) => {
     // Doing financial mutations if there are cash transactions
     if (parseFloat(dayreport.payments.cash.amount) !== 0) {
 
-      console.log("creating mutation")
-      let financialStatement = {
-        "financial_statement": {
-          "reference": `Kasboek - Lightspeed Dagontvangst - ${moment(dayreport.date).format("YYYY-MM-DD")}`,
-          "financial_account_id": "211688922621675193",
-          "financial_mutations_attributes": {
-            "1": {
-              "date": moment(dayreport.date).format("YYYY-MM-DD"),
-              "message": "Winkelontvangsten",
-              "amount": dayreport.payments.cash.amount
-            }
-          }
-        }
-      };
-      financialStatement.financial_statement.financial_mutations_attributes["1"].amount = dayreport.payments.cash.amount;
-
       // Creating Mutation
+      console.log("creating mutation")
+      let financialStatement = parseStatement(dayreport);
       let createdMutation = await createMutation(financialStatement);
 
       // Linking the booking
       console.log("creating booking")
-      let booking = {
-        "booking_type": "SalesInvoice",
-        "booking_id": createdInvoice.id,
-        "price_base": createdMutation.financial_mutations[0].amount
-      };
+      let booking = await parseBooking(createdInvoice, createdMutation);
       let createdBooking = await updateMutation(createdMutation.financial_mutations[0].id, booking);
 
     } else {
+
       console.log("No cash transactions, skipping")
+
     }
 
     respond({

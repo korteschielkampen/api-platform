@@ -10,6 +10,7 @@ provider:
     MONEYBIRD_SECRET: ${env:MONEYBIRD_SECRET}
     aws_access_key_id: ${env:aws_access_key_id}
     aws_secret_access_key: ${env:aws_secret_access_key}
+  timeout: 100
 
 package:
   exclude:
@@ -26,4 +27,4 @@ functions:
   automatedInvoice:
     handler: functions/lightspeed-automated-invoice.handler
     events:
-      - schedule: rate(1 minute)
+      - schedule: "cron(0 20 * * ? *)"

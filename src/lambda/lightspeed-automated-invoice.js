@@ -14,31 +14,30 @@ exports.handler = async (event, context, callback) => {
   try {
     // Setup variables
     let date = moment().format();
-    console.log("running!!")
-    // When not in Dynamo download from Lightspeed and put in Dynamo
+
+    // Download sales from Lightspeed and put in Dynamo
     console.log("request lightspeed")
-    // let sales = await readSalesDay(date);
+    let sales = await readSalesDay(date);
 
-    // console.log(sales)
+    // Sending it to dynamo for admin usage
+    console.log("update dynamo")
+    let salesDay = await updateDynamo(sales, date);
 
-    //
-    // // Sending it to dynamo for admin usage
-    // console.log("update dynamo")
-    // let salesDay = await updateDynamo(sales, date);
-    //
-    // // Calculate the dayreport
-    // console.log("calculate dayreturn")
-    // let dayreport = {
-    //   date: date,
-    //   ...calculateDayreport(salesDay)
-    // }
-    //
-    // await moneybirdCreate(dayreport);
+    // Calculate the dayreport
+    console.log("calculate dayreturn")
+    let dayreport = {
+      date: date,
+      ...calculateDayreport(salesDay)
+    }
 
-    callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
+    await moneybirdCreate(dayreport);
+
+    console.log("everything is done")
+
+    callback(null, { message: 'succes', event });
 
   } catch(err) {
     console.log(err);
-    callback(null, { message: 'Damn Serverless v1.0! Your function executed terribly!', event });
+    callback(null, { message: 'error', event });
   }
 }

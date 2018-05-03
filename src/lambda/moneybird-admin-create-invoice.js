@@ -74,7 +74,7 @@ exports.handler = async (event, context, callback) => {
     if (parseFloat(dayreport.payments.credit.amount) !== 0) {
       invoice.sales_invoice.details_attributes.push({
         "description": "Betalingen met of uitgifte van klantkredieten",
-        "price": dayreport.payments.credit.amount
+        "price": -dayreport.payments.credit.amount
       })
     }
     // Cash
@@ -115,9 +115,6 @@ exports.handler = async (event, context, callback) => {
       status: 200,
       body: {
         message: "Invoice is succesfully created",
-        createdInvoice: createdInvoice,
-        createdMutation: createMutation,
-        createdBooking: createdBooking
       }
     });
   } catch(err) {

@@ -8,6 +8,7 @@ import readSalesDay from './api/lightspeed/read-salesday.js'
 import updateDynamo from './store/dynamo/salesday/update.js'
 import readDynamo from './store/dynamo/salesday/read.js'
 import calculateDayreport from './transformation/lightspeed-sales--to--dayreport.js'
+import moneybirdCreate from './action/moneybird-create.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -22,21 +23,21 @@ exports.handler = async (event, context, callback) => {
     let date = moment().format();
 
     // When not in Dynamo download from Lightspeed and put in Dynamo
-    console.log("Request Lightspeed")
+    console.log("request lightspeed")
     let sales = await readSalesDay(date);
 
     // Sending it to dynamo for admin usage
-    console.log("Update Dynamo")
+    console.log("update dynamo")
     let salesDay = await updateDynamo(sales, date);
 
     // Calculate the dayreport
-    console.log("Calculate Dayreturn")
+    console.log("calculate dayreturn")
     let dayreport = {
       date: date,
       ...calculateDayreport(salesDay)
     }
 
-    console.log(dayreport)
+    await moneybirdCreate(dayreport);
 
     respond({
       status: 200,

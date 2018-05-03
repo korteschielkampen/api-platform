@@ -50983,7 +50983,6 @@ exports.default = dayreport => {
 
   // Cadeaukaart
   if (parseFloat(dayreport.payments.gift.amount) !== 0) {
-    console.log("giftcard run");
     invoice.sales_invoice.details_attributes.push({
       "description": "Betalingen met of uitgifte van cadeaukaarten",
       "tax_rate_id": "212145631538448378",

@@ -11,43 +11,34 @@ import calculateDayreport from './transformation/lightspeed-sales--to--dayreport
 import moneybirdCreate from './action/moneybird-create.js'
 
 exports.handler = async (event, context, callback) => {
-  const respond = ({ status, body }) => {
-    callback(null, {
-      statusCode: status,
-      body: JSON.stringify({ body }),
-    });
-  };
-
   try {
     // Setup variables
     let date = moment().format();
-
+    console.log("running!!")
     // When not in Dynamo download from Lightspeed and put in Dynamo
     console.log("request lightspeed")
-    let sales = await readSalesDay(date);
+    // let sales = await readSalesDay(date);
 
-    // Sending it to dynamo for admin usage
-    console.log("update dynamo")
-    let salesDay = await updateDynamo(sales, date);
+    // console.log(sales)
 
-    // Calculate the dayreport
-    console.log("calculate dayreturn")
-    let dayreport = {
-      date: date,
-      ...calculateDayreport(salesDay)
-    }
+    //
+    // // Sending it to dynamo for admin usage
+    // console.log("update dynamo")
+    // let salesDay = await updateDynamo(sales, date);
+    //
+    // // Calculate the dayreport
+    // console.log("calculate dayreturn")
+    // let dayreport = {
+    //   date: date,
+    //   ...calculateDayreport(salesDay)
+    // }
+    //
+    // await moneybirdCreate(dayreport);
 
-    await moneybirdCreate(dayreport);
-
-    respond({
-      status: 200,
-      body: {
-        dayreports: dayreport
-      }
-    });
+    callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
 
   } catch(err) {
     console.log(err);
-    respond({ status: 422, body: err });
+    callback(null, { message: 'Damn Serverless v1.0! Your function executed terribly!', event });
   }
 }

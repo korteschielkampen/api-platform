@@ -2,7 +2,11 @@
 .cache
 .password
 node_modules
+jspm_packages
 yarn-error.log
 
 # Build directory
 /public
+
+# Serverless directories
+.serverless

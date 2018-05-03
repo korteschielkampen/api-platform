@@ -1,0 +1,29 @@
+service: Lightspeed-Moneybird-integration
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  environment:
+    LIGHTSPEED_CLIENT: ${env:LIGHTSPEED_CLIENT}
+    LIGHTSPEED_SECRET: ${env:LIGHTSPEED_SECRET}
+    MONEYBIRD_CLIENT: ${env:MONEYBIRD_CLIENT}
+    MONEYBIRD_SECRET: ${env:MONEYBIRD_SECRET}
+    aws_access_key_id: ${env:aws_access_key_id}
+    aws_secret_access_key: ${env:aws_secret_access_key}
+
+package:
+  exclude:
+    - src/**
+    - node_modules/**
+    - public/**
+    - .git/**
+    - .cache/**
+    - functions/**
+  include:
+    - functions/lightspeed-automated-invoice.js
+
+functions:
+  automatedInvoice:
+    handler: functions/lightspeed-automated-invoice.handler
+    events:
+      - schedule: rate(1 minute)

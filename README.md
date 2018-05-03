@@ -18,3 +18,10 @@ You can build the project very easily by running
 ```sh
 npm run build
 ```
+
+## Deployment
+
+Most of deployment is done by webhook, but serverless has to be done manual by
+```sh
+sls deploy
+```

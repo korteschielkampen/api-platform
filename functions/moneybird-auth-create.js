@@ -34129,20 +34129,18 @@ exports.handler = (() => {
     };
 
     try {
-
       let tokens = yield (0, _createToken2.default)(event.queryStringParameters.code);
       let account = yield (0, _readAdministration2.default)(tokens.access_token);
       let auth = {
-        'account_id': account[0].id,
-        'account_name': account[0].name,
-        'access_token': tokens.access_token,
-        'refresh_token': tokens.refresh_token
+        account_id: account[0].id,
+        account_name: account[0].name,
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token
       };
       let dynamo = yield (0, _update2.default)(auth);
 
       respond({ status: 200, body: { authData: auth, stored: dynamo } });
     } catch (err) {
-
       console.log(err);
       respond({ status: 422, body: err });
     }
@@ -34177,12 +34175,12 @@ exports.default = (() => {
     const payload = {
       client_id: process.env.MONEYBIRD_CLIENT,
       client_secret: process.env.MONEYBIRD_SECRET,
-      redirect_uri: encodeURI("https://rjkorteschiel.nl/moneybird-redirect/"),
+      redirect_uri: encodeURI('https://rjkorteschiel.nl/moneybird-redirect/'),
       code: temporary_access_token,
-      grant_type: "authorization_code"
+      grant_type: 'authorization_code'
     };
     const options = {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     };
@@ -34218,9 +34216,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (access_token) {
     const options = {
-      method: "GET",
+      method: 'GET',
       headers: {
-        'authorization': `Bearer ${access_token}`
+        authorization: `Bearer ${access_token}`
       }
     };
     const apiUrl = 'https://moneybird.com/api/v2/administrations.json';

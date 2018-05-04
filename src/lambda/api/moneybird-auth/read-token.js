@@ -3,7 +3,7 @@ import updateDynamo from '../../store/dynamo/auth/update.js'
 import refreshToken from './refresh-token.js'
 
 export default async () => {
-  let auth = await readDynamo("211688738215954171");
+  let auth = await readDynamo('211688738215954171')
 
   // Updating tokens for our scope not needed, no timeout
 
@@ -15,5 +15,5 @@ export default async () => {
   // };
   // updateDynamo(auth);
 
-  return auth.access_token;
+  return auth.access_token
 }

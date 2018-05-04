@@ -5,23 +5,23 @@ exports.handler = async (event, context, callback) => {
     callback(null, {
       statusCode: status,
       body: JSON.stringify({ body }),
-    });
-  };
+    })
+  }
 
   try {
     // Parse payload
-    const dayreport = JSON.parse(event.body);
+    const dayreport = JSON.parse(event.body)
 
-    await moneybirdCreate(dayreport);
+    await moneybirdCreate(dayreport)
 
     respond({
       status: 200,
       body: {
-        message: "Invoice is succesfully created",
-      }
-    });
-  } catch(err) {
-    console.log(err);
-    respond({ status: 422, body: err });
+        message: 'Invoice is succesfully created',
+      },
+    })
+  } catch (err) {
+    console.log(err)
+    respond({ status: 422, body: err })
   }
 }

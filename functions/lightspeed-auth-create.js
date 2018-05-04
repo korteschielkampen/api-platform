@@ -34127,11 +34127,11 @@ exports.handler = (() => {
       let token = yield (0, _createToken2.default)(event.queryStringParameters.code);
       let account = yield (0, _readAccount2.default)(token.access_token);
       let auth = {
-        'account_id': account.Account.accountID,
-        'account_name': account.Account.name,
-        'account_link': account.Account.link['@attributes'].href,
-        'access_token': token.access_token,
-        'refresh_token': token.refresh_token
+        account_id: account.Account.accountID,
+        account_name: account.Account.name,
+        account_link: account.Account.link['@attributes'].href,
+        access_token: token.access_token,
+        refresh_token: token.refresh_token
       };
       let dynamo = yield (0, _update2.default)(auth);
 
@@ -34172,10 +34172,10 @@ exports.default = (() => {
       client_id: process.env.LIGHTSPEED_CLIENT,
       client_secret: process.env.LIGHTSPEED_SECRET,
       code: temporary_access_token,
-      grant_type: "authorization_code"
+      grant_type: 'authorization_code'
     };
     const options = {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     };
@@ -34211,9 +34211,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (access_token) {
     const options = {
-      method: "GET",
+      method: 'GET',
       headers: {
-        'Authorization': `Bearer ${access_token}`
+        Authorization: `Bearer ${access_token}`
       }
     };
     const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';

@@ -38485,7 +38485,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = _asyncToGenerator(function* () {
-  let auth = yield (0, _read2.default)("211688738215954171");
+  let auth = yield (0, _read2.default)('211688738215954171');
 
   // Updating tokens for our scope not needed, no timeout
 
@@ -50410,7 +50410,7 @@ exports.default = (() => {
     var params = {
       TableName: 'lightspeed-to-moneybird',
       Key: {
-        "account_id": account_id
+        account_id: account_id
       }
     };
     return yield (0, _read2.default)(params);
@@ -50743,35 +50743,32 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (dayreport) {
-
     // Test if there is a invoice to be made
     if (dayreport.tax.hoog.amount != 0 || dayreport.tax.laag.amount != 0 || dayreport.tax.onbelast.amount != 0) {
-
       // Creating and sending invoice in Moneybird
-      console.log("creating invoice");
+      console.log('creating invoice');
       const invoice = (0, _dayreportToMoneybirdInvoice2.default)(dayreport);
       let createdInvoice = yield (0, _createSalesInvoice2.default)(invoice);
 
-      console.log("sending invoice");
+      console.log('sending invoice');
       let sendedInvoice = yield (0, _updateSalesInvoice2.default)(createdInvoice.id);
 
       // Doing financial mutations if there are cash transactions
       if (parseFloat(dayreport.payments.cash.amount) !== 0) {
-
         // Creating Mutation
-        console.log("creating mutation");
+        console.log('creating mutation');
         let financialStatement = (0, _dayreportToMoneybirdStatement2.default)(dayreport);
         let createdMutation = yield (0, _createFinancialStatement2.default)(financialStatement);
 
         // Linking the booking
-        console.log("creating booking");
+        console.log('creating booking');
         let booking = yield (0, _moneybirdInvoiceAndMutationToMoneybirdInvoice2.default)(createdInvoice, createdMutation);
         let createdBooking = yield (0, _updateFinancialMutation2.default)(createdMutation.financial_mutations[0].id, booking);
       } else {
-        console.log("No cash transactions, skipping the creating of a financial mutation");
+        console.log('No cash transactions, skipping the creating of a financial mutation');
       }
     } else {
-      console.log("Empty dayreport, skipping Moneybird entirely");
+      console.log('Empty dayreport, skipping Moneybird entirely');
     }
   });
 
@@ -50799,58 +50796,57 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = dayreport => {
   let invoice = {
-    "sales_invoice": {
-      "reference": `Automated Lightspeed Invoice - ${(0, _moment2.default)(dayreport.date).format()}`,
-      "contact_id": "211718269128672982",
-      "invoice_date": (0, _moment2.default)(dayreport.date).format("YYYY-MM-DD"),
-      "state": "open",
-      "prices_are_incl_tax": true,
-      "details_attributes": []
+    sales_invoice: {
+      reference: `Automated Lightspeed Invoice - ${(0, _moment2.default)(dayreport.date).format()}`,
+      contact_id: '211718269128672982',
+      invoice_date: (0, _moment2.default)(dayreport.date).format('YYYY-MM-DD'),
+      state: 'open',
+      prices_are_incl_tax: true,
+      details_attributes: []
     }
-  };
 
-  // Hoog BTW
-  if (parseFloat(dayreport.tax.hoog.amount) !== 0) {
+    // Hoog BTW
+  };if (parseFloat(dayreport.tax.hoog.amount) !== 0) {
     invoice.sales_invoice.details_attributes.push({
-      "description": "Hoog BTW tarief",
-      "tax_rate_id": "211688738873410854",
-      ledger_account_id: "218027560947156696",
-      "price": dayreport.tax.hoog.amount
+      description: 'Hoog BTW tarief',
+      tax_rate_id: '211688738873410854',
+      ledger_account_id: '218027560947156696',
+      price: dayreport.tax.hoog.amount
     });
   }
   // Laag BTW
   if (parseFloat(dayreport.tax.laag.amount) !== 0) {
     invoice.sales_invoice.details_attributes.push({
-      "description": "Laag BTW tarief",
-      "tax_rate_id": "211688738875508007",
-      ledger_account_id: "218027538317837859",
-      "price": dayreport.tax.laag.amount
+      description: 'Laag BTW tarief',
+      tax_rate_id: '211688738875508007',
+      ledger_account_id: '218027538317837859',
+      price: dayreport.tax.laag.amount
     });
   }
   // Nul BTW
   if (parseFloat(dayreport.tax.onbelast.amount) !== 0) {
     invoice.sales_invoice.details_attributes.push({
-      "description": "Onbelast BTW tarief",
-      "tax_rate_id": "212145631538448378",
-      ledger_account_id: "218027616763905200",
-      "price": dayreport.tax.onbelast.amount
+      description: 'Onbelast BTW tarief',
+      tax_rate_id: '212145631538448378',
+      ledger_account_id: '218027616763905200',
+      price: dayreport.tax.onbelast.amount
     });
   }
 
   // Cadeaukaart
   if (parseFloat(dayreport.payments.gift.amount) !== 0) {
     invoice.sales_invoice.details_attributes.push({
-      "description": "Betalingen met of uitgifte van cadeaukaarten",
-      "tax_rate_id": "212145631538448378",
-      "ledger_account_id": "212771713877804212",
-      "price": -dayreport.payments.gift.amount
+      description: 'Betalingen met of uitgifte van cadeaukaarten',
+      tax_rate_id: '212145631538448378',
+      ledger_account_id: '212771713877804212',
+      price: -dayreport.payments.gift.amount
     });
   }
   // Kredietaccount
   if (parseFloat(dayreport.payments.credit.amount) !== 0) {
     invoice.sales_invoice.details_attributes.push({
-      "description": "Betalingen met of uitgifte van klantkredieten",
-      "price": -dayreport.payments.credit.amount
+      description: 'Betalingen met of uitgifte van klantkredieten',
+      price: -dayreport.payments.credit.amount
     });
   }
 
@@ -50876,14 +50872,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = dayreport => {
   let financialStatement = {
-    "financial_statement": {
-      "reference": `Kasboek - Lightspeed Dagontvangst - ${(0, _moment2.default)(dayreport.date).format("YYYY-MM-DD")}`,
-      "financial_account_id": "211688922621675193",
-      "financial_mutations_attributes": {
-        "1": {
-          "date": (0, _moment2.default)(dayreport.date).format("YYYY-MM-DD"),
-          "message": "Winkelontvangsten",
-          "amount": dayreport.payments.cash.amount
+    financial_statement: {
+      reference: `Kasboek - Lightspeed Dagontvangst - ${(0, _moment2.default)(dayreport.date).format('YYYY-MM-DD')}`,
+      financial_account_id: '211688922621675193',
+      financial_mutations_attributes: {
+        '1': {
+          date: (0, _moment2.default)(dayreport.date).format('YYYY-MM-DD'),
+          message: 'Winkelontvangsten',
+          amount: dayreport.payments.cash.amount
         }
       }
     }
@@ -50910,9 +50906,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = (invoice, mutation) => {
   let booking = {
-    "booking_type": "SalesInvoice",
-    "booking_id": invoice.id,
-    "price_base": mutation.financial_mutations[0].amount
+    booking_type: 'SalesInvoice',
+    booking_id: invoice.id,
+    price_base: mutation.financial_mutations[0].amount
   };
 
   return booking;
@@ -50945,11 +50941,12 @@ exports.default = (() => {
   var _ref = _asyncToGenerator(function* (invoice) {
     let access_token = yield (0, _readToken2.default)();
     const options = {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(invoice),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${access_token}` }
+        Authorization: `Bearer ${access_token}`
+      }
     };
     const apiUrl = 'https://moneybird.com/api/v2/211688738215954171/sales_invoices.json';
 
@@ -50985,12 +50982,12 @@ exports.default = (() => {
     const payload = {
       client_id: process.env.MONEYBIRD_CLIENT,
       client_secret: process.env.MONEYBIRD_SECRET,
-      redirect_uri: encodeURI("https://rjkorteschiel.nl/moneybird-redirect/"),
+      redirect_uri: encodeURI('https://rjkorteschiel.nl/moneybird-redirect/'),
       refresh_token: refresh_token,
-      grant_type: "refresh_token"
+      grant_type: 'refresh_token'
     };
     const options = {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(payload),
       headers: { 'Content-Type': 'application/json' }
     };
@@ -51031,9 +51028,10 @@ exports.default = (() => {
   var _ref = _asyncToGenerator(function* (invoice_id) {
     let access_token = yield (0, _readToken2.default)();
     const options = {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        'Authorization': `Bearer ${access_token}` }
+        Authorization: `Bearer ${access_token}`
+      }
     };
     const apiUrl = `https://moneybird.com/api/v2/211688738215954171/sales_invoices/${invoice_id}/send_invoice.json`;
 
@@ -51072,11 +51070,12 @@ exports.default = (() => {
   var _ref = _asyncToGenerator(function* (financial_statement) {
     let access_token = yield (0, _readToken2.default)();
     const options = {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(financial_statement),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${access_token}` }
+        Authorization: `Bearer ${access_token}`
+      }
     };
     const apiUrl = 'https://moneybird.com/api/v2/211688738215954171/financial_statements.json';
 
@@ -51115,11 +51114,12 @@ exports.default = (() => {
   var _ref = _asyncToGenerator(function* (mutation_id, booking) {
     let access_token = yield (0, _readToken2.default)();
     const options = {
-      method: "PATCH",
+      method: 'PATCH',
       body: JSON.stringify(booking),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${access_token}` }
+        Authorization: `Bearer ${access_token}`
+      }
     };
     const apiUrl = `https://moneybird.com/api/v2/211688738215954171/financial_mutations/${mutation_id}/link_booking.json`;
 
@@ -51169,7 +51169,7 @@ exports.handler = (() => {
       respond({
         status: 200,
         body: {
-          message: "Invoice is succesfully created"
+          message: 'Invoice is succesfully created'
         }
       });
     } catch (err) {

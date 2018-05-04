@@ -9,10 +9,10 @@ const Header = props => (
     <div className={styles.content}>
       <div className={styles.header}>
         <img src={logo} className={styles.logo} />
-        <h1 >
-          <Link className={styles.headerText} to="/">{props.siteTitle}</Link>
-        </h1>
       </div>
+      <h1 >
+        <Link className={styles.headerText} to="/">{props.siteTitle}</Link>
+      </h1>
     </div>
   </div>
 )

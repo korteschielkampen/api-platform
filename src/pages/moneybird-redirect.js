@@ -28,7 +28,7 @@ class IndexPage extends React.Component {
 
   componentDidMount() {
     const { code } = queryString.parse(this.props.location.search)
-    this.setState({ temporary_access_token: code })
+    this.setState({ temporary_access_token: code }, this.getKeys)
   }
 
   async getKeys() {
@@ -64,10 +64,6 @@ class IndexPage extends React.Component {
       <div className={styles.container}>
         <div className={styles.content}>
           <p> Redirect vanaf Moneybird. </p>
-          <p>
-            Bent u per ongeluk door dit proces gelopen? Dat kan verder geen
-            kwaad, er wordt geen data opslagen tenzij u verder gaat
-          </p>
           <h1>Status</h1>
           <p
             style={{ backgroundColor: this.state.statusColor }}
@@ -76,7 +72,7 @@ class IndexPage extends React.Component {
             {this.state.status}
           </p>
           <h1>Data</h1>
-          <button
+          {/* <button
             className={classNames(styles.button, styles.buttonBlue)}
             onClick={this.getKeys}
           >
@@ -88,7 +84,7 @@ class IndexPage extends React.Component {
             <p> Refresh key: {this.state.refresh_token} </p>
             <p> Account ID: {this.state.account_id} </p>
             <p> Account Name: {this.state.account_name} </p>
-          </div>
+          </div> */}
         </div>
       </div>
     )

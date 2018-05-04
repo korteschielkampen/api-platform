@@ -34136,7 +34136,8 @@ exports.handler = (() => {
       };
       let dynamo = yield (0, _update2.default)(auth);
 
-      respond({ status: 200, body: { authData: auth, stored: dynamo } });
+      respond({ status: 200, body: { message: 'succes' } });
+      // respond({ status: 200, body: { authData: auth, stored: dynamo } })
     } catch (err) {
       console.log(err);
       respond({ status: 422, body: err });

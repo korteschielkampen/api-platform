@@ -25,6 +25,11 @@ class IndexPage extends React.Component {
     this.getKeys = this.getKeys.bind(this)
   }
 
+  componentDidMount() {
+    const { code } = queryString.parse(this.props.location.search)
+    this.setState({ temporary_access_token: code }, this.getKeys)
+  }
+
   async getKeys() {
     const { code } = queryString.parse(this.props.location.search)
     const apiUrl = `${lambdaURL}/lightspeed-auth-create?code=${code}`
@@ -41,11 +46,11 @@ class IndexPage extends React.Component {
       this.setState({
         status: 'Aanvraag permanente sleutel succesvol',
         statusColor: 'lightgreen',
-        access_token: data.body.authData.access_token,
-        refresh_token: data.body.authData.refresh_token,
-        account_id: data.body.authData.account_id,
-        account_name: data.body.authData.account_name,
-        account_link: data.body.authData.account_link,
+        // access_token: data.body.authData.access_token,
+        // refresh_token: data.body.authData.refresh_token,
+        // account_id: data.body.authData.account_id,
+        // account_name: data.body.authData.account_name,
+        // account_link: data.body.authData.account_link,
       })
     } catch (err) {
       this.setState({
@@ -60,10 +65,6 @@ class IndexPage extends React.Component {
       <div className={styles.container}>
         <div className={styles.content}>
           <p> Redirect vanaf Lightspeed. </p>
-          <p>
-            Bent u per ongeluk door dit proces gelopen? Dat kan verder geen
-            kwaad, er wordt geen data opslagen tenzij u verder gaat
-          </p>
           <h1>Status</h1>
           <p
             style={{ backgroundColor: this.state.statusColor }}
@@ -71,7 +72,7 @@ class IndexPage extends React.Component {
           >
             {this.state.status}
           </p>
-          <h1>Data</h1>
+          {/* <h1>Data</h1>
           <button className={styles.button} onClick={this.getKeys}>
             Verzegel uw tijdelijke toegangssleutel
           </button>
@@ -82,7 +83,7 @@ class IndexPage extends React.Component {
             <p> Account ID: {this.state.account_id} </p>
             <p> Account Name: {this.state.account_name} </p>
             <p> Account Link: {this.state.account_link} </p>
-          </div>
+          </div> */}
         </div>
       </div>
     )

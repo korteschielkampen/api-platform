@@ -21,7 +21,7 @@ npm run build
 
 ## Deployment
 
-Deployment is done by webhook and Netlify CI, manual can be done by:
+Deployment is done by webhook and Netlify CI, manual can be done by running:
 
 ```sh
 gatsby build && sls deploy

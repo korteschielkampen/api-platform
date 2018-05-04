@@ -1,5 +1,5 @@
 {
-  "name": "Lightspeed-Moneybird-integration",
+  "name": "integration-platform",
   "description": "Gatsby netlify lambda starter",
   "version": "1.0.0",
   "author": "",
@@ -15,6 +15,7 @@
     "gatsby-plugin-react-helmet": "^2.0.8",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
+    "netlify-identity-widget": "^1.4.11",
     "netlify-lambda": "^0.3.1",
     "promise-async": "^0.2.0",
     "query-string": "^5.1.1",

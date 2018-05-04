@@ -1,23 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
+import netlifyIdentity from 'netlify-identity-widget'
 
 import Header from '../components/Header'
 import './index.css'
 
-const TemplateWrapper = ({ data, children }) => (
-  <div>
-    <Helmet
-      title={data.site.siteMetadata.title}
-      meta={[
-        { name: 'description', content: 'Sample' },
-        { name: 'keywords', content: 'sample, something' },
-      ]}
-    />
-    <Header siteTitle={data.site.siteMetadata.title}/>
-    {children()}
-  </div>
-)
+class TemplateWrapper extends React.Component {
+  componentDidMount() {
+    netlifyIdentity.init();
+    netlifyIdentity.open("login");
+  }
+
+  render () {
+    return (
+      <div>
+        <Helmet
+          title={this.props.data.site.siteMetadata.title}
+          meta={[
+            { name: 'description', content: 'Sample' },
+            { name: 'keywords', content: 'sample, something' },
+          ]}
+        />
+        <Header siteTitle={this.props.data.site.siteMetadata.title}/>
+        {this.props.children()}
+      </div>
+    )
+  }
+}
 
 TemplateWrapper.propTypes = {
   children: PropTypes.func,

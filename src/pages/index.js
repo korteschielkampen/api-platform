@@ -4,11 +4,10 @@ import Link from 'gatsby-link'
 import styles from './index.module.css'
 
 class IndexPage extends React.Component {
-  render () {
+  render() {
     return (
       <div className={styles.container}>
-        <div className={styles.content}>
-        </div>
+        <div className={styles.content} />
       </div>
     )
   }

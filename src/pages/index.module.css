@@ -21,7 +21,7 @@
   margin: 0;
   padding: 1rem;
   border-radius: 2rem;
-  background-color: rgb(220,92, 89);
+  background-color: rgb(220, 92, 89);
   cursor: pointer;
 }
 
@@ -30,7 +30,7 @@
 }
 
 .buttonBlue {
-  background-color: rgb(64,139, 232);
+  background-color: rgb(64, 139, 232);
 }
 
 .statusBar {
@@ -67,7 +67,7 @@
   margin: 0 0 2rem 0;
 }
 
-.cardHeading  {
+.cardHeading {
   background: grey;
   padding: 1rem 1rem;
   margin-bottom: 0;

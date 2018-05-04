@@ -5,64 +5,76 @@ import queryString from 'query-string'
 import styles from './index.module.css'
 
 const lambdaURL =
-  process.env.NODE_ENV === 'production' ? '/.netlify/functions' : '/localhost:9000'
+  process.env.NODE_ENV === 'production'
+    ? '/.netlify/functions'
+    : '/localhost:9000'
 
 class IndexPage extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
-      status: "Nog niet aangevraagd",
-      statusColor: "grey",
-      temporary_access_token: "onbekend",
-      access_token: "onbekend",
-      refresh_token: "onbekend",
-      account_id: "onbekend",
-      account_name: "onbekend",
-      account_link: "onbekend"
+      status: 'Nog niet aangevraagd',
+      statusColor: 'grey',
+      temporary_access_token: 'onbekend',
+      access_token: 'onbekend',
+      refresh_token: 'onbekend',
+      account_id: 'onbekend',
+      account_name: 'onbekend',
+      account_link: 'onbekend',
     }
-    this.getKeys = this.getKeys.bind(this);
+    this.getKeys = this.getKeys.bind(this)
   }
 
-  async getKeys () {
-    const {code} = queryString.parse(this.props.location.search);
-    const apiUrl = `${lambdaURL}/lightspeed-auth-create?code=${code}`;
+  async getKeys() {
+    const { code } = queryString.parse(this.props.location.search)
+    const apiUrl = `${lambdaURL}/lightspeed-auth-create?code=${code}`
 
-    this.setState({temporary_access_token: code});
+    this.setState({ temporary_access_token: code })
 
     try {
-
-      const res = await fetch(apiUrl);
-      if (!res.ok) {throw await res.json();}
-      let data = await res.json();
+      const res = await fetch(apiUrl)
+      if (!res.ok) {
+        throw await res.json()
+      }
+      let data = await res.json()
 
       this.setState({
-        status: "Aanvraag permanente sleutel succesvol",
-        statusColor: "lightgreen",
+        status: 'Aanvraag permanente sleutel succesvol',
+        statusColor: 'lightgreen',
         access_token: data.body.authData.access_token,
         refresh_token: data.body.authData.refresh_token,
         account_id: data.body.authData.account_id,
         account_name: data.body.authData.account_name,
-        account_link: data.body.authData.account_link
+        account_link: data.body.authData.account_link,
       })
-
-    } catch(err) {
+    } catch (err) {
       this.setState({
         status: `${JSON.stringify(err.body)}`,
-        statusColor: "red"
-      });
+        statusColor: 'red',
+      })
     }
   }
 
-  render () {
+  render() {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
           <p> Redirect vanaf Lightspeed. </p>
-          <p> Bent u per ongeluk door dit proces gelopen? Dat kan verder geen kwaad, er wordt geen data opslagen tenzij u verder gaat </p>
+          <p>
+            Bent u per ongeluk door dit proces gelopen? Dat kan verder geen
+            kwaad, er wordt geen data opslagen tenzij u verder gaat
+          </p>
           <h1>Status</h1>
-          <p style={{backgroundColor: this.state.statusColor}} className={styles.statusBar}>{this.state.status}</p>
+          <p
+            style={{ backgroundColor: this.state.statusColor }}
+            className={styles.statusBar}
+          >
+            {this.state.status}
+          </p>
           <h1>Data</h1>
-          <button className={styles.button} onClick={this.getKeys}>Verzegel uw tijdelijke toegangssleutel</button>
+          <button className={styles.button} onClick={this.getKeys}>
+            Verzegel uw tijdelijke toegangssleutel
+          </button>
           <div className={styles.card}>
             <p> Temporary access key: {this.state.temporary_access_token} </p>
             <p> Access key: {this.state.access_token} </p>

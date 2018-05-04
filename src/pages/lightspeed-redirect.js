@@ -22,7 +22,7 @@ class IndexPage extends React.Component {
 
   componentDidMount() {
     const { code } = queryString.parse(this.props.location.search)
-    this.setState({ temporary_access_token: code }, this.getKeys)
+    this.setState({ temporary_access_token: code }, this.getKeys.bind(this))
   }
 
   async getKeys() {

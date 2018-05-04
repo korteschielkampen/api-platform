@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import updateDynamo from '../config/update.js'
 
 export default async (sales, date) => {

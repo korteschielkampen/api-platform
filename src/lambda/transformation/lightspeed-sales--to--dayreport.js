@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export default (salesDay) => {
   let tax = {
     hoog: {name: "hoog", amount: 0},

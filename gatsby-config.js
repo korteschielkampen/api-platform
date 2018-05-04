@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'rjkorteschiel.nl',
+    title: 'API Platform',
   },
   // The gatsby proxy will proxy requests starting with `prefix` to
   // the path `${url}${prefix}`. Therefore any request that goes to

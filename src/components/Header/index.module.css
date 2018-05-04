@@ -8,3 +8,17 @@
   width: 100%;
   padding: 2rem 2rem 0;
 }
+
+.header  {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerText {
+  text-decoration: unset;
+}
+
+.logo {
+  width: 20rem;
+}

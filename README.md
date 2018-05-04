@@ -13,7 +13,7 @@ npm run develop:lambda
 ```
 
 ## Build
-You can build the project very easily by running
+You can build the project very easily by running:
 
 ```sh
 npm run build

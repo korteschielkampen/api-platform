@@ -21,7 +21,7 @@ npm run build
 
 ## Deployment
 
-Most of deployment is done by webhook, but serverless has to be done manual by
+Deployment is done by webhook and Netlify CI
 ```sh
 sls deploy
 ```

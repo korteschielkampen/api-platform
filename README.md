@@ -1,4 +1,4 @@
-# rjkorteschiel.nl static site with lambda
+# Integration platform for Korteschiel Kampen
 
 ### Install
 ```sh

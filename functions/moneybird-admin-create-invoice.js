@@ -50743,27 +50743,35 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (dayreport) {
-    // Creating and sending invoice in Moneybird
-    console.log("creating invoice");
-    const invoice = (0, _dayreportToMoneybirdInvoice2.default)(dayreport);
-    let createdInvoice = yield (0, _createSalesInvoice2.default)(invoice);
-    console.log("sending invoice");
-    let sendedInvoice = yield (0, _updateSalesInvoice2.default)(createdInvoice.id);
 
-    // Doing financial mutations if there are cash transactions
-    if (parseFloat(dayreport.payments.cash.amount) !== 0) {
+    // Test if there is a invoice to be made
+    if (dayreport.tax.hoog.amount != 0 || dayreport.tax.laag.amount != 0 || dayreport.tax.onbelast.amount != 0) {
 
-      // Creating Mutation
-      console.log("creating mutation");
-      let financialStatement = (0, _dayreportToMoneybirdStatement2.default)(dayreport);
-      let createdMutation = yield (0, _createFinancialStatement2.default)(financialStatement);
+      // Creating and sending invoice in Moneybird
+      console.log("creating invoice");
+      const invoice = (0, _dayreportToMoneybirdInvoice2.default)(dayreport);
+      let createdInvoice = yield (0, _createSalesInvoice2.default)(invoice);
 
-      // Linking the booking
-      console.log("creating booking");
-      let booking = yield (0, _moneybirdInvoiceAndMutationToMoneybirdInvoice2.default)(createdInvoice, createdMutation);
-      let createdBooking = yield (0, _updateFinancialMutation2.default)(createdMutation.financial_mutations[0].id, booking);
+      console.log("sending invoice");
+      let sendedInvoice = yield (0, _updateSalesInvoice2.default)(createdInvoice.id);
+
+      // Doing financial mutations if there are cash transactions
+      if (parseFloat(dayreport.payments.cash.amount) !== 0) {
+
+        // Creating Mutation
+        console.log("creating mutation");
+        let financialStatement = (0, _dayreportToMoneybirdStatement2.default)(dayreport);
+        let createdMutation = yield (0, _createFinancialStatement2.default)(financialStatement);
+
+        // Linking the booking
+        console.log("creating booking");
+        let booking = yield (0, _moneybirdInvoiceAndMutationToMoneybirdInvoice2.default)(createdInvoice, createdMutation);
+        let createdBooking = yield (0, _updateFinancialMutation2.default)(createdMutation.financial_mutations[0].id, booking);
+      } else {
+        console.log("No cash transactions, skipping the creating of a financial mutation");
+      }
     } else {
-      console.log("No cash transactions, skipping");
+      console.log("Empty dayreport, skipping Moneybird entirely");
     }
   });
 

@@ -7,7 +7,7 @@
 .content {
   max-width: 45rem;
   width: 100%;
-  padding: 2rem 2rem 0;
+  padding: 2rem 2rem 2rem;
 }
 
 .box {
@@ -31,6 +31,10 @@
 
 .buttonBlue {
   background-color: rgb(64, 139, 232);
+}
+
+.buttonGrey {
+  background-color: grey;
 }
 
 .statusBar {

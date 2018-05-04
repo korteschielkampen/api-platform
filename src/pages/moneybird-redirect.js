@@ -46,10 +46,10 @@ class IndexPage extends React.Component {
       this.setState({
         status: 'Aanvraag permanente sleutel succesvol',
         statusColor: 'lightgreen',
-        access_token: data.body.authData.access_token,
-        refresh_token: data.body.authData.refresh_token,
-        account_id: data.body.authData.account_id,
-        account_name: data.body.authData.account_name,
+        // access_token: data.body.authData.access_token,
+        // refresh_token: data.body.authData.refresh_token,
+        // account_id: data.body.authData.account_id,
+        // account_name: data.body.authData.account_name,
       })
     } catch (err) {
       this.setState({
@@ -71,8 +71,8 @@ class IndexPage extends React.Component {
           >
             {this.state.status}
           </p>
-          <h1>Data</h1>
-          {/* <button
+          {/* <h1>Data</h1>
+          <button
             className={classNames(styles.button, styles.buttonBlue)}
             onClick={this.getKeys}
           >

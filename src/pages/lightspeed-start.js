@@ -16,8 +16,7 @@ class IndexPage extends React.Component {
           <div className={styles.cardHeader}>
             <a href={temporaryTokenLink}>
               <button className={styles.button}>
-                {' '}
-                Start integratie met Lightspeed Retail{' '}
+                Start integratie met Lightspeed Retail
               </button>
             </a>
           </div>

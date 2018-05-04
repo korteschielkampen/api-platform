@@ -212,12 +212,10 @@ class IndexPage extends React.Component {
               <div key={key} className={styles.card}>
                 <div className={styles.cardHeader}>
                   <p className={styles.cardHeading}>
-                    {' '}
-                    Start: {moment(dayreport.date).format('MM/DD/YYYY')}{' '}
+                    Start: {moment(dayreport.date).format('MM/DD/YYYY')}
                   </p>
                   <p className={styles.cardHeadingText}>
-                    {' '}
-                    {dayreport.lsRequested ? 'Lightspeed' : 'DynamoDB'}{' '}
+                    {dayreport.lsRequested ? 'Lightspeed' : 'DynamoDB'}
                   </p>
                   <button
                     className={classNames(styles.button)}
@@ -237,11 +235,10 @@ class IndexPage extends React.Component {
                     {Object.keys(dayreport.tax).map(key => {
                       return (
                         <p key={key} className={styles.cardText}>
-                          {' '}
                           <span style={{ color: 'grey' }}>
                             Belastingtype -
-                          </span>{' '}
-                          {key}: {dayreport.tax[key].amount}{' '}
+                          </span>
+                          {key}: {dayreport.tax[key].amount}
                         </p>
                       )
                     })}
@@ -250,11 +247,10 @@ class IndexPage extends React.Component {
                     {Object.keys(dayreport.payments).map(key => {
                       return (
                         <p key={key} className={styles.cardText}>
-                          {' '}
                           <span style={{ color: 'grey' }}>
                             Betalingen -
-                          </span>{' '}
-                          {key}: {dayreport.payments[key].amount}{' '}
+                          </span>
+                          {key}: {dayreport.payments[key].amount}
                         </p>
                       )
                     })}

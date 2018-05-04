@@ -17,8 +17,7 @@ class IndexPage extends React.Component {
           <div className={styles.cardHeader}>
             <a href={temporaryTokenLink}>
               <button className={classNames(styles.button, styles.buttonBlue)}>
-                {' '}
-                Start integratie met Moneybird{' '}
+                Start integratie met Moneybird
               </button>
             </a>
           </div>

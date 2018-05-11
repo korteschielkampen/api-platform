@@ -194,7 +194,7 @@ class IndexPage extends React.Component {
     const options = {
       method: 'GET',
     }
-    const apiUrl = `${lambdaURL}/slack-message-create`
+    const apiUrl = `${lambdaURL}/create-business-report`
 
     try {
       const res = await fetch(apiUrl, options)

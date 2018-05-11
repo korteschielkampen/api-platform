@@ -1,5 +1,4 @@
 import createToken from './api/slack-auth/create-token.js'
-// import readAccount from './api/slack/read-administration.js'
 import updateDynamo from './store/dynamo/auth/update.js'
 
 exports.handler = async (event, context, callback) => {

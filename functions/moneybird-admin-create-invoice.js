@@ -4777,7 +4777,7 @@ AWS.config = new AWS.Config();
 
 })));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)(module)))
 
 /***/ }),
 /* 3 */
@@ -7145,6 +7145,34 @@ module.exports = toKey;
 
 /***/ }),
 /* 28 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7175,34 +7203,6 @@ exports.default = (() => {
     return _ref.apply(this, arguments);
   };
 })();
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
 
 /***/ }),
 /* 30 */
@@ -8049,7 +8049,7 @@ var isBuffer = nativeIsBuffer || stubFalse;
 
 module.exports = isBuffer;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)(module)))
 
 /***/ }),
 /* 44 */
@@ -13394,7 +13394,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (auth) {
     var params = {
-      TableName: 'lightspeed-to-moneybird',
+      TableName: 'auth',
       Item: _extends({}, auth)
     };
     return yield (0, _update2.default)(params);
@@ -17427,7 +17427,7 @@ var nodeUtil = (function() {
 
 module.exports = nodeUtil;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)(module)))
 
 /***/ }),
 /* 154 */
@@ -50409,7 +50409,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (account_id) {
     var params = {
-      TableName: 'lightspeed-to-moneybird',
+      TableName: 'auth',
       Key: {
         account_id: account_id
       }
@@ -50926,7 +50926,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(28);
+var _request = __webpack_require__(29);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -50970,7 +50970,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(28);
+var _request = __webpack_require__(29);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -51013,7 +51013,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(28);
+var _request = __webpack_require__(29);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -51055,7 +51055,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(28);
+var _request = __webpack_require__(29);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -51099,7 +51099,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(28);
+var _request = __webpack_require__(29);
 
 var _request2 = _interopRequireDefault(_request);
 

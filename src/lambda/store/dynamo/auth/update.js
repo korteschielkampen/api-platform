@@ -2,7 +2,7 @@ import updateDynamo from '../config/update.js'
 
 export default async auth => {
   var params = {
-    TableName: 'lightspeed-to-moneybird',
+    TableName: 'auth',
     Item: {
       ...auth,
     },

@@ -22,7 +22,6 @@ exports.handler = async (event, context, callback) => {
     let dynamo = await updateDynamo(auth)
 
     respond({ status: 200, body: { message: 'succes' } })
-    // respond({ status: 200, body: { authData: auth, stored: dynamo } })
   } catch (err) {
     console.log(err)
     respond({ status: 422, body: err })

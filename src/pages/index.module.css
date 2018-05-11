@@ -37,6 +37,10 @@
   background-color: grey;
 }
 
+.buttonOrange {
+  background-color: orange;
+}
+
 .statusBar {
   border-radius: 2rem;
   padding: 1rem;

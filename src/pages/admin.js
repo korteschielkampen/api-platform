@@ -29,6 +29,7 @@ class IndexPage extends React.Component {
     this.createInvoice = this.createInvoice.bind(this)
     this.getReports = this.getReports.bind(this)
     this.testAutomate = this.testAutomate.bind(this)
+    this.testMessage = this.testMessage.bind(this)
   }
 
   handleStartDateChange(startdate) {
@@ -56,9 +57,16 @@ class IndexPage extends React.Component {
   }
 
   componentDidMount() {
-    netlifyIdentity.init()
+    netlifyIdentity.on('init', user =>
+      this.setState(() => {
+        if (user != null) {
+          return { login: true }
+        }
+      })
+    )
     netlifyIdentity.on('login', user => this.setState({ login: true }))
     netlifyIdentity.on('logout', user => this.setState({ login: false }))
+    netlifyIdentity.init()
   }
 
   login() {
@@ -182,13 +190,49 @@ class IndexPage extends React.Component {
     }
   }
 
+  async testMessage() {
+    const options = {
+      method: 'GET',
+    }
+    const apiUrl = `${lambdaURL}/slack-message-create`
+
+    try {
+      const res = await fetch(apiUrl, options)
+      if (!res.ok) {
+        throw await res.json()
+      }
+      let data = await res.json()
+
+      data.body &&
+        this.setState({
+          status: 'Testing returns positive: 200',
+          statusColor: 'lightgreen',
+        })
+    } catch (err) {
+      this.setState({
+        status: `${JSON.stringify(err.body)}`,
+        statusColor: 'red',
+      })
+    }
+  }
+
   render() {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <p>Admin voor Lightspeed API naar Moneybird API integratie</p>
-          <button className={classNames(styles.button, styles.buttonGrey)} onClick={this.login.bind(this)}> Login </button>
-          <button className={classNames(styles.button, styles.buttonGrey)} onClick={this.logout.bind(this)}> logout </button>
+          <p>Admin voor integratie platform</p>
+          <button
+            className={classNames(styles.button, styles.buttonGrey)}
+            onClick={this.login.bind(this)}
+          >
+            Login
+          </button>
+          <button
+            className={classNames(styles.button, styles.buttonGrey)}
+            onClick={this.logout.bind(this)}
+          >
+            logout
+          </button>
         </div>
 
         <div className={styles.content}>
@@ -227,7 +271,10 @@ class IndexPage extends React.Component {
                 Verkrijg rapporten
               </button>
               <button className={styles.button} onClick={this.testAutomate}>
-                Test automate
+                Test report
+              </button>
+              <button className={styles.button} onClick={this.testMessage}>
+                Test message
               </button>
             </div>
             {this.state.dayreports.map((dayreport, key) => {

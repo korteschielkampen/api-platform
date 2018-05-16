@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 import readDayreportFinancial from './read-financial-reports.js'
-import readDayreportItem from './read-item-reports.js'
+import readDayreportCategory from './read-category-reports.js'
 import createMessage from '../api/slack/create-message.js'
 
 import verkoopRapport from '../models/rapporten/verkoop.js'
@@ -12,8 +12,11 @@ export default async () => {
 
   // Read dayreports from Lightspeed
   let financialReports = await readDayreportFinancial(datesArray)
-  let itemsReports = await readDayreportItem(datesArray)
+  console.log(financialReports[0].tax)
+  console.log(financialReports[0].payments)
+  let categoryReport = await readDayreportCategory(datesArray)
+
   // Post to Slack
-  await createMessage(verkoopRapport(financialReports[0]))
+  await createMessage(verkoopRapport(financialReports[0], categoryReport))
   return true
 }

@@ -1,4 +1,6 @@
-export default dayreport => {
+import _ from 'lodash'
+
+export default (dayreport, categoryReport) => {
   const totalEarnings = parseFloat(
     parseFloat(dayreport.payments.cash.amount) +
       parseFloat(dayreport.payments.pin.amount)
@@ -9,6 +11,14 @@ export default dayreport => {
       parseFloat(dayreport.tax.laag.amount) +
       parseFloat(dayreport.tax.onbelast.amount)
   ).toFixed(2)
+
+  categoryReport.etc =
+    categoryReport.Ongecategoriseerd + categoryReport.Diversen
+
+  let categoryReportFixed = {}
+  _.map(categoryReport, (value, key) => {
+    categoryReportFixed[key] = value.toFixed(2)
+  })
 
   return {
     text: 'Uw dagelijkse rapport:',
@@ -59,23 +69,31 @@ export default dayreport => {
       {
         fields: [
           {
-            title: 'Aqua: €xxx.xx',
-            value: 'Vissen: €xxx.xx\nPlanten: €xxx.xx',
+            title: `Aqua: €${categoryReportFixed.Aquarium}`,
+            value: `Vissen: €${categoryReportFixed.Vis}\nPlanten: €${
+              categoryReportFixed.Planten
+            }`,
             short: true,
           },
           {
-            title: 'Hengel: €xxx.xx',
-            value: 'Passen: €xxx.xx\nAas: €xxx.xx',
+            title: `Hengel: €${categoryReportFixed.Hengelsport}`,
+            value: `Passen: €${categoryReportFixed.Passen}\nAas: €${
+              categoryReportFixed.Aas
+            }`,
             short: true,
           },
           {
-            title: 'Dieren: €xxx.xx',
-            value: 'Voeders: €xxx.xx\nKauw: €xxx.xx',
+            title: `Dieren: €${categoryReportFixed.Dierenspeciaal}`,
+            value: `Voeders: €${categoryReportFixed.Voeders}\nKauw: €${
+              categoryReportFixed.Kauw
+            }`,
             short: true,
           },
           {
-            title: 'Etc.: €xxx.xx',
-            value: 'Ongecat.: €xxx.xx\nDivers: €xxx.xx',
+            title: `Etc.: €${categoryReportFixed.etc}`,
+            value: `Ongecat.: €${
+              categoryReportFixed.Ongecategoriseerd
+            }\nDivers: €${categoryReportFixed.Diversen}`,
             short: true,
           },
         ],
@@ -145,7 +163,7 @@ export default dayreport => {
         attachment_type: 'default',
       },
       {
-        text: `*Inzicht*: Orden artikelen bij en voor handeling uit op`,
+        text: `*Inzicht*: Orden artikelen met`,
         color: '#ef3945',
         attachment_type: 'default',
         actions: [

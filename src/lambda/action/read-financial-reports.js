@@ -12,6 +12,8 @@ import calculateDayreport from '../transformation/lightspeed-sales--to--dayrepor
 export default async datesArray => {
   let salesDay = await pmap(datesArray, asyncify(readSalesDay))
 
+  // Calculate the dayreport
+  console.log('Calculate Salesday')
   let dayreports = _.map(salesDay, (salesDay, key) => {
     return {
       ...salesDay,

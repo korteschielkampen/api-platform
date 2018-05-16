@@ -1,5 +1,6 @@
 import moment from 'moment'
 
+import readSalesDay from '../api/lightspeed/read-salesday.js'
 import updateDynamo from '../store/dynamo/salesday/update.js'
 import readDynamo from '../store/dynamo/salesday/read.js'
 import calculateDayreport from '../transformation/lightspeed-sales--to--dayreport.js'
@@ -25,14 +26,6 @@ export default async (dateObject, key) => {
     let sales = await readSalesDay(date)
     console.log('Update Dynamo')
     salesDay = await updateDynamo(sales, date)
-  }
-
-  // Calculate the dayreport
-  console.log('Calculate Dayreturn')
-  let dayreport = {
-    date: date,
-    lsRequested: lsRequested,
-    salesDay: salesDay,
   }
 
   return salesDay

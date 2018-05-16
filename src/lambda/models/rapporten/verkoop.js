@@ -11,148 +11,200 @@ export default dayreport => {
   ).toFixed(2)
 
   return {
-    text: 'Uw dagelijkse verkooprapport:',
+    text: 'Uw dagelijkse rapport:',
     channel: 'CAPCPRW6B',
     username: 'Lightspeed - Dagrapporten',
     icon_url:
       'https://integration-platform.korteschielkampen.nl/lightspeed.png',
     attachments: [
       {
-        title: 'Inkomsten',
-        text: `*Inkomsten: €${totalEarnings}*, waarvan €${
-          dayreport.payments.cash.amount
-        } in contanten. Deze zijn gelijk doorgezonden naar Moneybird, waar uw *kasboeksaldo €xxx.xx* is.`,
-        color: '#ef3945',
+        title: `---------------\nFinancieel: €${totalEarnings}\n---------------`,
+        color: '#40abff',
         attachment_type: 'default',
-        actions: [
-          {
-            name: 'Button',
-            text: 'Voeg kasstorting toe',
-            type: 'button',
-          },
-        ],
       },
       {
-        title: 'Inkomsten - Uitsplitst per categorie',
         fields: [
           {
-            title: 'Aquarium: €xxx.xx',
+            title: 'Betalingen:',
+            value: `Contanten: €${dayreport.payments.cash.amount}\nPIN: €${
+              dayreport.payments.pin.amount
+            }\nCadeau: €${dayreport.payments.gift.amount}\nKrediet: €${
+              dayreport.payments.credit.amount
+            }\neCom: €xxx.xx`,
+            short: true,
+          },
+          // {
+          //   title: 'Boekhouding:',
+          //   value:
+          //     'Credite.: €xxx.xx\nDebite.: €xxx.xx\nKas: €xxx.xx\nBank: €xxx.xx\nToekomst: €xxx.xx',
+          //   short: true,
+          // },
+        ],
+
+        color: '#40abff',
+        attachment_type: 'default',
+        // actions: [
+        //   {
+        //     name: 'Button',
+        //     text: 'Voeg kasstorting toe',
+        //     type: 'button',
+        //   },
+        // ],
+      },
+      {
+        title: '---------------\nBranches en categorieën\n---------------',
+        color: '#ef3945',
+        attachment_type: 'default',
+      },
+      {
+        fields: [
+          {
+            title: 'Aqua: €xxx.xx',
             value: 'Vissen: €xxx.xx\nPlanten: €xxx.xx',
             short: true,
           },
           {
-            title: 'Hengelsport: €xxx.xx',
-            value: 'Vergunningen: €xxx.xx\nAas: €xxx.xx',
+            title: 'Hengel: €xxx.xx',
+            value: 'Passen: €xxx.xx\nAas: €xxx.xx',
             short: true,
           },
           {
-            title: 'Dierenspeciaalzaak: €xxx.xx',
-            value: 'Voeders: €xxx.xx\nKauwproducten: €xxx.xx',
+            title: 'Dieren: €xxx.xx',
+            value: 'Voeders: €xxx.xx\nKauw: €xxx.xx',
             short: true,
           },
           {
-            title: 'Uitzonderingen: €xxx.xx',
-            value: 'Ongecategoriseerd: €xxx.xx\nDiversen: €xxx.xx',
+            title: 'Etc.: €xxx.xx',
+            value: 'Ongecat.: €xxx.xx\nDivers: €xxx.xx',
             short: true,
           },
         ],
         color: '#ef3945',
         attachment_type: 'default',
-        actions: [
-          {
-            name: 'Button',
-            text: 'Catagoriseer Artikelen',
-            type: 'button',
-          },
-        ],
+        // actions: [
+        //   {
+        //     name: 'Button',
+        //     text: 'Aquarium',
+        //     type: 'button',
+        //   },
+        //   {
+        //     name: 'Button',
+        //     text: 'Hengelsport',
+        //     type: 'button',
+        //   },
+        //   {
+        //     name: 'Button',
+        //     text: 'Dierenspeciaalzaak',
+        //     type: 'button',
+        //   },
+        // ],
+      },
+      // {
+      //   title: '---------------\nInkooporders\n---------------',
+      //   color: '#ef3945',
+      //   attachment_type: 'default',
+      // },
+      // {
+      //   fields: [
+      //     {
+      //       title: 'Open: xx',
+      //       value: 'orders: xx, atikelen: xx, waarde: €xxx.xx',
+      //     },
+      //     {
+      //       title: 'Besteld: xx',
+      //       value: 'orders: xx artikelen: xx, waarde: €xxx.xx',
+      //     },
+      //     {
+      //       title: 'Check-In: xx',
+      //       value: 'orders: xx, atikelen: xx, waarde: €xxx.xx',
+      //     },
+      //   ],
+      //   color: '#ef3945',
+      //   attachment_type: 'default',
+      //   actions: [
+      //     {
+      //       name: 'Button',
+      //       text: 'Open',
+      //       type: 'button',
+      //     },
+      //     {
+      //       name: 'Button',
+      //       text: 'Besteld',
+      //       type: 'button',
+      //     },
+      //     {
+      //       name: 'Button',
+      //       text: 'Check-In',
+      //       type: 'button',
+      //     },
+      //   ],
+      // },
+      {
+        title: '---------------\nArtikelen\n---------------',
+        color: '#ef3945',
+        attachment_type: 'default',
       },
       {
-        title: 'Artikelen - Meest verkocht:',
-        fields: [
-          {
-            title: 'Artikelnaam',
-            value: 'aantal: xx, totaal: €xx.xx\nvoorraad: xx, bestelpunt: xx',
-            short: true,
-          },
-          {
-            title: 'Artikelnaam',
-            value: 'aantal: xx, totaal: €xx.xx\nvoorraad: xx, bestelpunt: xx',
-            short: true,
-          },
-          {
-            title: 'Artikelnaam',
-            value: 'aantal: xx, totaal: €xx.xx\nvoorraad: xx, bestelpunt: xx',
-            short: true,
-          },
-          {
-            title: 'Artikelnaam',
-            value: 'aantal: xx, totaal: €xx.xx\nvoorraad: xx, bestelpunt: xx',
-            short: true,
-          },
-          {
-            title: 'Artikelnaam',
-            value: 'aantal: xx, totaal: €xx.xx\nvoorraad: xx, bestelpunt: xx',
-            short: true,
-          },
-          {
-            title: 'Artikelnaam',
-            value: 'aantal: xx, totaal: €xx.xx\nvoorraad: xx, bestelpunt: xx',
-            short: true,
-          },
-        ],
-        actions: [
-          {
-            name: 'Menu',
-            text: 'Plaats op inkooporder',
-            type: 'select',
-            options: [
-              {
-                text: 'Artikel 1',
-                value: '13',
-              },
-              {
-                text: 'Artikel 2',
-                value: '12',
-              },
-              {
-                text: 'Artikel 3',
-                value: '14',
-              },
-            ],
-          },
-          {
-            name: 'Menu',
-            text: 'Pas nabestelpunt aan',
-            type: 'select',
-            options: [
-              {
-                text: 'Artikel 1',
-                value: '13',
-              },
-              {
-                text: 'Artikel 2',
-                value: '12',
-              },
-              {
-                text: 'Artikel 3',
-                value: '14',
-              },
-            ],
-          },
-          {
-            name: 'Button',
-            text: 'Vorige',
-            type: 'button',
-          },
-          {
-            name: 'Button',
-            text: 'Volgende',
-            type: 'button',
-          },
-        ],
+        text: `*Inzicht*: Orden artikelen bij en voor handeling uit op`,
         color: '#ef3945',
         attachment_type: 'default',
+        actions: [
+          {
+            name: 'Button',
+            text: 'Aantal',
+            type: 'button',
+          },
+          {
+            name: 'Button',
+            text: 'Omzet',
+            type: 'button',
+          },
+          {
+            name: 'Button',
+            text: 'Winstgevendheid',
+            type: 'button',
+          },
+        ],
       },
+      // {
+      //   text: `*Voorraad*: Orden artikelen bij en voor handeling uit op`,
+      //   color: '#ef3945',
+      //   attachment_type: 'default',
+      //   actions: [
+      //     {
+      //       name: 'Button',
+      //       text: 'Nabestellen',
+      //       type: 'button',
+      //     },
+      //     {
+      //       name: 'Button',
+      //       text: 'Voorraad',
+      //       type: 'button',
+      //     },
+      //   ],
+      // },
+      // {
+      //   text: `*Datakwaliteit*: Orden artikelen bij en voor handeling uit op`,
+      //   color: '#ef3945',
+      //   attachment_type: 'default',
+      //   actions: [
+      //     {
+      //       name: 'Button',
+      //       text: 'Categoriseren',
+      //       type: 'button',
+      //     },
+      //     {
+      //       name: 'Button',
+      //       text: 'Nieuw',
+      //       type: 'button',
+      //     },
+      //     {
+      //       name: 'Button',
+      //       text: 'Archiveren',
+      //       type: 'button',
+      //     },
+      //   ],
+      // },
     ],
   }
 }

@@ -1,4 +1,4 @@
-import moneybirdCreate from './action/moneybird-create.js'
+import moneybirdCreate from './action/create-moneybird.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {

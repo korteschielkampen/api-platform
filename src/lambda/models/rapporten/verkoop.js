@@ -30,7 +30,7 @@ export default dayreport => {
               dayreport.payments.pin.amount
             }\nCadeau: €${dayreport.payments.gift.amount}\nKrediet: €${
               dayreport.payments.credit.amount
-            }\neCom: €xxx.xx`,
+            }`,
             short: true,
           },
           // {

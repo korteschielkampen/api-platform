@@ -1,4 +1,4 @@
-import lightspeedRead from './action/lightspeed-read.js'
+import readDayreports from './action/read-financial-reports.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -11,7 +11,7 @@ exports.handler = async (event, context, callback) => {
   try {
     let datesArray = JSON.parse(event.body).datesArray
 
-    let dayreports = await lightspeedRead(datesArray)
+    let dayreports = await readDayreports(datesArray)
 
     respond({
       status: 200,

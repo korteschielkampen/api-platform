@@ -1,7 +1,4 @@
-import moment from 'moment'
-
-import lightspeedRead from './action/lightspeed-read.js'
-import postBusinessReport from './action/create-business-report.js'
+import createBusinessReport from './action/create-business-report.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -12,17 +9,7 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    // Select today
-    let datesArray = [{ date: moment().format(), lsRefresh: false }]
-
-    // Read dayreport from Lightspeed
-    let dayreports = await lightspeedRead(datesArray)
-
-    // Post to Slack
-    const postedReport = await postBusinessReport(dayreports[0])
-
-    console.log('DONE')
-    console.log(postedReport)
+    await createBusinessReport()
 
     respond({ status: 200, body: { message: 'succes' } })
   } catch (err) {

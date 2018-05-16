@@ -12,6 +12,5 @@ export default async message => {
     },
   }
   const apiUrl = 'https://slack.com/api/chat.postMessage'
-  console.log('REEEEEQUEEEEESSSSTING')
   return await request(apiUrl, options)
 }

@@ -1,7 +1,7 @@
 import moment from 'moment'
 
-import lightspeedRead from './action/lightspeed-read.js'
-import moneybirdCreate from './action/moneybird-create.js'
+import readDayreports from './action/read-financial-reports.js'
+import moneybirdCreate from './action/create-moneybird.js'
 
 exports.handler = async (event, context, callback) => {
   try {
@@ -9,7 +9,7 @@ exports.handler = async (event, context, callback) => {
     let datesArray = [{ date: moment().format(), lsRefresh: true }]
 
     // Read dayreport from Lightspeed
-    let dayreports = await lightspeedRead(datesArray)
+    let dayreports = await readDayreports(datesArray)
 
     // Create invoice at Moneybird
     await moneybirdCreate(dayreports[0])

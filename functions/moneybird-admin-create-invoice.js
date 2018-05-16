@@ -50700,85 +50700,7 @@ webpackContext.id = 880;
 /* 887 */,
 /* 888 */,
 /* 889 */,
-/* 890 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _dayreportToMoneybirdInvoice = __webpack_require__(891);
-
-var _dayreportToMoneybirdInvoice2 = _interopRequireDefault(_dayreportToMoneybirdInvoice);
-
-var _dayreportToMoneybirdStatement = __webpack_require__(892);
-
-var _dayreportToMoneybirdStatement2 = _interopRequireDefault(_dayreportToMoneybirdStatement);
-
-var _moneybirdInvoiceAndMutationToMoneybirdInvoice = __webpack_require__(893);
-
-var _moneybirdInvoiceAndMutationToMoneybirdInvoice2 = _interopRequireDefault(_moneybirdInvoiceAndMutationToMoneybirdInvoice);
-
-var _createSalesInvoice = __webpack_require__(894);
-
-var _createSalesInvoice2 = _interopRequireDefault(_createSalesInvoice);
-
-var _updateSalesInvoice = __webpack_require__(896);
-
-var _updateSalesInvoice2 = _interopRequireDefault(_updateSalesInvoice);
-
-var _createFinancialStatement = __webpack_require__(897);
-
-var _createFinancialStatement2 = _interopRequireDefault(_createFinancialStatement);
-
-var _updateFinancialMutation = __webpack_require__(898);
-
-var _updateFinancialMutation2 = _interopRequireDefault(_updateFinancialMutation);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (dayreport) {
-    // Test if there is a invoice to be made
-    if (dayreport.tax.hoog.amount != 0 || dayreport.tax.laag.amount != 0 || dayreport.tax.onbelast.amount != 0) {
-      // Creating and sending invoice in Moneybird
-      console.log('creating invoice');
-      const invoice = (0, _dayreportToMoneybirdInvoice2.default)(dayreport);
-      let createdInvoice = yield (0, _createSalesInvoice2.default)(invoice);
-
-      console.log('sending invoice');
-      let sendedInvoice = yield (0, _updateSalesInvoice2.default)(createdInvoice.id);
-
-      // Doing financial mutations if there are cash transactions
-      if (parseFloat(dayreport.payments.cash.amount) !== 0) {
-        // Creating Mutation
-        console.log('creating mutation');
-        let financialStatement = (0, _dayreportToMoneybirdStatement2.default)(dayreport);
-        let createdMutation = yield (0, _createFinancialStatement2.default)(financialStatement);
-
-        // Linking the booking
-        console.log('creating booking');
-        let booking = yield (0, _moneybirdInvoiceAndMutationToMoneybirdInvoice2.default)(createdInvoice, createdMutation);
-        let createdBooking = yield (0, _updateFinancialMutation2.default)(createdMutation.financial_mutations[0].id, booking);
-      } else {
-        console.log('No cash transactions, skipping the creating of a financial mutation');
-      }
-    } else {
-      console.log('Empty dayreport, skipping Moneybird entirely');
-    }
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
+/* 890 */,
 /* 891 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -51151,9 +51073,9 @@ exports.default = (() => {
 "use strict";
 
 
-var _moneybirdCreate = __webpack_require__(890);
+var _createMoneybird = __webpack_require__(924);
 
-var _moneybirdCreate2 = _interopRequireDefault(_moneybirdCreate);
+var _createMoneybird2 = _interopRequireDefault(_createMoneybird);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -51172,7 +51094,7 @@ exports.handler = (() => {
       // Parse payload
       const dayreport = JSON.parse(event.body);
 
-      yield (0, _moneybirdCreate2.default)(dayreport);
+      yield (0, _createMoneybird2.default)(dayreport);
 
       respond({
         status: 200,
@@ -51187,6 +51109,97 @@ exports.handler = (() => {
   });
 
   return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 912 */,
+/* 913 */,
+/* 914 */,
+/* 915 */,
+/* 916 */,
+/* 917 */,
+/* 918 */,
+/* 919 */,
+/* 920 */,
+/* 921 */,
+/* 922 */,
+/* 923 */,
+/* 924 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _dayreportToMoneybirdInvoice = __webpack_require__(891);
+
+var _dayreportToMoneybirdInvoice2 = _interopRequireDefault(_dayreportToMoneybirdInvoice);
+
+var _dayreportToMoneybirdStatement = __webpack_require__(892);
+
+var _dayreportToMoneybirdStatement2 = _interopRequireDefault(_dayreportToMoneybirdStatement);
+
+var _moneybirdInvoiceAndMutationToMoneybirdInvoice = __webpack_require__(893);
+
+var _moneybirdInvoiceAndMutationToMoneybirdInvoice2 = _interopRequireDefault(_moneybirdInvoiceAndMutationToMoneybirdInvoice);
+
+var _createSalesInvoice = __webpack_require__(894);
+
+var _createSalesInvoice2 = _interopRequireDefault(_createSalesInvoice);
+
+var _updateSalesInvoice = __webpack_require__(896);
+
+var _updateSalesInvoice2 = _interopRequireDefault(_updateSalesInvoice);
+
+var _createFinancialStatement = __webpack_require__(897);
+
+var _createFinancialStatement2 = _interopRequireDefault(_createFinancialStatement);
+
+var _updateFinancialMutation = __webpack_require__(898);
+
+var _updateFinancialMutation2 = _interopRequireDefault(_updateFinancialMutation);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (dayreport) {
+    // Test if there is a invoice to be made
+    if (dayreport.tax.hoog.amount != 0 || dayreport.tax.laag.amount != 0 || dayreport.tax.onbelast.amount != 0) {
+      // Creating and sending invoice in Moneybird
+      console.log('creating invoice');
+      const invoice = (0, _dayreportToMoneybirdInvoice2.default)(dayreport);
+      let createdInvoice = yield (0, _createSalesInvoice2.default)(invoice);
+
+      console.log('sending invoice');
+      let sendedInvoice = yield (0, _updateSalesInvoice2.default)(createdInvoice.id);
+
+      // Doing financial mutations if there are cash transactions
+      if (parseFloat(dayreport.payments.cash.amount) !== 0) {
+        // Creating Mutation
+        console.log('creating mutation');
+        let financialStatement = (0, _dayreportToMoneybirdStatement2.default)(dayreport);
+        let createdMutation = yield (0, _createFinancialStatement2.default)(financialStatement);
+
+        // Linking the booking
+        console.log('creating booking');
+        let booking = yield (0, _moneybirdInvoiceAndMutationToMoneybirdInvoice2.default)(createdInvoice, createdMutation);
+        let createdBooking = yield (0, _updateFinancialMutation2.default)(createdMutation.financial_mutations[0].id, booking);
+      } else {
+        console.log('No cash transactions, skipping the creating of a financial mutation');
+      }
+    } else {
+      console.log('Empty dayreport, skipping Moneybird entirely');
+    }
+  });
+
+  return function (_x) {
     return _ref.apply(this, arguments);
   };
 })();

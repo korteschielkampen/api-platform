@@ -1,14 +1,20 @@
-import createMessage from '../api/slack/create-message.js'
-import verkoopRapport from '../models/rapporten/verkoop.js'
-import voorraadRapport from '../models/rapporten/voorraad.js'
-import assortimentRapportArchief from '../models/rapporten/assortiment-archiveren.js'
-import assortimentRapportNieuw from '../models/rapporten/assortiment-nieuw.js'
-import marketingRapport from '../models/rapporten/marketing.js'
+import moment from 'moment'
 
-export default async dayreport => {
-  await createMessage(verkoopRapport(dayreport))
-  // await createMessage(voorraadRapport())
-  // await createMessage(assortimentRapport())
-  // await createMessage(marketingRapport())
+import readDayreportFinancial from './read-financial-reports.js'
+import readDayreportItem from './read-item-report.js'
+import createMessage from '../api/slack/create-message.js'
+
+import verkoopRapport from '../models/rapporten/verkoop.js'
+
+export default async () => {
+  // Select today
+  let datesArray = [{ date: moment().format(), lsRefresh: false }]
+
+  // Read dayreports from Lightspeed
+  let financialReports = await readDayreportFinancial(datesArray)
+  let itemsReports = await readDayreportItem(datesArray)
+
+  // Post to Slack
+  await createMessage(verkoopRapport(financialReports[0]))
   return true
 }

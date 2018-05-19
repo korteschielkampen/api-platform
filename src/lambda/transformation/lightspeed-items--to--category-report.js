@@ -94,11 +94,21 @@ export default (items, itemIDsValue) => {
   _.map(categoryReport, (category, key) => {
     categoryReportFixed[key] = {
       totaal: category.totaal.toFixed(2),
+      percentage: (
+        category.totaal.toFixed(2) /
+        categoryReport.totaal.totaal *
+        100
+      ).toFixed(0),
     }
     _.map(categoryReport[key], (nestedCategory, nestedKey) => {
       if (nestedCategory.totaal && nestedKey) {
         categoryReportFixed[key][nestedKey] = {
           totaal: nestedCategory.totaal.toFixed(2),
+          percentage: (
+            nestedCategory.totaal.toFixed(2) /
+            categoryReport.totaal.totaal *
+            100
+          ).toFixed(0),
         }
       }
     })

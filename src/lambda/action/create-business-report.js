@@ -12,8 +12,6 @@ export default async () => {
 
   // Read dayreports from Lightspeed
   let financialReports = await readDayreportFinancial(datesArray)
-  console.log(financialReports[0].tax)
-  console.log(financialReports[0].payments)
   let categoryReport = await readDayreportCategory(datesArray)
 
   // Post to Slack

@@ -5,7 +5,7 @@ import strictUriEncode from 'strict-uri-encode'
 import request from '../general/request.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
 
-export default async itemIDs => {
+export default async soldItems => {
   let access_token = await readAccessToken()
   const options = {
     method: 'GET',
@@ -13,6 +13,9 @@ export default async itemIDs => {
       Authorization: `Bearer ${access_token}`,
     },
   }
+  let itemIDs = soldItems.map(item => {
+    return item.id
+  })
 
   let stringifiedItemIDs = JSON.stringify(itemIDs)
 

@@ -3,7 +3,9 @@ import _ from 'lodash'
 export default (dayreport, categoryReport) => {
   const totalEarnings = parseFloat(
     parseFloat(dayreport.payments.cash.amount) +
-      parseFloat(dayreport.payments.pin.amount)
+      parseFloat(dayreport.payments.pin.amount) +
+      parseFloat(dayreport.payments.gift.amount) +
+      parseFloat(dayreport.payments.credit.amount)
   ).toFixed(2)
 
   const totalSales = parseFloat(
@@ -12,13 +14,7 @@ export default (dayreport, categoryReport) => {
       parseFloat(dayreport.tax.onbelast.amount)
   ).toFixed(2)
 
-  categoryReport.etc =
-    categoryReport.Ongecategoriseerd + categoryReport.Diversen
-
-  let categoryReportFixed = {}
-  _.map(categoryReport, (value, key) => {
-    categoryReportFixed[key] = value.toFixed(2)
-  })
+  console.log(categoryReport)
 
   return {
     text: 'Uw dagelijkse rapport:',
@@ -62,38 +58,70 @@ export default (dayreport, categoryReport) => {
         // ],
       },
       {
-        title: '---------------\nBranches en categorieën\n---------------',
+        title: `---------------\nBranches en categorieën: €${
+          categoryReport.totaal.totaal
+        }\n---------------`,
         color: '#ef3945',
         attachment_type: 'default',
       },
       {
         fields: [
-          {
-            title: `Aqua: €${categoryReportFixed.Aquarium}`,
-            value: `Vissen: €${categoryReportFixed.Vis}\nPlanten: €${
-              categoryReportFixed.Planten
+          categoryReport.Aquarium && {
+            title: `Aqua: €${categoryReport.Aquarium.totaal || '0'}`,
+            value: `Vissen: €${
+              categoryReport.Aquarium.Vis
+                ? categoryReport.Aquarium.Vis.totaal
+                : '0'
+            }\nPlanten: €${
+              categoryReport.Aquarium.Planten
+                ? categoryReport.Aquarium.Planten.totaal
+                : '0'
             }`,
             short: true,
           },
-          {
-            title: `Hengel: €${categoryReportFixed.Hengelsport}`,
-            value: `Passen: €${categoryReportFixed.Passen}\nAas: €${
-              categoryReportFixed.Aas
+          categoryReport.Hengelsport && {
+            title: `Hengel: €${categoryReport.Hengelsport.totaal}`,
+            value: `Passen: €${
+              categoryReport.Hengelsport.Passen
+                ? categoryReport.Hengelsport.Passen.totaal
+                : '0'
+            }\nAas: €${
+              categoryReport.Hengelsport.Aas
+                ? categoryReport.Hengelsport.Aas.totaal
+                : '0'
             }`,
             short: true,
           },
-          {
-            title: `Dieren: €${categoryReportFixed.Dierenspeciaal}`,
-            value: `Voeders: €${categoryReportFixed.Voeders}\nKauw: €${
-              categoryReportFixed.Kauw
+          categoryReport.Dierenspeciaal && {
+            title: `Dieren: €${categoryReport.Dierenspeciaal.totaal || '0'}`,
+            value: `Katten: €${
+              categoryReport.Dierenspeciaal.Katten
+                ? categoryReport.Dierenspeciaal.Katten.totaal
+                : '0'
+            }\nHonden: €${
+              categoryReport.Dierenspeciaal.Honden
+                ? categoryReport.Dierenspeciaal.Honden.totaal
+                : '0'
+            }\nVogels: €${
+              categoryReport.Dierenspeciaal.Vogels
+                ? categoryReport.Dierenspeciaal.Vogels.totaal
+                : '0'
+            }\nKnaag: €${
+              categoryReport.Dierenspeciaal.Knaagdieren
+                ? categoryReport.Dierenspeciaal.Knaagdieren.totaal
+                : '0'
             }`,
             short: true,
           },
-          {
-            title: `Etc.: €${categoryReportFixed.etc}`,
+          categoryReport.etc && {
+            title: `Etc.: €${categoryReport.etc.totaal || '0'}`,
             value: `Ongecat.: €${
-              categoryReportFixed.Ongecategoriseerd
-            }\nDivers: €${categoryReportFixed.Diversen}`,
+              categoryReport.Ongecategoriseerd
+                ? categoryReport.Ongecategoriseerd.totaal
+                : '0'
+            }\nDivers: €${
+              categoryReport.Diversen ? categoryReport.Diversen.totaal : '0'
+            }`,
             short: true,
           },
         ],
@@ -185,7 +213,7 @@ export default (dayreport, categoryReport) => {
         ],
       },
       // {
-      //   text: `*Voorraad*: Orden artikelen bij en voor handeling uit op`,
+      //   text: `*Voorraad*: Orden artikelen met`,
       //   color: '#ef3945',
       //   attachment_type: 'default',
       //   actions: [
@@ -194,15 +222,10 @@ export default (dayreport, categoryReport) => {
       //       text: 'Nabestellen',
       //       type: 'button',
       //     },
-      //     {
-      //       name: 'Button',
-      //       text: 'Voorraad',
-      //       type: 'button',
-      //     },
       //   ],
       // },
       // {
-      //   text: `*Datakwaliteit*: Orden artikelen bij en voor handeling uit op`,
+      //   text: `*Datakwaliteit*: Orden artikelen met`,
       //   color: '#ef3945',
       //   attachment_type: 'default',
       //   actions: [
@@ -213,7 +236,7 @@ export default (dayreport, categoryReport) => {
       //     },
       //     {
       //       name: 'Button',
-      //       text: 'Nieuw',
+      //       text: 'Nieuwigheid',
       //       type: 'button',
       //     },
       //     {

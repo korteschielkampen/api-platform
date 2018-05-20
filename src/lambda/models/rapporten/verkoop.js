@@ -6,15 +6,13 @@ export default (dayreport, cR) => {
       parseFloat(dayreport.payments.pin.amount) +
       parseFloat(dayreport.payments.gift.amount) +
       parseFloat(dayreport.payments.credit.amount)
-  ).toFixed(2)
+  ).toFixed(0)
 
   const totalSales = parseFloat(
     parseFloat(dayreport.tax.hoog.amount) +
       parseFloat(dayreport.tax.laag.amount) +
       parseFloat(dayreport.tax.onbelast.amount)
-  ).toFixed(2)
-
-  console.log(cR)
+  ).toFixed(0)
 
   return {
     text: 'Uw dagelijkse rapport:',
@@ -69,14 +67,14 @@ export default (dayreport, cR) => {
               ' (' +
               cR.Aquarium.percentage +
               '%)' || '0'}`,
-            value: `Vissen: €${
+            value: `Vis: €${
               cR.Aquarium.Vis
                 ? cR.Aquarium.Vis.totaal +
                   ' (' +
                   cR.Aquarium.Vis.percentage +
                   '%)'
                 : '0'
-            }\nPlanten: €${
+            }\nPlant: €${
               cR.Aquarium.Planten
                 ? cR.Aquarium.Planten.totaal +
                   ' (' +
@@ -91,7 +89,7 @@ export default (dayreport, cR) => {
               ' (' +
               cR.Hengelsport.percentage +
               '%)' || '0'}`,
-            value: `Passen: €${
+            value: `Pas: €${
               cR.Hengelsport.Visvergunningen
                 ? cR.Hengelsport.Visvergunningen.totaal +
                   ' (' +
@@ -147,7 +145,7 @@ export default (dayreport, cR) => {
           cR.etc && {
             title: `Etc.: €${cR.etc.totaal + ' (' + cR.etc.percentage + '%)' ||
               '0'}`,
-            value: `Ongecat.: €${
+            value: `Oncat: €${
               cR.Ongecategoriseerd
                 ? cR.Ongecategoriseerd.totaal +
                   ' (' +

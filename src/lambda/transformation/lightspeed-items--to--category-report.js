@@ -93,9 +93,9 @@ export default (items, itemIDsValue) => {
   let categoryReportFixed = {}
   _.map(categoryReport, (category, key) => {
     categoryReportFixed[key] = {
-      totaal: category.totaal.toFixed(2),
+      totaal: category.totaal.toFixed(0),
       percentage: (
-        category.totaal.toFixed(2) /
+        category.totaal /
         categoryReport.totaal.totaal *
         100
       ).toFixed(0),
@@ -103,9 +103,9 @@ export default (items, itemIDsValue) => {
     _.map(categoryReport[key], (nestedCategory, nestedKey) => {
       if (nestedCategory.totaal && nestedKey) {
         categoryReportFixed[key][nestedKey] = {
-          totaal: nestedCategory.totaal.toFixed(2),
+          totaal: nestedCategory.totaal.toFixed(0),
           percentage: (
-            nestedCategory.totaal.toFixed(2) /
+            nestedCategory.totaal /
             categoryReport.totaal.totaal *
             100
           ).toFixed(0),

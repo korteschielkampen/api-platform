@@ -5,7 +5,8 @@ import styles from './index.module.css'
 
 const client_id =
   '4c23f9e681c44d339359a38dc340522fae805ddab5e372c39762ef91c080179d'
-const scope = 'employee:reports+employee:register_read+employee:inventory'
+const scope =
+  'employee:reports+employee:register_read+employee:inventory+employee:admin_shops'
 const temporaryTokenLink = `https://cloud.lightspeedapp.com/oauth/authorize.php?response_type=code&client_id=${client_id}&scope=${scope}`
 
 class IndexPage extends React.Component {

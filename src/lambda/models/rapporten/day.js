@@ -6,7 +6,7 @@ import createStockReport from './stock'
 import createArticleReport from './article'
 import createDataReport from './dataquality'
 
-export default (dayreport, cR) => {
+export default (dayreport, cR, aR) => {
   const totalEarnings = parseFloat(
     parseFloat(dayreport.payments.cash.amount) +
       parseFloat(dayreport.payments.pin.amount) +
@@ -44,10 +44,11 @@ export default (dayreport, cR) => {
       // createPurchaseReport(cR),
       {
         title: 'Artikelen\n ',
+        text: 'Geordend op omzet',
         color: '#ef3945',
         attachment_type: 'default',
       },
-      // createArticleReport(aR),
+      createArticleReport(aR),
       // createStockReport(cR),
       // createDataReport(cR),
     ],

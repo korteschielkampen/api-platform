@@ -6,6 +6,7 @@ import request from '../general/request.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
 
 export default async soldItems => {
+  console.log('Reading items from Lightspeed')
   let access_token = await readAccessToken()
   const options = {
     method: 'GET',

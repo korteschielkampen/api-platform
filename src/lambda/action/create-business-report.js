@@ -24,6 +24,8 @@ export default async () => {
   let articleReport = await readDayreportArticle(datesArray)
 
   // Post to Slack
-  await createMessage(dayReport(financialReports[0], categoryReport))
+  await createMessage(
+    dayReport(financialReports[0], categoryReport, articleReport)
+  )
   return true
 }

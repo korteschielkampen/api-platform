@@ -10,7 +10,11 @@ export default salesDay => {
       let subcount = 0
       _.map(sale.SaleLines.SaleLine, (line, lineID) => {
         subcount += parseFloat(line.calcTotal)
-        items.push({ id: line.itemID, value: line.calcTotal })
+        items.push({
+          id: line.itemID,
+          value: line.calcTotal,
+          quantity: line.unitQuantity,
+        })
       })
     }
   })

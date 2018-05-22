@@ -31,7 +31,7 @@ export default (dayreport, cR) => {
         title: `Branches en categorieën: €${cR.totaal.totaal}`,
         text: `Waarvan normale artikelen: €${cR.normaal.totaal} (${
           cR.normaal.percentage
-        }%) (Normale artikelen zijn zonder vergunningen, aas, vissen en planten)`,
+        }%) (Normale artikelen zijn zonder vergunningen, levend aas, vissen en planten)`,
         color: '#ef3945',
         attachment_type: 'default',
       },

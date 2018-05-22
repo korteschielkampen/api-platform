@@ -27,18 +27,18 @@ export default cR => {
           ' (' +
           cR.Hengelsport.percentage +
           '%)' || '0'}`,
-        value: `Pas: €${
+        value: `Vispas: €${
           cR.Hengelsport.Visvergunningen
             ? cR.Hengelsport.Visvergunningen.totaal +
               ' (' +
               cR.Hengelsport.Visvergunningen.percentage +
               '%)'
             : '0'
-        }\nAas: €${
-          cR.Hengelsport.Aas
-            ? cR.Hengelsport.Aas.totaal +
+        }\nL.Aas: €${
+          cR.Hengelsport['Levend Aas']
+            ? cR.Hengelsport['Levend Aas'].totaal +
               ' (' +
-              cR.Hengelsport.Aas.percentage +
+              cR.Hengelsport['Levend Aas'].percentage +
               '%)'
             : '0'
         }`,

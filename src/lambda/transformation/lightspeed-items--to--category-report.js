@@ -94,7 +94,7 @@ export default (items, itemIDsValue) => {
     totaal:
       categoryReport.totaal.totaal -
       categoryReport.Hengelsport.Visvergunningen.totaal -
-      categoryReport.Hengelsport.Aas.totaal -
+      categoryReport.Hengelsport['Levend Aas'].totaal -
       categoryReport.Aquarium.Vis.totaal -
       categoryReport.Aquarium.Planten.totaal,
   }

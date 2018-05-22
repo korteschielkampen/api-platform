@@ -90,6 +90,15 @@ export default (items, itemIDsValue) => {
       categoryReport.Dierenspeciaal.totaal,
   }
 
+  categoryReport.normaal = {
+    totaal:
+      categoryReport.totaal.totaal -
+      categoryReport.Hengelsport.Visvergunningen.totaal -
+      categoryReport.Hengelsport.Aas.totaal -
+      categoryReport.Aquarium.Vis.totaal -
+      categoryReport.Aquarium.Planten.totaal,
+  }
+
   let categoryReportFixed = {}
   _.map(categoryReport, (category, key) => {
     categoryReportFixed[key] = {

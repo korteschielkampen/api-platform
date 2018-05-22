@@ -25,7 +25,7 @@ export default async soldItems => {
   let offset = 0
   let count = 1
   while (offset < count) {
-    let apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Item.json?load_relations=["Category, ItemShops"]&offset=${offset}&itemID=IN,${stringifiedItemIDs}`
+    let apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Item.json?load_relations=["Category", "ItemShops"]&offset=${offset}&itemID=IN,${stringifiedItemIDs}`
     let tempItems = await request(apiUrl, options)
     items = _.concat(items, tempItems.Item)
     count = parseInt(tempItems['@attributes'].count)

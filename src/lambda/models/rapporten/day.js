@@ -44,7 +44,7 @@ export default (dayreport, cR, aR) => {
       // createPurchaseReport(cR),
       {
         title: 'Artikelen\n ',
-        text: 'Geordend op omzet',
+        text: 'Gesorteerd op omzet',
         color: '#ef3945',
         attachment_type: 'default',
       },

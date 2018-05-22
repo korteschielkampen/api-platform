@@ -5,13 +5,13 @@ function toTitleCase(str) {
 }
 
 export default aR => {
-  console.log(aR)
+  console.log(aR.slice(0, 10))
 
   return {
     color: '#ef3945',
     attachment_type: 'default',
     fields: [
-      ...aR.slice(0, 5).map((item, key) => {
+      ...aR.slice(0, 10).map((item, key) => {
         return {
           title: `${key + 1}: ${toTitleCase(item.fields.description)}`,
           value: `Omzet: €${item.value}, Aantal: ${
@@ -19,7 +19,7 @@ export default aR => {
           }\nVoorraad: xxx, Nabestelpunt: xxx`,
           color: '#40abff',
           attachment_type: 'default',
-          short: false,
+          short: true,
         }
       }),
     ],

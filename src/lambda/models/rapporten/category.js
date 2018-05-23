@@ -6,8 +6,7 @@ export default cR => {
       title: `Branches en categorieën`,
       text: `Waarvan normale artikelen: €${cR.normaal.totaal} (${
         cR.normaal.percentage
-      }%)`,
-      //  (Normale artikelen zijn zonder vergunningen, levend aas, vissen en planten)
+      }%). Abnormale artikelen zijn: Vergunningen, levend aas, vissen en planten.`,
       color: '#ef3945',
       attachment_type: 'default',
     },

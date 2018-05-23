@@ -4,11 +4,13 @@ export default fR => {
   return [
     {
       title: `Financieel`,
-      text: `Winst is €${fR.analysis.profit.toFixed(
+      text: `De winst is €${fR.analysis.profit.toFixed(
         0
       )}, maar ${fR.analysis.unreliabilityCount.toFixed(
         0
-      )} artikelen hebben geen inkoopsprijs`,
+      )} artikelen hebben geen inkoopsprijs. Het gaat om een omzet van €${fR.analysis.unreliabilityTotal.toFixed(
+        0
+      )} en dit is verrekend met een winstmarge van 30%.`,
       color: '#ef3945',
       attachment_type: 'default',
     },

@@ -19,6 +19,7 @@ export default salesDay => {
     profit: 0,
     sales: 0,
     unreliabilityCount: 0,
+    unreliabilityTotal: 0,
   }
 
   if (salesDay.sales.length > 0) {
@@ -67,21 +68,20 @@ export default salesDay => {
       // Do the analysis
       if (sale.completed == 'true' && sale.SaleLines) {
         analysis.total += parseFloat(sale.calcTotal)
-        analysis.profit +=
-          parseFloat(sale.calcTotal) - parseFloat(sale.calcAvgCost)
         analysis.sales++
-        if (analysis.saleSize) {
-          analysis.saleSize =
-            (parseFloat(sale.calcTotal) + analysis.saleSize) / 2
-        } else {
-          analysis.saleSize = parseFloat(sale.calcTotal)
-        }
         if (sale.calcAvgCost == '0') {
           analysis.unreliabilityCount++
+          analysis.unreliabilityTotal += parseFloat(sale.calcTotal)
+          analysis.profit += parseFloat(sale.calcTotal) * 0.3
+        } else {
+          analysis.profit +=
+            parseFloat(sale.calcTotal) - parseFloat(sale.calcAvgCost)
         }
       }
     })
   }
+
+  analysis.saleSize = analysis.total / analysis.sales
 
   tax.hoog.amount = tax.hoog.amount.toFixed(2)
   tax.laag.amount = tax.laag.amount.toFixed(2)

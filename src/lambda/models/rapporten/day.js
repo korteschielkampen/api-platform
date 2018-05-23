@@ -8,7 +8,8 @@ import createDataReport from './dataquality'
 export default (pR, cR, aR) => {
   return {
     text: 'Uw dagelijkse rapport',
-    channel: 'CAPCPRW6B',
+    // channel: 'CAPCPRW6B', // Test
+    channel: 'C97BAQ41J', // Kassa
     username: 'Lightspeed - Dagrapporten',
     icon_url:
       'https://integration-platform.korteschielkampen.nl/lightspeed.png',

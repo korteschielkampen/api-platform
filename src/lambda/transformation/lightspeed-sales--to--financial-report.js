@@ -69,19 +69,23 @@ export default salesDay => {
       if (sale.completed == 'true' && sale.SaleLines) {
         analysis.total += parseFloat(sale.calcTotal)
         analysis.sales++
-        if (sale.calcAvgCost == '0') {
-          analysis.unreliabilityCount++
-          analysis.unreliabilityTotal += parseFloat(sale.calcTotal)
-          analysis.profit += parseFloat(sale.calcTotal) * 0.3
-        } else {
-          analysis.profit +=
-            parseFloat(sale.calcTotal) - parseFloat(sale.calcAvgCost)
-        }
+        _.map(sale.SaleLines.SaleLine, (line, lineID) => {
+          if (line.avgCost == '0') {
+            analysis.unreliabilityCount++
+            analysis.unreliabilityTotal += parseFloat(line.calcTotal)
+            analysis.profit += parseFloat(line.calcTotal) * 0.3
+          } else {
+            analysis.profit +=
+              parseFloat(line.calcTotal) - parseFloat(line.avgCost)
+          }
+        })
       }
     })
   }
 
   analysis.saleSize = analysis.total / analysis.sales
+
+  console.log(analysis)
 
   tax.hoog.amount = tax.hoog.amount.toFixed(2)
   tax.laag.amount = tax.laag.amount.toFixed(2)

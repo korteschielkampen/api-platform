@@ -4,7 +4,7 @@ export default fR => {
   return [
     {
       title: `Financieel`,
-      text: `De winst is €${fR.analysis.profit.toFixed(
+      text: `Het bruto resultaat is €${fR.analysis.profit.toFixed(
         0
       )}, maar ${fR.analysis.unreliabilityCount.toFixed(
         0
@@ -20,7 +20,7 @@ export default fR => {
           title: 'Analyse',
           value: `Omzet: €${fR.analysis.total.toFixed(
             0
-          )}\nWinst: €${fR.analysis.profit.toFixed(
+          )}\nB.Resultaat: €${fR.analysis.profit.toFixed(
             0
           )}\nVerkopen: ${fR.analysis.sales.toFixed(
             0

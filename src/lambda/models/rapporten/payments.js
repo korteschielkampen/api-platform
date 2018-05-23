@@ -31,7 +31,7 @@ export default dayreport => {
       // },
     ],
 
-    color: '#40abff',
+    color: '#ef3945',
     attachment_type: 'default',
     // actions: [
     //   {

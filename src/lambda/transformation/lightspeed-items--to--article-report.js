@@ -22,7 +22,12 @@ export default (items, soldItems) => {
       fields: itemsHashed[item.id],
     }
   })
-  delete soldItemsHashed['0']
+
+  // Delete items
+  delete soldItemsHashed['0'] // Diversen
+  Object.entries(soldItemsHashed).map(([key, item]) => {
+    console.log(item.fields.Tags)
+  })
 
   // Convert back to array
   let soldItemsCounted = Object.values(soldItemsHashed)

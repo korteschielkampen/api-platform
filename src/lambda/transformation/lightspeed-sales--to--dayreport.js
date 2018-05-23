@@ -37,7 +37,7 @@ export default salesDay => {
       // Do the payments
       if (sale.completed == 'true' && sale.SalePayments) {
         _.map(sale.SalePayments.SalePayment, (line, lineID) => {
-          if (line.archived !=  'true' ) {
+          if (line.archived != 'true') {
             switch (line.paymentTypeID) {
               case '1':
                 payments.cash.amount += parseFloat(line.amount)
@@ -49,7 +49,6 @@ export default salesDay => {
                 payments.credit.amount += parseFloat(line.amount)
                 break
               case '5':
-                console.log(line)
                 payments.gift.amount += parseFloat(line.amount)
                 break
               default:

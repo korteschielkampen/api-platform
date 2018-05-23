@@ -15,16 +15,13 @@ export default async (dateObject, key) => {
 
   // Read from Dynamo
   if (!dateObject.lsRefresh) {
-    console.log('Request Dynamo')
     salesDay = await readDynamo(date)
   }
 
   // When not in Dynamo download from Lightspeed and put in Dynamo
   if (!salesDay || dateObject.lsRefresh) {
     lsRequested = true
-    console.log('Request Lightspeed')
     let sales = await readSalesDay(date)
-    console.log('Update Dynamo')
     salesDay = await updateDynamo(sales, date)
   }
 

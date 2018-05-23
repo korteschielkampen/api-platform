@@ -1,6 +1,7 @@
 import _ from 'lodash'
 
 export default (items, itemIDsValue) => {
+  console.log('Calculate category report')
   // Create searchable object from array
   var itemsHashed = {}
   items.forEach(i => {
@@ -55,7 +56,6 @@ export default (items, itemIDsValue) => {
   Object.entries(rawCategoryReport).forEach(([key, category]) => {
     // Split
     category.split = category.category.split('/')
-
     // Level one
     if (categoryReport[category.split[0]]) {
       categoryReport[category.split[0]].totaal += parseFloat(category.value)
@@ -64,15 +64,16 @@ export default (items, itemIDsValue) => {
     }
 
     // Level two
-    if (categoryReport[category.split[0]][category.split[1]]) {
+    if (
+      categoryReport[category.split[0]] &&
+      categoryReport[category.split[0]][category.split[1]]
+    ) {
       categoryReport[category.split[0]][category.split[1]].totaal += parseFloat(
         category.value
       )
-    } else {
-      if (category.split[1]) {
-        categoryReport[category.split[0]][category.split[1]] = {
-          totaal: category.value,
-        }
+    } else if (category.split[1]) {
+      categoryReport[category.split[0]][category.split[1]] = {
+        totaal: category.value,
       }
     }
   })
@@ -84,19 +85,33 @@ export default (items, itemIDsValue) => {
 
   categoryReport.totaal = {
     totaal:
-      categoryReport.etc.totaal +
-      categoryReport.Hengelsport.totaal +
-      categoryReport.Aquarium.totaal +
-      categoryReport.Dierenspeciaal.totaal,
+      ((categoryReport.etc && categoryReport.etc.totaal) || 0) +
+      ((categoryReport.Hengelsport && categoryReport.Hengelsport.totaal) || 0) +
+      ((categoryReport.Aquarium && categoryReport.Aquarium.totaal) || 0) +
+      ((categoryReport.Dierenspeciaal &&
+        categoryReport.Dierenspeciaal.totaal) ||
+        0),
   }
 
   categoryReport.normaal = {
     totaal:
-      categoryReport.totaal.totaal -
-      categoryReport.Hengelsport.Visvergunningen.totaal -
-      categoryReport.Hengelsport['Levend Aas'].totaal -
-      categoryReport.Aquarium.Vis.totaal -
-      categoryReport.Aquarium.Planten.totaal,
+      ((categoryReport.totaal && categoryReport.totaal.totaal) || 0) -
+      ((categoryReport.Hengelsport &&
+        categoryReport.Hengelsport.Visvergunningen &&
+        categoryReport.Hengelsport.Visvergunningen.totaal) ||
+        0) -
+      ((categoryReport.Hengelsport &&
+        categoryReport.Hengelsport['Levend Aas'] &&
+        categoryReport.Hengelsport['Levend Aas'].totaal) ||
+        0) -
+      ((categoryReport.Aquarium &&
+        categoryReport.Aquarium.Vis &&
+        categoryReport.Aquarium.Vis.totaal) ||
+        0) -
+      ((categoryReport.Aquarium &&
+        categoryReport.Aquarium.Planten &&
+        categoryReport.Aquarium.Planten.totaal) ||
+        0),
   }
 
   let categoryReportFixed = {}

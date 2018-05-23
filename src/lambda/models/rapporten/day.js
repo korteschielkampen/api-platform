@@ -23,7 +23,7 @@ export default (dayreport, cR, aR) => {
     attachments: [
       {
         title: `Financieel: €${totalEarnings}\n `,
-        color: '#40abff',
+        color: '#ef3945',
         attachment_type: 'default',
       },
       createPaymentReport(dayreport),
@@ -48,7 +48,7 @@ export default (dayreport, cR, aR) => {
         color: '#ef3945',
         attachment_type: 'default',
       },
-      createArticleReport(aR),
+      ...createArticleReport(aR),
       // createStockReport(cR),
       // createDataReport(cR),
     ],

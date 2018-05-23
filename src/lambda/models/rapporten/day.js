@@ -5,11 +5,11 @@ import createPurchaseReport from './purchase'
 import createArticleReport from './article'
 import createDataReport from './dataquality'
 
-export default (pR, cR, aR) => {
+export default (pR, cR, aR, channel) => {
   return {
     text: 'Uw dagelijkse rapport',
     // channel: 'CAPCPRW6B', // Test
-    channel: 'C97BAQ41J', // Kassa
+    channel: channel, // Kassa
     username: 'Lightspeed - Dagrapporten',
     icon_url:
       'https://integration-platform.korteschielkampen.nl/lightspeed.png',

@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import createBusinessReport from './action/create-business-report.js'
 
 exports.handler = async (event, context, callback) => {
@@ -9,7 +11,18 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    await createBusinessReport()
+    let datesArray = [
+      {
+        date: moment()
+          // .subtract(2, 'days')
+          .format(),
+        lsRefresh: true,
+      },
+    ]
+
+    let channel = 'C97BAQ41J'
+
+    await createBusinessReport(datesArray, channel)
 
     respond({ status: 200, body: { message: 'succes' } })
   } catch (err) {

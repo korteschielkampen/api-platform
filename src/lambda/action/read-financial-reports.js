@@ -7,13 +7,13 @@ const pmap = promisify(map)
 import readSalesDay from './read-salesday.js'
 import updateDynamo from '../store/dynamo/salesday/update.js'
 import readDynamo from '../store/dynamo/salesday/read.js'
-import calculateDayreport from '../transformation/lightspeed-sales--to--dayreport.js'
+import calculateDayreport from '../transformation/lightspeed-sales--to--financial-report.js'
 
 export default async datesArray => {
   let salesDay = await pmap(datesArray, asyncify(readSalesDay))
 
   // Calculate the dayreport
-  console.log('Calculate Salesday')
+  console.log('Calculate financial report')
   let dayreports = _.map(salesDay, (salesDay, key) => {
     return {
       ...salesDay,

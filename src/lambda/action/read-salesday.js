@@ -3,7 +3,6 @@ import moment from 'moment'
 import readSalesDay from '../api/lightspeed/read-salesday.js'
 import updateDynamo from '../store/dynamo/salesday/update.js'
 import readDynamo from '../store/dynamo/salesday/read.js'
-import calculateDayreport from '../transformation/lightspeed-sales--to--dayreport.js'
 
 export default async (dateObject, key) => {
   // Setup variables

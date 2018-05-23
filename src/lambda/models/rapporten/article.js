@@ -17,7 +17,9 @@ export default aR => {
       title_link: `https://us.lightspeedapp.com/?name=item.views.item&form_name=view&id=${
         item.id
       }&tab=details`,
-      text: `Omzet: €${item.value}, Aantal: ${item.quantity}\nVoorraad: ${
+      text: `Omzet: €${item.value}, Winst: €${item.profit} (${
+        item.profitPercentage
+      }%), Aantal: ${item.quantity}\nVoorraad: ${
         item.fields.ItemShops.ItemShop[0].qoh
       }, Nabestelpunt: ${
         item.fields.ItemShops.ItemShop[0].reorderPoint
@@ -25,7 +27,7 @@ export default aR => {
         item.fields.Category.fullPathName
           .split('/')
           .map(value => {
-            return value.slice(0, 10)
+            return value.slice(0, 8)
           })
           .join('../')) ||
         'Geen categorie'}`,

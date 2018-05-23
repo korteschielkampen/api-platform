@@ -6,17 +6,17 @@ export default () => {
     actions: [
       {
         name: 'Button',
-        text: 'Categoriseren',
+        text: 'Verkocht',
         type: 'button',
       },
       {
         name: 'Button',
-        text: 'Nieuwigheid',
+        text: 'Toegevoegd',
         type: 'button',
       },
       {
         name: 'Button',
-        text: 'Archiveren',
+        text: 'Archiveerbaar',
         type: 'button',
       },
     ],

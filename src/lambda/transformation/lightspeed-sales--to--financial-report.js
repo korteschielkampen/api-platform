@@ -14,6 +14,13 @@ export default salesDay => {
     gift: { name: 'gift', amount: 0 },
   }
 
+  let analysis = {
+    total: 0,
+    profit: 0,
+    sales: 0,
+    unreliabilityCount: 0,
+  }
+
   if (salesDay.sales.length > 0) {
     _.map(salesDay.sales, (sale, saleID) => {
       // Do the taxes
@@ -56,6 +63,23 @@ export default salesDay => {
           }
         })
       }
+
+      // Do the analysis
+      if (sale.completed == 'true' && sale.SaleLines) {
+        analysis.total += parseFloat(sale.calcTotal)
+        analysis.profit +=
+          parseFloat(sale.calcTotal) - parseFloat(sale.calcAvgCost)
+        analysis.sales++
+        if (analysis.saleSize) {
+          analysis.saleSize =
+            (parseFloat(sale.calcTotal) + analysis.saleSize) / 2
+        } else {
+          analysis.saleSize = parseFloat(sale.calcTotal)
+        }
+        if (sale.calcAvgCost == '0') {
+          analysis.unreliabilityCount++
+        }
+      }
     })
   }
 
@@ -71,5 +95,6 @@ export default salesDay => {
   return {
     tax: tax,
     payments: payments,
+    analysis: analysis,
   }
 }

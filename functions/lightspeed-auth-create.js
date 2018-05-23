@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 918);
+/******/ 	return __webpack_require__(__webpack_require__.s = 917);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -34111,18 +34111,17 @@ module.exports = {"pagination":{"ListChannels":{"input_token":"nextToken","outpu
 /* 914 */,
 /* 915 */,
 /* 916 */,
-/* 917 */,
-/* 918 */
+/* 917 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _createToken = __webpack_require__(919);
+var _createToken = __webpack_require__(918);
 
 var _createToken2 = _interopRequireDefault(_createToken);
 
-var _readAccount = __webpack_require__(920);
+var _readAccount = __webpack_require__(919);
 
 var _readAccount2 = _interopRequireDefault(_readAccount);
 
@@ -34168,7 +34167,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 919 */
+/* 918 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34210,7 +34209,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 920 */
+/* 919 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

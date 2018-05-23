@@ -16,7 +16,7 @@ export default async datesArray => {
   console.log('Calculate financial report')
   let dayreports = _.map(salesDay, (salesDay, key) => {
     return {
-      ...salesDay,
+      sales: salesDay,
       ...calculateDayreport(salesDay),
     }
   })

@@ -63,10 +63,10 @@ export default (items, soldItems) => {
   let aRFixed = aR.map(item => {
     return {
       ...item,
-      value: item.value.toFixed(0),
+      value: item.value.toFixed(2),
       quantity: item.quantity.toFixed(0),
-      profit: item.profit.toFixed(0),
-      profitPercentage: item.profitPercentage.toFixed(0),
+      profit: item.profit.toFixed(2),
+      profitPercentage: item.profitPercentage.toFixed(2),
     }
   })
 

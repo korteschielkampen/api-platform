@@ -28,3 +28,7 @@ functions:
     handler: functions/lightspeed-automated-invoice.handler
     events:
       - schedule: "cron(0 20 * * ? *)"
+  dayReport:
+    handler: functions/create-business-report.handler
+    events:
+      - schedule: "cron(0 17 * * ? *)"

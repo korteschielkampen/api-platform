@@ -5,10 +5,6 @@ function toTitleCase(str) {
 }
 
 export default aR => {
-  // aR.slice(0, 10).map((item, key) => {
-  //   console.log(item.id, item.fields.ItemShops.ItemShop[0].qoh)
-  // })
-
   return {
     color: '#ef3945',
     attachment_type: 'default',

@@ -88,7 +88,7 @@ export default cR => {
                   cR.Dierenspeciaal.Knaagdieren.percentage +
                   '%)'
                 : '0'
-            }\nOngedier: €${
+            }\nOndier: €${
               cR.Dierenspeciaal.Ongediertebestrijding
                 ? cR.Dierenspeciaal.Ongediertebestrijding.totaal +
                   ' (' +
@@ -119,6 +119,7 @@ export default cR => {
           short: true,
         },
       ],
+      image_url: cR.chart.file.permalink,
       color: '#ef3945',
       attachment_type: 'default',
       // actions: [

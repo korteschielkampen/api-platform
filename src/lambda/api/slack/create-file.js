@@ -1,9 +1,11 @@
 import fs from 'fs'
+import { promisify } from 'util'
 
 import request from '../general/request.js'
 import readAccessToken from '../slack-auth/read-token.js'
 
 import { WebClient } from '@slack/client'
+const p = promisify(WebClient)
 
 export default async (mess, channel) => {
   // An access token (from your Slack app or custom integration - xoxp, xoxb, or xoxa)
@@ -15,19 +17,12 @@ export default async (mess, channel) => {
   const filename = 'colorbar.png'
 
   // See: https://api.slack.com/methods/chat.postMessage
-  web.files
-    .upload({
-      filename,
-      // You can use a ReadableStream or a Buffer for the file option
-      file: fs.createReadStream(`./${filename}`),
-      // Or you can use the content property (but not both)
-      // content: 'plain string content that will be editable in Slack'
-    })
-    .then(res => {
-      // `res` contains information about the uploaded file
-      console.log('File uploaded: ', res.file.id)
-    })
-    .catch(console.error)
+  let upload = promisify(web.files.upload)
+  let res = await upload({
+    filename,
+    file: fs.createReadStream(`./${filename}`),
+    channels: channel,
+  })
 
-  return 'hi'
+  return res
 }

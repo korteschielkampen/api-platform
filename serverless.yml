@@ -32,4 +32,4 @@ functions:
   dayReport:
     handler: functions/create-business-report.handler
     events:
-      - schedule: "rate(5 minutes)"
+      - schedule: "cron(0 17 * * ? *)"

@@ -1,6 +1,7 @@
 import readDayreportFinancial from './read-financial-reports.js'
 import readDayreportCategory from './read-category-reports.js'
 import readDayreportArticle from './read-article-reports.js'
+import generateBarChart from '../api/slack/create-file.js'
 import createMessage from '../api/slack/create-message.js'
 
 import dayReport from '../models/rapporten/day.js'
@@ -15,6 +16,11 @@ export default async (datesArray, channel) => {
 
   console.log('Generating Article Report')
   let articleReport = await readDayreportArticle(datesArray)
+
+  console.log('Generating Barchart')
+  let barchart = await generateBarChart('none', channel)
+
+  console.log(barchart)
 
   // Post to Slack
   await createMessage(

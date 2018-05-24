@@ -22,6 +22,7 @@ package:
     - functions/**
   include:
     - functions/lightspeed-automated-invoice.js
+    - functions/create-business-report.js
 
 functions:
   automatedInvoice:

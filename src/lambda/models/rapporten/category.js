@@ -119,7 +119,7 @@ export default cR => {
           short: true,
         },
       ],
-      image_url: cR.chart.file.permalink,
+      image_url: cR.chart,
       color: '#ef3945',
       attachment_type: 'default',
       // actions: [

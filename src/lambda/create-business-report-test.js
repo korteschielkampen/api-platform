@@ -13,8 +13,42 @@ exports.handler = async (event, context, callback) => {
   try {
     let datesArray = [
       {
+        date: moment().format(),
+        lsRefresh: false,
+      },
+      {
         date: moment()
-          // .subtract(2, 'days')
+          .subtract(1, 'days')
+          .format(),
+        lsRefresh: false,
+      },
+      {
+        date: moment()
+          .subtract(2, 'days')
+          .format(),
+        lsRefresh: false,
+      },
+      {
+        date: moment()
+          .subtract(3, 'days')
+          .format(),
+        lsRefresh: false,
+      },
+      {
+        date: moment()
+          .subtract(4, 'days')
+          .format(),
+        lsRefresh: false,
+      },
+      {
+        date: moment()
+          .subtract(5, 'days')
+          .format(),
+        lsRefresh: false,
+      },
+      {
+        date: moment()
+          .subtract(6, 'days')
           .format(),
         lsRefresh: false,
       },

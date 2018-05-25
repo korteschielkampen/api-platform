@@ -15,49 +15,37 @@ const businessReportData = async (date, channel) => {
   console.log('Retrieving Sales')
   let sales = await readSalesDay(date)
 
-  console.log('Generating Financial Report')
-  let financialReport = await createFinancialReport(sales)
+  if (sales.length != 0) {
+    console.log('Generating Financial Report')
+    let financialReport = await createFinancialReport(sales)
 
-  console.log('Generating Category Report')
-  let categoryReport = await createCategoryReport(sales)
+    console.log('Generating Category Report')
+    let categoryReport = await createCategoryReport(sales)
 
-  console.log('Generating Article Report')
-  let articleReport = await createArticleReport(sales)
+    console.log('Generating Article Report')
+    let articleReport = await createArticleReport(sales)
 
-  console.log('Generating Day Report')
-  return (dayReport = {
-    date: datesArray[0],
-    financialReport: financialReport,
-    categoryReport: categoryReport,
-    articleReport: articleReport,
-    sales: sales,
-  })
+    console.log('Generating Day Report')
+    return {
+      date: date,
+      financialReport: financialReport,
+      categoryReport: categoryReport,
+      articleReport: articleReport,
+      sales: sales,
+    }
+  } else {
+    return {
+      date: date,
+    }
+  }
 }
 
 export default async (datesArray, channel) => {
-  let dayReport = await businessReportData(datesArray[0])
-
-  console.log('Retrieving Older Day Reports')
-  let dayReports = [
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-    dayReport,
-  ]
+  let dayReports = await pmap(datesArray, asyncify(businessReportData))
 
   console.log('Generating Barcharts')
-  dayReport.charts = await createCharts(dayReports, channel)
+  dayReports[0].charts = await createCharts(dayReports, channel)
 
   console.log('Posting Day Report to Slack')
-  await createMessage(createDayReport(dayReport, channel))
+  await createMessage(createDayReport(dayReports[0], channel))
 }

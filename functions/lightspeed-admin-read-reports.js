@@ -71,7 +71,7 @@
 "use strict";
 
 
-var _readFinancialReports = __webpack_require__(897);
+var _readFinancialReports = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./action/read-financial-reports.js\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 var _readFinancialReports2 = _interopRequireDefault(_readFinancialReports);
 
@@ -109,14 +109,6 @@ exports.handler = (() => {
     return _ref.apply(this, arguments);
   };
 })();
-
-/***/ }),
-
-/***/ 897:
-/***/ (function(module, exports) {
-
-"use strict";
-throw new Error("Module build failed: Error: ENOENT: no such file or directory, open '/Users/Robert-Jan/Desktop/projects/integations-platform/src/lambda/action/read-financial-reports.js'");
 
 /***/ })
 

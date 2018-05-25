@@ -1,38 +1,61 @@
-import createFile from '../api/slack/create-file.js'
 import qS from 'query-string'
+import moment from 'moment'
+
+import createFile from '../api/slack/create-file.js'
 
 export default async (data, channel) => {
-  // console.log(data[0])
-
   let chartData = [
     [
       data.map(item => {
-        return item.categoryReport.Dierenspeciaal.percentage
+        if (!item.categoryReport) {
+          return 0
+        } else {
+          return item.categoryReport.Dierenspeciaal.percentage
+        }
       }),
     ],
     [
       data.map(item => {
-        return item.categoryReport.Aquarium.percentage
+        if (!item.categoryReport) {
+          return 0
+        } else {
+          return item.categoryReport.Aquarium.percentage
+        }
       }),
     ],
     [
       data.map(item => {
-        return item.categoryReport.Hengelsport.percentage
+        if (!item.categoryReport) {
+          return 0
+        } else {
+          return item.categoryReport.Hengelsport.percentage
+        }
       }),
     ],
     [
       data.map(item => {
-        return item.categoryReport.etc.percentage
+        if (!item.categoryReport) {
+          return 0
+        } else {
+          return item.categoryReport.etc.percentage
+        }
       }),
     ],
   ]
+  console.log(chartData)
 
   chartData = chartData.map(value => {
     return value.join(',')
   })
 
   chartData = chartData.join('|')
-  console.log(`t:${chartData}`)
+
+  let labels = data.map(item => {
+    return moment(item.date.date).date()
+  })
+
+  labels = labels.join('|')
+  console.log(labels)
 
   let bar = {
     chtt: 'Categorieën',
@@ -41,7 +64,7 @@ export default async (data, channel) => {
     cht: 'bvs',
     chd: `t:${chartData}`,
     chco: 'fa8231,3867d6,20bf6b,a5b1c2',
-    chxl: '0:|Dag 1|Dag 2|Dag 3',
+    chxl: `0:|${labels}`,
     chxt: 'x',
   }
 

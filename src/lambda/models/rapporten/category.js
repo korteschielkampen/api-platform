@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export default cR => {
+export default ({ charts, categoryReport: cR }) => {
   return [
     {
       title: `Branches en categorieën`,
@@ -119,7 +119,7 @@ export default cR => {
           short: true,
         },
       ],
-      image_url: cR.chart,
+      image_url: charts[0],
       color: '#ef3945',
       attachment_type: 'default',
       // actions: [

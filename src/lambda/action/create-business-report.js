@@ -1,28 +1,63 @@
-import readDayreportFinancial from './read-financial-reports.js'
-import readDayreportCategory from './read-category-reports.js'
-import readDayreportArticle from './read-article-reports.js'
-import createChart from './create-chart.js'
+import _ from 'lodash'
+import { asyncify, map } from 'async'
+import { promisify } from 'util'
+const pmap = promisify(map)
+
+import readSalesDay from './read-salesday.js'
+import createFinancialReport from './create-financial-reports.js'
+import createCategoryReport from './create-category-reports.js'
+import createArticleReport from './create-article-reports.js'
+import createCharts from './create-charts.js'
 import createDayReport from '../models/rapporten/day.js'
 import createMessage from '../api/slack/create-message.js'
 
-export default async (datesArray, channel) => {
-  // Read dayreports from Lightspeed
+const businessReportData = async (date, channel) => {
+  console.log('Retrieving Sales')
+  let sales = await readSalesDay(date)
+
   console.log('Generating Financial Report')
-  let financialReports = await readDayreportFinancial(datesArray)
-  financialReports[0].chart = await createChart(financialReports[0], channel)
+  let financialReport = await createFinancialReport(sales)
 
   console.log('Generating Category Report')
-  let categoryReport = await readDayreportCategory(datesArray)
+  let categoryReport = await createCategoryReport(sales)
 
   console.log('Generating Article Report')
-  let articleReport = await readDayreportArticle(datesArray)
+  let articleReport = await createArticleReport(sales)
 
-  console.log('Generating Barchart')
-  categoryReport.chart = await createChart(categoryReport, channel)
+  console.log('Generating Day Report')
+  return (dayReport = {
+    date: datesArray[0],
+    financialReport: financialReport,
+    categoryReport: categoryReport,
+    articleReport: articleReport,
+    sales: sales,
+  })
+}
 
-  // Post to Slack
-  await createMessage(
-    createDayReport(financialReports[0], categoryReport, articleReport, channel)
-  )
-  return true
+export default async (datesArray, channel) => {
+  let dayReport = await businessReportData(datesArray[0])
+
+  console.log('Retrieving Older Day Reports')
+  let dayReports = [
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+    dayReport,
+  ]
+
+  console.log('Generating Barcharts')
+  dayReport.charts = await createCharts(dayReports, channel)
+
+  console.log('Posting Day Report to Slack')
+  await createMessage(createDayReport(dayReport, channel))
 }

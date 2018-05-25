@@ -1,10 +1,10 @@
 import _ from 'lodash'
 
-export default salesDay => {
+export default sales => {
   let items = []
 
   let count = 0
-  _.map(salesDay.sales, (sale, saleID) => {
+  _.map(sales, (sale, saleID) => {
     count += parseFloat(sale.calcTotal)
     if (sale.completed == 'true' && sale.SaleLines) {
       let subcount = 0

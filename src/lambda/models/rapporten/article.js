@@ -4,7 +4,7 @@ function toTitleCase(str) {
   })
 }
 
-export default aR => {
+export default ({ articleReport: aR }) => {
   return [
     {
       title: 'Artikelen\n ',

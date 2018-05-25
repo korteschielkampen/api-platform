@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export default salesDay => {
+export default sales => {
   let tax = {
     hoog: { name: 'hoog', amount: 0 },
     laag: { name: 'laag', amount: 0 },
@@ -22,8 +22,8 @@ export default salesDay => {
     unreliabilityTotal: 0,
   }
 
-  if (salesDay.sales.length > 0) {
-    _.map(salesDay.sales, (sale, saleID) => {
+  if (sales.length > 0) {
+    _.map(sales, (sale, saleID) => {
       // Do the taxes
       if (sale.completed == 'true' && sale.SaleLines) {
         _.map(sale.SaleLines.SaleLine, (line, lineID) => {

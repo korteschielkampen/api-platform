@@ -24,5 +24,5 @@ export default async (dateObject, key) => {
     salesDay = await updateDynamo(sales, date)
   }
 
-  return salesDay
+  return salesDay.sales
 }

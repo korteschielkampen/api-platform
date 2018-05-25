@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export default fR => {
+export default ({ financialReport: fR }) => {
   return [
     {
       title: `Financieel`,

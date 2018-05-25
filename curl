@@ -1,1 +1,0 @@
-curl -H 'Content-Type: application/x-ndjson' -XPOST 'https://search-npo-search-pvngxc7nmqumzrop7v5hp3xahe.eu-central-1.es.amazonaws.com/npo/_bulk?pretty' --data-binary @sub.jsonnd

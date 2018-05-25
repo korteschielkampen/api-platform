@@ -5,7 +5,7 @@ import createPurchaseReport from './purchase'
 import createArticleReport from './article'
 import createDataReport from './dataquality'
 
-export default (pR, cR, aR, channel) => {
+export default (dayReport, channel) => {
   return {
     text: 'Uw dagelijkse rapport',
     // channel: 'CAPCPRW6B', // Test
@@ -14,15 +14,15 @@ export default (pR, cR, aR, channel) => {
     icon_url:
       'https://integration-platform.korteschielkampen.nl/lightspeed.png',
     attachments: [
-      ...createFinancialReport(pR, aR),
-      ...createCategoryReport(cR),
+      ...createFinancialReport(dayReport),
+      ...createCategoryReport(dayReport),
       // {
       //   title: 'Inkooporders',
       //   color: '#ef3945',
       //   attachment_type: 'default',
       // },
       // createPurchaseReport(cR),
-      ...createArticleReport(aR),
+      ...createArticleReport(dayReport),
       // createDataReport(cR),
     ],
   }

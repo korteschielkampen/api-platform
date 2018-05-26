@@ -10,7 +10,8 @@ import calculateSoldItems from '../transformation/lightspeed-sales--to--sold-ite
 import readItems from '../api/lightspeed/read-items.js'
 import createCategoryReport from './create-category-reports.js'
 import createArticleReport from './create-article-reports.js'
-import createCharts from './create-charts.js'
+import createChartCategory from './create-chart-category.js'
+import createChartLine from './create-chart-line.js'
 import createDayReport from '../models/rapporten/day.js'
 import createMessage from '../api/slack/create-message.js'
 
@@ -67,8 +68,10 @@ export default async (datesArray, channel) => {
   let dayReports = await pmap(datesArray, asyncify(businessReportData))
 
   if (dayReports[0].sales) {
-    console.log('Generating Barcharts')
-    dayReports[0].charts = await createCharts(dayReports, channel)
+    console.log('Generating Charts')
+    dayReports[0].charts = []
+    dayReports[0].charts[0] = await createChartCategory(dayReports, channel)
+    dayReports[0].charts[1] = await createChartLine(dayReports, channel)
 
     console.log('Posting Day Report to Slack')
     await createMessage(createDayReport(dayReports[0], channel))

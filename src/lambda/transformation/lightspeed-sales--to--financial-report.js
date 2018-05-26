@@ -86,6 +86,8 @@ export default sales => {
   }
 
   analysis.saleSize = analysis.total / analysis.sales
+  analysis.profit =
+    analysis.profit - tax.hoog.amount * 0.21 - tax.laag.amount * 0.6
 
   tax.hoog.amount = tax.hoog.amount.toFixed(2)
   tax.laag.amount = tax.laag.amount.toFixed(2)

@@ -1,6 +1,6 @@
 import _ from 'lodash'
 
-export default ({ financialReport: fR }) => {
+export default ({ charts, financialReport: fR }) => {
   return [
     {
       title: `Financieel`,
@@ -48,6 +48,7 @@ export default ({ financialReport: fR }) => {
 
       color: '#ef3945',
       attachment_type: 'default',
+      image_url: charts[1],
       // actions: [
       //   {
       //     name: 'Button',

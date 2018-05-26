@@ -30,27 +30,35 @@ const businessReportData = async (date, key) => {
   }
 
   if (sales && completedSales > 0) {
-    console.log('Retrieving Items: ', date.date)
+    console.log('Calculating which ttems are sold')
     let soldItems = calculateSoldItems(sales)
-    let items = await readItems(soldItems)
 
-    console.log('Generating Financial Report: ', date.date)
-    let financialReport = await createFinancialReport(sales)
+    if (soldItems.length > 0) {
+      console.log('Reading Normal Items from Lightspeed')
+      let items = await readItems(soldItems)
 
-    console.log('Generating Category Report: ', date.date)
-    let categoryReport = await createCategoryReport(sales, items, soldItems)
+      console.log('Generating Financial Report: ', date.date)
+      let financialReport = await createFinancialReport(sales)
 
-    console.log('Generating Article Report: ', date.date)
-    let articleReport = await createArticleReport(sales, items, soldItems)
+      console.log('Generating Category Report: ', date.date)
+      let categoryReport = await createCategoryReport(sales, items, soldItems)
 
-    console.log('Generating Day Report: ', date.date)
-    return {
-      date: date,
-      financialReport: financialReport,
-      categoryReport: categoryReport,
-      articleReport: articleReport,
-      sales: sales,
-      items: items,
+      console.log('Generating Article Report: ', date.date)
+      let articleReport = await createArticleReport(sales, items, soldItems)
+
+      console.log('Generating Day Report: ', date.date)
+      return {
+        date: date,
+        financialReport: financialReport,
+        categoryReport: categoryReport,
+        articleReport: articleReport,
+        sales: sales,
+        items: items,
+      }
+    } else {
+      return {
+        date: date,
+      }
     }
   } else {
     return {

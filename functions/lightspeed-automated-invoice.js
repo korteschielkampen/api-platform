@@ -13412,6 +13412,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (auth) {
+    console.log('Updating Dynamo Auth');
     var params = {
       TableName: 'auth',
       Item: _extends({}, auth)

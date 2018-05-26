@@ -17,7 +17,7 @@ exports.handler = async (event, context, callback) => {
           .subtract(i, 'days')
           .format(),
         lsRefresh: true,
-        delay: 1000 * i,
+        delay: 2000 * i,
       }
     })
     let channel = 'CAPCPRW6B'

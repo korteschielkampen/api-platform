@@ -9,6 +9,7 @@ export default async (data, channel) => {
   data.forEach(item => {
     if (
       item.categoryReport &&
+      item.categoryReport.totaal &&
       item.categoryReport.totaal.totaal > highestValue
     ) {
       highestValue = item.categoryReport.totaal.totaal
@@ -18,19 +19,19 @@ export default async (data, channel) => {
   let chartData = [
     [
       data.map(item => {
-        if (!item.categoryReport) {
-          return 0
-        } else {
+        if (item.categoryReport && item.categoryReport.Dierenspeciaal) {
           return item.categoryReport.Dierenspeciaal.totaal / highestValue * 100
+        } else {
+          return 0
         }
       }),
     ],
     [
       data.map(item => {
-        if (!item.categoryReport) {
-          return 0
-        } else {
+        if (item.categoryReport && item.categoryReport.Aquarium) {
           return item.categoryReport.Aquarium.totaal / highestValue * 100
+        } else {
+          return 0
         }
       }),
     ],
@@ -54,26 +55,33 @@ export default async (data, channel) => {
     ],
     [
       data.map(item => {
-        if (!item.categoryReport) {
-          return 0
-        } else if (item.categoryReport.Hengelsport.Visvergunningen) {
+        console.log('running')
+        console.log(item.categoryReport)
+        if (
+          item.categoryReport &&
+          item.categoryReport.Hengelsport &&
+          item.categoryReport.Hengelsport.Visvergunningen
+        ) {
           return (
             (item.categoryReport.Hengelsport.totaal -
               item.categoryReport.Hengelsport.Visvergunningen.totaal) /
             highestValue *
             100
           )
-        } else {
+        } else if (item.categoryReport && item.categoryReport.Hengelsport) {
           return item.categoryReport.Hengelsport.totaal / highestValue * 100
+        } else {
+          return 0
         }
       }),
     ],
     [
       data.map(item => {
-        if (!item.categoryReport) {
-          return 0
-        } else {
+        console.log('not running')
+        if (item.categoryReport && item.categoryReport.etc) {
           return item.categoryReport.etc.totaal / highestValue * 100
+        } else {
+          return 0
         }
       }),
     ],

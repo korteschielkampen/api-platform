@@ -88,7 +88,9 @@ export default (items, itemIDsValue) => {
 
   categoryReport.etc = {
     totaal:
-      categoryReport.Ongecategoriseerd.totaal + categoryReport.Diversen.totaal,
+      ((categoryReport.Ongecategoriseerd &&
+        categoryReport.Ongecategoriseerd.totaal) ||
+        0) + ((categoryReport.Diversen && categoryReport.Diversen.totaal) || 0),
   }
 
   categoryReport.totaal = {

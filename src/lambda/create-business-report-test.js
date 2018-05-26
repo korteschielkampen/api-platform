@@ -11,48 +11,15 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    let datesArray = [
-      {
-        date: moment().format(),
-        lsRefresh: false,
-      },
-      {
+    let datesArray = _.times(120, i => {
+      return {
         date: moment()
-          .subtract(1, 'days')
+          .subtract(i, 'days')
           .format(),
-        lsRefresh: false,
-      },
-      {
-        date: moment()
-          .subtract(2, 'days')
-          .format(),
-        lsRefresh: false,
-      },
-      {
-        date: moment()
-          .subtract(3, 'days')
-          .format(),
-        lsRefresh: false,
-      },
-      {
-        date: moment()
-          .subtract(4, 'days')
-          .format(),
-        lsRefresh: false,
-      },
-      {
-        date: moment()
-          .subtract(5, 'days')
-          .format(),
-        lsRefresh: false,
-      },
-      {
-        date: moment()
-          .subtract(6, 'days')
-          .format(),
-        lsRefresh: false,
-      },
-    ]
+        lsRefresh: true,
+        delay: 1000 * i,
+      }
+    })
     let channel = 'CAPCPRW6B'
 
     await createBusinessReport(datesArray, channel)

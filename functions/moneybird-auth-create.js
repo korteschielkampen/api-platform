@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1091);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1092);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2679,8 +2679,13 @@ exports.default = (() => {
     const res = yield (0, _nodeFetch2.default)(apiUrl, options);
     if (!res.ok) {
       throw yield res.json();
+    } else {
+      let lsbucket = res.headers.get('x-ls-api-bucket-level');
+      let lsdrip = res.headers.get('x-ls-api-drip-rate');
+      lsbucket != null && console.log(`Lightspeed bucket is currently at: ${lsbucket} and drips at ${lsdrip}p/s`);
+
+      return yield res.json();
     }
-    return yield res.json();
   });
 
   return function (_x, _x2) {
@@ -34285,17 +34290,18 @@ module.exports = {"pagination":{"ListChannels":{"input_token":"nextToken","outpu
 /* 1088 */,
 /* 1089 */,
 /* 1090 */,
-/* 1091 */
+/* 1091 */,
+/* 1092 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _createToken = __webpack_require__(1092);
+var _createToken = __webpack_require__(1093);
 
 var _createToken2 = _interopRequireDefault(_createToken);
 
-var _readAdministration = __webpack_require__(1093);
+var _readAdministration = __webpack_require__(1094);
 
 var _readAdministration2 = _interopRequireDefault(_readAdministration);
 
@@ -34340,7 +34346,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 1092 */
+/* 1093 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34383,7 +34389,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1093 */
+/* 1094 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

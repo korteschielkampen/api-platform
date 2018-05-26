@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1089);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1090);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -7191,8 +7191,13 @@ exports.default = (() => {
     const res = yield (0, _nodeFetch2.default)(apiUrl, options);
     if (!res.ok) {
       throw yield res.json();
+    } else {
+      let lsbucket = res.headers.get('x-ls-api-bucket-level');
+      let lsdrip = res.headers.get('x-ls-api-drip-rate');
+      lsbucket != null && console.log(`Lightspeed bucket is currently at: ${lsbucket} and drips at ${lsdrip}p/s`);
+
+      return yield res.json();
     }
-    return yield res.json();
   });
 
   return function (_x, _x2) {
@@ -50416,7 +50421,7 @@ var _update = __webpack_require__(110);
 
 var _update2 = _interopRequireDefault(_update);
 
-var _refreshToken = __webpack_require__(1079);
+var _refreshToken = __webpack_require__(1080);
 
 var _refreshToken2 = _interopRequireDefault(_refreshToken);
 
@@ -50886,7 +50891,8 @@ webpackContext.id = 896;
 /* 1071 */,
 /* 1072 */,
 /* 1073 */,
-/* 1074 */
+/* 1074 */,
+/* 1075 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50896,31 +50902,31 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _dayreportToMoneybirdInvoice = __webpack_require__(1075);
+var _dayreportToMoneybirdInvoice = __webpack_require__(1076);
 
 var _dayreportToMoneybirdInvoice2 = _interopRequireDefault(_dayreportToMoneybirdInvoice);
 
-var _dayreportToMoneybirdStatement = __webpack_require__(1076);
+var _dayreportToMoneybirdStatement = __webpack_require__(1077);
 
 var _dayreportToMoneybirdStatement2 = _interopRequireDefault(_dayreportToMoneybirdStatement);
 
-var _moneybirdInvoiceAndMutationToMoneybirdInvoice = __webpack_require__(1077);
+var _moneybirdInvoiceAndMutationToMoneybirdInvoice = __webpack_require__(1078);
 
 var _moneybirdInvoiceAndMutationToMoneybirdInvoice2 = _interopRequireDefault(_moneybirdInvoiceAndMutationToMoneybirdInvoice);
 
-var _createSalesInvoice = __webpack_require__(1078);
+var _createSalesInvoice = __webpack_require__(1079);
 
 var _createSalesInvoice2 = _interopRequireDefault(_createSalesInvoice);
 
-var _updateSalesInvoice = __webpack_require__(1080);
+var _updateSalesInvoice = __webpack_require__(1081);
 
 var _updateSalesInvoice2 = _interopRequireDefault(_updateSalesInvoice);
 
-var _createFinancialStatement = __webpack_require__(1081);
+var _createFinancialStatement = __webpack_require__(1082);
 
 var _createFinancialStatement2 = _interopRequireDefault(_createFinancialStatement);
 
-var _updateFinancialMutation = __webpack_require__(1082);
+var _updateFinancialMutation = __webpack_require__(1083);
 
 var _updateFinancialMutation2 = _interopRequireDefault(_updateFinancialMutation);
 
@@ -50965,7 +50971,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1075 */
+/* 1076 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51041,7 +51047,7 @@ exports.default = dayreport => {
 };
 
 /***/ }),
-/* 1076 */
+/* 1077 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51075,7 +51081,7 @@ exports.default = dayreport => {
 };
 
 /***/ }),
-/* 1077 */
+/* 1078 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51102,7 +51108,7 @@ exports.default = (invoice, mutation) => {
 };
 
 /***/ }),
-/* 1078 */
+/* 1079 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51146,7 +51152,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1079 */
+/* 1080 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51189,7 +51195,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1080 */
+/* 1081 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51231,7 +51237,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1081 */
+/* 1082 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51275,7 +51281,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1082 */
+/* 1083 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51319,13 +51325,13 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1083 */,
 /* 1084 */,
 /* 1085 */,
 /* 1086 */,
 /* 1087 */,
 /* 1088 */,
-/* 1089 */
+/* 1089 */,
+/* 1090 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51339,7 +51345,7 @@ var _readFinancialReports = __webpack_require__(!(function webpackMissingModule(
 
 var _readFinancialReports2 = _interopRequireDefault(_readFinancialReports);
 
-var _createMoneybird = __webpack_require__(1074);
+var _createMoneybird = __webpack_require__(1075);
 
 var _createMoneybird2 = _interopRequireDefault(_createMoneybird);
 

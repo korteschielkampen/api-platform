@@ -11,7 +11,11 @@ export default (items, itemIDsValue) => {
   // Calculate value per category
   let rawCategoryReport = {}
   itemIDsValue.forEach((item, key) => {
-    if (item.id != 0 && itemsHashed[item.id].categoryID != 0) {
+    if (
+      item.id != 0 &&
+      itemsHashed[item.id] &&
+      itemsHashed[item.id].categoryID != 0
+    ) {
       let value = parseFloat(item.value)
       if (rawCategoryReport[itemsHashed[item.id].Category.fullPathName]) {
         value += parseFloat(
@@ -22,7 +26,11 @@ export default (items, itemIDsValue) => {
         category: itemsHashed[item.id].Category.fullPathName,
         value: value,
       }
-    } else if (item.id != 0 && itemsHashed[item.id].categoryID == 0) {
+    } else if (
+      item.id != 0 &&
+      itemsHashed[item.id] &&
+      itemsHashed[item.id].categoryID == 0
+    ) {
       if (rawCategoryReport['Ongecategoriseerd']) {
         rawCategoryReport['Ongecategoriseerd'] = {
           category: 'Ongecategoriseerd',

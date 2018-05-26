@@ -10,7 +10,7 @@ export default (items, soldItems) => {
   // Calculate value per article and attach item
   let soldItemsHashed = {}
   soldItems.forEach((item, key) => {
-    if (item.id != 0) {
+    if (item.id != 0 && itemsHashed[item.itemID]) {
       soldItemsHashed[item.id] = {
         id: item.id,
         value: soldItemsHashed[item.id]

@@ -36,10 +36,12 @@ export default async inputDate => {
       dates.start
     },${dates.end}`
     let tempSales = await request(apiUrl, options)
-    sales = _.concat(sales, tempSales.Sale)
+    if (tempSales.Sale) {
+      sales = _.concat(sales, tempSales.Sale)
+    }
     count = parseInt(tempSales['@attributes'].count)
     offset += parseInt(tempSales['@attributes'].limit)
   }
 
-  return await sales
+  return sales.length > 0 && sales
 }

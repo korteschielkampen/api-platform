@@ -10,19 +10,20 @@ export default async (dateObject, key) => {
     .startOf('day')
     .format()
   let lsRequested = false
-  let salesDay
+
+  let sales = await readSalesDay(date)
 
   // Read from Dynamo
-  if (!dateObject.lsRefresh) {
-    salesDay = await readDynamo(date)
-  }
+  // if (!dateObject.lsRefresh) {
+  //   salesDay = await readDynamo(date)
+  // }
 
   // When not in Dynamo download from Lightspeed and put in Dynamo
-  if (!salesDay || dateObject.lsRefresh) {
-    lsRequested = true
-    let sales = await readSalesDay(date)
-    salesDay = await updateDynamo(sales, date)
-  }
+  // if (!salesDay || dateObject.lsRefresh) {
+  //   lsRequested = true
+  //   sales = await readSalesDay(date)
+  // salesDay = await updateDynamo(sales, date)
+  // }
 
-  return salesDay.sales
+  return sales
 }

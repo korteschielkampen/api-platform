@@ -10,7 +10,7 @@ export default ({ financialReport: fR }) => {
         0
       )} artikelen hebben geen inkoopsprijs. Het gaat om een omzet van €${fR.analysis.unreliabilityTotal.toFixed(
         0
-      )} en dit is verrekend met een winstmarge van 30%. Ter contrast, de gemiddelde dagelijkse kosten zijn €200`,
+      )} en dit is verrekend met een winstmarge van 30%.`,
       color: '#ef3945',
       attachment_type: 'default',
     },

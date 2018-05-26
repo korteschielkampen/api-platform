@@ -15,11 +15,12 @@ import createDayReport from '../models/rapporten/day.js'
 import createMessage from '../api/slack/create-message.js'
 
 const businessReportData = async (date, key) => {
-  await delay(date.delay) // Only one request a second please
+  await delay(date.delay)
+
   console.log('Starting: ', date.date)
+
   let sales = await readSalesDay(date)
 
-  // are there completed sales?
   let completedSales = 0
   if (sales) {
     sales.map(sale => {
@@ -34,20 +35,14 @@ const businessReportData = async (date, key) => {
 
     if (soldItems.length > 0) {
       console.log('Calculating: ', date.date)
-      // console.log('Reading Normal Items from Lightspeed')
+
       let items = await readItems(soldItems)
-
-      // console.log('Generating Financial Report: ', date.date)
       let financialReport = await createFinancialReport(sales)
-
-      // console.log('Generating Category Report: ', date.date)
       let categoryReport = await createCategoryReport(sales, items, soldItems)
-
-      // console.log('Generating Article Report: ', date.date)
       let articleReport = await createArticleReport(sales, items, soldItems)
 
-      // console.log('Generating Day Report: ', date.date)
       console.log('Finished: ', date.date)
+
       return {
         date: date,
         financialReport: financialReport,

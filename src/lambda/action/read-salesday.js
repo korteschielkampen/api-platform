@@ -3,6 +3,7 @@ import moment from 'moment'
 import readSalesDay from '../api/lightspeed/read-salesday.js'
 import updateDynamo from '../store/dynamo/salesday/update.js'
 import readDynamo from '../store/dynamo/salesday/read.js'
+import cleanSales from '../transformation/lightspeed-sales--to--lightspeed-sales-clean.js'
 
 export default async (dateObject, key) => {
   // Setup variables
@@ -11,7 +12,7 @@ export default async (dateObject, key) => {
     .format()
   let lsRequested = false
 
-  let sales = await readSalesDay(date)
+  let sales = cleanSales(await readSalesDay(date))
 
   // Read from Dynamo
   // if (!dateObject.lsRefresh) {

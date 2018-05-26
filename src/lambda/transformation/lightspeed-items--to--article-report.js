@@ -10,7 +10,7 @@ export default (items, soldItems) => {
   // Calculate value per article and attach item
   let soldItemsHashed = {}
   soldItems.forEach((item, key) => {
-    if (item.id != 0 && itemsHashed[item.itemID]) {
+    if (item.id != 0 && itemsHashed[item.id]) {
       soldItemsHashed[item.id] = {
         id: item.id,
         value: soldItemsHashed[item.id]
@@ -69,6 +69,5 @@ export default (items, soldItems) => {
       profitPercentage: item.profitPercentage.toFixed(2),
     }
   })
-
   return aRFixed
 }

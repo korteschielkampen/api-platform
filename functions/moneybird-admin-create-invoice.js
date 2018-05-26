@@ -13412,7 +13412,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (auth) {
-    console.log('Updating Dynamo Auth');
+    // console.log('Updating Dynamo Auth')
     var params = {
       TableName: 'auth',
       Item: _extends({}, auth)
@@ -13443,7 +13443,7 @@ const AWS = __webpack_require__(106);
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (params) {
-    console.log('Updating to Dynamo');
+    // console.log('Updating to Dynamo')
     // AWS configuration
     AWS.config.update({
       accessKeyId: process.env.aws_access_key_id,
@@ -50372,7 +50372,7 @@ const AWS = __webpack_require__(106);
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (params) {
-    console.log('Reading from Dynamo', params.TableName);
+    // console.log('Reading from Dynamo', params.TableName)
     // Configure AWS
     AWS.config.update({
       accessKeyId: process.env.aws_access_key_id,

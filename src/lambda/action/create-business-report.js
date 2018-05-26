@@ -16,7 +16,7 @@ import createMessage from '../api/slack/create-message.js'
 
 const businessReportData = async (date, key) => {
   await delay(date.delay) // Only one request a second please
-  console.log('Retrieving Sales: ', date.date)
+  console.log('Starting: ', date.date)
   let sales = await readSalesDay(date)
 
   // are there completed sales?
@@ -30,23 +30,24 @@ const businessReportData = async (date, key) => {
   }
 
   if (sales && completedSales > 0) {
-    console.log('Calculating which ttems are sold')
     let soldItems = calculateSoldItems(sales)
 
     if (soldItems.length > 0) {
-      console.log('Reading Normal Items from Lightspeed')
+      console.log('Calculating: ', date.date)
+      // console.log('Reading Normal Items from Lightspeed')
       let items = await readItems(soldItems)
 
-      console.log('Generating Financial Report: ', date.date)
+      // console.log('Generating Financial Report: ', date.date)
       let financialReport = await createFinancialReport(sales)
 
-      console.log('Generating Category Report: ', date.date)
+      // console.log('Generating Category Report: ', date.date)
       let categoryReport = await createCategoryReport(sales, items, soldItems)
 
-      console.log('Generating Article Report: ', date.date)
+      // console.log('Generating Article Report: ', date.date)
       let articleReport = await createArticleReport(sales, items, soldItems)
 
-      console.log('Generating Day Report: ', date.date)
+      // console.log('Generating Day Report: ', date.date)
+      console.log('Finished: ', date.date)
       return {
         date: date,
         financialReport: financialReport,

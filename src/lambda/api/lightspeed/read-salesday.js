@@ -6,7 +6,7 @@ import request from '../general/request.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
 
 export default async inputDate => {
-  console.log('Reading sales from Lightspeed')
+  // console.log('Reading sales from Lightspeed')
   let dates = {
     start: strictUriEncode(
       moment(inputDate)

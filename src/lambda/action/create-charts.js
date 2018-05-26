@@ -55,8 +55,6 @@ export default async (data, channel) => {
     ],
     [
       data.map(item => {
-        console.log('running')
-        console.log(item.categoryReport)
         if (
           item.categoryReport &&
           item.categoryReport.Hengelsport &&
@@ -77,7 +75,6 @@ export default async (data, channel) => {
     ],
     [
       data.map(item => {
-        console.log('not running')
         if (item.categoryReport && item.categoryReport.etc) {
           return item.categoryReport.etc.totaal / highestValue * 100
         } else {
@@ -86,7 +83,6 @@ export default async (data, channel) => {
       }),
     ],
   ]
-  console.log(chartData)
 
   chartData = chartData.map(value => {
     return value.join(',')

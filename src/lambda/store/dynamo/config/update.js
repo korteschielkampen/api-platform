@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 const AWS = require('aws-sdk')
 
 export default async params => {
-  console.log('Updating to Dynamo')
+  // console.log('Updating to Dynamo')
   // AWS configuration
   AWS.config.update({
     accessKeyId: process.env.aws_access_key_id,

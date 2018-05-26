@@ -1,7 +1,6 @@
 import _ from 'lodash'
 
 export default (items, itemIDsValue) => {
-  console.log('Calculate category report')
   // Create searchable object from array
   var itemsHashed = {}
   items.forEach(i => {

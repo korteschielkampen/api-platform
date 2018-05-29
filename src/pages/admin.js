@@ -135,7 +135,8 @@ class IndexPage extends React.Component {
 
   async createInvoice(dayreport) {
     const payload = {
-      ...dayreport,
+      date: dayreport.date,
+      financialReport: dayreport.financialReport,
     }
     const options = {
       method: 'POST',
@@ -217,6 +218,7 @@ class IndexPage extends React.Component {
   }
 
   render() {
+    console.log(this.state.dayreports)
     return (
       <div className={styles.container}>
         <div className={styles.content}>
@@ -282,7 +284,7 @@ class IndexPage extends React.Component {
                 <div key={key} className={styles.card}>
                   <div className={styles.cardHeader}>
                     <p className={styles.cardHeading}>
-                      Start: {moment(dayreport.date).format('MM/DD/YYYY')}
+                      Start: {moment(dayreport.date.date).format('MM/DD/YYYY')}
                     </p>
                     <p className={styles.cardHeadingText}>
                       {dayreport.lsRequested ? 'Lightspeed' : 'DynamoDB'}
@@ -302,26 +304,33 @@ class IndexPage extends React.Component {
                   </div>
                   <div className={styles.cardBody}>
                     <div className={styles.cardItem}>
-                      {Object.keys(dayreport.tax).map(key => {
-                        return (
-                          <p key={key} className={styles.cardText}>
-                            <span style={{ color: 'grey' }}>
-                              Belastingtype -
-                            </span>
-                            {key}: {dayreport.tax[key].amount}
-                          </p>
-                        )
-                      })}
+                      {dayreport.financialReport &&
+                        Object.keys(dayreport.financialReport.tax).map(key => {
+                          return (
+                            <p key={key} className={styles.cardText}>
+                              <span style={{ color: 'grey' }}>
+                                Belastingtype -
+                              </span>
+                              {key}: {dayreport.financialReport.tax[key].amount}
+                            </p>
+                          )
+                        })}
                     </div>
                     <div className={styles.cardItem}>
-                      {Object.keys(dayreport.payments).map(key => {
-                        return (
-                          <p key={key} className={styles.cardText}>
-                            <span style={{ color: 'grey' }}>Betalingen -</span>
-                            {key}: {dayreport.payments[key].amount}
-                          </p>
-                        )
-                      })}
+                      {dayreport.financialReport &&
+                        Object.keys(dayreport.financialReport.payments).map(
+                          key => {
+                            return (
+                              <p key={key} className={styles.cardText}>
+                                <span style={{ color: 'grey' }}>
+                                  Betalingen -
+                                </span>
+                                {key}:{' '}
+                                {dayreport.financialReport.payments[key].amount}
+                              </p>
+                            )
+                          }
+                        )}
                     </div>
                   </div>
                 </div>

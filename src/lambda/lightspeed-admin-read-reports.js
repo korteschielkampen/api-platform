@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import createBusinessReport from './action/create-business-report.js'
 
 exports.handler = async (event, context, callback) => {
@@ -14,14 +16,16 @@ exports.handler = async (event, context, callback) => {
 
     let datesArray = _.times(7, i => {
       return {
-        date: moment().format(),
+        date: moment()
+          .subtract(i, 'days')
+          .format(),
         lsRefresh: true,
         delay: 2000 * i,
       }
     })
 
     let postSlack = {
-      post: true,
+      post: false,
       channel: 'CAPCPRW6B',
     }
 

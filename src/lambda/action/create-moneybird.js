@@ -1,27 +1,27 @@
-import parseInvoice from '../transformation/financial-report--to--moneybird-invoice.js'
-import parseStatement from '../transformation/financial-report--to--moneybird-statement.js'
+import parseInvoice from '../transformation/day-report--to--moneybird-invoice.js'
+import parseStatement from '../transformation/day-report--to--moneybird-statement.js'
 import parseBooking from '../transformation/moneybird-invoice-and-mutation--to--moneybird-invoice.js'
 import createInvoice from '../api/moneybird/create-sales-invoice.js'
 import sendInvoice from '../api/moneybird/update-sales-invoice.js'
 import createMutation from '../api/moneybird/create-financial-statement.js'
 import updateMutation from '../api/moneybird/update-financial-mutation.js'
 
-export default async ({ financialReport }) => {
+export default async dayReport => {
   // Test if there is a invoice to be made
-  if (financialReport) {
+  if (dayReport.financialReport) {
     // Creating and sending invoice in Moneybird
     console.log('creating invoice')
-    const invoice = parseInvoice(financialReport)
+    const invoice = parseInvoice(dayReport)
     let createdInvoice = await createInvoice(invoice)
 
     console.log('sending invoice')
     let sendedInvoice = await sendInvoice(createdInvoice.id)
 
     // Doing financial mutations if there are cash transactions
-    if (parseFloat(financialReport.payments.cash.amount) !== 0) {
+    if (parseFloat(dayReport.financialReport.payments.cash.amount) !== 0) {
       // Creating Mutation
       console.log('creating mutation')
-      let financialStatement = parseStatement(financialReport)
+      let financialStatement = parseStatement(dayReport)
       let createdMutation = await createMutation(financialStatement)
 
       // Linking the booking
@@ -37,6 +37,6 @@ export default async ({ financialReport }) => {
       )
     }
   } else {
-    console.log('Empty financialReport, skipping Moneybird entirely')
+    console.log('Empty day report, skipping Moneybird entirely')
   }
 }

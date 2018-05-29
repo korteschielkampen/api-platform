@@ -6,12 +6,6 @@ import createFile from '../api/slack/create-file.js'
 export default async (data, channel) => {
   let highestValue = 0
 
-  // Moneybird values for cost and special income
-  let rentIncome = 55
-  let indirectCost = 186
-  let specialCost = 22
-  let totalCost = indirectCost + specialCost
-
   data.forEach(item => {
     if (
       item.financialReport &&
@@ -26,7 +20,11 @@ export default async (data, channel) => {
     [
       data.map(item => {
         if (item.financialReport && item.financialReport.analysis) {
-          return item.financialReport.analysis.profit / highestValue * 100
+          return (
+            item.financialReport.analysis.profit /
+            highestValue *
+            100
+          ).toFixed(1)
         } else {
           return 0
         }
@@ -36,29 +34,33 @@ export default async (data, channel) => {
       data.map(item => {
         if (item.financialReport && item.financialReport.analysis) {
           return (
-            (item.financialReport.analysis.profit + rentIncome) /
+            item.financialReport.analysis.profitRent /
             highestValue *
             100
-          )
+          ).toFixed(1)
         } else {
-          return rentIncome / highestValue * 100
+          return (item.special.rentIncome / highestValue * 100).toFixed(1)
         }
       }),
     ],
     [
       data.map(item => {
-        return indirectCost / highestValue * 100
+        return (item.special.indirectCost / highestValue * 100).toFixed(1)
       }),
     ],
     [
       data.map(item => {
-        return totalCost / highestValue * 100
+        return (item.special.dailyTotalCost / highestValue * 100).toFixed(1)
       }),
     ],
     [
       data.map(item => {
         if (item.financialReport && item.financialReport.analysis) {
-          return item.financialReport.analysis.taxlessTotal / highestValue * 100
+          return (
+            item.financialReport.analysis.taxlessTotal /
+            highestValue *
+            100
+          ).toFixed(1)
         } else {
           return 0
         }
@@ -66,6 +68,7 @@ export default async (data, channel) => {
     ],
   ]
 
+  console.log(chartData)
   chartData = chartData.map(value => {
     return value.join(',')
   })
@@ -110,6 +113,7 @@ export default async (data, channel) => {
   }
 
   let chartUrl = 'https://image-charts.com/chart?' + qS.stringify(bar)
+  console.log(chartUrl)
   return chartUrl
 }
 

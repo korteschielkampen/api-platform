@@ -81,7 +81,7 @@ export default async (data, channel) => {
       item &&
       item.financialReport &&
       item.financialReport.analysis &&
-      item.financialReport.analysis.total.toFixed(0)
+      item.financialReport.analysis.taxlessTotal.toFixed(0)
     return `${dateString}: ${value || '0'}`
   })
 

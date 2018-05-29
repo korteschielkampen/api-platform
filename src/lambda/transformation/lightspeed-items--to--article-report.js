@@ -11,20 +11,6 @@ export default (items, soldItems) => {
   let soldItemsHashed = {}
   soldItems.forEach((item, key) => {
     if (item.id != 0 && itemsHashed[item.id]) {
-      // Determine tax to get margin
-      let taxPercentage = 0
-      switch (itemsHashed[item.id].taxClassID) {
-        case '1':
-          taxPercentage = 0.21
-          break
-        case '3':
-          taxPercentage = 0.6
-        case '6':
-          taxPercentage = 0
-        default:
-      }
-
-      let taxlessTotalValue = item.value / (1 + taxPercentage)
       let totalCost = item.quantity * parseFloat(itemsHashed[item.id].avgCost)
 
       soldItemsHashed[item.id] = {
@@ -41,16 +27,10 @@ export default (items, soldItems) => {
           : parseFloat(item.quantity),
         fields: itemsHashed[item.id],
         profit: soldItemsHashed[item.id]
-          ? soldItemsHashed[item.id].profit + taxlessTotalValue - totalCost
-          : taxlessTotalValue - totalCost,
-        profitPercentage: (taxlessTotalValue - totalCost) / totalCost * 100,
+          ? soldItemsHashed[item.id].profit + item.value - totalCost
+          : item.value - totalCost,
+        profitPercentage: (item.value - totalCost) / totalCost * 100,
       }
-
-      // console.log('profit : ', soldItemsHashed[item.id].profit)
-      // console.log(
-      //   'profitPercentage : ',
-      //   soldItemsHashed[item.id].profitPercentage
-      // )
     }
   })
 

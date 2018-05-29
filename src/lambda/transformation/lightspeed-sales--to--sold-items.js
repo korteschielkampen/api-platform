@@ -12,7 +12,7 @@ export default sales => {
           subcount += parseFloat(line.calcTotal)
           items.push({
             id: line.itemID,
-            value: line.calcTotal,
+            value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
             quantity: line.unitQuantity,
           })
         })
@@ -21,7 +21,7 @@ export default sales => {
         subcount += parseFloat(line.calcTotal)
         items.push({
           id: line.itemID,
-          value: line.calcTotal,
+          value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
           quantity: line.unitQuantity,
         })
       }

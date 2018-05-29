@@ -20,9 +20,13 @@ exports.handler = async (event, context, callback) => {
         delay: 2000 * i,
       }
     })
-    let channel = 'CAPCPRW6B'
 
-    await createBusinessReport(datesArray, channel)
+    let postSlack = {
+      post: true,
+      channel: 'CAPCPRW6B',
+    }
+
+    await createBusinessReport(datesArray, postSlack)
 
     respond({ status: 200, body: { message: 'succes' } })
   } catch (err) {

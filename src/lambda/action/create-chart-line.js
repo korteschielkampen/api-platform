@@ -68,7 +68,6 @@ export default async (data, channel) => {
     ],
   ]
 
-  console.log(chartData)
   chartData = chartData.map(value => {
     return value.join(',')
   })
@@ -113,7 +112,6 @@ export default async (data, channel) => {
   }
 
   let chartUrl = 'https://image-charts.com/chart?' + qS.stringify(bar)
-  console.log(chartUrl)
   return chartUrl
 }
 

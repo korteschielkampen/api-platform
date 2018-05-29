@@ -11,16 +11,20 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    let datesArray = [
-      {
+    let datesArray = _.times(21, i => {
+      return {
         date: moment().format(),
         lsRefresh: true,
-      },
-    ]
+        delay: 2000 * i,
+      }
+    })
 
-    let channel = 'C97BAQ41J'
+    let postSlack = {
+      post: true,
+      channel: 'CAPCPRW6B',
+    }
 
-    await createBusinessReport(datesArray, channel)
+    await createBusinessReport(datesArray, postSlack)
 
     respond({ status: 200, body: { message: 'succes' } })
   } catch (err) {

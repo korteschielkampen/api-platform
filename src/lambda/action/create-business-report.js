@@ -64,7 +64,7 @@ const businessReportData = async (date, key) => {
   }
 }
 
-export default async (datesArray, channel) => {
+export default async (datesArray, postSlack) => {
   let dayReports = await pmap(datesArray, asyncify(businessReportData))
 
   dayReports = dayReports.reverse()
@@ -130,15 +130,19 @@ export default async (datesArray, channel) => {
     dayReports[dayReports.length - 1].charts = {}
     dayReports[
       dayReports.length - 1
-    ].charts.category = await createChartCategory(dayReports, channel)
+    ].charts.category = await createChartCategory(dayReports, postSlack.channel)
     dayReports[dayReports.length - 1].charts.financial = await createChartLine(
       dayReports,
-      channel
+      postSlack.channel
     )
 
-    console.log('Posting Day Report to Slack')
-    await createMessage(
-      createDayReport(dayReports[dayReports.length - 1], channel)
-    )
+    if (postSlack.post) {
+      console.log('Posting Day Report to Slack')
+      await createMessage(
+        createDayReport(dayReports[dayReports.length - 1], postSlack.channel)
+      )
+    }
+
+    return dayReports
   }
 }

@@ -1,4 +1,4 @@
-import readDayreports from './action/read-financial-reports.js'
+import createBusinessReport from './action/create-business-report.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -9,14 +9,28 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    let datesArray = JSON.parse(event.body).datesArray
+    // ERRORRRRRRR NOT PARSING INPUT AND NOT OUTPUTTING RIGHT FORMAT
+    // let datesArray = JSON.parse(event.body).datesArray
 
-    let dayreports = await readDayreports(datesArray)
+    let datesArray = _.times(7, i => {
+      return {
+        date: moment().format(),
+        lsRefresh: true,
+        delay: 2000 * i,
+      }
+    })
+
+    let postSlack = {
+      post: true,
+      channel: 'CAPCPRW6B',
+    }
+
+    let dayReports = await createBusinessReport(datesArray, postSlack)
 
     respond({
       status: 200,
       body: {
-        dayreports: dayreports,
+        dayreports: dayReports,
       },
     })
   } catch (err) {

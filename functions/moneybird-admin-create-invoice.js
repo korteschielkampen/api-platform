@@ -50905,13 +50905,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _dayreportToMoneybirdInvoice = __webpack_require__(1078);
+var _financialReportToMoneybirdInvoice = __webpack_require__(1099);
 
-var _dayreportToMoneybirdInvoice2 = _interopRequireDefault(_dayreportToMoneybirdInvoice);
+var _financialReportToMoneybirdInvoice2 = _interopRequireDefault(_financialReportToMoneybirdInvoice);
 
-var _dayreportToMoneybirdStatement = __webpack_require__(1079);
+var _financialReportToMoneybirdStatement = __webpack_require__(1100);
 
-var _dayreportToMoneybirdStatement2 = _interopRequireDefault(_dayreportToMoneybirdStatement);
+var _financialReportToMoneybirdStatement2 = _interopRequireDefault(_financialReportToMoneybirdStatement);
 
 var _moneybirdInvoiceAndMutationToMoneybirdInvoice = __webpack_require__(1080);
 
@@ -50938,22 +50938,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (dayreport) {
+  var _ref = _asyncToGenerator(function* ({ financialReport }) {
     // Test if there is a invoice to be made
-    if (dayreport.tax.hoog.amount != 0 || dayreport.tax.laag.amount != 0 || dayreport.tax.onbelast.amount != 0) {
+    if (financialReport) {
       // Creating and sending invoice in Moneybird
       console.log('creating invoice');
-      const invoice = (0, _dayreportToMoneybirdInvoice2.default)(dayreport);
+      const invoice = (0, _financialReportToMoneybirdInvoice2.default)(financialReport);
       let createdInvoice = yield (0, _createSalesInvoice2.default)(invoice);
 
       console.log('sending invoice');
       let sendedInvoice = yield (0, _updateSalesInvoice2.default)(createdInvoice.id);
 
       // Doing financial mutations if there are cash transactions
-      if (parseFloat(dayreport.payments.cash.amount) !== 0) {
+      if (parseFloat(financialReport.payments.cash.amount) !== 0) {
         // Creating Mutation
         console.log('creating mutation');
-        let financialStatement = (0, _dayreportToMoneybirdStatement2.default)(dayreport);
+        let financialStatement = (0, _financialReportToMoneybirdStatement2.default)(financialReport);
         let createdMutation = yield (0, _createFinancialStatement2.default)(financialStatement);
 
         // Linking the booking
@@ -50964,7 +50964,7 @@ exports.default = (() => {
         console.log('No cash transactions, skipping the creating of a financial mutation');
       }
     } else {
-      console.log('Empty dayreport, skipping Moneybird entirely');
+      console.log('Empty financialReport, skipping Moneybird entirely');
     }
   });
 
@@ -50974,116 +50974,8 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1078 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _moment = __webpack_require__(2);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = dayreport => {
-  let invoice = {
-    sales_invoice: {
-      reference: `Automated Lightspeed Invoice - ${(0, _moment2.default)(dayreport.date).format()}`,
-      contact_id: '211718269128672982',
-      invoice_date: (0, _moment2.default)(dayreport.date).format('YYYY-MM-DD'),
-      state: 'open',
-      prices_are_incl_tax: true,
-      details_attributes: []
-    }
-
-    // Hoog BTW
-  };if (parseFloat(dayreport.tax.hoog.amount) !== 0) {
-    invoice.sales_invoice.details_attributes.push({
-      description: 'Hoog BTW tarief',
-      tax_rate_id: '211688738873410854',
-      ledger_account_id: '218027560947156696',
-      price: dayreport.tax.hoog.amount
-    });
-  }
-  // Laag BTW
-  if (parseFloat(dayreport.tax.laag.amount) !== 0) {
-    invoice.sales_invoice.details_attributes.push({
-      description: 'Laag BTW tarief',
-      tax_rate_id: '211688738875508007',
-      ledger_account_id: '218027538317837859',
-      price: dayreport.tax.laag.amount
-    });
-  }
-  // Nul BTW
-  if (parseFloat(dayreport.tax.onbelast.amount) !== 0) {
-    invoice.sales_invoice.details_attributes.push({
-      description: 'Onbelast BTW tarief',
-      tax_rate_id: '212145631538448378',
-      ledger_account_id: '218027616763905200',
-      price: dayreport.tax.onbelast.amount
-    });
-  }
-
-  // Cadeaukaart
-  if (parseFloat(dayreport.payments.gift.amount) !== 0) {
-    invoice.sales_invoice.details_attributes.push({
-      description: 'Betalingen met of uitgifte van cadeaukaarten',
-      tax_rate_id: '212145631538448378',
-      ledger_account_id: '212771713877804212',
-      price: -dayreport.payments.gift.amount
-    });
-  }
-  // Kredietaccount
-  if (parseFloat(dayreport.payments.credit.amount) !== 0) {
-    invoice.sales_invoice.details_attributes.push({
-      description: 'Betalingen met of uitgifte van klantkredieten',
-      price: -dayreport.payments.credit.amount
-    });
-  }
-
-  return invoice;
-};
-
-/***/ }),
-/* 1079 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _moment = __webpack_require__(2);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = dayreport => {
-  let financialStatement = {
-    financial_statement: {
-      reference: `Kasboek - Lightspeed Dagontvangst - ${(0, _moment2.default)(dayreport.date).format('YYYY-MM-DD')}`,
-      financial_account_id: '211688922621675193',
-      financial_mutations_attributes: {
-        '1': {
-          date: (0, _moment2.default)(dayreport.date).format('YYYY-MM-DD'),
-          message: 'Winkelontvangsten',
-          amount: dayreport.payments.cash.amount
-        }
-      }
-    }
-  };
-  return financialStatement;
-};
-
-/***/ }),
+/* 1078 */,
+/* 1079 */,
 /* 1080 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -51380,6 +51272,121 @@ exports.handler = (() => {
     return _ref.apply(this, arguments);
   };
 })();
+
+/***/ }),
+/* 1094 */,
+/* 1095 */,
+/* 1096 */,
+/* 1097 */,
+/* 1098 */,
+/* 1099 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _moment = __webpack_require__(2);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = dayreport => {
+  let invoice = {
+    sales_invoice: {
+      reference: `Automated Lightspeed Invoice - ${(0, _moment2.default)(dayreport.date).format()}`,
+      contact_id: '211718269128672982',
+      invoice_date: (0, _moment2.default)(dayreport.date).format('YYYY-MM-DD'),
+      state: 'open',
+      prices_are_incl_tax: true,
+      details_attributes: []
+    }
+
+    // Hoog BTW
+  };if (parseFloat(dayreport.tax.hoog.amount) !== 0) {
+    invoice.sales_invoice.details_attributes.push({
+      description: 'Hoog BTW tarief',
+      tax_rate_id: '211688738873410854',
+      ledger_account_id: '218027560947156696',
+      price: dayreport.tax.hoog.amount
+    });
+  }
+  // Laag BTW
+  if (parseFloat(dayreport.tax.laag.amount) !== 0) {
+    invoice.sales_invoice.details_attributes.push({
+      description: 'Laag BTW tarief',
+      tax_rate_id: '211688738875508007',
+      ledger_account_id: '218027538317837859',
+      price: dayreport.tax.laag.amount
+    });
+  }
+  // Nul BTW
+  if (parseFloat(dayreport.tax.onbelast.amount) !== 0) {
+    invoice.sales_invoice.details_attributes.push({
+      description: 'Onbelast BTW tarief',
+      tax_rate_id: '212145631538448378',
+      ledger_account_id: '218027616763905200',
+      price: dayreport.tax.onbelast.amount
+    });
+  }
+
+  // Cadeaukaart
+  if (parseFloat(dayreport.payments.gift.amount) !== 0) {
+    invoice.sales_invoice.details_attributes.push({
+      description: 'Betalingen met of uitgifte van cadeaukaarten',
+      tax_rate_id: '212145631538448378',
+      ledger_account_id: '212771713877804212',
+      price: -dayreport.payments.gift.amount
+    });
+  }
+  // Kredietaccount
+  if (parseFloat(dayreport.payments.credit.amount) !== 0) {
+    invoice.sales_invoice.details_attributes.push({
+      description: 'Betalingen met of uitgifte van klantkredieten',
+      price: -dayreport.payments.credit.amount
+    });
+  }
+
+  return invoice;
+};
+
+/***/ }),
+/* 1100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _moment = __webpack_require__(2);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = dayreport => {
+  let financialStatement = {
+    financial_statement: {
+      reference: `Kasboek - Lightspeed Dagontvangst - ${(0, _moment2.default)(dayreport.date).format('YYYY-MM-DD')}`,
+      financial_account_id: '211688922621675193',
+      financial_mutations_attributes: {
+        '1': {
+          date: (0, _moment2.default)(dayreport.date).format('YYYY-MM-DD'),
+          message: 'Winkelontvangsten',
+          amount: dayreport.payments.cash.amount
+        }
+      }
+    }
+  };
+  return financialStatement;
+};
 
 /***/ })
 /******/ ])));

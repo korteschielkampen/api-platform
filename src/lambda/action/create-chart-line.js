@@ -100,9 +100,9 @@ export default async (data, channel) => {
     chxl: `0:|${labels}`,
     chxt: 'x',
     chls: '5|2,10,10|5|2,10,10|5',
-    chdl: `Winst (${fR.analysis.totalProfit.toFixed(
+    chdl: `B.Resultaat (${fR.analysis.totalProfit.toFixed(
       0
-    )})  |Winst met Gebouwen (${fR.analysis.totalProfitPlusRent.toFixed(
+    )})  |B.Resultaat met Gebouwen (${fR.analysis.totalProfitPlusRent.toFixed(
       0
     )})  |Kosten (${fR.analysis.totalCost.toFixed(
       0

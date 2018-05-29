@@ -100,8 +100,9 @@ export default ({ charts, categoryReport: cR }) => {
           short: true,
         },
         {
-          title: `Etc: €${(cR.etc && cR.Dierenspeciaal.totaal) ||
-            0} (${(cR.Dierenspeciaal && cR.Dierenspeciaal.percentage) || 0}%)`,
+          title: `Etc: €${(cR.etc && cR.etc.totaal) || 0} (${(cR.etc &&
+            cR.etc.percentage) ||
+            0}%)`,
           ...(cR.etc && {
             value: `Oncat: €${
               cR.Ongecategoriseerd
@@ -119,7 +120,7 @@ export default ({ charts, categoryReport: cR }) => {
           short: true,
         },
       ],
-      image_url: charts[0],
+      image_url: charts.category,
       color: '#ef3945',
       attachment_type: 'default',
       // actions: [

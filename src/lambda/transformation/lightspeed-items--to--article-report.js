@@ -11,27 +11,46 @@ export default (items, soldItems) => {
   let soldItemsHashed = {}
   soldItems.forEach((item, key) => {
     if (item.id != 0 && itemsHashed[item.id]) {
+      // Determine tax to get margin
+      let taxPercentage = 0
+      switch (itemsHashed[item.id].taxClassID) {
+        case '1':
+          taxPercentage = 0.21
+          break
+        case '3':
+          taxPercentage = 0.6
+        case '6':
+          taxPercentage = 0
+        default:
+      }
+
+      let taxlessTotalValue = item.value / (1 + taxPercentage)
+      let totalCost = item.quantity * parseFloat(itemsHashed[item.id].avgCost)
+
       soldItemsHashed[item.id] = {
         id: item.id,
         value: soldItemsHashed[item.id]
           ? parseFloat(soldItemsHashed[item.id].value) + parseFloat(item.value)
           : parseFloat(item.value),
+        totalCost: soldItemsHashed[item.id]
+          ? soldItemsHashed[item.id].totalCost + totalCost
+          : totalCost,
         quantity: soldItemsHashed[item.id]
           ? parseFloat(soldItemsHashed[item.id].quantity) +
             parseFloat(item.quantity)
           : parseFloat(item.quantity),
-        profit: soldItemsHashed[item.id]
-          ? soldItemsHashed[item.id].profit +
-            (item.value -
-              item.quantity * parseInt(itemsHashed[item.id].avgCost))
-          : item.value - item.quantity * parseInt(itemsHashed[item.id].avgCost),
-        profitPercentage:
-          (item.value -
-            item.quantity * parseInt(itemsHashed[item.id].avgCost)) /
-          item.value *
-          100,
         fields: itemsHashed[item.id],
+        profit: soldItemsHashed[item.id]
+          ? soldItemsHashed[item.id].profit + taxlessTotalValue - totalCost
+          : taxlessTotalValue - totalCost,
+        profitPercentage: (taxlessTotalValue - totalCost) / totalCost * 100,
       }
+
+      // console.log('profit : ', soldItemsHashed[item.id].profit)
+      // console.log(
+      //   'profitPercentage : ',
+      //   soldItemsHashed[item.id].profitPercentage
+      // )
     }
   })
 
@@ -65,6 +84,7 @@ export default (items, soldItems) => {
       ...item,
       value: item.value.toFixed(2),
       quantity: item.quantity.toFixed(0),
+      totalCost: item.totalCost.toFixed(2),
       profit: item.profit.toFixed(2),
       profitPercentage: item.profitPercentage.toFixed(2),
     }

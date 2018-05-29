@@ -18,13 +18,15 @@ export default ({ charts, financialReport: fR }) => {
       fields: [
         {
           title: 'Analyse',
-          value: `Omzet: €${fR.analysis.total.toFixed(
+          value: `Omzet: €${fR.analysis.taxlessTotal.toFixed(
             0
           )}\nB.Resultaat: €${fR.analysis.profit.toFixed(
             0
           )}\nVerkopen: ${fR.analysis.sales.toFixed(
             0
-          )}x\nGem. Verkoop: €${fR.analysis.saleSize.toFixed(0)}`,
+          )}x\nGem. Verkoop: €${fR.analysis.saleSize.toFixed(
+            0
+          )}\nGem. Marge: ${fR.analysis.margin.toFixed(0)}%`,
           short: true,
         },
         {
@@ -48,7 +50,7 @@ export default ({ charts, financialReport: fR }) => {
 
       color: '#ef3945',
       attachment_type: 'default',
-      image_url: charts[1],
+      image_url: charts.financial,
       // actions: [
       //   {
       //     name: 'Button',

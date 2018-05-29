@@ -67,13 +67,54 @@ const businessReportData = async (date, key) => {
 export default async (datesArray, channel) => {
   let dayReports = await pmap(datesArray, asyncify(businessReportData))
 
-  if (dayReports[0].sales) {
+  dayReports = dayReports.reverse()
+
+  if (dayReports[dayReports.length - 1].sales) {
+    // Moneybird values for cost and special income
+    let rentIncome = 55
+    let indirectCost = 186
+    let specialCost = 22
+    let dailyTotalCost = indirectCost + specialCost
+
+    console.log('Calculating profit')
+    let totalProfit = 0
+    let totalProfitPlusRent = 0
+    let totalCost = 0
+    let totalCostPlusLoans = 0
+    let totalRevenue = 0
+    dayReports.map(report => {
+      totalCost += indirectCost
+      totalCostPlusLoans += dailyTotalCost
+      if (report.sales) {
+        totalProfit += report.financialReport.analysis.profit
+        totalProfitPlusRent +=
+          report.financialReport.analysis.profit + rentIncome
+        totalRevenue += report.financialReport.analysis.taxlessTotal
+      }
+    })
+
+    dayReports[dayReports.length - 1].financialReport.analysis = {
+      ...dayReports[dayReports.length - 1].financialReport.analysis,
+      totalProfit: totalProfit,
+      totalProfitPlusRent: totalProfitPlusRent,
+      totalCost: totalCost,
+      totalCostPlusLoans: totalCostPlusLoans,
+      totalRevenue: totalRevenue,
+    }
+
     console.log('Generating Charts')
-    dayReports[0].charts = []
-    dayReports[0].charts[0] = await createChartCategory(dayReports, channel)
-    dayReports[0].charts[1] = await createChartLine(dayReports, channel)
+    dayReports[dayReports.length - 1].charts = {}
+    dayReports[
+      dayReports.length - 1
+    ].charts.category = await createChartCategory(dayReports, channel)
+    dayReports[dayReports.length - 1].charts.financial = await createChartLine(
+      dayReports,
+      channel
+    )
 
     console.log('Posting Day Report to Slack')
-    await createMessage(createDayReport(dayReports[0], channel))
+    await createMessage(
+      createDayReport(dayReports[dayReports.length - 1], channel)
+    )
   }
 }

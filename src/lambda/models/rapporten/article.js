@@ -20,9 +20,9 @@ export default ({ articleReport: aR }) => {
         title_link: `https://us.lightspeedapp.com/?name=item.views.item&form_name=view&id=${
           item.id
         }&tab=details`,
-        text: `Omzet: €${item.value}, Winst: €${item.profit} (${
-          item.profitPercentage
-        }%), Aantal: ${item.quantity}\nVoorraad: ${
+        text: `Omzet: €${item.value}, Aantal: ${item.quantity}\nInkoop: €${
+          item.totalCost
+        }, Winst: €${item.profit} (${item.profitPercentage}%)\nVoorraad: ${
           item.fields.ItemShops.ItemShop[0].qoh
         }, Nabestelpunt: ${
           item.fields.ItemShops.ItemShop[0].reorderPoint

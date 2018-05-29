@@ -20,6 +20,7 @@ export default sales => {
     sales: 0,
     unreliabilityCount: 0,
     unreliabilityTotal: 0,
+    taxlessTotal: 0,
   }
 
   if (sales.length > 0) {
@@ -72,12 +73,32 @@ export default sales => {
         _.map(sale.SaleLines.SaleLine, (line, lineID) => {
           if (line.archived != 'true') {
             if (line.avgCost == '0') {
+              let taxlessTotal =
+                parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate))
+              analysis.taxlessTotal += taxlessTotal
+
               analysis.unreliabilityCount++
               analysis.unreliabilityTotal += parseFloat(line.calcTotal)
               analysis.profit += parseFloat(line.calcTotal) * 0.3
             } else {
-              analysis.profit +=
-                parseFloat(line.calcTotal) - parseFloat(line.avgCost)
+              // Profit
+              let taxlessTotal =
+                parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate))
+              analysis.profit += taxlessTotal - parseFloat(line.avgCost)
+              analysis.taxlessTotal += taxlessTotal
+
+              // Margin
+              if (analysis.margin) {
+                analysis.margin =
+                  (analysis.margin +
+                    (taxlessTotal - parseFloat(line.avgCost)) /
+                      taxlessTotal *
+                      100) /
+                  2
+              } else {
+                analysis.margin =
+                  (taxlessTotal - parseFloat(line.avgCost)) / taxlessTotal * 100
+              }
             }
           }
         })
@@ -86,8 +107,8 @@ export default sales => {
   }
 
   analysis.saleSize = analysis.total / analysis.sales
-  analysis.profit =
-    analysis.profit - tax.hoog.amount * 0.21 - tax.laag.amount * 0.6
+  // analysis.profit =
+  //   analysis.profit - tax.hoog.amount * 0.21 - tax.laag.amount * 0.6
 
   tax.hoog.amount = tax.hoog.amount.toFixed(2)
   tax.laag.amount = tax.laag.amount.toFixed(2)

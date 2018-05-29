@@ -5,7 +5,6 @@ import createFile from '../api/slack/create-file.js'
 
 export default async (data, channel) => {
   let highestValue = 0
-
   data.forEach(item => {
     if (
       item.categoryReport &&
@@ -102,7 +101,7 @@ export default async (data, channel) => {
   let bar = {
     chtt: 'Categorieën',
     chts: '000000,30,r',
-    chs: '999x500',
+    chs: '999x600',
     cht: 'bvs',
     chd: `t:${chartData}`,
     chco: 'fa8231,3867d6,97c4ad,20bf6b,a5b1c2',

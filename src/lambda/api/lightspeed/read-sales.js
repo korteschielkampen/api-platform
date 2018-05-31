@@ -7,20 +7,22 @@ import readAccessToken from '../lightspeed-auth/read-token.js'
 import cleanSales from '../../transformation/lightspeed-sales--to--lightspeed-sales-clean.js'
 
 export default async (startDate, endDate) => {
-  // console.log('Reading sales from Lightspeed')
-  let dates = {
-    start: strictUriEncode(
-      moment(startDate)
-        .startOf('d')
-        .format('YYYY-MM-DDTHH:mm:ssZ')
-    ),
-    end: strictUriEncode(
-      moment(endDate)
-        .endOf('d')
-        .format('YYYY-MM-DDTHH:mm:ssZ')
-    ),
-  }
+  let dates
 
+  if (startDate) {
+    dates = {
+      start: strictUriEncode(
+        moment(startDate)
+          .startOf('d')
+          .format('YYYY-MM-DDTHH:mm:ssZ')
+      ),
+      end: strictUriEncode(
+        moment(endDate)
+          .endOf('d')
+          .format('YYYY-MM-DDTHH:mm:ssZ')
+      ),
+    }
+  }
   let access_token = await readAccessToken()
   const options = {
     method: 'GET',
@@ -33,9 +35,15 @@ export default async (startDate, endDate) => {
   let offset = 0
   let count = 1
   while (offset < count) {
-    let apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines","SalePayments"]&offset=${offset}&timeStamp=><,${
-      dates.start
-    },${dates.end}`
+    let apiUrl
+    if (startDate) {
+      apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines","SalePayments"]&offset=${offset}&timeStamp=><,${
+        dates.start
+      },${dates.end}`
+    } else {
+      apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines","SalePayments"]&offset=${offset}`
+    }
+
     let tempSales = await request(apiUrl, options)
     if (tempSales.Sale) {
       sales = _.concat(sales, tempSales.Sale)

@@ -1,8 +1,6 @@
 import qS from 'query-string'
 import moment from 'moment'
 
-import createFile from '../api/slack/create-file.js'
-
 export default async (data, channel) => {
   let highestValue = 0
   data.forEach(item => {
@@ -27,7 +25,31 @@ export default async (data, channel) => {
     ],
     [
       data.map(item => {
-        if (item.categoryReport && item.categoryReport.Aquarium) {
+        if (
+          item.categoryReport &&
+          item.categoryReport.Aquarium &&
+          item.categoryReport.Aquarium.Vis
+        ) {
+          return item.categoryReport.Aquarium.Vis.totaal / highestValue * 100
+        } else {
+          return 0
+        }
+      }),
+    ],
+    [
+      data.map(item => {
+        if (
+          item.categoryReport &&
+          item.categoryReport.Aquarium &&
+          item.categoryReport.Aquarium.Vis
+        ) {
+          return (
+            (item.categoryReport.Aquarium.totaal -
+              item.categoryReport.Aquarium.Vis.totaal) /
+            highestValue *
+            100
+          )
+        } else if (item.categoryReport && item.categoryReport.Aquarium) {
           return item.categoryReport.Aquarium.totaal / highestValue * 100
         } else {
           return 0
@@ -104,7 +126,7 @@ export default async (data, channel) => {
     chs: '999x600',
     cht: 'bvs',
     chd: `t:${chartData}`,
-    chco: 'fa8231,3867d6,97c4ad,20bf6b,a5b1c2',
+    chco: 'fa8231,7693d6,3867d6,97c4ad,20bf6b,a5b1c2',
     chxl: `0:|${labels}`,
     chxt: 'x',
   }
@@ -112,5 +134,3 @@ export default async (data, channel) => {
   let chartUrl = 'https://image-charts.com/chart?' + qS.stringify(bar)
   return chartUrl
 }
-
-//  // let chart = await createFile('none', channel)

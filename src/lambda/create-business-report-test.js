@@ -16,7 +16,6 @@ exports.handler = async (event, context, callback) => {
         date: moment()
           .subtract(i + 1, 'days')
           .format(),
-        lsRefresh: true,
         delay: 2000 * i,
       }
     })

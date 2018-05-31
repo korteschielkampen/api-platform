@@ -13,18 +13,27 @@ export default async soldItems => {
       Authorization: `Bearer ${access_token}`,
     },
   }
-  let itemIDs = soldItems.map(item => {
-    return item.id
-  })
 
-  let stringifiedItemIDs = JSON.stringify(itemIDs)
+  let stringifiedItemIDs
+  if (soldItems && soldItems.length > 0) {
+    let itemIDs = soldItems.map(item => {
+      return item.id
+    })
+
+    stringifiedItemIDs = JSON.stringify(itemIDs)
+  }
 
   // Paginator
   let items = []
   let offset = 0
   let count = 1
   while (offset < count) {
-    let apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Item.json?load_relations=["Category", "ItemShops", "TagRelations.Tag", "TaxClass"]&offset=${offset}&itemID=IN,${stringifiedItemIDs}`
+    let apiUrl = ''
+    if (soldItems) {
+      apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Item.json?load_relations=["Category", "ItemShops", "TagRelations.Tag", "TaxClass"]&offset=${offset}&itemID=IN,${stringifiedItemIDs}`
+    } else {
+      apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Item.json?load_relations=["Category", "ItemShops", "TagRelations.Tag", "TaxClass"]&offset=${offset}`
+    }
     let tempItems = await request(apiUrl, options)
     items = _.concat(items, tempItems.Item)
     count = parseInt(tempItems['@attributes'].count)

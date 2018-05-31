@@ -1,8 +1,6 @@
 import qS from 'query-string'
 import moment from 'moment'
 
-import createFile from '../api/slack/create-file.js'
-
 export default async (data, channel) => {
   let highestValue = 0
 
@@ -114,5 +112,3 @@ export default async (data, channel) => {
   let chartUrl = 'https://image-charts.com/chart?' + qS.stringify(bar)
   return chartUrl
 }
-
-//  // let chart = await createFile('none', channel)

@@ -7,10 +7,11 @@ const delay = require('delay')
 import readSalesDay from '../api/lightspeed/read-sales.js'
 import readItems from '../api/lightspeed/read-items.js'
 
+import createSoldItems from '../transformation/lightspeed-sales--to--sold-items.js'
 import createFinancialReport from '../transformation/lightspeed-sales--to--financial-report.js'
-import calculateSoldItems from '../transformation/lightspeed-sales--to--sold-items.js'
 import createCategoryReport from '../transformation/lightspeed-items--to--category-report.js'
 import createArticleReport from '../transformation/lightspeed-items--to--article-report.js'
+import createSpecialDayReports from '../transformation/day-reports--to--day-reports-specials.js'
 
 import createChartCategory from './create-chart-category.js'
 import createChartIncome from './create-chart-income.js'
@@ -37,7 +38,7 @@ const businessReportData = async (date, key) => {
   // console.log(sales)
 
   if (sales && completedSales > 0) {
-    let soldItems = calculateSoldItems(sales)
+    let soldItems = createSoldItems(sales)
 
     if (soldItems.length > 0) {
       console.log('Calculating: ', date.date)
@@ -73,64 +74,10 @@ export default async (datesArray, postSlack) => {
   let dayReports = await pmap(datesArray, asyncify(businessReportData))
 
   dayReports = dayReports.reverse()
-  console.log('running post')
 
   if (dayReports[dayReports.length - 1].sales) {
-    // Moneybird values for cost and special income
-    console.log('Calculating profit')
-    let rentIncome = 55
-    let indirectCost = 186
-    let specialCost = 22
-    let dailyTotalCost = indirectCost + specialCost
-
-    let totalProfit = 0
-    let totalProfitPlusRent = 0
-    let totalCost = 0
-    let totalCostPlusLoans = 0
-    let totalRevenue = 0
-    dayReports = dayReports.map(report => {
-      totalCost += indirectCost
-      totalCostPlusLoans += dailyTotalCost
-      if (report.sales) {
-        // Totals
-        totalProfit += report.financialReport.analysis.profit
-        totalProfitPlusRent +=
-          report.financialReport.analysis.profit + rentIncome
-        totalRevenue += report.financialReport.analysis.taxlessTotal
-
-        // Daily extra's
-        report.financialReport.analysis.profitRent =
-          report.financialReport.analysis.profit + rentIncome
-        report.financialReport.analysis.dailyTotalCost = dailyTotalCost
-        report.financialReport.analysis.indirectCost = indirectCost
-        return {
-          ...report,
-          special: {
-            rentIncome: rentIncome,
-            indirectCost: indirectCost,
-            dailyTotalCost: dailyTotalCost,
-          },
-        }
-      } else {
-        return {
-          ...report,
-          special: {
-            rentIncome: rentIncome,
-            indirectCost: indirectCost,
-            dailyTotalCost: dailyTotalCost,
-          },
-        }
-      }
-    })
-
-    dayReports[dayReports.length - 1].financialReport.analysis = {
-      ...dayReports[dayReports.length - 1].financialReport.analysis,
-      totalProfit: totalProfit,
-      totalProfitPlusRent: totalProfitPlusRent,
-      totalCost: totalCost,
-      totalCostPlusLoans: totalCostPlusLoans,
-      totalRevenue: totalRevenue,
-    }
+    console.log('Calculating Specials')
+    dayReports = createSpecialDayReports(dayReports)
 
     console.log('Generating Charts')
     dayReports[dayReports.length - 1].charts = {}

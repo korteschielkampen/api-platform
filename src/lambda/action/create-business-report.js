@@ -4,23 +4,26 @@ import { promisify } from 'util'
 const pmap = promisify(map)
 const delay = require('delay')
 
-import readSalesDay from './read-salesday.js'
-import createFinancialReport from './create-financial-reports.js'
-import calculateSoldItems from '../transformation/lightspeed-sales--to--sold-items.js'
+import readSalesDay from '../api/lightspeed/read-sales.js'
 import readItems from '../api/lightspeed/read-items.js'
-import createCategoryReport from './create-category-reports.js'
-import createArticleReport from './create-article-reports.js'
+
+import createFinancialReport from '../transformation/lightspeed-sales--to--financial-report.js'
+import calculateSoldItems from '../transformation/lightspeed-sales--to--sold-items.js'
+import createCategoryReport from '../transformation/lightspeed-items--to--category-report.js'
+import createArticleReport from '../transformation/lightspeed-items--to--article-report.js'
+
 import createChartCategory from './create-chart-category.js'
-import createChartLine from './create-chart-line.js'
-import createDayReport from '../models/rapporten/day.js'
+import createChartIncome from './create-chart-income.js'
+
 import createMessage from '../api/slack/create-message.js'
+import createDayReport from '../models/rapporten/day.js'
 
 const businessReportData = async (date, key) => {
   await delay(date.delay)
 
   console.log('Starting: ', date.date)
 
-  let sales = await readSalesDay(date)
+  let sales = await readSalesDay(date.date, date.date)
 
   let completedSales = 0
   if (sales) {
@@ -31,6 +34,8 @@ const businessReportData = async (date, key) => {
     })
   }
 
+  // console.log(sales)
+
   if (sales && completedSales > 0) {
     let soldItems = calculateSoldItems(sales)
 
@@ -39,8 +44,8 @@ const businessReportData = async (date, key) => {
 
       let items = await readItems(soldItems)
       let financialReport = await createFinancialReport(sales)
-      let categoryReport = await createCategoryReport(sales, items, soldItems)
-      let articleReport = await createArticleReport(sales, items, soldItems)
+      let categoryReport = await createCategoryReport(items, soldItems)
+      let articleReport = await createArticleReport(items, soldItems)
 
       console.log('Finished: ', date.date)
 
@@ -68,6 +73,7 @@ export default async (datesArray, postSlack) => {
   let dayReports = await pmap(datesArray, asyncify(businessReportData))
 
   dayReports = dayReports.reverse()
+  console.log('running post')
 
   if (dayReports[dayReports.length - 1].sales) {
     // Moneybird values for cost and special income
@@ -131,10 +137,9 @@ export default async (datesArray, postSlack) => {
     dayReports[
       dayReports.length - 1
     ].charts.category = await createChartCategory(dayReports, postSlack.channel)
-    dayReports[dayReports.length - 1].charts.financial = await createChartLine(
-      dayReports,
-      postSlack.channel
-    )
+    dayReports[
+      dayReports.length - 1
+    ].charts.financial = await createChartIncome(dayReports, postSlack.channel)
 
     if (postSlack.post) {
       console.log('Posting Day Report to Slack')

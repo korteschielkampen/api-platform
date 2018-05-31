@@ -14,7 +14,7 @@ exports.handler = async (event, context, callback) => {
     let datesArray = _.times(7, i => {
       return {
         date: moment()
-          .subtract(i, 'days')
+          .subtract(i + 1, 'days')
           .format(),
         lsRefresh: true,
         delay: 2000 * i,

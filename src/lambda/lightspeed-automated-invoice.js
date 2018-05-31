@@ -12,7 +12,7 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    // Setup variables
+    // Setup date
     let datesArray = _.times(1, i => {
       return {
         date: moment().format(),

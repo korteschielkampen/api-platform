@@ -11,10 +11,10 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    // ERRORRRRRRR NOT PARSING INPUT AND NOT OUTPUTTING RIGHT FORMAT
+    // ERRORRRRRRR NOT PARSING INPUT
     // let datesArray = JSON.parse(event.body).datesArray
 
-    let datesArray = _.times(7, i => {
+    let datesArray = _.times(14, i => {
       return {
         date: moment()
           .subtract(i, 'days')

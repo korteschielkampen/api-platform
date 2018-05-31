@@ -4,17 +4,18 @@ import strictUriEncode from 'strict-uri-encode'
 
 import request from '../general/request.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
+import cleanSales from '../../transformation/lightspeed-sales--to--lightspeed-sales-clean.js'
 
-export default async inputDate => {
+export default async (startDate, endDate) => {
   // console.log('Reading sales from Lightspeed')
   let dates = {
     start: strictUriEncode(
-      moment(inputDate)
+      moment(startDate)
         .startOf('d')
         .format('YYYY-MM-DDTHH:mm:ssZ')
     ),
     end: strictUriEncode(
-      moment(inputDate)
+      moment(endDate)
         .endOf('d')
         .format('YYYY-MM-DDTHH:mm:ssZ')
     ),
@@ -43,5 +44,5 @@ export default async inputDate => {
     offset += parseInt(tempSales['@attributes'].limit)
   }
 
-  return sales.length > 0 && sales
+  return sales.length > 0 && cleanSales(await sales)
 }

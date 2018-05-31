@@ -22,7 +22,7 @@ export default (dayReport, channel) => {
       //   attachment_type: 'default',
       // },
       // createPurchaseReport(cR),
-      ...createArticleReport(dayReport),
+      // ...createArticleReport(dayReport),
       // createDataReport(cR),
     ],
   }

@@ -8,10 +8,7 @@ export default async (apiUrl, options) => {
     let lsbucket = res.headers.get('x-ls-api-bucket-level')
     let lsdrip = res.headers.get('x-ls-api-drip-rate')
     lsbucket != null &&
-      console.log(
-        `Lightspeed bucket is currently at: ${lsbucket} and drips at ${lsdrip}p/s`
-      )
-
+      console.log(`LS Ratelimit: ${lsbucket} and drips at ${lsdrip}p/s`)
     return await res.json()
   }
 }

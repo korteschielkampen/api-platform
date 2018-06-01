@@ -29,6 +29,7 @@ exports.handler = async (event, context, callback) => {
     let financialReport = await createFinancialReport(sales)
     let categoryReport = await createCategoryReport(items, soldItems)
     let articleReport = await createArticleReport(items, soldItems)
+
     let dayReport = {
       date: {
         date: moment().format(),
@@ -46,9 +47,9 @@ exports.handler = async (event, context, callback) => {
     dayReports[0].charts.category = await createChartCategory(dayReports)
     dayReports[0].charts.financial = await createChartIncome(dayReports)
 
-    await createMessage(createDayReport(dayReports[0], 'CAPCPRW6B'))
+    // await createMessage(createDayReport(dayReports[0], 'CAPCPRW6B'))
 
-    respond({ status: 200, body: { message: 'succes' } })
+    respond({ status: 200, body: { message: 'succes', body: articleReport } })
   } catch (err) {
     console.log(err)
     respond({ status: 422, body: err })

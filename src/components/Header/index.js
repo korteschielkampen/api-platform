@@ -7,12 +7,14 @@ import logo from './logo-full.png'
 const Header = props => (
   <div className={styles.container}>
     <div className={styles.content}>
-      <div className={styles.header}>
-        <img src={logo} className={styles.logo} />
-      </div>
-      <h1 >
-        <Link className={styles.headerText} to="/">{props.siteTitle}</Link>
-      </h1>
+      <nav className={styles.navigationContainer}>
+        <ul className={styles.navigation}>
+          <li className={styles.navigationItem}>Artikelen</li>
+          <li className={styles.navigationItem}>Artikelgroepen</li>
+          <li className={styles.navigationItem}>Verkopen</li>
+          <li className={styles.navigationItem}>Inkomsten</li>
+        </ul>
+      </nav>
     </div>
   </div>
 )

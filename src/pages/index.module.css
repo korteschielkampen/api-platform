@@ -5,6 +5,8 @@
 }
 
 .content {
+  display: flex;
+  justify-content: center;
   max-width: 45rem;
   width: 100%;
   padding: 2rem 2rem 2rem;
@@ -16,17 +18,27 @@
   align-items: center;
 }
 
+.buttonContainer {
+  display: flex;
+}
+
 .button {
+  margin: 0 1rem 0 1rem;
+  padding: 2rem 2rem 0;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-bottom: none;
   outline: 0;
-  margin: 0;
-  padding: 1rem;
-  border-radius: 2rem;
-  background-color: rgb(220, 92, 89);
+  transition: all 0.5s ease;
   cursor: pointer;
+  background-image: radial-gradient(circle at 40px 40px, #c3dbee 0%, #fff 20%);
+  font-size: 0.8rem;
 }
 
 .button:hover {
-  opacity: 0.8;
+  background-image: radial-gradient(circle at 40px 40px, #c3dbee 0%, #fff 25%);
+  text-decoration: underline;
 }
 
 .buttonBlue {
@@ -59,6 +71,11 @@
   width: 6rem;
   outline: 0;
   border: none;
+}
+
+.cards {
+  border-bottom: 1px solid #07316b;
+  width: 100%;
 }
 
 .card {

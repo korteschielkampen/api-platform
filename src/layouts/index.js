@@ -4,6 +4,7 @@ import Helmet from 'react-helmet'
 
 import Header from '../components/Header'
 import './index.css'
+import './typography.css'
 
 const TemplateWrapper = ({ data, children }) => (
   <div>
@@ -14,7 +15,7 @@ const TemplateWrapper = ({ data, children }) => (
         { name: 'keywords', content: 'sample, something' },
       ]}
     />
-    <Header siteTitle={data.site.siteMetadata.title}/>
+    <Header siteTitle={data.site.siteMetadata.title} />
     {children()}
   </div>
 )

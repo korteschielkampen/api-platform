@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Armata');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Armata', sans-serif;
+  color: #45556b;
+}
+
+p,
+li,
+q,
+button {
+  font-family: 'Armata', sans-serif;
+  color: #45556b;
+}

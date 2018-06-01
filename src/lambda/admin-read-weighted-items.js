@@ -4,6 +4,7 @@ import fs from 'fs'
 import createSoldItems from './transformation/lightspeed-sales--to--sold-items.js'
 import createFinancialReport from './transformation/lightspeed-sales--to--financial-report.js'
 import createCategoryReport from './transformation/lightspeed-items--to--category-report.js'
+import createWeightedCategoryReport from './transformation/lightspeed-items--to--weighted-category-report.js'
 import createArticleReport from './transformation/lightspeed-items--to--article-report.js'
 import createSpecialDayReports from './transformation/day-reports--to--day-reports-specials.js'
 
@@ -46,6 +47,8 @@ exports.handler = async (event, context, callback) => {
     dayReports[0].charts = {}
     dayReports[0].charts.category = await createChartCategory(dayReports)
     dayReports[0].charts.financial = await createChartIncome(dayReports)
+
+    let test = createWeightedCategoryReport(items, soldItems)
 
     // await createMessage(createDayReport(dayReports[0], 'CAPCPRW6B'))
 

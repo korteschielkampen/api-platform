@@ -111,12 +111,12 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.buttonContainer}>
-          <button className={styles.button} onClick={this.getItems}>
+          {/* <button className={styles.button} onClick={this.getItems}>
             Get items
           </button>
           <button className={styles.button} onClick={this.getSales}>
             Get sales
-          </button>
+          </button> */}
           <button className={styles.button} onClick={this.getData}>
             Get data
           </button>

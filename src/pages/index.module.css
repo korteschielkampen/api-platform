@@ -109,10 +109,10 @@
 }
 
 .cardText {
-  padding: 0rem 0rem 1rem;
+  padding: 0 0 1rem;
   margin: 0;
 }
 
 .cardText:last-of-type {
-  padding: 0rem 0 0;
+  padding: 0 0 0;
 }

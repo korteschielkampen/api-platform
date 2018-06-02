@@ -25,6 +25,10 @@ class IndexPage extends React.Component {
     this.getData = this.getData.bind(this)
   }
 
+  componentDidMount() {
+    this.getData()
+  }
+
   async getItems() {
     const options = {
       method: 'GET',
@@ -135,13 +139,13 @@ class IndexPage extends React.Component {
   }
 
   render() {
-    // console.log(this.state.items)
+    console.log(this.state.items)
     return (
       <div className={styles.container}>
         <div className={styles.buttonContainer}>
-          <button className={styles.button} onClick={this.getData}>
+          {/* <button className={styles.button} onClick={this.getData}>
             Get data
-          </button>
+          </button> */}
         </div>
         <div className={styles.content}>
           <Sunburst data={this.state.items} size={[700, 700]} />

@@ -26,6 +26,13 @@ class BarChart extends Component {
   createSunburst() {
     const node = this.node
     const data = this.props.data
+
+    // Dirty way to clean out mismanaged nodes
+    while (node.hasChildNodes()) {
+      node.removeChild(node.lastChild)
+    }
+
+    // Main D3 code
     if (!_.isEmpty(data)) {
       var width = this.props.size[0],
         height = this.props.size[1],
@@ -37,11 +44,12 @@ class BarChart extends Component {
 
       var y = d3.scaleSqrt().range([0, radius])
 
-      const colorset = _.times(5, i => {
-        return d3.color(d3.interpolateBlues(1 / i)).hex()
-      })
-      var color = d3.scaleOrdinal(colorset)
+      // const colorset = _.times(8, i => {
+      //   return d3.color(d3.interpolateBlues(1 / i)).hex()
+      // })
 
+      const colorset = schemeCategory10
+      var color = d3.scaleOrdinal(colorset)
       var partition = d3.partition()
 
       var arc = d3
@@ -68,7 +76,6 @@ class BarChart extends Component {
 
       var root = d3.hierarchy(data)
       root.sum(function(d) {
-        console.log(d)
         return d.statistics.totalSold
       })
 
@@ -79,7 +86,7 @@ class BarChart extends Component {
         .append('path')
         .attr('d', arc)
         .style('fill', function(d) {
-          return color((d.children ? d : d.parent).data.name)
+          return d.data.color || color((d.children ? d : d.parent).data.name)
         })
         .on('click', click)
         .append('title')
@@ -108,7 +115,7 @@ class BarChart extends Component {
           })
       }
 
-      d3.select(self.frameElement).style('height', height + 'px')
+      // d3.select(self.frameElement).style('height', height + 'px')
     }
   }
 

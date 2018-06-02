@@ -44,10 +44,6 @@ class BarChart extends Component {
 
       var y = d3.scaleSqrt().range([0, radius])
 
-      // const colorset = _.times(8, i => {
-      //   return d3.color(d3.interpolateBlues(1 / i)).hex()
-      // })
-
       const colorset = schemeCategory10
       var color = d3.scaleOrdinal(colorset)
       var partition = d3.partition()

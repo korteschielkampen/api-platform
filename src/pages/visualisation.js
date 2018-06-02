@@ -26,10 +26,11 @@ class IndexPage extends React.Component {
   }
 
   componentDidMount() {
-    this.getData()
+    // this.getData()
   }
 
   async getItems() {
+    console.log('get items')
     const options = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -143,15 +144,15 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.buttonContainer}>
-          {/* <button className={styles.button} onClick={this.getData}>
+          <button className={styles.button} onClick={this.getData}>
             Get data
-          </button> */}
+          </button>
         </div>
         <div className={styles.content}>
-          <Sunburst data={this.state.items} size={[700, 700]} />
+          <Sunburst data={this.state.items} size={[750, 750]} />
         </div>
         <div className={styles.content}>
-          {/* <button className={styles.button} onClick={this.getItems}>
+          <button className={styles.button} onClick={this.getItems}>
             Get items
           </button>
           <button className={styles.button} onClick={this.getSales}>
@@ -159,7 +160,7 @@ class IndexPage extends React.Component {
           </button>
           <button className={styles.button} onClick={this.getCategories}>
             Get categories
-          </button> */}
+          </button>
         </div>
       </div>
     )

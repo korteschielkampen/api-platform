@@ -19,7 +19,6 @@ export default async soldItems => {
     let itemIDs = soldItems.map(item => {
       return item.id
     })
-
     stringifiedItemIDs = JSON.stringify(itemIDs)
   }
 
@@ -32,7 +31,7 @@ export default async soldItems => {
     if (soldItems) {
       apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Item.json?load_relations=["Category", "ItemShops", "TagRelations.Tag", "TaxClass"]&offset=${offset}&itemID=IN,${stringifiedItemIDs}`
     } else {
-      apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Item.json?load_relations=["Category", "ItemShops", "TagRelations.Tag", "TaxClass"]&offset=${offset}`
+      apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Item.json?load_relations=["Category", "ItemShops", "TagRelations.Tag", "TaxClass"]&offset=${offset}&itemID=IN,${stringifiedItemIDs}`
     }
     let tempItems = await request(apiUrl, options)
     items = _.concat(items, tempItems.Item)

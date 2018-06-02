@@ -1,9 +1,10 @@
 import _ from 'lodash'
 import merge from 'deepmerge'
 const util = require('util')
+const fs = require('fs')
 
-export default (items, soldItems) => {
-  // Merge sold items and items on key, but create objects first.
+export default (items, soldItems, categories) => {
+  // Merge sold items and items and filter useless
   let itemsHashed = {}
   items.forEach(i => {
     itemsHashed[i.itemID] = i
@@ -25,57 +26,71 @@ export default (items, soldItems) => {
     return item.statistics && item
   })
 
-  // Weighting the categories
-  let weightedCategories = {}
-  _.forEach(itemsRevenue, i => {
-    weightedCategories[i.categoryID] = {
-      ...i.Category,
+  categories.push({
+    name: 'flare',
+    categoryID: '0',
+    nodeDepth: '-1',
+    parentID: '-1',
+  })
+
+  // Preparing the categories to avoid checks
+  categories = _.map(categories, c => {
+    return {
+      ...c,
       statistics: {
-        totalSold:
-          (weightedCategories[i.categoryID] &&
-            weightedCategories[i.categoryID].statistics.totalSold +
-              i.statistics.totalSold) ||
-          i.statistics.totalSold,
-        totalRevenue:
-          (weightedCategories[i.categoryID] &&
-            weightedCategories[i.categoryID].statistics.totalRevenue +
-              i.statistics.totalRevenue) ||
-          i.statistics.totalRevenue,
+        totalSold: 0,
+        totalRevenue: 0,
       },
-      items: {
-        ...(weightedCategories[i.categoryID] &&
-          weightedCategories[i.categoryID].items),
-        [i.itemID]: i,
-      },
+      children: [],
+      items: {},
     }
   })
 
-  console.log(weightedCategories)
+  // Weighting the categories
+  _.forEach(itemsRevenue, i => {
+    if (i.categoryID !== '0' && i.categoryID !== undefined) {
+      let key = _.findKey(categories, { categoryID: i.categoryID })
+      categories[key].statistics = {
+        totalSold:
+          categories[key].statistics.totalSold + i.statistics.totalSold,
+        totalRevenue:
+          categories[key].statistics.totalRevenue + i.statistics.totalRevenue,
+      }
+      // categories[key].items = {
+      //   ...categories[key].items,
+      //   [i.itemID]: i,
+      // }
+    }
+  })
 
   // Nesting the categories
-  let nestedCategories = {}
-  _.forEach(itemsRevenue, item => {
-    if (item.Category) {
-      let names = item.Category.fullPathName.split('/')
-      let length = names.length
-      let result = {}
-      _.times(length, key => {
-        let inversekey = length - (key + 1)
-        result = {
-          [names[inversekey]]: {
-            ...item.Category,
-            children: {
-              ...result,
-            },
-            statistics: {
-              totalRevenue: item.statistics.totalRevenue,
-              totalSold: item.statistics.totalRevenue,
-            },
-          },
-        }
-      })
-      nestedCategories = merge(weightedCategories, result)
+  let sortedCategories = _.sortBy(categories, 'nodeDepth').reverse()
+  _.forEach(sortedCategories, c => {
+    let parentKey = _.findKey(sortedCategories, { categoryID: c.parentID })
+    if (c.parentID > '-1') {
+      sortedCategories[parentKey].children = [
+        ...sortedCategories[parentKey].children,
+        c,
+      ]
+      sortedCategories[parentKey].statistics = {
+        totalSold:
+          sortedCategories[parentKey].statistics.totalSold +
+          c.statistics.totalSold,
+        totalRevenue:
+          sortedCategories[parentKey].statistics.totalRevenue +
+          c.statistics.totalRevenue,
+      }
     }
   })
-  // console.log(util.inspect(weightedCategories, false, null))
+
+  let nestedCategories = _.filter(sortedCategories, { nodeDepth: '-1' })
+
+  console.log(
+    util.inspect(nestedCategories, {
+      colors: true,
+      depth: 2,
+    })
+  )
+
+  return nestedCategories[0]
 }

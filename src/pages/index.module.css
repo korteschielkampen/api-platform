@@ -33,11 +33,13 @@
   transition: all 0.5s ease;
   cursor: pointer;
   background-image: radial-gradient(circle at 40px 40px, #c3dbee 0%, #fff 20%);
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
   font-size: 0.8rem;
 }
 
 .button:hover {
-  background-image: radial-gradient(circle at 40px 40px, #c3dbee 0%, #fff 25%);
+  background-size: 120px 120px;
   text-decoration: underline;
 }
 

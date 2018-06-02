@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 934);
+/******/ 	return __webpack_require__(__webpack_require__.s = 936);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1741,8 +1741,7 @@ module.exports = AWS.STS;
 
 
 /***/ }),
-/* 13 */,
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(22),
@@ -1776,7 +1775,7 @@ module.exports = baseGetTag;
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(21),
@@ -1815,12 +1814,12 @@ module.exports = isArrayLike;
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayLikeKeys = __webpack_require__(270),
     baseKeys = __webpack_require__(71),
-    isArrayLike = __webpack_require__(15);
+    isArrayLike = __webpack_require__(14);
 
 /**
  * Creates an array of the own enumerable property names of `object`.
@@ -1858,7 +1857,7 @@ module.exports = keys;
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports) {
 
 /**
@@ -1893,6 +1892,7 @@ module.exports = isObjectLike;
 
 
 /***/ }),
+/* 17 */,
 /* 18 */
 /***/ (function(module, exports) {
 
@@ -2410,7 +2410,7 @@ module.exports = {
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(14),
+var baseGetTag = __webpack_require__(13),
     isObject = __webpack_require__(6);
 
 /** `Object#toString` result references. */
@@ -3468,7 +3468,7 @@ module.exports = isPrototype;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsArguments = __webpack_require__(272),
-    isObjectLike = __webpack_require__(17);
+    isObjectLike = __webpack_require__(16);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -3673,8 +3673,8 @@ module.exports = isKey;
 /* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(14),
-    isObjectLike = __webpack_require__(17);
+var baseGetTag = __webpack_require__(13),
+    isObjectLike = __webpack_require__(16);
 
 /** `Object#toString` result references. */
 var symbolTag = '[object Symbol]';
@@ -6470,7 +6470,7 @@ module.exports = copyObject;
 /***/ (function(module, exports, __webpack_require__) {
 
 var eq = __webpack_require__(23),
-    isArrayLike = __webpack_require__(15),
+    isArrayLike = __webpack_require__(14),
     isIndex = __webpack_require__(42),
     isObject = __webpack_require__(6);
 
@@ -6617,7 +6617,7 @@ var DataView = __webpack_require__(284),
     Promise = __webpack_require__(285),
     Set = __webpack_require__(286),
     WeakMap = __webpack_require__(287),
-    baseGetTag = __webpack_require__(14),
+    baseGetTag = __webpack_require__(13),
     toSource = __webpack_require__(68);
 
 /** `Object#toString` result references. */
@@ -6928,7 +6928,7 @@ module.exports = Stack;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsEqualDeep = __webpack_require__(321),
-    isObjectLike = __webpack_require__(17);
+    isObjectLike = __webpack_require__(16);
 
 /**
  * The base implementation of `_.isEqual` which supports partial comparisons
@@ -12249,9 +12249,9 @@ module.exports = XmlBuilder;
 var assignValue = __webpack_require__(64),
     copyObject = __webpack_require__(69),
     createAssigner = __webpack_require__(262),
-    isArrayLike = __webpack_require__(15),
+    isArrayLike = __webpack_require__(14),
     isPrototype = __webpack_require__(43),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(15);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -12839,8 +12839,8 @@ module.exports = baseTimes;
 /* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(14),
-    isObjectLike = __webpack_require__(17);
+var baseGetTag = __webpack_require__(13),
+    isObjectLike = __webpack_require__(16);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]';
@@ -12887,9 +12887,9 @@ module.exports = stubFalse;
 /* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(14),
+var baseGetTag = __webpack_require__(13),
     isLength = __webpack_require__(41),
-    isObjectLike = __webpack_require__(17);
+    isObjectLike = __webpack_require__(16);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]',
@@ -13295,7 +13295,7 @@ module.exports = overArg;
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(69),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(15);
 
 /**
  * The base implementation of `_.assign` without support for multiple sources
@@ -13357,7 +13357,7 @@ var baseKeys = __webpack_require__(71),
     getTag = __webpack_require__(73),
     isArguments = __webpack_require__(44),
     isArray = __webpack_require__(7),
-    isArrayLike = __webpack_require__(15),
+    isArrayLike = __webpack_require__(14),
     isBuffer = __webpack_require__(45),
     isPrototype = __webpack_require__(43),
     isTypedArray = __webpack_require__(46);
@@ -13627,7 +13627,7 @@ module.exports = baseEach;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFor = __webpack_require__(293),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(15);
 
 /**
  * The base implementation of `_.forOwn` without support for iteratee shorthands.
@@ -13701,7 +13701,7 @@ module.exports = createBaseFor;
 /* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArrayLike = __webpack_require__(15);
+var isArrayLike = __webpack_require__(14);
 
 /**
  * Creates a `baseEach` or `baseEachRight` function.
@@ -14946,7 +14946,7 @@ module.exports = equalObjects;
 
 var baseGetAllKeys = __webpack_require__(333),
     getSymbols = __webpack_require__(335),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(15);
 
 /**
  * Creates an array of own enumerable property names and symbols of `object`.
@@ -15115,7 +15115,7 @@ module.exports = stubArray;
 /***/ (function(module, exports, __webpack_require__) {
 
 var isStrictComparable = __webpack_require__(78),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(15);
 
 /**
  * Gets the property names, values, and compare flags of `object`.
@@ -34133,13 +34133,15 @@ exports.default = (() => {
 /* 931 */,
 /* 932 */,
 /* 933 */,
-/* 934 */
+/* 934 */,
+/* 935 */,
+/* 936 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _createToken = __webpack_require__(935);
+var _createToken = __webpack_require__(937);
 
 var _createToken2 = _interopRequireDefault(_createToken);
 
@@ -34186,7 +34188,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 935 */
+/* 937 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

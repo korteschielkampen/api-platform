@@ -13,10 +13,10 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Get all items
-    let items = await readSales()
+    let sales = await readSales()
 
     // Do stuff
-    var json = JSON.stringify(items)
+    var json = JSON.stringify(sales)
     fs.writeFile('./src/data/sales.json', json, 'utf8', () => {
       console.log('-----finnally done-----')
     })

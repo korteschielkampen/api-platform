@@ -25,34 +25,21 @@ exports.handler = async (event, context, callback) => {
   try {
     let sales = JSON.parse(fs.readFileSync('./src/data/sales.json'))
     let items = JSON.parse(fs.readFileSync('./src/data/items.json'))
+    let categories = JSON.parse(fs.readFileSync('./src/data/categories.json'))
 
     let soldItems = createSoldItems(sales)
-    let financialReport = await createFinancialReport(sales)
-    let categoryReport = await createCategoryReport(items, soldItems)
-    let articleReport = await createArticleReport(items, soldItems)
-
-    let dayReport = {
-      date: {
-        date: moment().format(),
-        delay: 2000,
-      },
-      financialReport: financialReport,
-      categoryReport: categoryReport,
-      articleReport: articleReport,
-      sales: sales,
-      items: items,
-    }
-
-    let dayReports = createSpecialDayReports([dayReport])
-    dayReports[0].charts = {}
-    dayReports[0].charts.category = await createChartCategory(dayReports)
-    dayReports[0].charts.financial = await createChartIncome(dayReports)
-
-    let test = createWeightedCategoryReport(items, soldItems)
+    let nestedCategories = createWeightedCategoryReport(
+      items,
+      soldItems,
+      categories
+    )
 
     // await createMessage(createDayReport(dayReports[0], 'CAPCPRW6B'))
 
-    respond({ status: 200, body: { message: 'succes', body: articleReport } })
+    respond({
+      status: 200,
+      body: { message: 'succes', body: nestedCategories },
+    })
   } catch (err) {
     console.log(err)
     respond({ status: 422, body: err })

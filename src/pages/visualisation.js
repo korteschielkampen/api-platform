@@ -15,12 +15,13 @@ class IndexPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      items: [],
+      items: {},
       status: "Haven't done anything yet",
       statusColor: 'lightgrey',
     }
     this.getItems = this.getItems.bind(this)
     this.getSales = this.getSales.bind(this)
+    this.getCategories = this.getCategories.bind(this)
     this.getData = this.getData.bind(this)
   }
 
@@ -78,6 +79,33 @@ class IndexPage extends React.Component {
     }
   }
 
+  async getCategories() {
+    const options = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    const apiUrl = `${lambdaURL}/admin-read-categories`
+
+    try {
+      const res = await fetch(apiUrl, options)
+      if (!res.ok) {
+        throw await res.json()
+      }
+      let data = await res.json()
+
+      data.body &&
+        this.setState({
+          status: 'Succesvol sales opgehaald',
+          statusColor: 'lightgreen',
+        })
+    } catch (err) {
+      this.setState({
+        status: `${JSON.stringify(err.body)}`,
+        statusColor: 'red',
+      })
+    }
+  }
+
   async getData() {
     const options = {
       method: 'GET',
@@ -94,7 +122,7 @@ class IndexPage extends React.Component {
 
       data.body &&
         this.setState({
-          items: data.body,
+          items: data.body.body,
           status: 'Succesvol data opgehaald',
           statusColor: 'lightgreen',
         })
@@ -107,25 +135,27 @@ class IndexPage extends React.Component {
   }
 
   render() {
-    console.log(this.state.items)
+    // console.log(this.state.items)
     return (
       <div className={styles.container}>
         <div className={styles.buttonContainer}>
-          {/* <button className={styles.button} onClick={this.getItems}>
-            Get items
-          </button>
-          <button className={styles.button} onClick={this.getSales}>
-            Get sales
-          </button> */}
           <button className={styles.button} onClick={this.getData}>
             Get data
           </button>
         </div>
         <div className={styles.content}>
-          <Sunburst data={[1, 2, 3, 4, 5, 6, 7, 8]} size={[700, 700]} />
+          <Sunburst data={this.state.items} size={[700, 700]} />
         </div>
         <div className={styles.content}>
-          <div className={styles.cards} />
+          {/* <button className={styles.button} onClick={this.getItems}>
+            Get items
+          </button>
+          <button className={styles.button} onClick={this.getSales}>
+            Get sales
+          </button>
+          <button className={styles.button} onClick={this.getCategories}>
+            Get categories
+          </button> */}
         </div>
       </div>
     )

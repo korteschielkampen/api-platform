@@ -26,7 +26,7 @@ class IndexPage extends React.Component {
   }
 
   componentDidMount() {
-    // this.getData()
+    this.getData()
   }
 
   async getItems() {
@@ -149,7 +149,7 @@ class IndexPage extends React.Component {
           </button>
         </div>
         <div className={styles.content}>
-          <Sunburst data={this.state.items} size={[750, 750]} />
+          <Sunburst data={this.state.items} size={[700, 700]} />
         </div>
         <div className={styles.content}>
           <button className={styles.button} onClick={this.getItems}>

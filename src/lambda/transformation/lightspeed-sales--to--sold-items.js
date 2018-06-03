@@ -9,7 +9,8 @@ export default sales => {
           items.push({
             id: line.itemID,
             value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
-            quantity: line.unitQuantity,
+            valueWithTax: parseFloat(line.calcTotal),
+            quantity: parseFloat(line.unitQuantity),
           })
         })
       } else {
@@ -17,7 +18,8 @@ export default sales => {
         items.push({
           id: line.itemID,
           value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
-          quantity: line.unitQuantity,
+          valueWithTax: parseFloat(line.calcTotal),
+          quantity: parseFloat(line.unitQuantity),
         })
       }
     }

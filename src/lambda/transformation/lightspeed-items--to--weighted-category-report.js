@@ -5,34 +5,94 @@ import { color } from 'd3-color'
 const util = require('util')
 
 export default (items, soldItems, categories) => {
-  // Merge sold items and items and filter useless
   let itemsHashed = {}
   items.forEach(i => {
     itemsHashed[i.itemID] = i
   })
 
+  let count = 0
+  _.map(itemsHashed, i => {
+    count++
+  })
+  console.log('totaal', count)
+
+  // TODO ONLY LAST ITEM IS BEING PUT ON THE ITEMSMERGED LIST
   let soldItemsHashed = {}
   soldItems.forEach(i => {
-    soldItemsHashed[i.id] = {
-      itemID: i.id,
-      statistics: {
-        totalSold: parseFloat(i.quantity),
-        totalRevenue: i.value,
-      },
+    if (soldItemsHashed[i.id]) {
+      soldItemsHashed[i.id] = {
+        itemID: i.id,
+        statistics: {
+          totalSold: soldItemsHashed[i.id].statistics.totalSold + i.quantity,
+          totalRevenue: soldItemsHashed[i.id].statistics.totalRevenue + i.value,
+          valueWithTax:
+            soldItemsHashed[i.id].statistics.valueWithTax + i.valueWithTax,
+        },
+      }
+    } else {
+      soldItemsHashed[i.id] = {
+        itemID: i.id,
+        statistics: {
+          totalSold: i.quantity,
+          totalRevenue: i.value,
+          valueWithTax: i.valueWithTax,
+        },
+      }
+    }
+  })
+  // TODO ABOVE
+
+  let itemsMerged = _.map(soldItemsHashed, i => {
+    // Setting up item id for merge
+    return {
+      ...itemsHashed[i.itemID],
+      ...i,
     }
   })
 
-  let itemsMerged = merge(itemsHashed, soldItemsHashed)
-  let itemsRevenue = _.filter(itemsMerged, item => {
-    return item.statistics && item
+  let count2 = 0
+  _.map(itemsMerged, i => {
+    count2++
   })
+  console.log('weergegeven', count2)
 
+  // Setting up flare
   categories.push({
     name: 'Totaal',
     categoryID: '0',
     nodeDepth: '-1',
     parentID: '-1',
     color: color('hsl(0, 0%, 90%)').hex(),
+  })
+
+  // Setting up special categories
+  categories.push({
+    name: 'Speciale Categorieën',
+    categoryID: '564783984726582904875634528',
+    nodeDepth: '0',
+    parentID: '0',
+    color: color('hsl(0, 0%, 80%)').hex(),
+  })
+  categories.push({
+    name: 'Ongecategoriseerd',
+    categoryID: '5647839847265829048756345287349563495768943075',
+    nodeDepth: '1',
+    parentID: '564783984726582904875634528',
+    color: color('hsl(0, 0%, 70%)').hex(),
+  })
+  categories.push({
+    name: 'Diversen',
+    categoryID: '56478398472658290487563452882634782364',
+    nodeDepth: '1',
+    parentID: '564783984726582904875634528',
+    color: color('hsl(0, 0%, 60%)').hex(),
+  })
+  categories.push({
+    name: 'Onbekend',
+    categoryID: '5647839847265829048756345288263478236492873489',
+    nodeDepth: '1',
+    parentID: '564783984726582904875634528',
+    color: color('hsl(0, 0%, 50%)').hex(),
   })
 
   // Preparing the categories to avoid checks
@@ -49,15 +109,32 @@ export default (items, soldItems, categories) => {
   })
 
   // Weighting the categories
-  _.forEach(itemsRevenue, i => {
-    if (i.categoryID !== '0' && i.categoryID !== undefined) {
-      let key = _.findKey(categories, { categoryID: i.categoryID })
-      categories[key].statistics = {
-        totalSold:
-          categories[key].statistics.totalSold + i.statistics.totalSold,
-        totalRevenue:
-          categories[key].statistics.totalRevenue + i.statistics.totalRevenue,
-      }
+  _.forEach(itemsMerged, i => {
+    let key
+    if (
+      i.itemID !== '0' &&
+      i.categoryID !== '0' &&
+      i.categoryID !== undefined
+    ) {
+      key = _.findKey(categories, { categoryID: i.categoryID })
+    } else if (i.itemID === '0') {
+      key = _.findKey(categories, {
+        categoryID: '56478398472658290487563452882634782364',
+      })
+    } else if (i.categoryID === '0') {
+      key = _.findKey(categories, {
+        categoryID: '5647839847265829048756345287349563495768943075',
+      })
+    } else {
+      key = _.findKey(categories, {
+        categoryID: '5647839847265829048756345288263478236492873489',
+      })
+    }
+
+    categories[key].statistics = {
+      totalSold: categories[key].statistics.totalSold + i.statistics.totalSold,
+      totalRevenue:
+        categories[key].statistics.totalRevenue + i.statistics.totalRevenue,
       // categories[key].items = {
       //   ...categories[key].items,
       //   [i.itemID]: i,
@@ -65,20 +142,20 @@ export default (items, soldItems, categories) => {
     }
   })
 
-  // Setup colors
-  let rootCategories = _.filter(categories, { nodeDepth: '0' })
+  // Setup colors and rootCategories
   let vizcolors = [
     'hsl(151, 100%, 42%)',
     'hsl(42, 100%, 50%)',
     'hsl(204, 100%, 43%)',
+    'hsl(0, 0%, 80%)',
   ]
-
-  // 'hsl(15, 100%, 50%)',
-
-  rootCategories = _.map(rootCategories, (rc, k) => {
-    rc.colorRange = color(vizcolors[k])
-    return rc
-  })
+  let rootCategories = _.map(
+    _.filter(categories, { nodeDepth: '0' }),
+    (rc, k) => {
+      rc.colorRange = color(vizcolors[k])
+      return rc
+    }
+  )
 
   // Nesting the categories
   let sortedCategories = _.sortBy(categories, 'nodeDepth').reverse()
@@ -92,36 +169,29 @@ export default (items, soldItems, categories) => {
         let colorBrightness =
           (parseInt(c.leftNode) - parseInt(rc.leftNode)) /
           (parseInt(rc.rightNode) - parseInt(rc.leftNode))
-        c.color = rc.colorRange.brighter(colorBrightness * 1.4).hex()
+        c.color = rc.colorRange.brighter(colorBrightness * 1.6).hex()
       }
     })
 
     // Do nesting
     let parentKey = _.findKey(sortedCategories, { categoryID: c.parentID })
-    if (c.parentID > '-1') {
+    if (c.parentID > -1) {
       sortedCategories[parentKey].children = [
         ...sortedCategories[parentKey].children,
         c,
       ]
-      sortedCategories[parentKey].statistics = {
-        totalSold:
-          sortedCategories[parentKey].statistics.totalSold +
-          c.statistics.totalSold,
-        totalRevenue:
-          sortedCategories[parentKey].statistics.totalRevenue +
-          c.statistics.totalRevenue,
-      }
+      // sortedCategories[parentKey].statistics = {
+      //   totalSold:
+      //     sortedCategories[parentKey].statistics.totalSold +
+      //     c.statistics.totalSold,
+      //   totalRevenue:
+      //     sortedCategories[parentKey].statistics.totalRevenue +
+      //     c.statistics.totalRevenue,
+      // }
     }
   })
 
   let nestedCategories = _.filter(sortedCategories, { nodeDepth: '-1' })
-
-  // console.log(
-  //   util.inspect(nestedCategories, {
-  //     colors: true,
-  //     depth: 2,
-  //   })
-  // )
 
   return nestedCategories[0]
 }

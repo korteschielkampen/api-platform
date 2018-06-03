@@ -72,7 +72,7 @@ class BarChart extends Component {
 
       var root = d3.hierarchy(data)
       root.sum(function(d) {
-        return d.statistics.totalSold
+        return d.statistics.totalRevenue
       })
 
       svg

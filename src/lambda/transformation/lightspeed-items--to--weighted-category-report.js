@@ -135,10 +135,10 @@ export default (items, soldItems, categories) => {
       totalSold: categories[key].statistics.totalSold + i.statistics.totalSold,
       totalRevenue:
         categories[key].statistics.totalRevenue + i.statistics.totalRevenue,
-      // categories[key].items = {
-      //   ...categories[key].items,
-      //   [i.itemID]: i,
-      // }
+      items: {
+        ...categories[key].items,
+        [i.itemID]: i,
+      },
     }
   })
 

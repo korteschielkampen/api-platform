@@ -5,7 +5,6 @@ import styles from './index.module.css'
 
 import Barchart from '../components/Barchart'
 import Sunburst from '../components/Sunburst'
-import SunburstW from '../components/Sunburst-w'
 
 const lambdaURL =
   process.env.NODE_ENV === 'production'

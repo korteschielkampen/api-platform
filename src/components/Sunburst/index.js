@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import D3Sunburst from './sunburst.js'
+
+import * as actionCreators from '../../state/actions'
 
 class BarChart extends Component {
   constructor(props) {
@@ -32,4 +35,9 @@ class BarChart extends Component {
     return <div id="vizContainer" ref={this._setRef.bind(this)} />
   }
 }
-export default BarChart
+
+function mapStateToProps(state) {
+  return { todos: state.items }
+}
+
+export default connect(mapStateToProps)(BarChart)

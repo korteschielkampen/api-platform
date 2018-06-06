@@ -1,11 +1,22 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/browser-apis/
- */
+import React from 'react'
+import { Router } from 'react-router-dom'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 
- // You can delete this file if you're not using it
+import rootReducer from './src/state/root-reducer'
 
- exports.onClientEntry = () => {
+exports.replaceRouterComponent = ({ history }) => {
+  const store = createStore(rootReducer)
+
+  const ConnectedRouterWrapper = ({ children }) => (
+    <Provider store={store}>
+      <Router history={history}>{children}</Router>
+    </Provider>
+  )
+
+  return ConnectedRouterWrapper
+}
+
+exports.onClientEntry = () => {
   require('babel-polyfill')
 }

@@ -7,7 +7,7 @@ h4,
 h5,
 h6 {
   font-family: 'Armata', sans-serif;
-  color: #45556b;
+  color: hsl(0, 0%, 50%);
 }
 
 p,
@@ -15,5 +15,5 @@ li,
 q,
 button {
   font-family: 'Armata', sans-serif;
-  color: #45556b;
+  color: hsl(0, 0%, 50%);
 }

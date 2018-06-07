@@ -11,7 +11,12 @@ const Card = props => (
     )}
   >
     <div className={styles.cardItem}>
-      <p>{props.name}</p>
+      {!props.link && <p>{props.name}</p>}
+      {props.link && (
+        <p>
+          <a href={props.link}>{props.name}</a>
+        </p>
+      )}
     </div>
     <div className={styles.cardItem}>
       <div>

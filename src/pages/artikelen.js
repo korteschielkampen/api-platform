@@ -110,13 +110,25 @@ class IndexPage extends React.Component {
                 <h3>Artikelen</h3>
                 <div className={styles.cards}>
                   {_.map(
-                    _.filter(this.state.current.data.children, 'itemID'),
+                    _.filter(this.state.current.data.children, 'itemID').sort(
+                      (prev, next) => {
+                        return (
+                          next.statistics.totalRevenue -
+                          prev.statistics.totalRevenue
+                        )
+                      }
+                    ),
                     (value, key) => {
+                      console.log(value)
+                      let link = `https://us.lightspeedapp.com/?name=item.views.item&form_name=view&id=${
+                        value.itemID
+                      }&tab=details`
                       return (
                         <Card
                           name={value.name}
                           statistics={value.statistics}
                           key={key}
+                          link={link}
                         />
                       )
                     }

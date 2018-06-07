@@ -23,9 +23,11 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    let sales = JSON.parse(fs.readFileSync('../data/sales.json'))
-    let items = JSON.parse(fs.readFileSync('../data/items.json'))
-    let categories = JSON.parse(fs.readFileSync('../data/categories.json'))
+    let sales = JSON.parse(fs.readFileSync('./static/data/sales.json'))
+    let items = JSON.parse(fs.readFileSync('./static/data/items.json'))
+    let categories = JSON.parse(
+      fs.readFileSync('./static/data/categories.json')
+    )
 
     let soldItems = createSoldItems(sales)
     let nestedCategories = createWeightedCategoryReport(
@@ -33,6 +35,11 @@ exports.handler = async (event, context, callback) => {
       soldItems,
       categories
     )
+
+    var json = JSON.stringify(items)
+    fs.writeFile('./static/data/sunburst.json', json, 'utf8', () => {
+      console.log('-----finnally done-----')
+    })
 
     respond({
       status: 200,

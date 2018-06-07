@@ -11,6 +11,11 @@ const lambdaURL =
     ? '/.netlify/functions'
     : '/localhost:9000'
 
+const dataURL =
+  process.env.NODE_ENV === 'production'
+    ? '/data/sunburst.json'
+    : '/localhost:9000'
+
 class IndexPage extends React.Component {
   constructor(props) {
     super(props)
@@ -32,7 +37,11 @@ class IndexPage extends React.Component {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     }
-    const apiUrl = `${lambdaURL}/admin-read-weighted-items`
+
+    const apiUrl =
+      process.env.NODE_ENV === 'production'
+        ? '/data/sunburst.json'
+        : `${lambdaURL}/admin-read-weighted-items`
 
     try {
       const res = await fetch(apiUrl, options)
@@ -41,13 +50,20 @@ class IndexPage extends React.Component {
       }
       let data = await res.json()
 
-      data.body &&
-        this.setState({
-          items: data.body.body,
-          current: { data: data.body.body },
-          status: 'Succesvol data opgehaald',
-          statusColor: 'lightgreen',
-        })
+      process.env.NODE_ENV === 'production'
+        ? this.setState({
+            items: data,
+            current: { data: data },
+            status: 'Succesvol data opgehaald',
+            statusColor: 'lightgreen',
+          })
+        : data.body &&
+          this.setState({
+            items: data.body.body,
+            current: { data: data.body.body },
+            status: 'Succesvol data opgehaald',
+            statusColor: 'lightgreen',
+          })
     } catch (err) {
       this.setState({
         status: `${JSON.stringify(err.body)}`,

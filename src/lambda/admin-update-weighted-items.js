@@ -19,7 +19,7 @@ exports.handler = async (event, context, callback) => {
 
     // Do stuff
     var json = JSON.stringify(sales)
-    fs.writeFile('./data/sales.json', json, 'utf8', () => {
+    fs.writeFile('/data/sales.json', json, 'utf8', () => {
       console.log('-----finnally done-----')
     })
 
@@ -27,7 +27,7 @@ exports.handler = async (event, context, callback) => {
 
     // Do stuff
     var json = JSON.stringify(items)
-    fs.writeFile('./data/items.json', json, 'utf8', () => {
+    fs.writeFile('/data/items.json', json, 'utf8', () => {
       console.log('-----finnally done-----')
     })
 
@@ -36,7 +36,7 @@ exports.handler = async (event, context, callback) => {
 
     // Do stuff
     var json = JSON.stringify(categories)
-    fs.writeFile('./data/categories.json', json, 'utf8', () => {
+    fs.writeFile('/data/categories.json', json, 'utf8', () => {
       console.log('-----finnally done-----')
     })
 

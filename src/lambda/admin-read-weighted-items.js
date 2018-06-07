@@ -23,9 +23,11 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    let sales = JSON.parse(fs.readFileSync('./src/data/sales.json'))
-    let items = JSON.parse(fs.readFileSync('./src/data/items.json'))
-    let categories = JSON.parse(fs.readFileSync('./src/data/categories.json'))
+    let sales = JSON.parse(fs.readFileSync('./src/static/data/sales.json'))
+    let items = JSON.parse(fs.readFileSync('./src/static/data/items.json'))
+    let categories = JSON.parse(
+      fs.readFileSync('./src/static/data/categories.json')
+    )
 
     let soldItems = createSoldItems(sales)
     let nestedCategories = createWeightedCategoryReport(

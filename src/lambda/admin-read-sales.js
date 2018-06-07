@@ -17,7 +17,7 @@ exports.handler = async (event, context, callback) => {
 
     // Do stuff
     var json = JSON.stringify(sales)
-    fs.writeFile('./src/data/sales.json', json, 'utf8', () => {
+    fs.writeFile('./src/static/data/sales.json', json, 'utf8', () => {
       console.log('-----finnally done-----')
     })
 

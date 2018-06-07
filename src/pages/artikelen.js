@@ -44,6 +44,7 @@ class IndexPage extends React.Component {
       data.body &&
         this.setState({
           items: data.body.body,
+          current: { data: data.body.body },
           status: 'Succesvol data opgehaald',
           statusColor: 'lightgreen',
         })

@@ -23,9 +23,9 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    let sales = JSON.parse(fs.readFileSync('./data/sales.json'))
-    let items = JSON.parse(fs.readFileSync('./data/items.json'))
-    let categories = JSON.parse(fs.readFileSync('./data/categories.json'))
+    let sales = JSON.parse(fs.readFileSync('/data/sales.json'))
+    let items = JSON.parse(fs.readFileSync('/data/items.json'))
+    let categories = JSON.parse(fs.readFileSync('/data/categories.json'))
 
     let soldItems = createSoldItems(sales)
     let nestedCategories = createWeightedCategoryReport(
@@ -33,8 +33,6 @@ exports.handler = async (event, context, callback) => {
       soldItems,
       categories
     )
-
-    // await createMessage(createDayReport(dayReports[0], 'CAPCPRW6B'))
 
     respond({
       status: 200,

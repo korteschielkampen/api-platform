@@ -103,17 +103,24 @@ class IndexPage extends React.Component {
                   />
                   {this.state.current.data &&
                     this.state.current.data.children &&
-                    this.state.current.data.children.map((value, key) => {
-                      if (!value.hasOwnProperty('itemID')) {
+                    this.state.current.data.children
+                      .sort((prev, next) => {
                         return (
-                          <Card
-                            name={value.name}
-                            statistics={value.statisticsSub}
-                            key={key}
-                          />
+                          next.statisticsSub.totalRevenue -
+                          prev.statisticsSub.totalRevenue
                         )
-                      }
-                    })}
+                      })
+                      .map((value, key) => {
+                        if (!value.hasOwnProperty('itemID')) {
+                          return (
+                            <Card
+                              name={value.name}
+                              statistics={value.statisticsSub}
+                              key={key}
+                            />
+                          )
+                        }
+                      })}
                 </div>
               </div>
             )}

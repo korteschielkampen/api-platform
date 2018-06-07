@@ -39,7 +39,10 @@ export default (items, soldItems, categories) => {
   let itemsMerged = _.map(soldItemsHashed, i => {
     // Setting up item id for merge
     return {
-      ...itemsHashed[i.itemID],
+      // ...itemsHashed[i.itemID],
+      categoryID: itemsHashed[i.itemID]
+        ? itemsHashed[i.itemID].categoryID
+        : undefined,
       ...i,
     }
   })
@@ -189,6 +192,7 @@ export default (items, soldItems, categories) => {
           return i
         }),
       ]
+      c.items = {}
       sortedCategories[parentKey].children = [
         ...sortedCategories[parentKey].children,
         c,

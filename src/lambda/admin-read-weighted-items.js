@@ -36,7 +36,7 @@ exports.handler = async (event, context, callback) => {
       categories
     )
 
-    var json = JSON.stringify(items)
+    var json = JSON.stringify(nestedCategories)
     fs.writeFile('./static/data/sunburst.json', json, 'utf8', () => {
       console.log('-----finnally done-----')
     })

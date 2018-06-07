@@ -27,7 +27,7 @@ const Card = props => (
           </li>
           <li className={styles.listItem}>
             <span>Aantallen: </span>
-            <span>{props.statistics.totalSold.toFixed(0)}</span>
+            <span> {props.statistics.totalSold.toFixed(0)}</span>
           </li>
         </ul>
       </div>

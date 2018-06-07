@@ -43,6 +43,9 @@ export default (items, soldItems, categories) => {
       categoryID: itemsHashed[i.itemID]
         ? itemsHashed[i.itemID].categoryID
         : undefined,
+      description: itemsHashed[i.itemID]
+        ? itemsHashed[i.itemID].description
+        : undefined,
       ...i,
     }
   })

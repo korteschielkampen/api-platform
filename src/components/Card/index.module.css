@@ -1,0 +1,64 @@
+.card {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+  padding: 1rem;
+  background: hsl(0, 0%, 95%);
+  border-radius: 0.5rem;
+}
+
+.cardImportant {
+  background: hsl(0, 0%, 90%);
+  margin-bottom: 5rem;
+}
+
+.cardItem {
+  width: 50%;
+  display: flex;
+}
+
+.list {
+  margin: 0;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.listItem span {
+  display: block;
+  flex: 1 1 50%;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 2rem 0;
+}
+
+.cardHeading {
+  background: grey;
+  padding: 1rem 1rem;
+  margin-bottom: 0;
+  border-radius: 2rem;
+}
+
+.cardHeadingText {
+  margin: 0;
+}
+
+.cardBody {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardText {
+  padding: 0 0 1rem;
+  margin: 0;
+}
+
+.cardText:last-of-type {
+  padding: 0 0 0;
+}

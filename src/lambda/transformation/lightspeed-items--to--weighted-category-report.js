@@ -10,12 +10,6 @@ export default (items, soldItems, categories) => {
     itemsHashed[i.itemID] = i
   })
 
-  let count = 0
-  _.map(itemsHashed, i => {
-    count++
-  })
-  console.log('totaal', count)
-
   // TODO ONLY LAST ITEM IS BEING PUT ON THE ITEMSMERGED LIST
   let soldItemsHashed = {}
   soldItems.forEach(i => {
@@ -49,12 +43,6 @@ export default (items, soldItems, categories) => {
       ...i,
     }
   })
-
-  let count2 = 0
-  _.map(itemsMerged, i => {
-    count2++
-  })
-  console.log('weergegeven', count2)
 
   // Setting up flare
   categories.push({
@@ -103,6 +91,14 @@ export default (items, soldItems, categories) => {
         totalSold: 0,
         totalRevenue: 0,
       },
+      statisticsCat: {
+        totalSold: 0,
+        totalRevenue: 0,
+      },
+      statisticsSub: {
+        totalSold: 0,
+        totalRevenue: 0,
+      },
       children: [],
       items: {},
     }
@@ -131,14 +127,16 @@ export default (items, soldItems, categories) => {
       })
     }
 
-    categories[key].statistics = {
-      totalSold: categories[key].statistics.totalSold + i.statistics.totalSold,
+    categories[key].statisticsCat = {
+      totalSold:
+        categories[key].statisticsCat.totalSold + i.statistics.totalSold,
       totalRevenue:
-        categories[key].statistics.totalRevenue + i.statistics.totalRevenue,
-      items: {
-        ...categories[key].items,
-        [i.itemID]: i,
-      },
+        categories[key].statisticsCat.totalRevenue + i.statistics.totalRevenue,
+    }
+
+    categories[key].items = {
+      ...categories[key].items,
+      [i.itemID]: i,
     }
   })
 
@@ -156,6 +154,13 @@ export default (items, soldItems, categories) => {
       return rc
     }
   )
+
+  categories = _.map(categories, c => {
+    return {
+      ...c,
+      statisticsSub: Object.assign(c.statisticsCat),
+    }
+  })
 
   // Nesting the categories
   let sortedCategories = _.sortBy(categories, 'nodeDepth').reverse()
@@ -176,22 +181,29 @@ export default (items, soldItems, categories) => {
     // Do nesting
     let parentKey = _.findKey(sortedCategories, { categoryID: c.parentID })
     if (c.parentID > -1) {
+      c.children = [
+        ...c.children,
+        ..._.map(c.items, i => {
+          i.name = i.description
+          i.color = c.color
+          return i
+        }),
+      ]
       sortedCategories[parentKey].children = [
         ...sortedCategories[parentKey].children,
         c,
       ]
-      // sortedCategories[parentKey].statistics = {
-      //   totalSold:
-      //     sortedCategories[parentKey].statistics.totalSold +
-      //     c.statistics.totalSold,
-      //   totalRevenue:
-      //     sortedCategories[parentKey].statistics.totalRevenue +
-      //     c.statistics.totalRevenue,
-      // }
+      sortedCategories[parentKey].statisticsSub = {
+        totalSold:
+          sortedCategories[parentKey].statisticsSub.totalSold +
+          c.statisticsSub.totalSold,
+        totalRevenue:
+          sortedCategories[parentKey].statisticsSub.totalRevenue +
+          c.statisticsSub.totalRevenue,
+      }
     }
   })
 
   let nestedCategories = _.filter(sortedCategories, { nodeDepth: '-1' })
-
   return nestedCategories[0]
 }

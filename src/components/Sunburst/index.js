@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import D3Sunburst from './sunburst.js'
 
-import * as actionCreators from '../../state/actions'
-
-class BarChart extends Component {
+class Sunburst extends Component {
   constructor(props) {
     super(props)
   }
@@ -20,7 +17,9 @@ class BarChart extends Component {
 
   componentDidUpdate() {
     // D3 Code to update the chart
-    D3Sunburst.update(this._rootNode, this.props.data, this.props.config)
+    // D3Sunburst.update(this._rootNode, this.props.data, this.props.config).apply(
+    //   this
+    // )
   }
 
   componentWillUnmount() {
@@ -32,12 +31,8 @@ class BarChart extends Component {
   }
 
   render() {
-    return <div id="vizContainer" ref={this._setRef.bind(this)} />
+    return <div ref={this._setRef.bind(this)} />
   }
 }
 
-function mapStateToProps(state) {
-  return { todos: state.items }
-}
-
-export default connect(mapStateToProps)(BarChart)
+export default Sunburst

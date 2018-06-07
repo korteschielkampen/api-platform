@@ -4,6 +4,7 @@ import * as d3 from 'd3'
 const D3Sunburst = {}
 
 D3Sunburst.create = (el, data, configuration) => {
+  console.log('creating graph')
   var width = 960,
     height = 700,
     radius = Math.min(width, height) / 2 - 10
@@ -58,10 +59,15 @@ D3Sunburst.create = (el, data, configuration) => {
     .on('click', click)
     .append('title')
     .text(function(d) {
-      return d.data.name + '\n' + formatNumber(d.data.statistics.totalRevenue)
+      return (
+        d.data.name + '\n' + formatNumber(d.data.statisticsSub.totalRevenue)
+      )
     })
 
   function click(d) {
+    configuration.setParentState({
+      current: d,
+    })
     svg
       .transition()
       .duration(750)

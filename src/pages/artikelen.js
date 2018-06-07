@@ -119,7 +119,6 @@ class IndexPage extends React.Component {
                       }
                     ),
                     (value, key) => {
-                      console.log(value)
                       let link = `https://us.lightspeedapp.com/?name=item.views.item&form_name=view&id=${
                         value.itemID
                       }&tab=details`

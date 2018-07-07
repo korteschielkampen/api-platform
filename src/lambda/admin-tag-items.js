@@ -51,6 +51,8 @@ exports.handler = async (event, context, callback) => {
       }
     })
 
+    delete soldItemsHashed[0]
+
     let itemsHashed = {}
     items.forEach(i => {
       itemsHashed[i.itemID] = i
@@ -90,42 +92,24 @@ exports.handler = async (event, context, callback) => {
       return itemToBeUpdated
     })
 
-    // console.log(util.inspect(itemsToBeUpdated, { colors: true, depth: 4 }))
-    // let testItem = _.find(itemsToBeUpdated, { itemID: '16489' })
-    //
-    // let testItems = [
-    //   {
-    //     itemID: '36094',
-    //     payload: {
-    //       Tags: [
-    //         { tag: 'detacomimport' },
-    //         { tag: 'verkocht2018' },
-    //         { tag: 'verkocht2018' },
-    //       ],
-    //     },
-    //   },
-    //   {
-    //     itemID: '36095',
-    //     payload: {
-    //       Tags: [
-    //         { tag: 'detacomimport' },
-    //         { tag: 'verkocht2018' },
-    //         { tag: 'testtag' },
-    //       ],
-    //     },
-    //   },
-    // ]
-
     // Upload tags to Lightspeed
     const uploadItem = async (item, key) => {
       console.log('start: ', item.itemID)
       let res = await updateItems(item.itemID, item.payload)
-      console.log('done: ', res.itemID)
+      let json = await res.json()
+      console.log('done: ', await json.Item.itemID)
 
-      // lowspeed = 1 a 10 sec
-      // midspeed = 1 a 5 sec
-      // highspeed = 1 a 3.5 sec
-      await delay(10000)
+      let lsbucket = res.headers
+        .get('x-ls-api-bucket-level')
+        .split('/')
+        .map(item => {
+          return parseFloat(item)
+        })
+      let lsdrip = parseFloat(res.headers.get('x-ls-api-drip-rate'))
+      let lscost = 10000 / lsdrip
+      let lsdelay = (lsbucket[0] + 30) / lsbucket[1] * lscost
+      console.log(lsbucket, lsdrip, lsdelay)
+      await delay(lsdelay)
     }
 
     let uploadedItems = await pmapLimit(

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1056);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1057);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -51298,7 +51298,8 @@ exports.default = (() => {
 /* 1053 */,
 /* 1054 */,
 /* 1055 */,
-/* 1056 */
+/* 1056 */,
+/* 1057 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

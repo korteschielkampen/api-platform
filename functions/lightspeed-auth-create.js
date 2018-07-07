@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1052);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1053);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -34252,17 +34252,18 @@ exports.default = (() => {
 /* 1049 */,
 /* 1050 */,
 /* 1051 */,
-/* 1052 */
+/* 1052 */,
+/* 1053 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _createToken = __webpack_require__(1053);
+var _createToken = __webpack_require__(1054);
 
 var _createToken2 = _interopRequireDefault(_createToken);
 
-var _readAccount = __webpack_require__(1054);
+var _readAccount = __webpack_require__(1055);
 
 var _readAccount2 = _interopRequireDefault(_readAccount);
 
@@ -34308,7 +34309,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 1053 */
+/* 1054 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34350,7 +34351,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1054 */
+/* 1055 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

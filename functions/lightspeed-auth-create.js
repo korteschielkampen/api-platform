@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1051);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1052);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2683,6 +2683,7 @@ exports.default = (() => {
   var _ref = _asyncToGenerator(function* (apiUrl, options) {
     const res = yield (0, _nodeFetch2.default)(apiUrl, options);
     if (!res.ok) {
+      console.log('request failed');
       throw yield res.json();
     } else {
       let lsbucket = res.headers.get('x-ls-api-bucket-level');
@@ -34250,17 +34251,18 @@ exports.default = (() => {
 /* 1048 */,
 /* 1049 */,
 /* 1050 */,
-/* 1051 */
+/* 1051 */,
+/* 1052 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _createToken = __webpack_require__(1052);
+var _createToken = __webpack_require__(1053);
 
 var _createToken2 = _interopRequireDefault(_createToken);
 
-var _readAccount = __webpack_require__(1053);
+var _readAccount = __webpack_require__(1054);
 
 var _readAccount2 = _interopRequireDefault(_readAccount);
 
@@ -34306,7 +34308,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 1052 */
+/* 1053 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34348,7 +34350,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 1053 */
+/* 1054 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

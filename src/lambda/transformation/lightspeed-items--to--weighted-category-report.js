@@ -10,7 +10,6 @@ export default (items, soldItems, categories) => {
     itemsHashed[i.itemID] = i
   })
 
-  // TODO ONLY LAST ITEM IS BEING PUT ON THE ITEMSMERGED LIST
   let soldItemsHashed = {}
   soldItems.forEach(i => {
     if (soldItemsHashed[i.id]) {
@@ -34,7 +33,6 @@ export default (items, soldItems, categories) => {
       }
     }
   })
-  // TODO ABOVE
 
   let itemsMerged = _.map(soldItemsHashed, i => {
     // Setting up item id for merge

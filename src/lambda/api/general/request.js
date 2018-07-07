@@ -3,6 +3,7 @@ import fetch from 'node-fetch'
 export default async (apiUrl, options) => {
   const res = await fetch(apiUrl, options)
   if (!res.ok) {
+    console.log('request failed')
     throw await res.json()
   } else {
     let lsbucket = res.headers.get('x-ls-api-bucket-level')

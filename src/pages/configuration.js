@@ -19,22 +19,16 @@ class IndexPage extends React.Component {
       status: "Haven't done anything yet",
       statusColor: 'lightgrey',
     }
-    this.getItems = this.getItems.bind(this)
-    this.getSales = this.getSales.bind(this)
-    this.getCategories = this.getCategories.bind(this)
-    this.getData = this.getData.bind(this)
+    this.updateWeightedItems = this.updateWeightedItems.bind(this)
+    this.tagItems = this.tagItems.bind(this)
   }
 
-  componentDidMount() {
-    this.getData()
-  }
-
-  async getItems() {
+  async updateWeightedItems() {
     const options = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     }
-    const apiUrl = `${lambdaURL}/admin-read-items`
+    const apiUrl = `${lambdaURL}/admin-update-weighted-items`
 
     try {
       const res = await fetch(apiUrl, options)
@@ -56,12 +50,12 @@ class IndexPage extends React.Component {
     }
   }
 
-  async getSales() {
+  async tagItems() {
     const options = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     }
-    const apiUrl = `${lambdaURL}/admin-read-sales`
+    const apiUrl = `${lambdaURL}/admin-tag-items`
 
     try {
       const res = await fetch(apiUrl, options)
@@ -72,62 +66,7 @@ class IndexPage extends React.Component {
 
       data.body &&
         this.setState({
-          status: 'Succesvol sales opgehaald',
-          statusColor: 'lightgreen',
-        })
-    } catch (err) {
-      this.setState({
-        status: `${JSON.stringify(err.body)}`,
-        statusColor: 'red',
-      })
-    }
-  }
-
-  async getCategories() {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    const apiUrl = `${lambdaURL}/admin-read-categories`
-
-    try {
-      const res = await fetch(apiUrl, options)
-      if (!res.ok) {
-        throw await res.json()
-      }
-      let data = await res.json()
-
-      data.body &&
-        this.setState({
-          status: 'Succesvol sales opgehaald',
-          statusColor: 'lightgreen',
-        })
-    } catch (err) {
-      this.setState({
-        status: `${JSON.stringify(err.body)}`,
-        statusColor: 'red',
-      })
-    }
-  }
-
-  async getData() {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    const apiUrl = `${lambdaURL}/admin-read-weighted-items`
-
-    try {
-      const res = await fetch(apiUrl, options)
-      if (!res.ok) {
-        throw await res.json()
-      }
-      let data = await res.json()
-
-      data.body &&
-        this.setState({
-          items: data.body.body,
-          status: 'Succesvol data opgehaald',
+          status: 'Succesvol items opgehaald',
           statusColor: 'lightgreen',
         })
     } catch (err) {
@@ -142,17 +81,11 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.buttonContainer}>
-          <button className={styles.button} onClick={this.getData}>
-            Get data
+          <button className={styles.button} onClick={this.updateWeightedItems}>
+            updateWeightedItems
           </button>
-          <button className={styles.button} onClick={this.getItems}>
-            Get items
-          </button>
-          <button className={styles.button} onClick={this.getSales}>
-            Get sales
-          </button>
-          <button className={styles.button} onClick={this.getCategories}>
-            Get categories
+          <button className={styles.button} onClick={this.tagItems}>
+            tagItems
           </button>
         </div>
       </div>

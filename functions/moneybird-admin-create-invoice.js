@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1055);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1056);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -2105,7 +2105,7 @@ AWS.config = new AWS.Config();
             try {
                 oldLocale = globalLocale._abbr;
                 var aliasedRequire = require;
-                __webpack_require__(882)("./" + name);
+                __webpack_require__(881)("./" + name);
                 getSetGlobalLocale(oldLocale);
             } catch (e) {}
         }
@@ -7195,6 +7195,7 @@ exports.default = (() => {
   var _ref = _asyncToGenerator(function* (apiUrl, options) {
     const res = yield (0, _nodeFetch2.default)(apiUrl, options);
     if (!res.ok) {
+      console.log('request failed');
       throw yield res.json();
     } else {
       let lsbucket = res.headers.get('x-ls-api-bucket-level');
@@ -50320,7 +50321,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _read = __webpack_require__(883);
+var _read = __webpack_require__(882);
 
 var _read2 = _interopRequireDefault(_read);
 
@@ -50348,8 +50349,7 @@ exports.default = (() => {
 /* 878 */,
 /* 879 */,
 /* 880 */,
-/* 881 */,
-/* 882 */
+/* 881 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -50614,10 +50614,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 882;
+webpackContext.id = 881;
 
 /***/ }),
-/* 883 */
+/* 882 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50659,6 +50659,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
+/* 883 */,
 /* 884 */,
 /* 885 */,
 /* 886 */,
@@ -50666,24 +50667,7 @@ exports.default = (() => {
 /* 888 */,
 /* 889 */,
 /* 890 */,
-/* 891 */,
-/* 892 */,
-/* 893 */,
-/* 894 */,
-/* 895 */,
-/* 896 */,
-/* 897 */,
-/* 898 */,
-/* 899 */,
-/* 900 */,
-/* 901 */,
-/* 902 */,
-/* 903 */,
-/* 904 */,
-/* 905 */,
-/* 906 */,
-/* 907 */,
-/* 908 */
+/* 891 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50726,6 +50710,23 @@ exports.default = _asyncToGenerator(function* () {
 });
 
 /***/ }),
+/* 892 */,
+/* 893 */,
+/* 894 */,
+/* 895 */,
+/* 896 */,
+/* 897 */,
+/* 898 */,
+/* 899 */,
+/* 900 */,
+/* 901 */,
+/* 902 */,
+/* 903 */,
+/* 904 */,
+/* 905 */,
+/* 906 */,
+/* 907 */,
+/* 908 */,
 /* 909 */,
 /* 910 */,
 /* 911 */,
@@ -50979,7 +50980,7 @@ var _request = __webpack_require__(30);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _readToken = __webpack_require__(908);
+var _readToken = __webpack_require__(891);
 
 var _readToken2 = _interopRequireDefault(_readToken);
 
@@ -51066,7 +51067,7 @@ var _request = __webpack_require__(30);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _readToken = __webpack_require__(908);
+var _readToken = __webpack_require__(891);
 
 var _readToken2 = _interopRequireDefault(_readToken);
 
@@ -51108,7 +51109,7 @@ var _request = __webpack_require__(30);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _readToken = __webpack_require__(908);
+var _readToken = __webpack_require__(891);
 
 var _readToken2 = _interopRequireDefault(_readToken);
 
@@ -51152,7 +51153,7 @@ var _request = __webpack_require__(30);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _readToken = __webpack_require__(908);
+var _readToken = __webpack_require__(891);
 
 var _readToken2 = _interopRequireDefault(_readToken);
 
@@ -51296,7 +51297,8 @@ exports.default = (() => {
 /* 1052 */,
 /* 1053 */,
 /* 1054 */,
-/* 1055 */
+/* 1055 */,
+/* 1056 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

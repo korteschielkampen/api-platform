@@ -20,7 +20,7 @@ exports.handler = async (event, context, callback) => {
     // Do stuff
     var json = JSON.stringify(sales)
     fs.writeFile('./static/data/sales.json', json, 'utf8', () => {
-      console.log('-----finnally done-----')
+      console.log('-----sales finnally done-----')
     })
 
     let items = await readItems()
@@ -28,7 +28,7 @@ exports.handler = async (event, context, callback) => {
     // Do stuff
     var json = JSON.stringify(items)
     fs.writeFile('./static/data/items.json', json, 'utf8', () => {
-      console.log('-----finnally done-----')
+      console.log('-----items finnally done-----')
     })
 
     // Get all items
@@ -37,7 +37,7 @@ exports.handler = async (event, context, callback) => {
     // Do stuff
     var json = JSON.stringify(categories)
     fs.writeFile('./static/data/categories.json', json, 'utf8', () => {
-      console.log('-----finnally done-----')
+      console.log('-----categories finnally done-----')
     })
 
     respond({ status: 200, body: { message: 'succes' } })

@@ -67,37 +67,41 @@ exports.handler = async (event, context, callback) => {
 
     // Add Tags
     let newTag = 'verkocht2018'
-    let itemsToBeUpdated = _.map(itemsMerged, item => {
-      let itemToBeUpdated = {
-        itemID: item.itemID,
-        payload: {
-          Tags: [],
-        },
-      }
+    let itemsToBeUpdated = []
+    _.forEach(itemsMerged, item => {
+      if (item.archived === 'false') {
+        let itemToBeUpdated = {
+          itemID: item.itemID,
+          payload: {
+            Tags: [],
+          },
+        }
 
-      if (item.Tags) {
-        if (typeof item.Tags.tag === 'string') {
-          itemToBeUpdated.payload.Tags.push({ tag: item.Tags.tag })
-          itemToBeUpdated.payload.Tags.push({ tag: newTag })
+        if (item.Tags) {
+          if (typeof item.Tags.tag === 'string') {
+            itemToBeUpdated.payload.Tags.push({ tag: item.Tags.tag })
+            itemToBeUpdated.payload.Tags.push({ tag: newTag })
+          } else {
+            item.Tags.tag.forEach(tag => {
+              itemToBeUpdated.payload.Tags.push({ tag: tag })
+            })
+            itemToBeUpdated.payload.Tags.push({ tag: newTag })
+          }
         } else {
-          item.Tags.tag.forEach(tag => {
-            itemToBeUpdated.payload.Tags.push({ tag: tag })
-          })
           itemToBeUpdated.payload.Tags.push({ tag: newTag })
         }
-      } else {
-        itemToBeUpdated.payload.Tags.push({ tag: newTag })
-      }
 
-      return itemToBeUpdated
+        itemsToBeUpdated.push(itemToBeUpdated)
+      }
     })
+
+    itemsToBeUpdated = _.sortBy(itemsToBeUpdated, ['itemID'])
 
     // Upload tags to Lightspeed
     const uploadItem = async (item, key) => {
-      console.log('start: ', item.itemID)
+      console.log('Item Start: ', item.itemID)
       let res = await updateItems(item.itemID, item.payload)
       let json = await res.json()
-      console.log('done: ', await json.Item.itemID)
 
       let lsbucket = res.headers
         .get('x-ls-api-bucket-level')
@@ -108,15 +112,30 @@ exports.handler = async (event, context, callback) => {
       let lsdrip = parseFloat(res.headers.get('x-ls-api-drip-rate'))
       let lscost = 10000 / lsdrip
       let lsdelay = (lsbucket[0] + 30) / lsbucket[1] * lscost
-      console.log(lsbucket, lsdrip, lsdelay)
+      console.log(
+        'Item Done:',
+        await json.Item.itemID,
+        'LSBucket:',
+        lsbucket[0].toFixed(2),
+        lsbucket[1].toFixed(2),
+        'LSRate:',
+        lsdrip.toFixed(2),
+        'Proposed Delay:',
+        lsdelay.toFixed(2)
+      )
       await delay(lsdelay)
     }
 
+    // Update a array of items
     let uploadedItems = await pmapLimit(
       itemsToBeUpdated,
       1,
       asyncify(uploadItem)
     )
+
+    // Update a specific item
+    // let testItem = _.find(itemsToBeUpdated, { itemID: '17226' })
+    // let res = await updateItems(testItem.itemID, testItem.payload)
 
     respond({ status: 200, body: { message: 'succes' } })
   } catch (err) {

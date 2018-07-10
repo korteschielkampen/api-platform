@@ -73,6 +73,7 @@ class IndexPage extends React.Component {
   }
 
   render() {
+    console.log(this.state.items)
     return (
       <div className={styles.container}>
         <div className={styles.content}>

@@ -96,10 +96,13 @@ exports.handler = async (event, context, callback) => {
     })
 
     itemsToBeUpdated = _.sortBy(itemsToBeUpdated, ['itemID'])
+    itemsToBeUpdated = itemsToBeUpdated.slice(
+      _.findIndex(itemsToBeUpdated, { itemID: '36074' })
+    )
 
     // Upload tags to Lightspeed
     const uploadItem = async (item, key) => {
-      console.log('Item Start: ', item.itemID)
+      console.log('Item Start:', item.itemID, 'Time:', new Date().toUTCString())
       let res = await updateItems(item.itemID, item.payload)
       let json = await res.json()
 
@@ -113,7 +116,7 @@ exports.handler = async (event, context, callback) => {
       let lscost = 10000 / lsdrip
       let lsdelay = (lsbucket[0] + 30) / lsbucket[1] * lscost
       console.log(
-        'Item Done:',
+        'Item Done: ',
         await json.Item.itemID,
         'LSBucket:',
         lsbucket[0].toFixed(2),

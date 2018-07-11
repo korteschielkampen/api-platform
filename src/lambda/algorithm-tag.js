@@ -40,6 +40,44 @@ const addTag = (items, tag) => {
   return itemsToBeUpdated
 }
 
+const mergeSalesAndItems = (items, soldItems) => {
+  let soldItemsHashed = {}
+  soldItems.forEach(i => {
+    if (soldItemsHashed[i.id]) {
+      soldItemsHashed[i.id] = {
+        itemID: i.id,
+        statistics: {
+          totalSold: soldItemsHashed[i.id].statistics.totalSold + i.quantity,
+          totalRevenue: soldItemsHashed[i.id].statistics.totalRevenue + i.value,
+          valueWithTax:
+            soldItemsHashed[i.id].statistics.valueWithTax + i.valueWithTax,
+        },
+      }
+    } else {
+      soldItemsHashed[i.id] = {
+        itemID: i.id,
+        statistics: {
+          totalSold: i.quantity,
+          totalRevenue: i.value,
+          valueWithTax: i.valueWithTax,
+        },
+      }
+    }
+  })
+
+  let itemsHashed = {}
+  items.forEach(i => {
+    itemsHashed[i.itemID] = i
+  })
+
+  let itemsMerged = _.map(soldItemsHashed, i => {
+    return {
+      ...itemsHashed[i.itemID],
+      ...i,
+    }
+  })
+}
+
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
     callback(null, {
@@ -48,54 +86,20 @@ exports.handler = async (event, context, callback) => {
     })
   }
   try {
+    // Read the data from static
     let sales = JSON.parse(fs.readFileSync('./static/data/sales.json'))
     let items = JSON.parse(fs.readFileSync('./static/data/items.json'))
 
+    // Get the sold items statistics and add them to the items themselves
     let soldItems = createSoldItems(sales)
+    let itemsWithStats = mergeSalesAndItems(items, soldItems)
 
-    let soldItemsHashed = {}
-    soldItems.forEach(i => {
-      if (soldItemsHashed[i.id]) {
-        soldItemsHashed[i.id] = {
-          itemID: i.id,
-          statistics: {
-            totalSold: soldItemsHashed[i.id].statistics.totalSold + i.quantity,
-            totalRevenue:
-              soldItemsHashed[i.id].statistics.totalRevenue + i.value,
-            valueWithTax:
-              soldItemsHashed[i.id].statistics.valueWithTax + i.valueWithTax,
-          },
-        }
-      } else {
-        soldItemsHashed[i.id] = {
-          itemID: i.id,
-          statistics: {
-            totalSold: i.quantity,
-            totalRevenue: i.value,
-            valueWithTax: i.valueWithTax,
-          },
-        }
-      }
-    })
+    // Remove itemID 0 because it cannot be updated
+    itemsWithStats.splice(_.findIndex(itemsWithStats, { itemID: '0' }), 1)
 
-    delete soldItemsHashed[0]
+    // Add tags
+    let itemsToBeUpdated = addTag(itemsWithStats, 'verkocht2018')
 
-    let itemsHashed = {}
-    items.forEach(i => {
-      itemsHashed[i.itemID] = i
-    })
-
-    let itemsMerged = _.map(soldItemsHashed, i => {
-      return {
-        ...itemsHashed[i.itemID],
-        ...i,
-      }
-    })
-
-    // Add Tags and sort for consistency
-    let itemsToBeUpdated = addTag(itemsMerged, 'verkocht2018')
-
-    console.log('---before update---')
     // Upload items
     await updateItems(itemsToBeUpdated)
 

@@ -14,28 +14,23 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    // Get all items
+    console.log('-----sales start-----')
     let sales = await readSales()
-
-    // Do stuff
-    var json = JSON.stringify(sales)
+    let json = JSON.stringify(sales)
     fs.writeFile('./static/data/sales.json', json, 'utf8', () => {
       console.log('-----sales finnally done-----')
     })
 
+    console.log('-----items start-----')
     let items = await readItems()
-
-    // Do stuff
-    var json = JSON.stringify(items)
+    json = JSON.stringify(items)
     fs.writeFile('./static/data/items.json', json, 'utf8', () => {
       console.log('-----items finnally done-----')
     })
 
-    // Get all items
+    console.log('-----categories start-----')
     let categories = await readCategories()
-
-    // Do stuff
-    var json = JSON.stringify(categories)
+    json = JSON.stringify(categories)
     fs.writeFile('./static/data/categories.json', json, 'utf8', () => {
       console.log('-----categories finnally done-----')
     })

@@ -27,7 +27,7 @@ class IndexPage extends React.Component {
 
   async getKeys() {
     const { code } = queryString.parse(this.props.location.search)
-    const apiUrl = `${lambdaURL}/lightspeed-auth-create?code=${code}`
+    const apiUrl = `${lambdaURL}/oauth-lightspeed?code=${code}`
 
     this.setState({ temporary_access_token: code })
 
@@ -62,18 +62,6 @@ class IndexPage extends React.Component {
           >
             {this.state.status}
           </p>
-          {/* <h1>Data</h1>
-          <button className={styles.button} onClick={this.getKeys}>
-            Verzegel uw tijdelijke toegangssleutel
-          </button>
-          <div className={styles.card}>
-            <p> Temporary access key: {this.state.temporary_access_token} </p>
-            <p> Access key: {this.state.access_token} </p>
-            <p> Refresh key: {this.state.refresh_token} </p>
-            <p> Account ID: {this.state.account_id} </p>
-            <p> Account Name: {this.state.account_name} </p>
-            <p> Account Link: {this.state.account_link} </p>
-          </div> */}
         </div>
       </div>
     )

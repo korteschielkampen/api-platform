@@ -28,7 +28,7 @@ class IndexPage extends React.Component {
 
   async getKeys() {
     try {
-      const apiUrl = `${lambdaURL}/slack-auth-create?code=${
+      const apiUrl = `${lambdaURL}/oauth-slack?code=${
         this.state.temporary_access_token
       }`
 
@@ -62,20 +62,6 @@ class IndexPage extends React.Component {
           >
             {this.state.status}
           </p>
-          {/* <h1>Data</h1>
-          <button
-            className={classNames(styles.button, styles.buttonBlue)}
-            onClick={this.getKeys}
-          >
-            Verzegel uw tijdelijke toegangssleutel
-          </button>
-          <div className={styles.card}>
-            <p> Temporary access key: {this.state.temporary_access_token} </p>
-            <p> Access key: {this.state.access_token} </p>
-            <p> Refresh key: {this.state.refresh_token} </p>
-            <p> Account ID: {this.state.account_id} </p>
-            <p> Account Name: {this.state.account_name} </p>
-          </div> */}
         </div>
       </div>
     )

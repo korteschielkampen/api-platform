@@ -28,7 +28,7 @@ class IndexPage extends React.Component {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     }
-    const apiUrl = `${lambdaURL}/admin-update-weighted-items`
+    const apiUrl = `${lambdaURL}/algorithm-read`
 
     try {
       const res = await fetch(apiUrl, options)
@@ -55,7 +55,7 @@ class IndexPage extends React.Component {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     }
-    const apiUrl = `${lambdaURL}/admin-tag-items`
+    const apiUrl = `${lambdaURL}/algorithm-tag`
 
     try {
       const res = await fetch(apiUrl, options)

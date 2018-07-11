@@ -41,7 +41,7 @@ class IndexPage extends React.Component {
     const apiUrl =
       process.env.NODE_ENV === 'production'
         ? '/data/sunburst.json'
-        : `${lambdaURL}/admin-read-weighted-items`
+        : `${lambdaURL}/analytics-starburst`
 
     try {
       const res = await fetch(apiUrl, options)

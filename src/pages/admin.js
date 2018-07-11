@@ -9,6 +9,15 @@ import netlifyIdentity from 'netlify-identity-widget'
 import styles from './index.module.css'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 
+/*
+SEVERELY BROKEN!!! MIGHT BE BEST TO WRITE ANEW
+
+Basically this page was supposed to provide a degree of control over the
+accountancy integration. But a interface is rarely needed, once the thing is
+up and running, and most changes are better written directly into code anyways
+
+*/
+
 const lambdaURL =
   process.env.NODE_ENV === 'production'
     ? '/.netlify/functions'

@@ -21,15 +21,15 @@ package:
     - .cache/**
     - functions/**
   include:
-    - functions/lightspeed-automated-invoice.js
-    - functions/create-business-report.js
+    - functions/integration-accountancy.js
+    - functions/integration-report.js
     - src/data/**
 
 functions:
   automatedInvoice:
     handler: functions/lightspeed-automated-invoice.handler
     events:
-      - schedule: "cron(0 20 * * ? *)"
+      - schedule: "cron(0 22 * * ? *)"
   dayReport:
     handler: functions/create-business-report.handler
     events:

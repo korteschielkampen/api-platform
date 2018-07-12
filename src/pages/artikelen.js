@@ -80,9 +80,7 @@ class IndexPage extends React.Component {
     if (!_.isEmpty(this.state.items)) {
       return (
         <div className={styles.container}>
-          <div className={styles.content}>
-            <Breadcrumbs selected={hoveredItem} />
-          </div>
+          <Breadcrumbs selected={hoveredItem} />
           <div className={styles.starburstContainer}>
             <Sunburst
               data={this.state.items}

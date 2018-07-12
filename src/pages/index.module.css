@@ -8,9 +8,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 45rem;
+  max-width: 55rem;
   width: 100%;
-  padding: 2rem 2rem 2rem;
+  padding: 0rem 2rem 2rem;
 }
 
 .box {
@@ -59,10 +59,6 @@
   border: none;
 }
 
-.starburstContainer {
-  margin-top: -2rem;
-}
-
 .cards {
   display: flex;
   border-top: 1px solid hsl(0, 0%, 50%);
@@ -70,4 +66,24 @@
   padding: 1rem 0 2rem 0;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.cardsVertical {
+  display: flex;
+  width: 25%;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cardSmall {
+  width: 25%;
+}
+
+.cardBroad {
+  width: 100%;
+}
+
+.starburstContainer {
+  display: flex;
+  width: 100%;
 }

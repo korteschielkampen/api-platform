@@ -14,7 +14,7 @@ const Breadcrumb = props => {
         className={styles.crumbContent}
         style={{ backgroundColor: props.data.color }}
       >
-        {props.data.name}
+        {props.data.name || 'Geen Naam'}
       </div>
       <div
         style={{ borderTopColor: props.data.color }}
@@ -27,12 +27,21 @@ const Breadcrumb = props => {
 const generateCrumbs = current => {
   return [
     current.parent && generateCrumbs(current.parent),
-    <Breadcrumb data={current.data} key={current.data.categoryID} />,
+    (current.data && (
+      <Breadcrumb
+        data={current.data}
+        key={current.data.categoryID || Math.random()}
+      />
+    )) || (
+      <Breadcrumb
+        data={{ color: 'lightgrey', name: 'Geen Hover' }}
+        key="leeg"
+      />
+    ),
   ]
 }
 
 const Breadcrumbs = props => {
-  // console.log(props.selected)
   return <div className={styles.crumbs}>{generateCrumbs(props.selected)}</div>
 }
 

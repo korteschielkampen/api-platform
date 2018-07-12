@@ -1,10 +1,10 @@
 .card {
   display: flex;
   justify-content: space-between;
-  margin: 1%;
+  margin: 3%;
   padding: 1rem;
   background: hsl(0, 0%, 95%);
-  width: 31%;
+  width: 97%;
 }
 
 .cardImportant {
@@ -19,10 +19,6 @@
 .listItem {
   display: flex;
   justify-content: space-between;
-}
-
-.listItem span {
-  display: block;
 }
 
 .title {

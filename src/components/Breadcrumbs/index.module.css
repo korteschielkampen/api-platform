@@ -9,16 +9,6 @@
   margin-left: -1.8rem;
 }
 
-/* .rightArrow {
-  content: '';
-  font-size: 0px;
-  line-height: 0%;
-  width: 0px;
-  border-top: 1rem solid white;
-  border-left: 1rem solid #77c;
-  border-bottom: 1rem solid white;
-} */
-
 .leftArrow {
   border-bottom: 2rem solid red;
   border-left: 2rem solid rgba(255, 255, 255, 0);
@@ -34,4 +24,5 @@
   display: flex;
   align-items: center;
   padding: 0 0rem;
+  font-size: 0.7rem;
 }

@@ -20,13 +20,15 @@ const Card = props => (
       <li className={styles.listItem}>
         <span>Omzet: </span>
         <span className={styles.title}>
-          {props.statistics && props.statistics.totalRevenue.toFixed(0)}€
+          {(props.statistics && props.statistics.totalRevenue.toFixed(0)) ||
+            '---'}€
         </span>
       </li>
       <li className={styles.listItem}>
         <span>Aantallen: </span>
         <span className={styles.title}>
-          {props.statistics && props.statistics.totalSold.toFixed(0)}
+          {(props.statistics && props.statistics.totalSold.toFixed(0)) ||
+            '--- '}
         </span>
       </li>
     </ul>

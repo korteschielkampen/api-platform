@@ -59,6 +59,10 @@
   border: none;
 }
 
+.starburstContainer {
+  margin-top: -2rem;
+}
+
 .cards {
   display: flex;
   border-top: 1px solid hsl(0, 0%, 50%);

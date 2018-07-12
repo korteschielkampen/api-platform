@@ -5,6 +5,7 @@ import styles from './index.module.css'
 
 import Sunburst from '../components/Sunburst'
 import Card from '../components/Card'
+import Breadcrumbs from '../components/Breadcrumbs'
 
 const lambdaURL =
   process.env.NODE_ENV === 'production'
@@ -21,7 +22,8 @@ class IndexPage extends React.Component {
     super(props)
     this.state = {
       items: {},
-      current: {},
+      selected: {},
+      hovered: {},
       status: "Haven't done anything yet",
       statusColor: 'lightgrey',
     }
@@ -53,14 +55,14 @@ class IndexPage extends React.Component {
       process.env.NODE_ENV === 'production'
         ? this.setState({
             items: data,
-            current: { data: data },
+            selected: { data: data },
             status: 'Succesvol data opgehaald',
             statusColor: 'lightgreen',
           })
         : data.body &&
           this.setState({
             items: data.body.body,
-            current: { data: data.body.body },
+            selected: { data: data.body.body },
             status: 'Succesvol data opgehaald',
             statusColor: 'lightgreen',
           })
@@ -73,37 +75,42 @@ class IndexPage extends React.Component {
   }
 
   render() {
-    console.log(this.state.items)
+    // console.log(this.state.items)
     return (
       <div className={styles.container}>
+        {this.state.hovered.data && (
+          <Breadcrumbs selected={this.state.hovered} />
+        )}
         {!_.isEmpty(this.state.items) && (
-          <Sunburst
-            data={this.state.items}
-            size={[700, 700]}
-            config={{ setParentState: this.setState.bind(this) }}
-          />
+          <div className={styles.starburstContainer}>
+            <Sunburst
+              data={this.state.items}
+              size={[700, 700]}
+              config={{ setParentState: this.setState.bind(this) }}
+            />
+          </div>
         )}
 
         <div className={styles.content}>
           {/* Is category */}
           <h3>Geselecteerde categorie:</h3>
-          {this.state.current.data &&
-            !this.state.current.data.hasOwnProperty('itemID') && (
+          {this.state.selected.data &&
+            !this.state.selected.data.hasOwnProperty('itemID') && (
               <div className={styles.cards}>
                 <Card
-                  name={this.state.current.data.name}
-                  statistics={this.state.current.data.statisticsSub}
+                  name={this.state.selected.data.name}
+                  statistics={this.state.selected.data.statisticsSub}
                   type="important"
                 />
               </div>
             )}
           <h3>Subcategorieën:</h3>
-          {this.state.current.data &&
-            !this.state.current.data.hasOwnProperty('itemID') && (
+          {this.state.selected.data &&
+            !this.state.selected.data.hasOwnProperty('itemID') && (
               <div className={styles.cards}>
-                {this.state.current.data &&
-                  this.state.current.data.children &&
-                  _.filter(this.state.current.data.children, value => {
+                {this.state.selected.data &&
+                  this.state.selected.data.children &&
+                  _.filter(this.state.selected.data.children, value => {
                     if (!value.hasOwnProperty('itemID')) {
                       return value
                     }
@@ -130,13 +137,13 @@ class IndexPage extends React.Component {
 
           {/* Has Articles */}
           <h3>Artikelen: </h3>
-          {this.state.current.data &&
+          {this.state.selected.data &&
             !_.isEmpty(
-              _.filter(this.state.current.data.children, 'itemID')
+              _.filter(this.state.selected.data.children, 'itemID')
             ) && (
               <div className={styles.cards}>
                 {_.map(
-                  _.filter(this.state.current.data.children, 'itemID').sort(
+                  _.filter(this.state.selected.data.children, 'itemID').sort(
                     (prev, next) => {
                       return (
                         next.statistics.totalRevenue -
@@ -162,14 +169,14 @@ class IndexPage extends React.Component {
             )}
 
           {/* Is Article */}
-          {this.state.current.data &&
-            this.state.current.data.hasOwnProperty('itemID') && (
+          {this.state.selected.data &&
+            this.state.selected.data.hasOwnProperty('itemID') && (
               <div className={styles.cardsContainer}>
                 <h3>Artikel</h3>
                 <div className={styles.cards}>
                   <Card
-                    name={this.state.current.data.name}
-                    statistics={this.state.current.data.statistics}
+                    name={this.state.selected.data.name}
+                    statistics={this.state.selected.data.statistics}
                   />
                 </div>
               </div>

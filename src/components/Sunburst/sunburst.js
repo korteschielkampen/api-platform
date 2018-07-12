@@ -57,6 +57,7 @@ D3Sunburst.create = (el, data, configuration) => {
       return d.data.color || color((d.children ? d : d.parent).data.name)
     })
     .on('click', click)
+    .on('mouseover', hover)
     .append('title')
     .text(function(d) {
       return (
@@ -66,7 +67,7 @@ D3Sunburst.create = (el, data, configuration) => {
 
   function click(d) {
     configuration.setParentState({
-      current: d,
+      selected: d,
     })
     svg
       .transition()
@@ -86,6 +87,12 @@ D3Sunburst.create = (el, data, configuration) => {
           return arc(d)
         }
       })
+  }
+
+  function hover(d) {
+    configuration.setParentState({
+      hovered: d,
+    })
   }
 
   d3.select(self.frameElement).style('height', height + 'px')

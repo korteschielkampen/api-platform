@@ -4,9 +4,9 @@ import Link from 'gatsby-link'
 import styles from './index.module.css'
 import Card from '../components/Card'
 
-const oauthClients = [
+const providers = [
   {
-    client: 'Lightspeed',
+    name: 'Lightspeed',
     client_id:
       '4c23f9e681c44d339359a38dc340522fae805ddab5e372c39762ef91c080179d',
     scope:
@@ -18,7 +18,7 @@ const oauthClients = [
     },
   },
   {
-    client: 'Slack',
+    name: 'Slack',
     client_id: '306795199399.363120627526',
     scope: 'chat:write+commands+files:write',
     redirect_uri: encodeURI(
@@ -33,7 +33,7 @@ const oauthClients = [
     },
   },
   {
-    client: 'Moneybird',
+    name: 'Moneybird',
     client_id: '64e1b03a820d8c9585cb7521cbc8605e',
     scope: 'sales_invoices+bank',
     redirect_uri: encodeURI(
@@ -54,17 +54,13 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <div className={styles.cardsContainer}>
-            <h1>Oauth</h1>
-            {oauthClients.map((client, key) => {
+          <h1>Oauth</h1>
+          <div className={styles.cards}>
+            {providers.map((provider, key) => {
               return (
-                <Card key={key}>
-                  <a href={client.link}>
-                    <button className={styles.button}>
-                      {client.client} Integratie
-                    </button>
-                  </a>
-                </Card>
+                <div key={key} className={styles.cardSmall}>
+                  <Card type="oauth" provider={provider} />
+                </div>
               )
             })}
           </div>

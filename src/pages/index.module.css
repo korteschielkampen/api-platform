@@ -10,7 +10,7 @@
   align-items: center;
   max-width: 55rem;
   width: 100%;
-  padding: 0rem 2rem 2rem;
+  padding: 2rem 2rem 2rem;
 }
 
 .box {
@@ -61,7 +61,6 @@
 
 .cards {
   display: flex;
-  border-top: 1px solid hsl(0, 0%, 50%);
   width: 100%;
   padding: 1rem 0 2rem 0;
   flex-wrap: wrap;

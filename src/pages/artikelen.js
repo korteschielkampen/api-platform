@@ -75,127 +75,137 @@ class IndexPage extends React.Component {
   }
 
   render() {
-    return (
-      <div className={styles.container}>
-        <Breadcrumbs selected={this.state.hovered} />
-        <div className={styles.starburstContainer}>
-          {!_.isEmpty(this.state.items) && (
+    let selectedItem = this.state.selected
+    let hoveredItem = this.state.hovered
+    if (!_.isEmpty(this.state.items)) {
+      return (
+        <div className={styles.container}>
+          <div className={styles.content}>
+            <Breadcrumbs selected={hoveredItem} />
+          </div>
+          <div className={styles.starburstContainer}>
             <Sunburst
               data={this.state.items}
               size={[700, 700]}
               config={{ setParentState: this.setState.bind(this) }}
             />
-          )}
-          <div className={styles.cardsVertical}>
-            {this.state.selected.data &&
-              !this.state.selected.data.hasOwnProperty('itemID') && [
-                this.state.selected.data && (
-                  <div
-                    className={styles.cardBroad}
-                    key={this.state.selected.data.categoryID + 'selectedbox'}
-                  >
-                    <Card
-                      name={this.state.selected.data.name}
-                      statistics={this.state.selected.data.statisticsSub}
-                    />
-                  </div>
-                ),
-                this.state.hovered.data && (
-                  <div
-                    className={styles.cardBroad}
-                    key={this.state.hovered.data.categoryID + 'hoveredbox'}
-                  >
-                    <Card
-                      name={this.state.hovered.data.name}
-                      statistics={this.state.hovered.data.statisticsSub}
-                    />
-                  </div>
-                ),
-              ]}
+
+            <div className={styles.cardsVertical}>
+              {!selectedItem.data.hasOwnProperty('itemID') && (
+                <div
+                  className={styles.cardBroad}
+                  key={selectedItem.data.categoryID + 'selectedbox'}
+                >
+                  <Card
+                    name={selectedItem.data.name}
+                    statistics={
+                      selectedItem.data.statisticsSub ||
+                      hoveredItem.data.statistics
+                    }
+                    type="statistics"
+                  />
+                </div>
+              )}
+
+              {hoveredItem.data && (
+                <div
+                  className={styles.cardBroad}
+                  key={hoveredItem.data.categoryID + 'hoveredbox'}
+                >
+                  <Card
+                    name={hoveredItem.data.name}
+                    statistics={
+                      hoveredItem.data.statisticsSub ||
+                      hoveredItem.data.statistics
+                    }
+                    type="statistics"
+                  />
+                </div>
+              )}
+            </div>
           </div>
-        </div>
 
-        <div className={styles.content}>
-          {/* Is category */}
-
-          <h3>Subcategorieën:</h3>
-          <div className={styles.cards}>
-            {this.state.selected.data &&
-              !this.state.selected.data.hasOwnProperty('itemID') &&
-              (this.state.selected.data &&
-                this.state.selected.data.children &&
-                _.filter(this.state.selected.data.children, value => {
-                  if (!value.hasOwnProperty('itemID')) {
-                    return value
-                  }
-                })
-                  .sort((prev, next) => {
-                    return (
-                      next.statisticsSub.totalRevenue -
-                      prev.statisticsSub.totalRevenue
-                    )
-                  })
-                  .map((value, key) => {
+          <div className={styles.content}>
+            {/* Is category */}
+            {!selectedItem.data.hasOwnProperty('itemID') &&
+              selectedItem.data.children &&
+              _.filter(selectedItem.data.children, value => {
+                if (!value.hasOwnProperty('itemID')) {
+                  return value
+                }
+              }) && [
+                <h3 key="Subcategorieën">Subcategorieën:</h3>,
+                <div key="SubcategorieënContainer" className={styles.cards}>
+                  {_.filter(selectedItem.data.children, value => {
                     if (!value.hasOwnProperty('itemID')) {
+                      return value
+                    }
+                  })
+                    .sort((prev, next) => {
+                      return (
+                        next.statisticsSub.totalRevenue -
+                        prev.statisticsSub.totalRevenue
+                      )
+                    })
+                    .map((value, key) => {
+                      if (!value.hasOwnProperty('itemID')) {
+                        return (
+                          <div className={styles.cardSmall} key={key}>
+                            <Card
+                              name={value.name}
+                              statistics={value.statisticsSub}
+                              type="statistics"
+                            />
+                          </div>
+                        )
+                      }
+                    })}
+                </div>,
+              ]}
+            {/* Has Articles */}
+            {selectedItem.data &&
+              !_.isEmpty(_.filter(selectedItem.data.children, 'itemID')) && [
+                <h3 key="Artikelen">Artikelen: </h3>,
+                <div key="ArtikelenContainer" className={styles.cards}>
+                  {_.map(
+                    _.filter(selectedItem.data.children, 'itemID').sort(
+                      (prev, next) => {
+                        return (
+                          next.statistics.totalRevenue -
+                          prev.statistics.totalRevenue
+                        )
+                      }
+                    ),
+                    (value, key) => {
+                      let link = `https://us.lightspeedapp.com/?name=item.views.item&form_name=view&id=${
+                        value.itemID
+                      }&tab=details`
                       return (
                         <div className={styles.cardSmall} key={key}>
                           <Card
                             name={value.name}
-                            statistics={value.statisticsSub}
+                            statistics={value.statistics}
+                            link={link}
+                            type="statistics"
                           />
                         </div>
                       )
                     }
-                  }))}
-          </div>
-
-          {/* Has Articles */}
-          <h3>Artikelen: </h3>
-          <div className={styles.cards}>
-            {this.state.selected.data &&
-              !_.isEmpty(
-                _.filter(this.state.selected.data.children, 'itemID')
-              ) &&
-              _.map(
-                _.filter(this.state.selected.data.children, 'itemID').sort(
-                  (prev, next) => {
-                    return (
-                      next.statistics.totalRevenue -
-                      prev.statistics.totalRevenue
-                    )
-                  }
-                ),
-                (value, key) => {
-                  let link = `https://us.lightspeedapp.com/?name=item.views.item&form_name=view&id=${
-                    value.itemID
-                  }&tab=details`
-                  return (
-                    <div className={styles.cardSmall} key={key}>
-                      <Card
-                        name={value.name}
-                        statistics={value.statistics}
-                        link={link}
-                      />
-                    </div>
-                  )
-                }
-              )}
-
-            {/* Is Article */}
-            {this.state.selected.data &&
-              this.state.selected.data.hasOwnProperty('itemID') && (
-                <div className={styles.cardSmall}>
-                  <Card
-                    type="important"
-                    name={this.state.selected.data.name}
-                    statistics={this.state.selected.data.statistics}
-                  />
-                </div>
-              )}
+                  )}
+                </div>,
+              ]}
           </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div className={styles.container}>
+          <div className={styles.content}>
+            <h1>Data aan het ophalen</h1>
+          </div>
+        </div>
+      )
+    }
   }
 }
 

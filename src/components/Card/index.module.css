@@ -23,6 +23,12 @@
 
 .title {
   color: black;
+  height: 2.9rem;
+}
+
+.title {
+  color: black;
+  min-height: 2.9rem;
 }
 
 .cardHeader {

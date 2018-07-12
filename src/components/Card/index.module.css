@@ -1,24 +1,19 @@
 .card {
   display: flex;
   justify-content: space-between;
-  margin: 1rem 0;
+  margin: 1%;
   padding: 1rem;
   background: hsl(0, 0%, 95%);
-  border-radius: 0.5rem;
+  width: 31%;
 }
 
 .cardImportant {
-  background: hsl(0, 0%, 90%);
-  margin-bottom: 5rem;
-}
-
-.cardItem {
-  width: 50%;
-  display: flex;
+  border: 5px solid grey;
 }
 
 .list {
   margin: 0;
+  width: 100%;
 }
 
 .listItem {
@@ -28,7 +23,10 @@
 
 .listItem span {
   display: block;
-  flex: 1 1 50%;
+}
+
+.title {
+  color: black;
 }
 
 .cardHeader {

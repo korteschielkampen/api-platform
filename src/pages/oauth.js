@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'gatsby-link'
 
 import styles from './index.module.css'
+import Card from '../components/Card'
 
 const oauthClients = [
   {
@@ -57,13 +58,13 @@ class IndexPage extends React.Component {
             <h1>Oauth</h1>
             {oauthClients.map((client, key) => {
               return (
-                <div key={key} className={styles.card}>
+                <Card key={key}>
                   <a href={client.link}>
                     <button className={styles.button}>
                       {client.client} Integratie
                     </button>
                   </a>
-                </div>
+                </Card>
               )
             })}
           </div>

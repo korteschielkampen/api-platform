@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Armata');
 
+body {
+  font-size: 16px;
+}
+
 h1,
 h2,
 h3,
@@ -8,6 +12,7 @@ h5,
 h6 {
   font-family: 'Armata', sans-serif;
   color: hsl(0, 0%, 50%);
+  margin-bottom: 0.5rem;
 }
 
 p,
@@ -16,4 +21,5 @@ q,
 button {
   font-family: 'Armata', sans-serif;
   color: hsl(0, 0%, 50%);
+  margin-bottom: 0.2rem;
 }

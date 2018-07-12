@@ -5,7 +5,7 @@ const D3Sunburst = {}
 
 D3Sunburst.create = (el, data, configuration) => {
   console.log('creating graph')
-  var width = 960,
+  var width = 700,
     height = 700,
     radius = Math.min(width, height) / 2 - 10
 

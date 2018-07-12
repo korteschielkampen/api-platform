@@ -82,10 +82,10 @@ class IndexPage extends React.Component {
       <div className={styles.container}>
         <div className={styles.buttonContainer}>
           <button className={styles.button} onClick={this.updateWeightedItems}>
-            updateWeightedItems
+            Read Everything
           </button>
           <button className={styles.button} onClick={this.tagItems}>
-            tagItems
+            Tag items
           </button>
         </div>
       </div>

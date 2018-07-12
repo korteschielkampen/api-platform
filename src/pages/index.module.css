@@ -44,23 +44,6 @@
   text-decoration: underline;
 }
 
-.buttonBlue {
-  background-color: rgb(64, 139, 232);
-}
-
-.buttonGrey {
-  background-color: grey;
-}
-
-.buttonOrange {
-  background-color: orange;
-}
-
-.statusBar {
-  border-radius: 2rem;
-  padding: 1rem;
-}
-
 .datepickerWrapper {
   display: flex;
   border: solid black 1px;
@@ -70,21 +53,17 @@
 }
 
 .datepicker {
-  padding: 0rem;
+  padding: 0;
   width: 6rem;
   outline: 0;
   border: none;
 }
 
-.cardsContainer {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-}
-
 .cards {
+  display: flex;
   border-top: 1px solid hsl(0, 0%, 50%);
   width: 100%;
-  padding: 2rem 0;
+  padding: 1rem 0 2rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
 }

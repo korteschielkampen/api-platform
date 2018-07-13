@@ -3,7 +3,7 @@ import _ from 'lodash'
 
 import styles from './index.module.css'
 
-import Sunburst from '../components/Sunburst'
+import Card from '../components/Card'
 
 const lambdaURL =
   process.env.NODE_ENV === 'production'
@@ -19,11 +19,11 @@ class IndexPage extends React.Component {
       status: "Haven't done anything yet",
       statusColor: 'lightgrey',
     }
-    this.updateWeightedItems = this.updateWeightedItems.bind(this)
+    this.updateEverything = this.updateEverything.bind(this)
     this.tagItems = this.tagItems.bind(this)
   }
 
-  async updateWeightedItems() {
+  async updateEverything() {
     const options = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -80,13 +80,22 @@ class IndexPage extends React.Component {
   render() {
     return (
       <div className={styles.container}>
-        <div className={styles.buttonContainer}>
-          <button className={styles.button} onClick={this.updateWeightedItems}>
-            Read Everything
-          </button>
-          <button className={styles.button} onClick={this.tagItems}>
-            Tag items
-          </button>
+        <div className={styles.content}>
+          <h1>Oauth</h1>
+          <div className={styles.cards}>
+            <div className={styles.cardSmall}>
+              <Card
+                text="Update sales, items and categories"
+                button={{ handler: this.updateEverything, text: 'Go' }}
+              />
+            </div>
+            <div className={styles.cardSmall}>
+              <Card
+                text="Tag all items"
+                button={{ text: 'Go', handler: this.tagItems }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     )

@@ -80,46 +80,47 @@ class IndexPage extends React.Component {
     if (!_.isEmpty(this.state.items)) {
       return (
         <div className={styles.container}>
-          <Breadcrumbs selected={hoveredItem} />
-          <div className={styles.starburstContainer}>
-            <Sunburst
-              data={this.state.items}
-              size={[700, 700]}
-              config={{ setParentState: this.setState.bind(this) }}
-            />
+          <div className={styles.content}>
+            <Breadcrumbs selected={hoveredItem} />
+            <div className={styles.starburstContainer}>
+              <Sunburst
+                data={this.state.items}
+                size={[700, 700]}
+                config={{ setParentState: this.setState.bind(this) }}
+              />
+              <div className={styles.cardsVertical}>
+                {!selectedItem.data.hasOwnProperty('itemID') && (
+                  <div
+                    className={styles.cardBroad}
+                    key={selectedItem.data.categoryID + 'selectedbox'}
+                  >
+                    <Card
+                      name={selectedItem.data.name}
+                      statistics={
+                        selectedItem.data.statisticsSub ||
+                        hoveredItem.data.statistics
+                      }
+                      type="statistics"
+                    />
+                  </div>
+                )}
 
-            <div className={styles.cardsVertical}>
-              {!selectedItem.data.hasOwnProperty('itemID') && (
-                <div
-                  className={styles.cardBroad}
-                  key={selectedItem.data.categoryID + 'selectedbox'}
-                >
-                  <Card
-                    name={selectedItem.data.name}
-                    statistics={
-                      selectedItem.data.statisticsSub ||
-                      hoveredItem.data.statistics
-                    }
-                    type="statistics"
-                  />
-                </div>
-              )}
-
-              {hoveredItem.data && (
-                <div
-                  className={styles.cardBroad}
-                  key={hoveredItem.data.categoryID + 'hoveredbox'}
-                >
-                  <Card
-                    name={hoveredItem.data.name}
-                    statistics={
-                      hoveredItem.data.statisticsSub ||
-                      hoveredItem.data.statistics
-                    }
-                    type="statistics"
-                  />
-                </div>
-              )}
+                {hoveredItem.data && (
+                  <div
+                    className={styles.cardBroad}
+                    key={hoveredItem.data.categoryID + 'hoveredbox'}
+                  >
+                    <Card
+                      name={hoveredItem.data.name}
+                      statistics={
+                        hoveredItem.data.statisticsSub ||
+                        hoveredItem.data.statistics
+                      }
+                      type="statistics"
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 

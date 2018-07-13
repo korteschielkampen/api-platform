@@ -62,3 +62,7 @@
 .cardText:last-of-type {
   padding: 0 0 0;
 }
+
+.button {
+  min-width: 4rem;
+}

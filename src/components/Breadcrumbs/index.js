@@ -41,8 +41,6 @@ const generateCrumbs = current => {
   ]
 }
 
-const Breadcrumbs = props => {
+export default props => {
   return <div className={styles.crumbs}>{generateCrumbs(props.selected)}</div>
 }
-
-export default Breadcrumbs

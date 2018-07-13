@@ -2,8 +2,9 @@ import React from 'react'
 import classNames from 'classnames'
 
 import styles from './index.module.css'
+import Button from '../Button'
 
-const Card = props => {
+export default props => {
   if (props.type === 'statistics') {
     return (
       <div className={styles.card}>
@@ -33,16 +34,12 @@ const Card = props => {
         </ul>
       </div>
     )
-  } else if (props.type === 'oauth') {
+  } else {
     return (
       <div className={styles.card}>
-        <p>{props.provider.name}</p>
-        <a href={props.provider.link}>
-          <button className={styles.button}>Start</button>
-        </a>
+        <p>{props.text}</p>
+        {props.button && <Button options={props.button} />}
       </div>
     )
   }
 }
-
-export default Card

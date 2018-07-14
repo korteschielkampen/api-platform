@@ -10,31 +10,26 @@ const lambdaURL =
     ? '/.netlify/functions'
     : '/localhost:9000'
 
-const apiUrls = {
-  updateEverything: `${lambdaURL}/integration-accountancy`,
-  tag: `${lambdaURL}/algorithm-tag`,
-  accountancy: `${lambdaURL}/algorithm-read`,
-  report: `${lambdaURL}/integration-report`,
-}
-
 class IndexPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      status: {
-        text: 'Geen status',
-        color: 'grey',
-        sign: 'dash',
-        show: 0,
-      },
-    }
-    this.trigger = this.trigger.bind(this)
+    this.state = {}
+    this.triggerLambda = this.triggerLambda.bind(this)
   }
 
-  async trigger(action) {
-    console.log('ACTION: ', action)
+  async triggerLambda(action) {
+    console.log('ACTION: ', action.name)
+
     try {
-      const res = await fetch(apiUrls[action.name])
+      this.setState({
+        status: {
+          text: `${action.name} starting`,
+          color: 'grey',
+          sign: 'loading',
+          show: 10,
+        },
+      })
+      const res = await fetch(action.url)
       if (!res.ok) {
         throw await res.json()
       }
@@ -72,7 +67,11 @@ class IndexPage extends React.Component {
                 text="Update sales, items and categories"
                 button={{
                   text: 'Go',
-                  handler: () => this.trigger({ name: 'updateEverything' }),
+                  handler: () =>
+                    this.triggerLambda({
+                      name: 'updateEverything',
+                      url: `${lambdaURL}/algorithm-read`,
+                    }),
                 }}
               />
             </div>
@@ -81,7 +80,11 @@ class IndexPage extends React.Component {
                 text="Tag all items"
                 button={{
                   text: 'Go',
-                  handler: () => this.trigger({ name: 'tag' }),
+                  handler: () =>
+                    this.triggerLambda({
+                      name: 'tag',
+                      url: `${lambdaURL}/algorithm-tag`,
+                    }),
                 }}
               />
             </div>
@@ -90,7 +93,11 @@ class IndexPage extends React.Component {
                 text="Trigger accountancy integration"
                 button={{
                   text: 'Go',
-                  handler: () => this.trigger({ name: 'accountancy' }),
+                  handler: () =>
+                    this.triggerLambda({
+                      name: 'accountancy',
+                      url: `${lambdaURL}/integration-accountancy`,
+                    }),
                 }}
               />
             </div>
@@ -99,13 +106,19 @@ class IndexPage extends React.Component {
                 text="Trigger report"
                 button={{
                   text: 'Go',
-                  handler: () => this.trigger({ name: 'report' }),
+                  handler: () =>
+                    this.triggerLambda({
+                      name: 'report',
+                      url: `${lambdaURL}/integration-report`,
+                    }),
                 }}
               />
             </div>
-            <div className={styles.cardBroad}>
-              <Card text={this.state.status.text} />
-            </div>
+            {this.state.status && (
+              <div className={styles.cardBroad}>
+                <Card text={this.state.status.text} />
+              </div>
+            )}
           </div>
         </div>
       </div>

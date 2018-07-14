@@ -94,7 +94,7 @@ class IndexPage extends React.Component {
           <div className={styles.cards}>
             {providers.map((provider, key) => {
               return (
-                <div key={key} className={styles.cardSmall}>
+                <div key={key} className={styles.cardMedium}>
                   <Card
                     text={provider.name}
                     button={{ text: 'start', link: provider.link }}

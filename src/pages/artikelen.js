@@ -68,23 +68,21 @@ class IndexPage extends React.Component {
   }
 
   determineCategories(selected) {
-    let categories =
-      selected &&
-      selected.data.children &&
-      _.filter(selected.data.children, value => {
+    if (selected && selected.data.children) {
+      let categories = _.filter(selected.data.children, value => {
         if (!value.hasOwnProperty('itemID')) {
           return value
         }
       })
-    return categories.sort(this.sortingFunction)
+      return categories.sort(this.sortingFunction)
+    }
   }
 
   determineItems(selected) {
-    let items =
-      selected &&
-      selected.data.children &&
-      _.filter(selected.data.children, 'itemID')
-    return items.sort(this.sortingFunction)
+    if (selected && selected.data.children) {
+      let items = _.filter(selected.data.children, 'itemID')
+      return items.sort(this.sortingFunction)
+    }
   }
 
   render() {

@@ -64,7 +64,7 @@
   width: 100%;
   padding: 1rem 0 2rem 0;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: left;
 }
 
 .cardsVertical {
@@ -79,8 +79,13 @@
   margin: 1%;
 }
 
+.cardMedium {
+  width: 48%;
+  margin: 1%;
+}
+
 .cardBroad {
-  width: 99%;
+  width: 98%;
   margin: 1%;
 }
 

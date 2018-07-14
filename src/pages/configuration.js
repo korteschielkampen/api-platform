@@ -38,7 +38,7 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <h1>Configuration</h1>
           <div className={styles.cards}>
-            <div className={styles.cardSmall}>
+            <div className={styles.cardMedium}>
               <Card
                 text="Update sales, items and categories"
                 button={{
@@ -51,7 +51,7 @@ class IndexPage extends React.Component {
                 }}
               />
             </div>
-            <div className={styles.cardSmall}>
+            <div className={styles.cardMedium}>
               <Card
                 text="Tag all items"
                 button={{
@@ -64,7 +64,7 @@ class IndexPage extends React.Component {
                 }}
               />
             </div>
-            <div className={styles.cardSmall}>
+            <div className={styles.cardMedium}>
               <Card
                 text="Trigger accountancy integration"
                 button={{
@@ -77,7 +77,7 @@ class IndexPage extends React.Component {
                 }}
               />
             </div>
-            <div className={styles.cardSmall}>
+            <div className={styles.cardMedium}>
               <Card
                 text="Trigger report"
                 button={{

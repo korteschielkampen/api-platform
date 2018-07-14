@@ -6,28 +6,32 @@ import styles from './index.module.css'
 import Sunburst from '../components/Sunburst'
 import Card from '../components/Card'
 import Breadcrumbs from '../components/Breadcrumbs'
+import notify from '../components/Flash/notify.js'
 
 const lambdaURL =
   process.env.NODE_ENV === 'production'
     ? '/.netlify/functions'
     : '/localhost:9000'
 
+/*
+Havent setup remote storage for the starburst generations, this line
+counters that. Might try an S3 bucket, could be interesting to avoid setting
+up a real server for now. Could also be interesting as longterm storage for
+backups. I'm doingdangerous shit with the itemdatabase.
+*/
+
 const dataURL =
   process.env.NODE_ENV === 'production'
     ? '/data/sunburst.json'
-    : '/localhost:9000'
+    : `${lambdaURL}/analytics-starburst`
 
 class IndexPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      items: {},
-      selected: {},
-      hovered: {},
-      status: "Haven't done anything yet",
-      statusColor: 'lightgrey',
-    }
+    this.state = {}
     this.getData = this.getData.bind(this)
+    this.determineCategories = this.determineCategories.bind(this)
+    this.determineItems = this.determineItems.bind(this)
   }
 
   componentDidMount() {
@@ -35,53 +39,62 @@ class IndexPage extends React.Component {
   }
 
   async getData() {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-
-    const apiUrl =
-      process.env.NODE_ENV === 'production'
-        ? '/data/sunburst.json'
-        : `${lambdaURL}/analytics-starburst`
-
+    let action = { name: 'fetching' }
     try {
-      const res = await fetch(apiUrl, options)
+      this.setState(notify('loading', action))
+      const res = await fetch(dataURL)
       if (!res.ok) {
         throw await res.json()
       }
       let data = await res.json()
 
-      process.env.NODE_ENV === 'production'
-        ? this.setState({
-            items: data,
-            selected: { data: data },
-            status: 'Succesvol data opgehaald',
-            statusColor: 'lightgreen',
-          })
-        : data.body &&
-          this.setState({
-            items: data.body.body,
-            selected: { data: data.body.body },
-            status: 'Succesvol data opgehaald',
-            statusColor: 'lightgreen',
-          })
-    } catch (err) {
       this.setState({
-        status: `${JSON.stringify(err.body)}`,
-        statusColor: 'red',
+        ...notify('success', action),
+        items: data.body.data,
+        selected: { data: data.body.data },
       })
+    } catch (err) {
+      console.log(err)
+      this.setState(notify('error', action, err))
     }
   }
 
+  sortingFunction(prev, next) {
+    if (next.statisticsSub) {
+      return next.statisticsSub.totalRevenue - prev.statisticsSub.totalRevenue
+    } else {
+      return next.statistics.totalRevenue - prev.statistics.totalRevenue
+    }
+  }
+
+  determineCategories(selected) {
+    let categories =
+      selected &&
+      selected.data.children &&
+      _.filter(selected.data.children, value => {
+        if (!value.hasOwnProperty('itemID')) {
+          return value
+        }
+      })
+    return categories.sort(this.sortingFunction)
+  }
+
+  determineItems(selected) {
+    let items =
+      selected &&
+      selected.data.children &&
+      _.filter(selected.data.children, 'itemID')
+    return items.sort(this.sortingFunction)
+  }
+
   render() {
-    let selectedItem = this.state.selected
-    let hoveredItem = this.state.hovered
-    if (!_.isEmpty(this.state.items)) {
+    let selected = this.state.selected
+    let hovered = this.state.hovered
+    if (this.state.items) {
       return (
         <div className={styles.container}>
           <div className={styles.content}>
-            <Breadcrumbs selected={hoveredItem} />
+            <Breadcrumbs selected={hovered || selected} />
             <div className={styles.starburstContainer}>
               <Sunburst
                 data={this.state.items}
@@ -89,32 +102,24 @@ class IndexPage extends React.Component {
                 config={{ setParentState: this.setState.bind(this) }}
               />
               <div className={styles.cardsVertical}>
-                {!selectedItem.data.hasOwnProperty('itemID') && (
-                  <div
-                    className={styles.cardBroad}
-                    key={selectedItem.data.categoryID + 'selectedbox'}
-                  >
+                {selected && (
+                  <div className={styles.cardBroad}>
                     <Card
-                      name={selectedItem.data.name}
+                      name={selected.data.name}
                       statistics={
-                        selectedItem.data.statisticsSub ||
-                        hoveredItem.data.statistics
+                        selected.data.statisticsSub || selected.data.statistics
                       }
                       type="statistics"
                     />
                   </div>
                 )}
 
-                {hoveredItem.data && (
-                  <div
-                    className={styles.cardBroad}
-                    key={hoveredItem.data.categoryID + 'hoveredbox'}
-                  >
+                {hovered && (
+                  <div className={styles.cardBroad}>
                     <Card
-                      name={hoveredItem.data.name}
+                      name={hovered.data.name}
                       statistics={
-                        hoveredItem.data.statisticsSub ||
-                        hoveredItem.data.statistics
+                        hovered.data.statisticsSub || hovered.data.statistics
                       }
                       type="statistics"
                     />
@@ -125,74 +130,42 @@ class IndexPage extends React.Component {
           </div>
 
           <div className={styles.content}>
-            {/* Is category */}
-            {!selectedItem.data.hasOwnProperty('itemID') &&
-              selectedItem.data.children &&
-              _.filter(selectedItem.data.children, value => {
-                if (!value.hasOwnProperty('itemID')) {
-                  return value
-                }
-              }) && [
-                <h3 key="Subcategorieën">Subcategorieën:</h3>,
-                <div key="SubcategorieënContainer" className={styles.cards}>
-                  {_.filter(selectedItem.data.children, value => {
-                    if (!value.hasOwnProperty('itemID')) {
-                      return value
-                    }
-                  })
-                    .sort((prev, next) => {
-                      return (
-                        next.statisticsSub.totalRevenue -
-                        prev.statisticsSub.totalRevenue
-                      )
-                    })
-                    .map((value, key) => {
-                      if (!value.hasOwnProperty('itemID')) {
-                        return (
-                          <div className={styles.cardSmall} key={key}>
-                            <Card
-                              name={value.name}
-                              statistics={value.statisticsSub}
-                              type="statistics"
-                            />
-                          </div>
-                        )
-                      }
-                    })}
-                </div>,
-              ]}
-            {/* Has Articles */}
-            {selectedItem.data &&
-              !_.isEmpty(_.filter(selectedItem.data.children, 'itemID')) && [
-                <h3 key="Artikelen">Artikelen: </h3>,
-                <div key="ArtikelenContainer" className={styles.cards}>
-                  {_.map(
-                    _.filter(selectedItem.data.children, 'itemID').sort(
-                      (prev, next) => {
-                        return (
-                          next.statistics.totalRevenue -
-                          prev.statistics.totalRevenue
-                        )
-                      }
-                    ),
-                    (value, key) => {
-                      let link = `https://us.lightspeedapp.com/?name=item.views.item&form_name=view&id=${
-                        value.itemID
-                      }&tab=details`
-                      return (
-                        <div className={styles.cardSmall} key={key}>
-                          <Card
-                            name={value.name}
-                            statistics={value.statistics}
-                            link={link}
-                            type="statistics"
-                          />
-                        </div>
-                      )
-                    }
-                  )}
-                </div>,
-              ]}
+            {this.determineCategories(selected) && [
+              <h3 key="0">Subcategorieën:</h3>,
+              <div key="1" className={styles.cards}>
+                {this.determineCategories(selected).map((value, key) => {
+                  return (
+                    <div className={styles.cardSmall} key={key}>
+                      <Card
+                        name={value.name}
+                        statistics={value.statisticsSub}
+                        type="statistics"
+                      />
+                    </div>
+                  )
+                })}
+              </div>,
+            ]}
+
+            {this.determineItems(selected) && [
+              <h3 key="0">Artikelen: </h3>,
+              <div key="1" className={styles.cards}>
+                {this.determineItems(selected).map((value, key) => {
+                  return (
+                    <div className={styles.cardSmall} key={key}>
+                      <Card
+                        name={value.name}
+                        statistics={value.statistics}
+                        link={`https://us.lightspeedapp.com/?name=item.views.item&form_name=view&id=${
+                          value.itemID
+                        }&tab=details`}
+                        type="statistics"
+                      />
+                    </div>
+                  )
+                })}
+              </div>,
+            ]}
           </div>
         </div>
       )

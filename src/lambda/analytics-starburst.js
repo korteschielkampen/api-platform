@@ -20,12 +20,6 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    console.log(
-      '-----start compile of starburst data-----',
-      moment()
-        .utc()
-        .format('h:mm:ss')
-    )
     let sales = JSON.parse(fs.readFileSync('./static/data/sales.json'))
     let items = JSON.parse(fs.readFileSync('./static/data/items.json'))
     let categories = JSON.parse(
@@ -39,19 +33,12 @@ exports.handler = async (event, context, callback) => {
       categories
     )
 
-    var json = JSON.stringify(nestedCategories)
-    fs.writeFile('./static/data/sunburst.json', json, 'utf8', () => {
-      console.log(
-        '-----compiled starburst data-----',
-        moment()
-          .utc()
-          .format('h:mm:ss')
-      )
-    })
+    var json = JSON.stringify({ body: { data: nestedCategories } })
+    fs.writeFileSync('./static/data/sunburst.json', json)
 
     respond({
       status: 200,
-      body: { message: 'succes', body: nestedCategories },
+      body: { message: 'succes', data: nestedCategories },
     })
   } catch (err) {
     console.log(err)

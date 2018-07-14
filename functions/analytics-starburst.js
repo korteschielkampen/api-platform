@@ -38857,7 +38857,6 @@ exports.handler = (() => {
     };
 
     try {
-      console.log('-----start compile of starburst data-----', (0, _moment2.default)().utc().format('h:mm:ss'));
       let sales = JSON.parse(_fs2.default.readFileSync('./static/data/sales.json'));
       let items = JSON.parse(_fs2.default.readFileSync('./static/data/items.json'));
       let categories = JSON.parse(_fs2.default.readFileSync('./static/data/categories.json'));
@@ -38865,14 +38864,12 @@ exports.handler = (() => {
       let soldItems = (0, _lightspeedSalesToSoldItems2.default)(sales);
       let nestedCategories = (0, _lightspeedItemsToWeightedCategoryReport2.default)(items, soldItems, categories);
 
-      var json = JSON.stringify(nestedCategories);
-      _fs2.default.writeFile('./static/data/sunburst.json', json, 'utf8', function () {
-        console.log('-----compiled starburst data-----', (0, _moment2.default)().utc().format('h:mm:ss'));
-      });
+      var json = JSON.stringify({ body: { data: nestedCategories } });
+      _fs2.default.writeFileSync('./static/data/sunburst.json', json);
 
       respond({
         status: 200,
-        body: { message: 'succes', body: nestedCategories }
+        body: { message: 'succes', data: nestedCategories }
       });
     } catch (err) {
       console.log(err);

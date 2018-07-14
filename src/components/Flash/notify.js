@@ -32,6 +32,6 @@ export default (status, action, err) => {
       }
       break
     default:
-      console('Unknown notification type')
+      console.log('Unknown notification type')
   }
 }

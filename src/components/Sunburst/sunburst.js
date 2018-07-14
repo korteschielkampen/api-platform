@@ -59,11 +59,11 @@ D3Sunburst.create = (el, data, configuration) => {
     .on('click', click)
     .on('mouseover', hover)
     .append('title')
-    .text(function(d) {
-      return (
-        d.data.name + '\n' + formatNumber(d.data.statisticsSub.totalRevenue)
-      )
-    })
+
+  // Not nice, dubplicates the ammount of nodes
+  // .text(function(d) {
+  //   return d.data.name + '\n' + formatNumber(d.data.statistics.totalRevenue)
+  // })
 
   function click(d) {
     configuration.setParentState({

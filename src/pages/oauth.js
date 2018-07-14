@@ -4,6 +4,7 @@ import queryString from 'query-string'
 
 import styles from './index.module.css'
 import Card from '../components/Card'
+import notify from '../components/Flash/notify.js'
 
 const lambdaURL =
   process.env.NODE_ENV === 'production'
@@ -58,70 +59,30 @@ const providers = [
 class IndexPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      status: {
-        text: 'Geen Status',
-        color: 'grey',
-        sign: 'dash',
-      },
-    }
+    this.state = {}
     this.saveAuthData = this.saveAuthData.bind(this)
   }
 
   componentDidMount() {
     let { code, state } = queryString.parse(this.props.location.search)
-    code &&
-      state &&
-      this.setState(
-        {
-          status: {
-            text: 'Verwerken',
-            color: 'grey',
-            sign: 'loading',
-          },
-          data: {
-            oauth: {
-              code: code,
-              state: state,
-            },
-          },
-        },
-        this.saveAuthData
-      )
+    code && state && saveAuthData(code, state)
   }
 
-  async saveAuthData() {
+  async saveAuthData(code, state) {
+    let action = { name: 'auth' }
     try {
+      this.setState(notify('loading', action))
       let apiUrl = `${lambdaURL}/oauth?${queryString.stringify(
         this.state.data.oauth
       )}`
-      let options = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      }
-      const res = await fetch(apiUrl, options)
+      const res = await fetch(apiUrl)
       if (!res.ok) {
-        console.log('Errored')
         throw await res.json()
-      } else {
-        let data = await res.json()
-        console.log('Succes')
-        this.setState({
-          status: {
-            text: 'Succesvol geauthenticeerd',
-            color: 'green',
-            sign: 'done',
-          },
-        })
       }
+      let data = await res.json()
+      this.setState(notify('succes', action))
     } catch (err) {
-      this.setState({
-        status: {
-          text: `Authenticatie mislukt: ${JSON.stringify(err.body)}`,
-          color: 'red',
-          sign: 'cross',
-        },
-      })
+      this.setState(notify('error', action, err))
     }
   }
 
@@ -141,7 +102,7 @@ class IndexPage extends React.Component {
                 </div>
               )
             })}
-            <Card text={this.state.status.text} />
+            {this.state.status && <Card text={this.state.status.text} />}
           </div>
         </div>
       </div>

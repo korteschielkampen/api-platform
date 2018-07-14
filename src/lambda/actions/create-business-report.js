@@ -10,7 +10,6 @@ import readItems from '../api/lightspeed/read-items.js'
 import createSoldItems from '../models/sales/sold-items.js'
 import createFinancialReport from '../models/financial/tax-and-payments.js'
 import createSpecialDayReports from '../models/financial/specials.js'
-import createCategoryReport from '../models/category/report.js'
 
 import createChartIncome from './create-chart-income.js'
 
@@ -40,14 +39,12 @@ const businessReportData = async (date, key) => {
 
       let items = await readItems(soldItems)
       let financialReport = await createFinancialReport(sales)
-      let categoryReport = await createCategoryReport(items, soldItems)
 
       console.log('Finished: ', date.date)
 
       return {
         date: date,
         financialReport: financialReport,
-        categoryReport: categoryReport,
         sales: sales,
         items: items,
       }

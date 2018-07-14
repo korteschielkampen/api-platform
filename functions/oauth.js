@@ -177,7 +177,7 @@ var util = __webpack_require__(3);
 util.crypto.lib = __webpack_require__(220);
 util.Buffer = __webpack_require__(5).Buffer;
 util.domain = __webpack_require__(386);
-util.stream = __webpack_require__(10);
+util.stream = __webpack_require__(9);
 util.url = __webpack_require__(20);
 util.querystring = __webpack_require__(387);
 util.environment = 'nodejs';
@@ -1350,14 +1350,13 @@ module.exports = root;
 
 
 /***/ }),
-/* 9 */,
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = require("stream");
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsNative = __webpack_require__(261),
@@ -1380,6 +1379,7 @@ module.exports = getNative;
 
 
 /***/ }),
+/* 11 */,
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2637,7 +2637,7 @@ module.exports = assocIndexOf;
 /* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(11);
+var getNative = __webpack_require__(10);
 
 /* Built-in method references that are verified to be native. */
 var nativeCreate = getNative(Object, 'create');
@@ -2724,7 +2724,7 @@ var resolve_url = __webpack_require__(20).resolve;
 var http = __webpack_require__(34);
 var https = __webpack_require__(35);
 var zlib = __webpack_require__(233);
-var stream = __webpack_require__(10);
+var stream = __webpack_require__(9);
 
 var Body = __webpack_require__(36);
 var Response = __webpack_require__(256);
@@ -3010,7 +3010,7 @@ module.exports = require("https");
 
 var convert = __webpack_require__(234).convert;
 var bodyStream = __webpack_require__(255);
-var PassThrough = __webpack_require__(10).PassThrough;
+var PassThrough = __webpack_require__(9).PassThrough;
 var FetchError = __webpack_require__(182);
 
 module.exports = Body;
@@ -3869,7 +3869,7 @@ module.exports = isTypedArray;
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(11),
+var getNative = __webpack_require__(10),
     root = __webpack_require__(8);
 
 /* Built-in method references that are verified to be native. */
@@ -6487,7 +6487,7 @@ module.exports = baseAssignValue;
 /* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(11);
+var getNative = __webpack_require__(10);
 
 var defineProperty = (function() {
   try {
@@ -11527,7 +11527,7 @@ module.exports = [["8740","䏰䰲䘃䖦䕸𧉧䵷䖳𧲱䳢𧳅㮕䜶䝄䱇䱀�
 
 
 var Buffer = __webpack_require__(5).Buffer,
-    Transform = __webpack_require__(10).Transform;
+    Transform = __webpack_require__(9).Transform;
 
 
 // == Exports ==================================================================
@@ -11824,7 +11824,7 @@ module.exports = function (iconv) {
 
         // -- Readable -------------------------------------------------------------
         if (iconv.supportsStreams) {
-            var Readable = __webpack_require__(10).Readable;
+            var Readable = __webpack_require__(9).Readable;
 
             original.ReadableSetEncoding = Readable.prototype.setEncoding;
             Readable.prototype.setEncoding = function setEncoding(enc, options) {
@@ -11858,7 +11858,7 @@ module.exports = function (iconv) {
         Buffer.prototype.write = original.BufferWrite;
 
         if (iconv.supportsStreams) {
-            var Readable = __webpack_require__(10).Readable;
+            var Readable = __webpack_require__(9).Readable;
 
             Readable.prototype.setEncoding = original.ReadableSetEncoding;
             delete Readable.prototype.collect;
@@ -13440,7 +13440,7 @@ module.exports = isEmpty;
 /* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(11),
+var getNative = __webpack_require__(10),
     root = __webpack_require__(8);
 
 /* Built-in method references that are verified to be native. */
@@ -13453,7 +13453,7 @@ module.exports = DataView;
 /* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(11),
+var getNative = __webpack_require__(10),
     root = __webpack_require__(8);
 
 /* Built-in method references that are verified to be native. */
@@ -13466,7 +13466,7 @@ module.exports = Promise;
 /* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(11),
+var getNative = __webpack_require__(10),
     root = __webpack_require__(8);
 
 /* Built-in method references that are verified to be native. */
@@ -13479,7 +13479,7 @@ module.exports = Set;
 /* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var getNative = __webpack_require__(11),
+var getNative = __webpack_require__(10),
     root = __webpack_require__(8);
 
 /* Built-in method references that are verified to be native. */
@@ -21977,7 +21977,7 @@ module.exports = NodeXmlParser;
 
   var Stream
   try {
-    Stream = __webpack_require__(10).Stream
+    Stream = __webpack_require__(9).Stream
   } catch (ex) {
     Stream = function () {}
   }
@@ -34253,7 +34253,7 @@ exports.default = (() => {
 "use strict";
 
 
-var _oauth = __webpack_require__(1064);
+var _oauth = __webpack_require__(1050);
 
 var _oauth2 = _interopRequireDefault(_oauth);
 
@@ -34298,231 +34298,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(14);
-
-var _request2 = _interopRequireDefault(_request);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (temporary_access_token) {
-    const payload = {
-      client_id: process.env.MONEYBIRD_CLIENT,
-      client_secret: process.env.MONEYBIRD_SECRET,
-      redirect_uri: encodeURI('https://integration-platform.korteschielkampen.nl/oauth/'),
-      code: temporary_access_token,
-      grant_type: 'authorization_code'
-    };
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' }
-    };
-    const apiUrl = 'https://moneybird.com/oauth/token';
-
-    return yield (0, _request2.default)(apiUrl, options);
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 1051 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _request = __webpack_require__(14);
-
-var _request2 = _interopRequireDefault(_request);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (access_token) {
-    const options = {
-      method: 'GET',
-      headers: {
-        authorization: `Bearer ${access_token}`
-      }
-    };
-    const apiUrl = 'https://moneybird.com/api/v2/administrations.json';
-
-    return yield (0, _request2.default)(apiUrl, options);
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 1052 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _request = __webpack_require__(14);
-
-var _request2 = _interopRequireDefault(_request);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (temporary_access_token) {
-    const payload = {
-      client_id: process.env.LIGHTSPEED_CLIENT,
-      client_secret: process.env.LIGHTSPEED_SECRET,
-      code: temporary_access_token,
-      grant_type: 'authorization_code'
-    };
-    const options = {
-      method: 'POST',
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' }
-    };
-    const apiUrl = 'https://cloud.lightspeedapp.com/oauth/access_token.php';
-
-    return yield (0, _request2.default)(apiUrl, options);
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 1053 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _request = __webpack_require__(14);
-
-var _request2 = _interopRequireDefault(_request);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (access_token) {
-    const options = {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      }
-    };
-    const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';
-
-    return yield (0, _request2.default)(apiUrl, options);
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 1054 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _request = __webpack_require__(14);
-
-var _request2 = _interopRequireDefault(_request);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (temporary_access_token) {
-    const client_id = process.env.SLACK_CLIENT;
-    const client_secret = process.env.SLACK_SECRET;
-    const redirect_uri = encodeURI('https://integration-platform.korteschielkampen.nl/oauth/');
-
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    };
-
-    const apiUrl = `https://slack.com/api/oauth.access?client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&code=${temporary_access_token}`;
-
-    return yield (0, _request2.default)(apiUrl, options);
-  });
-
-  return function (_x) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 1055 */,
-/* 1056 */,
-/* 1057 */,
-/* 1058 */,
-/* 1059 */,
-/* 1060 */,
-/* 1061 */,
-/* 1062 */,
-/* 1063 */,
-/* 1064 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createToken = __webpack_require__(1050);
+var _createToken = __webpack_require__(1051);
 
 var _createToken2 = _interopRequireDefault(_createToken);
 
-var _readAdministration = __webpack_require__(1051);
+var _readAdministration = __webpack_require__(1052);
 
 var _readAdministration2 = _interopRequireDefault(_readAdministration);
 
-var _createToken3 = __webpack_require__(1052);
+var _createToken3 = __webpack_require__(1053);
 
 var _createToken4 = _interopRequireDefault(_createToken3);
 
-var _readAccount = __webpack_require__(1053);
+var _readAccount = __webpack_require__(1054);
 
 var _readAccount2 = _interopRequireDefault(_readAccount);
 
-var _createToken5 = __webpack_require__(1054);
+var _createToken5 = __webpack_require__(1055);
 
 var _createToken6 = _interopRequireDefault(_createToken5);
 
@@ -34583,6 +34375,205 @@ exports.default = (() => {
   });
 
   return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 1051 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _request = __webpack_require__(14);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (temporary_access_token) {
+    const payload = {
+      client_id: process.env.MONEYBIRD_CLIENT,
+      client_secret: process.env.MONEYBIRD_SECRET,
+      redirect_uri: encodeURI('https://integration-platform.korteschielkampen.nl/oauth/'),
+      code: temporary_access_token,
+      grant_type: 'authorization_code'
+    };
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' }
+    };
+    const apiUrl = 'https://moneybird.com/oauth/token';
+
+    return yield (0, _request2.default)(apiUrl, options);
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 1052 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _request = __webpack_require__(14);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (access_token) {
+    const options = {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${access_token}`
+      }
+    };
+    const apiUrl = 'https://moneybird.com/api/v2/administrations.json';
+
+    return yield (0, _request2.default)(apiUrl, options);
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 1053 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _request = __webpack_require__(14);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (temporary_access_token) {
+    const payload = {
+      client_id: process.env.LIGHTSPEED_CLIENT,
+      client_secret: process.env.LIGHTSPEED_SECRET,
+      code: temporary_access_token,
+      grant_type: 'authorization_code'
+    };
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' }
+    };
+    const apiUrl = 'https://cloud.lightspeedapp.com/oauth/access_token.php';
+
+    return yield (0, _request2.default)(apiUrl, options);
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 1054 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _request = __webpack_require__(14);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (access_token) {
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    };
+    const apiUrl = 'https://api.lightspeedapp.com/API/Account.json';
+
+    return yield (0, _request2.default)(apiUrl, options);
+  });
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 1055 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _request = __webpack_require__(14);
+
+var _request2 = _interopRequireDefault(_request);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (temporary_access_token) {
+    const client_id = process.env.SLACK_CLIENT;
+    const client_secret = process.env.SLACK_SECRET;
+    const redirect_uri = encodeURI('https://integration-platform.korteschielkampen.nl/oauth/');
+
+    const options = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    };
+
+    const apiUrl = `https://slack.com/api/oauth.access?client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&code=${temporary_access_token}`;
+
+    return yield (0, _request2.default)(apiUrl, options);
+  });
+
+  return function (_x) {
     return _ref.apply(this, arguments);
   };
 })();

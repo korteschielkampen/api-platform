@@ -7,9 +7,9 @@ import readSales from './api/lightspeed/read-sales.js'
 import readItems from './api/lightspeed/read-items.js'
 import updateItems from './actions/update-items.js'
 import createSoldItems from './models/sales/sold-items.js'
+import createMergedItems from './models/sales/merged-items.js'
 
-const addTagToItems = (items, tag) => {
-  let newTag = tag
+const addTagToItems = (items, newTag) => {
   let itemsToBeUpdated = []
   _.forEach(items, item => {
     if (item.archived === 'false') {
@@ -40,44 +40,6 @@ const addTagToItems = (items, tag) => {
   return itemsToBeUpdated
 }
 
-const mergeSalesAndItems = (items, soldItems) => {
-  let soldItemsHashed = {}
-  soldItems.forEach(i => {
-    if (soldItemsHashed[i.id]) {
-      soldItemsHashed[i.id] = {
-        itemID: i.id,
-        statistics: {
-          totalSold: soldItemsHashed[i.id].statistics.totalSold + i.quantity,
-          totalRevenue: soldItemsHashed[i.id].statistics.totalRevenue + i.value,
-          valueWithTax:
-            soldItemsHashed[i.id].statistics.valueWithTax + i.valueWithTax,
-        },
-      }
-    } else {
-      soldItemsHashed[i.id] = {
-        itemID: i.id,
-        statistics: {
-          totalSold: i.quantity,
-          totalRevenue: i.value,
-          valueWithTax: i.valueWithTax,
-        },
-      }
-    }
-  })
-
-  let itemsHashed = {}
-  items.forEach(i => {
-    itemsHashed[i.itemID] = i
-  })
-
-  return _.map(soldItemsHashed, i => {
-    return {
-      ...itemsHashed[i.itemID],
-      ...i,
-    }
-  })
-}
-
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
     callback(null, {
@@ -92,7 +54,9 @@ exports.handler = async (event, context, callback) => {
 
     // Get the sold items statistics and add them to the items themselves
     let soldItems = createSoldItems(sales)
-    let itemsWithStats = mergeSalesAndItems(items, soldItems)
+    let itemsWithStats = createMergedItems(createSoldItems(sales), items, {
+      lightweight: false,
+    })
 
     // Remove itemID 0 because it cannot be updated
     itemsWithStats.splice(_.findIndex(itemsWithStats, { itemID: '0' }), 1)

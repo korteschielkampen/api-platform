@@ -4,50 +4,7 @@ import { scaleLinear } from 'd3-scale'
 import { color } from 'd3-color'
 const util = require('util')
 
-export default (items, soldItems, categories) => {
-  let itemsHashed = {}
-  items.forEach(i => {
-    itemsHashed[i.itemID] = i
-  })
-
-  let soldItemsHashed = {}
-  soldItems.forEach(i => {
-    if (soldItemsHashed[i.id]) {
-      soldItemsHashed[i.id] = {
-        itemID: i.id,
-        statistics: {
-          totalSold: soldItemsHashed[i.id].statistics.totalSold + i.quantity,
-          totalRevenue: soldItemsHashed[i.id].statistics.totalRevenue + i.value,
-          valueWithTax:
-            soldItemsHashed[i.id].statistics.valueWithTax + i.valueWithTax,
-        },
-      }
-    } else {
-      soldItemsHashed[i.id] = {
-        itemID: i.id,
-        statistics: {
-          totalSold: i.quantity,
-          totalRevenue: i.value,
-          valueWithTax: i.valueWithTax,
-        },
-      }
-    }
-  })
-
-  let itemsMerged = _.map(soldItemsHashed, i => {
-    // Setting up item id for merge
-    return {
-      // ...itemsHashed[i.itemID],
-      categoryID: itemsHashed[i.itemID]
-        ? itemsHashed[i.itemID].categoryID
-        : undefined,
-      description: itemsHashed[i.itemID]
-        ? itemsHashed[i.itemID].description
-        : undefined,
-      ...i,
-    }
-  })
-
+export default (items, categories) => {
   // Setting up flare
   categories.push({
     name: 'Totaal',
@@ -109,7 +66,7 @@ export default (items, soldItems, categories) => {
   })
 
   // Weighting the categories
-  _.forEach(itemsMerged, i => {
+  _.forEach(items, i => {
     let key
     if (
       i.itemID !== '0' &&

@@ -24,5 +24,29 @@ export default sales => {
       }
     }
   })
-  return items
+
+  let itemsHashed = {}
+  items.forEach(i => {
+    if (itemsHashed[i.id]) {
+      itemsHashed[i.id] = {
+        itemID: i.id,
+        statistics: {
+          totalSold: itemsHashed[i.id].statistics.totalSold + i.quantity,
+          totalRevenue: itemsHashed[i.id].statistics.totalRevenue + i.value,
+          valueWithTax:
+            itemsHashed[i.id].statistics.valueWithTax + i.valueWithTax,
+        },
+      }
+    } else {
+      itemsHashed[i.id] = {
+        itemID: i.id,
+        statistics: {
+          totalSold: i.quantity,
+          totalRevenue: i.value,
+          valueWithTax: i.valueWithTax,
+        },
+      }
+    }
+  })
+  return itemsHashed
 }

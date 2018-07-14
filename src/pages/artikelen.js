@@ -81,7 +81,9 @@ class IndexPage extends React.Component {
   determineItems(selected) {
     if (selected && selected.data.children) {
       let items = _.filter(selected.data.children, 'itemID')
-      return items.sort(this.sortingFunction)
+      if (items.length !== 0) {
+        return items.sort(this.sortingFunction)
+      }
     }
   }
 

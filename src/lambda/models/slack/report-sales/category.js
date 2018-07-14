@@ -120,7 +120,6 @@ export default ({ charts, categoryReport: cR }) => {
           short: true,
         },
       ],
-      image_url: charts.category,
       color: '#ef3945',
       attachment_type: 'default',
     },

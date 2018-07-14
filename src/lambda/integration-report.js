@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import createBusinessReport from './action/create-business-report.js'
+import createBusinessReport from './actions/create-business-report.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -12,7 +12,7 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Setup variables
-    let datesArray = _.times(31, i => {
+    let datesArray = _.times(3, i => {
       return {
         date: moment()
           .subtract(i, 'days')

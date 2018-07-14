@@ -34253,29 +34253,9 @@ exports.default = (() => {
 "use strict";
 
 
-var _createToken = __webpack_require__(1050);
+var _oauth = __webpack_require__(1064);
 
-var _createToken2 = _interopRequireDefault(_createToken);
-
-var _readAdministration = __webpack_require__(1051);
-
-var _readAdministration2 = _interopRequireDefault(_readAdministration);
-
-var _createToken3 = __webpack_require__(1052);
-
-var _createToken4 = _interopRequireDefault(_createToken3);
-
-var _readAccount = __webpack_require__(1053);
-
-var _readAccount2 = _interopRequireDefault(_readAccount);
-
-var _createToken5 = __webpack_require__(1054);
-
-var _createToken6 = _interopRequireDefault(_createToken5);
-
-var _update = __webpack_require__(230);
-
-var _update2 = _interopRequireDefault(_update);
+var _oauth2 = _interopRequireDefault(_oauth);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -34292,50 +34272,8 @@ exports.handler = (() => {
 
     try {
       let oauth = event.queryStringParameters;
-      let tokens, account;
-      switch (oauth.state) {
-        case 'Moneybird':
-          console.log('Moneybird authentication is starting');
-          tokens = yield (0, _createToken2.default)(oauth.code);
-          account = yield (0, _readAdministration2.default)(tokens.access_token);
-          yield (0, _update2.default)({
-            account_id: account[0].id,
-            account_name: account[0].name,
-            access_token: tokens.access_token,
-            refresh_token: tokens.refresh_token
-          });
-          console.log('Moneybird authentication is done');
-          break;
-        case 'Lightspeed':
-          console.log('Lightspeed authentication is starting');
-          tokens = yield (0, _createToken4.default)(oauth.code);
-          account = yield (0, _readAccount2.default)(tokens.access_token);
-          yield (0, _update2.default)({
-            account_id: account.Account.accountID,
-            account_name: account.Account.name,
-            account_link: account.Account.link['@attributes'].href,
-            access_token: tokens.access_token,
-            refresh_token: tokens.refresh_token
-          });
-          console.log('Lightspeed authentication is done');
-          break;
-        case 'Slack':
-          console.log('Slack authentication is starting');
-          account = yield (0, _createToken6.default)(oauth.code);
-          yield (0, _update2.default)({
-            access_token: account.access_token,
-            account_id: 'korteschiel-3',
-            app_id: account.app_id,
-            app_user_id: account.app_user_id,
-            team_id: account.team_id,
-            team_name: account.team_name
-          });
-          console.log('Slack authentication is done');
-          break;
-        default:
-          console.log('Onbekende oauth provider');
-          throw { message: 'Platform: Onbekende oauth provider' };
-      }
+
+      (0, _oauth2.default)(oauth);
 
       respond({ status: 200, body: { message: 'succes' } });
     } catch (err) {
@@ -34544,6 +34482,107 @@ exports.default = (() => {
   });
 
   return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+/* 1055 */,
+/* 1056 */,
+/* 1057 */,
+/* 1058 */,
+/* 1059 */,
+/* 1060 */,
+/* 1061 */,
+/* 1062 */,
+/* 1063 */,
+/* 1064 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createToken = __webpack_require__(1050);
+
+var _createToken2 = _interopRequireDefault(_createToken);
+
+var _readAdministration = __webpack_require__(1051);
+
+var _readAdministration2 = _interopRequireDefault(_readAdministration);
+
+var _createToken3 = __webpack_require__(1052);
+
+var _createToken4 = _interopRequireDefault(_createToken3);
+
+var _readAccount = __webpack_require__(1053);
+
+var _readAccount2 = _interopRequireDefault(_readAccount);
+
+var _createToken5 = __webpack_require__(1054);
+
+var _createToken6 = _interopRequireDefault(_createToken5);
+
+var _update = __webpack_require__(230);
+
+var _update2 = _interopRequireDefault(_update);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = (() => {
+  var _ref = _asyncToGenerator(function* (item, key) {
+    let tokens, account;
+    switch (oauth.state) {
+      case 'Moneybird':
+        console.log('Moneybird authentication is starting');
+        tokens = yield (0, _createToken2.default)(oauth.code);
+        account = yield (0, _readAdministration2.default)(tokens.access_token);
+        yield (0, _update2.default)({
+          account_id: account[0].id,
+          account_name: account[0].name,
+          access_token: tokens.access_token,
+          refresh_token: tokens.refresh_token
+        });
+        console.log('Moneybird authentication is done');
+        break;
+      case 'Lightspeed':
+        console.log('Lightspeed authentication is starting');
+        tokens = yield (0, _createToken4.default)(oauth.code);
+        account = yield (0, _readAccount2.default)(tokens.access_token);
+        yield (0, _update2.default)({
+          account_id: account.Account.accountID,
+          account_name: account.Account.name,
+          account_link: account.Account.link['@attributes'].href,
+          access_token: tokens.access_token,
+          refresh_token: tokens.refresh_token
+        });
+        console.log('Lightspeed authentication is done');
+        break;
+      case 'Slack':
+        console.log('Slack authentication is starting');
+        account = yield (0, _createToken6.default)(oauth.code);
+        yield (0, _update2.default)({
+          access_token: account.access_token,
+          account_id: 'korteschiel-3',
+          app_id: account.app_id,
+          app_user_id: account.app_user_id,
+          team_id: account.team_id,
+          team_name: account.team_name
+        });
+        console.log('Slack authentication is done');
+        break;
+      default:
+        console.log('Onbekende oauth provider');
+        throw { message: 'Platform: Onbekende oauth provider' };
+    }
+  });
+
+  return function (_x, _x2) {
     return _ref.apply(this, arguments);
   };
 })();

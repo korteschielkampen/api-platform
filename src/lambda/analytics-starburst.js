@@ -1,15 +1,8 @@
 import moment from 'moment'
 import fs from 'fs'
 
-import createSoldItems from './transformation/lightspeed-sales--to--sold-items.js'
-import createFinancialReport from './transformation/lightspeed-sales--to--financial-report.js'
-import createCategoryReport from './transformation/lightspeed-items--to--category-report.js'
-import createWeightedCategoryReport from './transformation/lightspeed-items--to--weighted-category-report.js'
-import createArticleReport from './transformation/lightspeed-items--to--article-report.js'
-import createSpecialDayReports from './transformation/day-reports--to--day-reports-specials.js'
-
-import createChartCategory from './action/create-chart-category.js'
-import createChartIncome from './action/create-chart-income.js'
+import createSoldItems from './models/sales/sold-items.js'
+import createWeightedCategoryReport from './models/category/starburst.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {

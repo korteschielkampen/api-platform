@@ -4,7 +4,7 @@ import strictUriEncode from 'strict-uri-encode'
 
 import request from '../general/request.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
-import cleanSales from '../../transformation/lightspeed-sales--to--lightspeed-sales-clean.js'
+import cleanSales from './clean-sales.js'
 
 export default async (startDate, endDate) => {
   let dates

@@ -5,8 +5,8 @@ import util from 'util'
 
 import readSales from './api/lightspeed/read-sales.js'
 import readItems from './api/lightspeed/read-items.js'
-import updateItems from './action/update-items.js'
-import createSoldItems from './transformation/lightspeed-sales--to--sold-items.js'
+import updateItems from './actions/update-items.js'
+import createSoldItems from './models/sales/sold-items.js'
 
 const addTagToItems = (items, tag) => {
   let newTag = tag

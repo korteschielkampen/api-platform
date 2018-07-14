@@ -34780,286 +34780,13 @@ var durationWeek = 6048e5;
 
 
 /***/ }),
-/* 884 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var strictUriEncode = __webpack_require__(904);
-var objectAssign = __webpack_require__(905);
-var decodeComponent = __webpack_require__(906);
-
-function encoderForArrayFormat(opts) {
-	switch (opts.arrayFormat) {
-		case 'index':
-			return function (key, value, index) {
-				return value === null ? [
-					encode(key, opts),
-					'[',
-					index,
-					']'
-				].join('') : [
-					encode(key, opts),
-					'[',
-					encode(index, opts),
-					']=',
-					encode(value, opts)
-				].join('');
-			};
-
-		case 'bracket':
-			return function (key, value) {
-				return value === null ? encode(key, opts) : [
-					encode(key, opts),
-					'[]=',
-					encode(value, opts)
-				].join('');
-			};
-
-		default:
-			return function (key, value) {
-				return value === null ? encode(key, opts) : [
-					encode(key, opts),
-					'=',
-					encode(value, opts)
-				].join('');
-			};
-	}
-}
-
-function parserForArrayFormat(opts) {
-	var result;
-
-	switch (opts.arrayFormat) {
-		case 'index':
-			return function (key, value, accumulator) {
-				result = /\[(\d*)\]$/.exec(key);
-
-				key = key.replace(/\[\d*\]$/, '');
-
-				if (!result) {
-					accumulator[key] = value;
-					return;
-				}
-
-				if (accumulator[key] === undefined) {
-					accumulator[key] = {};
-				}
-
-				accumulator[key][result[1]] = value;
-			};
-
-		case 'bracket':
-			return function (key, value, accumulator) {
-				result = /(\[\])$/.exec(key);
-				key = key.replace(/\[\]$/, '');
-
-				if (!result) {
-					accumulator[key] = value;
-					return;
-				} else if (accumulator[key] === undefined) {
-					accumulator[key] = [value];
-					return;
-				}
-
-				accumulator[key] = [].concat(accumulator[key], value);
-			};
-
-		default:
-			return function (key, value, accumulator) {
-				if (accumulator[key] === undefined) {
-					accumulator[key] = value;
-					return;
-				}
-
-				accumulator[key] = [].concat(accumulator[key], value);
-			};
-	}
-}
-
-function encode(value, opts) {
-	if (opts.encode) {
-		return opts.strict ? strictUriEncode(value) : encodeURIComponent(value);
-	}
-
-	return value;
-}
-
-function keysSorter(input) {
-	if (Array.isArray(input)) {
-		return input.sort();
-	} else if (typeof input === 'object') {
-		return keysSorter(Object.keys(input)).sort(function (a, b) {
-			return Number(a) - Number(b);
-		}).map(function (key) {
-			return input[key];
-		});
-	}
-
-	return input;
-}
-
-function extract(str) {
-	var queryStart = str.indexOf('?');
-	if (queryStart === -1) {
-		return '';
-	}
-	return str.slice(queryStart + 1);
-}
-
-function parse(str, opts) {
-	opts = objectAssign({arrayFormat: 'none'}, opts);
-
-	var formatter = parserForArrayFormat(opts);
-
-	// Create an object with no prototype
-	// https://github.com/sindresorhus/query-string/issues/47
-	var ret = Object.create(null);
-
-	if (typeof str !== 'string') {
-		return ret;
-	}
-
-	str = str.trim().replace(/^[?#&]/, '');
-
-	if (!str) {
-		return ret;
-	}
-
-	str.split('&').forEach(function (param) {
-		var parts = param.replace(/\+/g, ' ').split('=');
-		// Firefox (pre 40) decodes `%3D` to `=`
-		// https://github.com/sindresorhus/query-string/pull/37
-		var key = parts.shift();
-		var val = parts.length > 0 ? parts.join('=') : undefined;
-
-		// missing `=` should be `null`:
-		// http://w3.org/TR/2012/WD-url-20120524/#collect-url-parameters
-		val = val === undefined ? null : decodeComponent(val);
-
-		formatter(decodeComponent(key), val, ret);
-	});
-
-	return Object.keys(ret).sort().reduce(function (result, key) {
-		var val = ret[key];
-		if (Boolean(val) && typeof val === 'object' && !Array.isArray(val)) {
-			// Sort object keys, not values
-			result[key] = keysSorter(val);
-		} else {
-			result[key] = val;
-		}
-
-		return result;
-	}, Object.create(null));
-}
-
-exports.extract = extract;
-exports.parse = parse;
-
-exports.stringify = function (obj, opts) {
-	var defaults = {
-		encode: true,
-		strict: true,
-		arrayFormat: 'none'
-	};
-
-	opts = objectAssign(defaults, opts);
-
-	if (opts.sort === false) {
-		opts.sort = function () {};
-	}
-
-	var formatter = encoderForArrayFormat(opts);
-
-	return obj ? Object.keys(obj).sort(opts.sort).map(function (key) {
-		var val = obj[key];
-
-		if (val === undefined) {
-			return '';
-		}
-
-		if (val === null) {
-			return encode(key, opts);
-		}
-
-		if (Array.isArray(val)) {
-			var result = [];
-
-			val.slice().forEach(function (val2) {
-				if (val2 === undefined) {
-					return;
-				}
-
-				result.push(formatter(key, val2, result.length));
-			});
-
-			return result.join('&');
-		}
-
-		return encode(key, opts) + '=' + encode(val, opts);
-	}).filter(function (x) {
-		return x.length > 0;
-	}).join('&') : '';
-};
-
-exports.parseUrl = function (str, opts) {
-	return {
-		url: str.split('?')[0] || '',
-		query: parse(extract(str), opts)
-	};
-};
-
-
-/***/ }),
+/* 884 */,
 /* 885 */,
 /* 886 */,
 /* 887 */,
 /* 888 */,
 /* 889 */,
-/* 890 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _lodash = __webpack_require__(9);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = sales => {
-  let items = [];
-  _lodash2.default.map(sales, (sale, saleID) => {
-    if (sale.completed == 'true' && sale.SaleLines) {
-      if (Array.isArray(sale.SaleLines.SaleLine)) {
-        _lodash2.default.map(sale.SaleLines.SaleLine, (line, lineID) => {
-          items.push({
-            id: line.itemID,
-            value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
-            valueWithTax: parseFloat(line.calcTotal),
-            quantity: parseFloat(line.unitQuantity)
-          });
-        });
-      } else {
-        let line = sale.SaleLines.SaleLine;
-        items.push({
-          id: line.itemID,
-          value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
-          valueWithTax: parseFloat(line.calcTotal),
-          quantity: parseFloat(line.unitQuantity)
-        });
-      }
-    }
-  });
-  return items;
-};
-
-/***/ }),
+/* 890 */,
 /* 891 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -35107,257 +34834,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ }),
 /* 894 */,
 /* 895 */,
-/* 896 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _lodash = __webpack_require__(9);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = sales => {
-  let tax = {
-    hoog: { name: 'hoog', amount: 0 },
-    laag: { name: 'laag', amount: 0 },
-    onbelast: { name: 'onbelast', amount: 0 }
-  };
-
-  let payments = {
-    cash: { name: 'cash', amount: 0 },
-    pin: { name: 'pin', amount: 0 },
-    credit: { name: 'credit', amount: 0 },
-    gift: { name: 'gift', amount: 0 }
-  };
-
-  let analysis = {
-    total: 0,
-    profit: 0,
-    sales: 0,
-    unreliabilityCount: 0,
-    unreliabilityTotal: 0,
-    taxlessTotal: 0
-  };
-
-  if (sales.length > 0) {
-    _lodash2.default.map(sales, (sale, saleID) => {
-      // Do the taxes
-      if (sale.completed == 'true' && sale.SaleLines) {
-        _lodash2.default.map(sale.SaleLines.SaleLine, (line, lineID) => {
-          switch (line.taxClassID) {
-            case '1':
-              tax.hoog.amount += parseFloat(line.calcTotal);
-              break;
-            case '3':
-              tax.laag.amount += parseFloat(line.calcTotal);
-              break;
-            case '6':
-              tax.onbelast.amount += parseFloat(line.calcTotal);
-              break;
-            default:
-          }
-        });
-      }
-
-      // Do the payments
-      if (sale.completed == 'true' && sale.SalePayments) {
-        _lodash2.default.map(sale.SalePayments.SalePayment, (line, lineID) => {
-          if (line.archived != 'true') {
-            switch (line.paymentTypeID) {
-              case '1':
-                payments.cash.amount += parseFloat(line.amount);
-                break;
-              case '11':
-                payments.pin.amount += parseFloat(line.amount);
-                break;
-              case '4':
-                payments.credit.amount += parseFloat(line.amount);
-                break;
-              case '5':
-                payments.gift.amount += parseFloat(line.amount);
-                break;
-              default:
-            }
-          }
-        });
-      }
-
-      // Do the analysis
-      if (sale.completed == 'true' && sale.SaleLines) {
-        analysis.total += parseFloat(sale.calcTotal);
-        analysis.sales++;
-        _lodash2.default.map(sale.SaleLines.SaleLine, (line, lineID) => {
-          if (line.archived != 'true') {
-            if (line.avgCost == '0') {
-              let taxlessTotal = parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate));
-              analysis.taxlessTotal += taxlessTotal;
-
-              analysis.unreliabilityCount++;
-              analysis.unreliabilityTotal += parseFloat(line.calcTotal);
-              analysis.profit += parseFloat(line.calcTotal) * 0.3;
-            } else {
-              // Profit
-              let taxlessTotal = parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate));
-              analysis.profit += taxlessTotal - parseFloat(line.avgCost);
-              analysis.taxlessTotal += taxlessTotal;
-
-              // Margin
-              if (analysis.margin) {
-                analysis.margin = (analysis.margin + (taxlessTotal - parseFloat(line.avgCost)) / taxlessTotal * 100) / 2;
-              } else {
-                analysis.margin = (taxlessTotal - parseFloat(line.avgCost)) / taxlessTotal * 100;
-              }
-            }
-          }
-        });
-      }
-    });
-  }
-
-  analysis.saleSize = analysis.total / analysis.sales;
-  // analysis.profit =
-  //   analysis.profit - tax.hoog.amount * 0.21 - tax.laag.amount * 0.6
-
-  tax.hoog.amount = tax.hoog.amount.toFixed(2);
-  tax.laag.amount = tax.laag.amount.toFixed(2);
-  tax.onbelast.amount = tax.onbelast.amount.toFixed(2);
-
-  payments.cash.amount = payments.cash.amount.toFixed(2);
-  payments.pin.amount = payments.pin.amount.toFixed(2);
-  payments.credit.amount = payments.credit.amount.toFixed(2);
-  payments.gift.amount = payments.gift.amount.toFixed(2);
-
-  return {
-    tax: tax,
-    payments: payments,
-    analysis: analysis
-  };
-};
-
-/***/ }),
-/* 897 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _lodash = __webpack_require__(9);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = (items, itemIDsValue) => {
-  // Create searchable object from array
-  var itemsHashed = {};
-  items.forEach(i => {
-    itemsHashed[i.itemID] = i;
-  });
-
-  // Calculate value per category
-  let rawCategoryReport = {};
-  itemIDsValue.forEach((item, key) => {
-    if (item.id != 0 && itemsHashed[item.id] && itemsHashed[item.id].categoryID != 0) {
-      let value = parseFloat(item.value);
-      if (rawCategoryReport[itemsHashed[item.id].Category.fullPathName]) {
-        value += parseFloat(rawCategoryReport[itemsHashed[item.id].Category.fullPathName].value);
-      }
-      rawCategoryReport[itemsHashed[item.id].Category.fullPathName] = {
-        category: itemsHashed[item.id].Category.fullPathName,
-        value: value
-      };
-    } else if (item.id != 0 && itemsHashed[item.id] && itemsHashed[item.id].categoryID == 0) {
-      if (rawCategoryReport['Ongecategoriseerd']) {
-        rawCategoryReport['Ongecategoriseerd'] = {
-          category: 'Ongecategoriseerd',
-          value: rawCategoryReport['Ongecategoriseerd'].value + parseFloat(item.value)
-        };
-      } else {
-        rawCategoryReport['Ongecategoriseerd'] = {
-          category: 'Ongecategoriseerd',
-          value: parseFloat(item.value)
-        };
-      }
-    } else {
-      if (rawCategoryReport['Diversen']) {
-        rawCategoryReport['Diversen'] = {
-          category: 'Diversen',
-          value: rawCategoryReport['Diversen'].value + parseFloat(item.value)
-        };
-      } else {
-        rawCategoryReport['Diversen'] = {
-          category: 'Diversen',
-          value: parseFloat(item.value)
-        };
-      }
-    }
-  });
-
-  // Add categories
-  let categoryReport = {};
-  Object.entries(rawCategoryReport).forEach(([key, category]) => {
-    // Split
-    category.split = category.category.split('/');
-    // Level one
-    if (categoryReport[category.split[0]]) {
-      categoryReport[category.split[0]].totaal += parseFloat(category.value);
-    } else {
-      categoryReport[category.split[0]] = { totaal: category.value };
-    }
-
-    // Level two
-    if (categoryReport[category.split[0]] && categoryReport[category.split[0]][category.split[1]]) {
-      categoryReport[category.split[0]][category.split[1]].totaal += parseFloat(category.value);
-    } else if (category.split[1]) {
-      categoryReport[category.split[0]][category.split[1]] = {
-        totaal: category.value
-      };
-    }
-  });
-
-  categoryReport.etc = {
-    totaal: (categoryReport.Ongecategoriseerd && categoryReport.Ongecategoriseerd.totaal || 0) + (categoryReport.Diversen && categoryReport.Diversen.totaal || 0)
-  };
-
-  categoryReport.totaal = {
-    totaal: (categoryReport.etc && categoryReport.etc.totaal || 0) + (categoryReport.Hengelsport && categoryReport.Hengelsport.totaal || 0) + (categoryReport.Aquarium && categoryReport.Aquarium.totaal || 0) + (categoryReport.Dierenspeciaal && categoryReport.Dierenspeciaal.totaal || 0)
-  };
-
-  categoryReport.normaal = {
-    totaal: (categoryReport.totaal && categoryReport.totaal.totaal || 0) - (categoryReport.Hengelsport && categoryReport.Hengelsport.Visvergunningen && categoryReport.Hengelsport.Visvergunningen.totaal || 0) - (categoryReport.Hengelsport && categoryReport.Hengelsport['Levend Aas'] && categoryReport.Hengelsport['Levend Aas'].totaal || 0) - (categoryReport.Aquarium && categoryReport.Aquarium.Vis && categoryReport.Aquarium.Vis.totaal || 0) - (categoryReport.Aquarium && categoryReport.Aquarium.Planten && categoryReport.Aquarium.Planten.totaal || 0)
-  };
-
-  let categoryReportFixed = {};
-  _lodash2.default.map(categoryReport, (category, key) => {
-    categoryReportFixed[key] = {
-      totaal: category.totaal.toFixed(0),
-      percentage: (category.totaal / categoryReport.totaal.totaal * 100).toFixed(0)
-    };
-    _lodash2.default.map(categoryReport[key], (nestedCategory, nestedKey) => {
-      if (nestedCategory.totaal && nestedKey) {
-        categoryReportFixed[key][nestedKey] = {
-          totaal: nestedCategory.totaal.toFixed(0),
-          percentage: (nestedCategory.totaal / categoryReport.totaal.totaal * 100).toFixed(0)
-        };
-      }
-    });
-  });
-
-  return categoryReportFixed;
-};
-
-/***/ }),
+/* 896 */,
+/* 897 */,
 /* 898 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -35490,577 +34968,13 @@ function nogamma(a, b) {
 
 
 /***/ }),
-/* 901 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _lodash = __webpack_require__(9);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = (items, soldItems) => {
-  // Create searchable object from array
-  var itemsHashed = {};
-  items.forEach(i => {
-    itemsHashed[i.itemID] = i;
-  });
-
-  // Calculate value per article and attach item
-  let soldItemsHashed = {};
-  soldItems.forEach((item, key) => {
-    if (item.id != 0 && itemsHashed[item.id]) {
-      let totalCost = item.quantity * parseFloat(itemsHashed[item.id].avgCost);
-
-      soldItemsHashed[item.id] = {
-        id: item.id,
-        value: soldItemsHashed[item.id] ? parseFloat(soldItemsHashed[item.id].value) + parseFloat(item.value) : parseFloat(item.value),
-        totalCost: soldItemsHashed[item.id] ? soldItemsHashed[item.id].totalCost + totalCost : totalCost,
-        quantity: soldItemsHashed[item.id] ? parseFloat(soldItemsHashed[item.id].quantity) + parseFloat(item.quantity) : parseFloat(item.quantity),
-        fields: itemsHashed[item.id],
-        profit: soldItemsHashed[item.id] ? soldItemsHashed[item.id].profit + item.value - totalCost : item.value - totalCost,
-        profitPercentage: (item.value - totalCost) / totalCost * 100
-      };
-    }
-  });
-
-  let deleteItemOnTag = (tag, itemKey) => {
-    if (tag == 'no-report') {
-      delete soldItemsHashed[itemKey]; // Diversen
-    }
-  };
-
-  // Delete items
-  Object.entries(soldItemsHashed).map(([itemKey, item]) => {
-    if (item.fields.Tags && item.fields.Tags.tag) {
-      if (typeof item.fields.Tags.tag == 'string') {
-        deleteItemOnTag(item.fields.Tags.tag, itemKey);
-      } else if (typeof item.fields.Tags.tag == 'object') {
-        item.fields.Tags.tag.map(tag => {
-          deleteItemOnTag(tag, itemKey);
-        });
-      }
-    }
-  });
-
-  // Convert back to array
-  let soldItemsCounted = Object.values(soldItemsHashed);
-  let aR = soldItemsCounted.sort((a, b) => {
-    return b.value - a.value;
-  });
-
-  let aRFixed = aR.map(item => {
-    return _extends({}, item, {
-      value: item.value.toFixed(2),
-      quantity: item.quantity.toFixed(0),
-      totalCost: item.totalCost.toFixed(2),
-      profit: item.profit.toFixed(2),
-      profitPercentage: item.profitPercentage.toFixed(2)
-    });
-  });
-  return aRFixed;
-};
-
-/***/ }),
-/* 902 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _moment = __webpack_require__(2);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = dayReports => {
-  // Moneybird values for cost and special income
-  let rentIncome = 55;
-  let indirectCost = 186;
-  let specialCost = 22;
-  let dailyTotalCost = indirectCost + specialCost;
-
-  let totalProfit = 0;
-  let totalProfitPlusRent = 0;
-  let totalCost = 0;
-  let totalCostPlusLoans = 0;
-  let totalRevenue = 0;
-  dayReports = dayReports.map(report => {
-    totalCost += indirectCost;
-    totalCostPlusLoans += dailyTotalCost;
-    if (report.sales) {
-      // Totals
-      totalProfit += report.financialReport.analysis.profit;
-      totalProfitPlusRent += report.financialReport.analysis.profit + rentIncome;
-      totalRevenue += report.financialReport.analysis.taxlessTotal;
-
-      // Daily extra's
-      report.financialReport.analysis.profitRent = report.financialReport.analysis.profit + rentIncome;
-      report.financialReport.analysis.dailyTotalCost = dailyTotalCost;
-      report.financialReport.analysis.indirectCost = indirectCost;
-      return _extends({}, report, {
-        special: {
-          rentIncome: rentIncome,
-          indirectCost: indirectCost,
-          dailyTotalCost: dailyTotalCost
-        }
-      });
-    } else {
-      return _extends({}, report, {
-        special: {
-          rentIncome: rentIncome,
-          indirectCost: indirectCost,
-          dailyTotalCost: dailyTotalCost
-        }
-      });
-    }
-  });
-
-  dayReports[dayReports.length - 1].financialReport.analysis = _extends({}, dayReports[dayReports.length - 1].financialReport.analysis, {
-    totalProfit: totalProfit,
-    totalProfitPlusRent: totalProfitPlusRent,
-    totalCost: totalCost,
-    totalCostPlusLoans: totalCostPlusLoans,
-    totalRevenue: totalRevenue
-  });
-
-  return dayReports;
-};
-
-/***/ }),
-/* 903 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _queryString = __webpack_require__(884);
-
-var _queryString2 = _interopRequireDefault(_queryString);
-
-var _moment = __webpack_require__(2);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (data, channel) {
-    let highestValue = 0;
-    data.forEach(function (item) {
-      if (item.categoryReport && item.categoryReport.totaal && item.categoryReport.totaal.totaal > highestValue) {
-        highestValue = item.categoryReport.totaal.totaal;
-      }
-    });
-
-    let chartData = [[data.map(function (item) {
-      if (item.categoryReport && item.categoryReport.Dierenspeciaal) {
-        return item.categoryReport.Dierenspeciaal.totaal / highestValue * 100;
-      } else {
-        return 0;
-      }
-    })], [data.map(function (item) {
-      if (item.categoryReport && item.categoryReport.Aquarium && item.categoryReport.Aquarium.Vis) {
-        return item.categoryReport.Aquarium.Vis.totaal / highestValue * 100;
-      } else {
-        return 0;
-      }
-    })], [data.map(function (item) {
-      if (item.categoryReport && item.categoryReport.Aquarium && item.categoryReport.Aquarium.Vis) {
-        return (item.categoryReport.Aquarium.totaal - item.categoryReport.Aquarium.Vis.totaal) / highestValue * 100;
-      } else if (item.categoryReport && item.categoryReport.Aquarium) {
-        return item.categoryReport.Aquarium.totaal / highestValue * 100;
-      } else {
-        return 0;
-      }
-    })], [data.map(function (item) {
-      if (item && item.categoryReport && item.categoryReport.Hengelsport && item.categoryReport.Hengelsport.Visvergunningen) {
-        return item.categoryReport.Hengelsport.Visvergunningen.totaal / highestValue * 100;
-      } else {
-        return 0;
-      }
-    })], [data.map(function (item) {
-      if (item.categoryReport && item.categoryReport.Hengelsport && item.categoryReport.Hengelsport.Visvergunningen) {
-        return (item.categoryReport.Hengelsport.totaal - item.categoryReport.Hengelsport.Visvergunningen.totaal) / highestValue * 100;
-      } else if (item.categoryReport && item.categoryReport.Hengelsport) {
-        return item.categoryReport.Hengelsport.totaal / highestValue * 100;
-      } else {
-        return 0;
-      }
-    })], [data.map(function (item) {
-      if (item.categoryReport && item.categoryReport.etc) {
-        return item.categoryReport.etc.totaal / highestValue * 100;
-      } else {
-        return 0;
-      }
-    })]];
-
-    chartData = chartData.map(function (value) {
-      return value.join(',');
-    });
-
-    chartData = chartData.join('|');
-
-    let labels = data.map(function (item) {
-      let date = item.date.date;
-      let dateString = (0, _moment2.default)(date).format('DD-MMM');
-      let value = item && item.categoryReport && item.categoryReport.totaal.totaal;
-      return `${dateString}: ${value || '0'}`;
-    });
-
-    labels = labels.join('|');
-
-    let bar = {
-      chtt: 'Categorieën',
-      chts: '000000,30,r',
-      chs: '999x600',
-      cht: 'bvs',
-      chd: `t:${chartData}`,
-      chco: 'fa8231,7693d6,3867d6,97c4ad,20bf6b,a5b1c2',
-      chxl: `0:|${labels}`,
-      chxt: 'x'
-    };
-
-    let chartUrl = 'https://image-charts.com/chart?' + _queryString2.default.stringify(bar);
-    return chartUrl;
-  });
-
-  return function (_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
-/* 904 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-module.exports = function (str) {
-	return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-		return '%' + c.charCodeAt(0).toString(16).toUpperCase();
-	});
-};
-
-
-/***/ }),
-/* 905 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-
-
-/* eslint-disable no-unused-vars */
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-function shouldUseNative() {
-	try {
-		if (!Object.assign) {
-			return false;
-		}
-
-		// Detect buggy property enumeration order in older V8 versions.
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-		test1[5] = 'de';
-		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test2 = {};
-		for (var i = 0; i < 10; i++) {
-			test2['_' + String.fromCharCode(i)] = i;
-		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-			return test2[n];
-		});
-		if (order2.join('') !== '0123456789') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-			test3[letter] = letter;
-		});
-		if (Object.keys(Object.assign({}, test3)).join('') !==
-				'abcdefghijklmnopqrst') {
-			return false;
-		}
-
-		return true;
-	} catch (err) {
-		// We don't expect any of the above to throw, but better to be safe.
-		return false;
-	}
-}
-
-module.exports = shouldUseNative() ? Object.assign : function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
-
-		for (var key in from) {
-			if (hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-
-		if (getOwnPropertySymbols) {
-			symbols = getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
-
-	return to;
-};
-
-
-/***/ }),
-/* 906 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var token = '%[a-f0-9]{2}';
-var singleMatcher = new RegExp(token, 'gi');
-var multiMatcher = new RegExp('(' + token + ')+', 'gi');
-
-function decodeComponents(components, split) {
-	try {
-		// Try to decode the entire string first
-		return decodeURIComponent(components.join(''));
-	} catch (err) {
-		// Do nothing
-	}
-
-	if (components.length === 1) {
-		return components;
-	}
-
-	split = split || 1;
-
-	// Split the array in 2 parts
-	var left = components.slice(0, split);
-	var right = components.slice(split);
-
-	return Array.prototype.concat.call([], decodeComponents(left), decodeComponents(right));
-}
-
-function decode(input) {
-	try {
-		return decodeURIComponent(input);
-	} catch (err) {
-		var tokens = input.match(singleMatcher);
-
-		for (var i = 1; i < tokens.length; i++) {
-			input = decodeComponents(tokens, i).join('');
-
-			tokens = input.match(singleMatcher);
-		}
-
-		return input;
-	}
-}
-
-function customDecodeURIComponent(input) {
-	// Keep track of all the replacements and prefill the map with the `BOM`
-	var replaceMap = {
-		'%FE%FF': '\uFFFD\uFFFD',
-		'%FF%FE': '\uFFFD\uFFFD'
-	};
-
-	var match = multiMatcher.exec(input);
-	while (match) {
-		try {
-			// Decode as big chunks as possible
-			replaceMap[match[0]] = decodeURIComponent(match[0]);
-		} catch (err) {
-			var result = decode(match[0]);
-
-			if (result !== match[0]) {
-				replaceMap[match[0]] = result;
-			}
-		}
-
-		match = multiMatcher.exec(input);
-	}
-
-	// Add `%C2` at the end of the map to make sure it does not replace the combinator before everything else
-	replaceMap['%C2'] = '\uFFFD';
-
-	var entries = Object.keys(replaceMap);
-
-	for (var i = 0; i < entries.length; i++) {
-		// Replace all decoded components
-		var key = entries[i];
-		input = input.replace(new RegExp(key, 'g'), replaceMap[key]);
-	}
-
-	return input;
-}
-
-module.exports = function (encodedURI) {
-	if (typeof encodedURI !== 'string') {
-		throw new TypeError('Expected `encodedURI` to be of type `string`, got `' + typeof encodedURI + '`');
-	}
-
-	try {
-		encodedURI = encodedURI.replace(/\+/g, ' ');
-
-		// Try the built in decoder first
-		return decodeURIComponent(encodedURI);
-	} catch (err) {
-		// Fallback to a more advanced decoder
-		return customDecodeURIComponent(encodedURI);
-	}
-};
-
-
-/***/ }),
-/* 907 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _queryString = __webpack_require__(884);
-
-var _queryString2 = _interopRequireDefault(_queryString);
-
-var _moment = __webpack_require__(2);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = (() => {
-  var _ref = _asyncToGenerator(function* (data, channel) {
-    let highestValue = 0;
-
-    data.forEach(function (item) {
-      if (item.financialReport && item.financialReport.analysis && item.financialReport.analysis.taxlessTotal > highestValue) {
-        highestValue = item.financialReport.analysis.taxlessTotal;
-      }
-    });
-
-    let chartData = [[data.map(function (item) {
-      if (item.financialReport && item.financialReport.analysis) {
-        return (item.financialReport.analysis.profit / highestValue * 100).toFixed(1);
-      } else {
-        return 0;
-      }
-    })], [data.map(function (item) {
-      if (item.financialReport && item.financialReport.analysis) {
-        return (item.financialReport.analysis.profitRent / highestValue * 100).toFixed(1);
-      } else {
-        return (item.special.rentIncome / highestValue * 100).toFixed(1);
-      }
-    })], [data.map(function (item) {
-      return (item.special.indirectCost / highestValue * 100).toFixed(1);
-    })], [data.map(function (item) {
-      return (item.special.dailyTotalCost / highestValue * 100).toFixed(1);
-    })], [data.map(function (item) {
-      if (item.financialReport && item.financialReport.analysis) {
-        return (item.financialReport.analysis.taxlessTotal / highestValue * 100).toFixed(1);
-      } else {
-        return 0;
-      }
-    })]];
-
-    chartData = chartData.map(function (value) {
-      return value.join(',');
-    });
-
-    chartData = chartData.join('|');
-
-    let fR = data[data.length - 1].financialReport;
-    let labels = data.map(function (item) {
-      let date = item.date.date;
-      let dateString = (0, _moment2.default)(date).format('DD-MMM');
-
-      let value = item && item.financialReport && item.financialReport.analysis && item.financialReport.analysis.taxlessTotal.toFixed(0);
-      return `${dateString}: ${value || '0'}`;
-    });
-
-    labels = labels.join('|');
-
-    let bar = {
-      chtt: 'Inkomsten',
-      chts: '000000,30,r',
-      chs: '999x600',
-      cht: 'ls',
-      chd: `t:${chartData}`,
-      chco: '2ed573,2ed573,ff4757,ff4757,a4b0be',
-      chm: 'B,a4b0be66,4,4,4|B,ff475766,2,2,2|B,2ed573BB,0,0,0',
-      chxl: `0:|${labels}`,
-      chxt: 'x',
-      chls: '5|2,10,10|5|2,10,10|5',
-      chdl: `B.Resultaat (${fR.analysis.totalProfit.toFixed(0)})  |B.Resultaat met Gebouwen (${fR.analysis.totalProfitPlusRent.toFixed(0)})  |Kosten (${fR.analysis.totalCost.toFixed(0)})  |Kosten met Leningen (${fR.analysis.totalCostPlusLoans.toFixed(0)})  |Omzet (${fR.analysis.totalRevenue.toFixed(0)})  `
-    };
-
-    let chartUrl = 'https://image-charts.com/chart?' + _queryString2.default.stringify(bar);
-    return chartUrl;
-  });
-
-  return function (_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-})();
-
-/***/ }),
+/* 901 */,
+/* 902 */,
+/* 903 */,
+/* 904 */,
+/* 905 */,
+/* 906 */,
+/* 907 */,
 /* 908 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -38811,37 +37725,13 @@ var _fs = __webpack_require__(31);
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _lightspeedSalesToSoldItems = __webpack_require__(890);
+var _soldItems = __webpack_require__(1065);
 
-var _lightspeedSalesToSoldItems2 = _interopRequireDefault(_lightspeedSalesToSoldItems);
+var _soldItems2 = _interopRequireDefault(_soldItems);
 
-var _lightspeedSalesToFinancialReport = __webpack_require__(896);
+var _starburst = __webpack_require__(1066);
 
-var _lightspeedSalesToFinancialReport2 = _interopRequireDefault(_lightspeedSalesToFinancialReport);
-
-var _lightspeedItemsToCategoryReport = __webpack_require__(897);
-
-var _lightspeedItemsToCategoryReport2 = _interopRequireDefault(_lightspeedItemsToCategoryReport);
-
-var _lightspeedItemsToWeightedCategoryReport = __webpack_require__(968);
-
-var _lightspeedItemsToWeightedCategoryReport2 = _interopRequireDefault(_lightspeedItemsToWeightedCategoryReport);
-
-var _lightspeedItemsToArticleReport = __webpack_require__(901);
-
-var _lightspeedItemsToArticleReport2 = _interopRequireDefault(_lightspeedItemsToArticleReport);
-
-var _dayReportsToDayReportsSpecials = __webpack_require__(902);
-
-var _dayReportsToDayReportsSpecials2 = _interopRequireDefault(_dayReportsToDayReportsSpecials);
-
-var _createChartCategory = __webpack_require__(903);
-
-var _createChartCategory2 = _interopRequireDefault(_createChartCategory);
-
-var _createChartIncome = __webpack_require__(907);
-
-var _createChartIncome2 = _interopRequireDefault(_createChartIncome);
+var _starburst2 = _interopRequireDefault(_starburst);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38861,8 +37751,8 @@ exports.handler = (() => {
       let items = JSON.parse(_fs2.default.readFileSync('./static/data/items.json'));
       let categories = JSON.parse(_fs2.default.readFileSync('./static/data/categories.json'));
 
-      let soldItems = (0, _lightspeedSalesToSoldItems2.default)(sales);
-      let nestedCategories = (0, _lightspeedItemsToWeightedCategoryReport2.default)(items, soldItems, categories);
+      let soldItems = (0, _soldItems2.default)(sales);
+      let nestedCategories = (0, _starburst2.default)(items, soldItems, categories);
 
       var json = JSON.stringify({ body: { data: nestedCategories } });
       _fs2.default.writeFileSync('./static/data/sunburst.json', json);
@@ -38883,206 +37773,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 968 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _lodash = __webpack_require__(9);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _deepmerge = __webpack_require__(969);
-
-var _deepmerge2 = _interopRequireDefault(_deepmerge);
-
-var _d3Scale = __webpack_require__(970);
-
-var _d3Color = __webpack_require__(892);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-const util = __webpack_require__(32);
-
-exports.default = (items, soldItems, categories) => {
-  let itemsHashed = {};
-  items.forEach(i => {
-    itemsHashed[i.itemID] = i;
-  });
-
-  let soldItemsHashed = {};
-  soldItems.forEach(i => {
-    if (soldItemsHashed[i.id]) {
-      soldItemsHashed[i.id] = {
-        itemID: i.id,
-        statistics: {
-          totalSold: soldItemsHashed[i.id].statistics.totalSold + i.quantity,
-          totalRevenue: soldItemsHashed[i.id].statistics.totalRevenue + i.value,
-          valueWithTax: soldItemsHashed[i.id].statistics.valueWithTax + i.valueWithTax
-        }
-      };
-    } else {
-      soldItemsHashed[i.id] = {
-        itemID: i.id,
-        statistics: {
-          totalSold: i.quantity,
-          totalRevenue: i.value,
-          valueWithTax: i.valueWithTax
-        }
-      };
-    }
-  });
-
-  let itemsMerged = _lodash2.default.map(soldItemsHashed, i => {
-    // Setting up item id for merge
-    return _extends({
-      // ...itemsHashed[i.itemID],
-      categoryID: itemsHashed[i.itemID] ? itemsHashed[i.itemID].categoryID : undefined,
-      description: itemsHashed[i.itemID] ? itemsHashed[i.itemID].description : undefined
-    }, i);
-  });
-
-  // Setting up flare
-  categories.push({
-    name: 'Totaal',
-    categoryID: '0',
-    nodeDepth: '-1',
-    parentID: '-1',
-    color: (0, _d3Color.color)('hsl(0, 0%, 90%)').hex()
-  });
-
-  // Setting up special categories
-  categories.push({
-    name: 'Speciale Categorieën',
-    categoryID: '564783984726582904875634528',
-    nodeDepth: '0',
-    parentID: '0',
-    color: (0, _d3Color.color)('hsl(0, 0%, 80%)').hex()
-  });
-  categories.push({
-    name: 'Ongecategoriseerd',
-    categoryID: '5647839847265829048756345287349563495768943075',
-    nodeDepth: '1',
-    parentID: '564783984726582904875634528',
-    color: (0, _d3Color.color)('hsl(0, 0%, 70%)').hex()
-  });
-  categories.push({
-    name: 'Diversen',
-    categoryID: '56478398472658290487563452882634782364',
-    nodeDepth: '1',
-    parentID: '564783984726582904875634528',
-    color: (0, _d3Color.color)('hsl(0, 0%, 60%)').hex()
-  });
-  categories.push({
-    name: 'Onbekend',
-    categoryID: '5647839847265829048756345288263478236492873489',
-    nodeDepth: '1',
-    parentID: '564783984726582904875634528',
-    color: (0, _d3Color.color)('hsl(0, 0%, 50%)').hex()
-  });
-
-  // Preparing the categories to avoid checks
-  categories = _lodash2.default.map(categories, c => {
-    return _extends({}, c, {
-      statistics: {
-        totalSold: 0,
-        totalRevenue: 0
-      },
-      statisticsCat: {
-        totalSold: 0,
-        totalRevenue: 0
-      },
-      statisticsSub: {
-        totalSold: 0,
-        totalRevenue: 0
-      },
-      children: [],
-      items: {}
-    });
-  });
-
-  // Weighting the categories
-  _lodash2.default.forEach(itemsMerged, i => {
-    let key;
-    if (i.itemID !== '0' && i.categoryID !== '0' && i.categoryID !== undefined) {
-      key = _lodash2.default.findKey(categories, { categoryID: i.categoryID });
-    } else if (i.itemID === '0') {
-      key = _lodash2.default.findKey(categories, {
-        categoryID: '56478398472658290487563452882634782364'
-      });
-    } else if (i.categoryID === '0') {
-      key = _lodash2.default.findKey(categories, {
-        categoryID: '5647839847265829048756345287349563495768943075'
-      });
-    } else {
-      key = _lodash2.default.findKey(categories, {
-        categoryID: '5647839847265829048756345288263478236492873489'
-      });
-    }
-
-    categories[key].statisticsCat = {
-      totalSold: categories[key].statisticsCat.totalSold + i.statistics.totalSold,
-      totalRevenue: categories[key].statisticsCat.totalRevenue + i.statistics.totalRevenue
-    };
-
-    categories[key].items = _extends({}, categories[key].items, {
-      [i.itemID]: i
-    });
-  });
-
-  // Setup colors and rootCategories
-  let vizcolors = ['hsl(151, 100%, 42%)', 'hsl(42, 100%, 50%)', 'hsl(204, 100%, 43%)', 'hsl(0, 0%, 80%)'];
-  let rootCategories = _lodash2.default.map(_lodash2.default.filter(categories, { nodeDepth: '0' }), (rc, k) => {
-    rc.colorRange = (0, _d3Color.color)(vizcolors[k]);
-    return rc;
-  });
-
-  categories = _lodash2.default.map(categories, c => {
-    return _extends({}, c, {
-      statisticsSub: _extends(c.statisticsCat)
-    });
-  });
-
-  // Nesting the categories
-  let sortedCategories = _lodash2.default.sortBy(categories, 'nodeDepth').reverse();
-  _lodash2.default.forEach(sortedCategories, c => {
-    // Assign color
-    _lodash2.default.map(rootCategories, rc => {
-      if (parseInt(rc.leftNode) <= parseInt(c.leftNode) && parseInt(rc.rightNode) >= parseInt(c.rightNode)) {
-        let colorBrightness = (parseInt(c.leftNode) - parseInt(rc.leftNode)) / (parseInt(rc.rightNode) - parseInt(rc.leftNode));
-        c.color = rc.colorRange.brighter(colorBrightness * 1.6).hex();
-      }
-    });
-
-    // Do nesting
-    let parentKey = _lodash2.default.findKey(sortedCategories, { categoryID: c.parentID });
-    if (c.parentID > -1) {
-      c.children = [...c.children, ..._lodash2.default.map(c.items, i => {
-        i.name = i.description;
-        i.color = c.color;
-        return i;
-      })];
-      c.items = {};
-      sortedCategories[parentKey].children = [...sortedCategories[parentKey].children, c];
-      sortedCategories[parentKey].statisticsSub = {
-        totalSold: sortedCategories[parentKey].statisticsSub.totalSold + c.statisticsSub.totalSold,
-        totalRevenue: sortedCategories[parentKey].statisticsSub.totalRevenue + c.statisticsSub.totalRevenue
-      };
-    }
-  });
-
-  let nestedCategories = _lodash2.default.filter(sortedCategories, { nodeDepth: '-1' });
-  return nestedCategories[0];
-};
-
-/***/ }),
+/* 968 */,
 /* 969 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -41674,6 +40365,274 @@ function sequential(interpolator) {
   return Object(__WEBPACK_IMPORTED_MODULE_0__linear__["b" /* linearish */])(scale);
 }
 
+
+/***/ }),
+/* 1041 */,
+/* 1042 */,
+/* 1043 */,
+/* 1044 */,
+/* 1045 */,
+/* 1046 */,
+/* 1047 */,
+/* 1048 */,
+/* 1049 */,
+/* 1050 */,
+/* 1051 */,
+/* 1052 */,
+/* 1053 */,
+/* 1054 */,
+/* 1055 */,
+/* 1056 */,
+/* 1057 */,
+/* 1058 */,
+/* 1059 */,
+/* 1060 */,
+/* 1061 */,
+/* 1062 */,
+/* 1063 */,
+/* 1064 */,
+/* 1065 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _lodash = __webpack_require__(9);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = sales => {
+  let items = [];
+  _lodash2.default.map(sales, (sale, saleID) => {
+    if (sale.completed == 'true' && sale.SaleLines) {
+      if (Array.isArray(sale.SaleLines.SaleLine)) {
+        _lodash2.default.map(sale.SaleLines.SaleLine, (line, lineID) => {
+          items.push({
+            id: line.itemID,
+            value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
+            valueWithTax: parseFloat(line.calcTotal),
+            quantity: parseFloat(line.unitQuantity)
+          });
+        });
+      } else {
+        let line = sale.SaleLines.SaleLine;
+        items.push({
+          id: line.itemID,
+          value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
+          valueWithTax: parseFloat(line.calcTotal),
+          quantity: parseFloat(line.unitQuantity)
+        });
+      }
+    }
+  });
+  return items;
+};
+
+/***/ }),
+/* 1066 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _lodash = __webpack_require__(9);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _deepmerge = __webpack_require__(969);
+
+var _deepmerge2 = _interopRequireDefault(_deepmerge);
+
+var _d3Scale = __webpack_require__(970);
+
+var _d3Color = __webpack_require__(892);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const util = __webpack_require__(32);
+
+exports.default = (items, soldItems, categories) => {
+  let itemsHashed = {};
+  items.forEach(i => {
+    itemsHashed[i.itemID] = i;
+  });
+
+  let soldItemsHashed = {};
+  soldItems.forEach(i => {
+    if (soldItemsHashed[i.id]) {
+      soldItemsHashed[i.id] = {
+        itemID: i.id,
+        statistics: {
+          totalSold: soldItemsHashed[i.id].statistics.totalSold + i.quantity,
+          totalRevenue: soldItemsHashed[i.id].statistics.totalRevenue + i.value,
+          valueWithTax: soldItemsHashed[i.id].statistics.valueWithTax + i.valueWithTax
+        }
+      };
+    } else {
+      soldItemsHashed[i.id] = {
+        itemID: i.id,
+        statistics: {
+          totalSold: i.quantity,
+          totalRevenue: i.value,
+          valueWithTax: i.valueWithTax
+        }
+      };
+    }
+  });
+
+  let itemsMerged = _lodash2.default.map(soldItemsHashed, i => {
+    // Setting up item id for merge
+    return _extends({
+      // ...itemsHashed[i.itemID],
+      categoryID: itemsHashed[i.itemID] ? itemsHashed[i.itemID].categoryID : undefined,
+      description: itemsHashed[i.itemID] ? itemsHashed[i.itemID].description : undefined
+    }, i);
+  });
+
+  // Setting up flare
+  categories.push({
+    name: 'Totaal',
+    categoryID: '0',
+    nodeDepth: '-1',
+    parentID: '-1',
+    color: (0, _d3Color.color)('hsl(0, 0%, 90%)').hex()
+  });
+
+  // Setting up special categories
+  categories.push({
+    name: 'Speciale Categorieën',
+    categoryID: '564783984726582904875634528',
+    nodeDepth: '0',
+    parentID: '0',
+    color: (0, _d3Color.color)('hsl(0, 0%, 80%)').hex()
+  });
+  categories.push({
+    name: 'Ongecategoriseerd',
+    categoryID: '5647839847265829048756345287349563495768943075',
+    nodeDepth: '1',
+    parentID: '564783984726582904875634528',
+    color: (0, _d3Color.color)('hsl(0, 0%, 70%)').hex()
+  });
+  categories.push({
+    name: 'Diversen',
+    categoryID: '56478398472658290487563452882634782364',
+    nodeDepth: '1',
+    parentID: '564783984726582904875634528',
+    color: (0, _d3Color.color)('hsl(0, 0%, 60%)').hex()
+  });
+  categories.push({
+    name: 'Onbekend',
+    categoryID: '5647839847265829048756345288263478236492873489',
+    nodeDepth: '1',
+    parentID: '564783984726582904875634528',
+    color: (0, _d3Color.color)('hsl(0, 0%, 50%)').hex()
+  });
+
+  // Preparing the categories to avoid checks
+  categories = _lodash2.default.map(categories, c => {
+    return _extends({}, c, {
+      statistics: {
+        totalSold: 0,
+        totalRevenue: 0
+      },
+      statisticsCat: {
+        totalSold: 0,
+        totalRevenue: 0
+      },
+      statisticsSub: {
+        totalSold: 0,
+        totalRevenue: 0
+      },
+      children: [],
+      items: {}
+    });
+  });
+
+  // Weighting the categories
+  _lodash2.default.forEach(itemsMerged, i => {
+    let key;
+    if (i.itemID !== '0' && i.categoryID !== '0' && i.categoryID !== undefined) {
+      key = _lodash2.default.findKey(categories, { categoryID: i.categoryID });
+    } else if (i.itemID === '0') {
+      key = _lodash2.default.findKey(categories, {
+        categoryID: '56478398472658290487563452882634782364'
+      });
+    } else if (i.categoryID === '0') {
+      key = _lodash2.default.findKey(categories, {
+        categoryID: '5647839847265829048756345287349563495768943075'
+      });
+    } else {
+      key = _lodash2.default.findKey(categories, {
+        categoryID: '5647839847265829048756345288263478236492873489'
+      });
+    }
+
+    categories[key].statisticsCat = {
+      totalSold: categories[key].statisticsCat.totalSold + i.statistics.totalSold,
+      totalRevenue: categories[key].statisticsCat.totalRevenue + i.statistics.totalRevenue
+    };
+
+    categories[key].items = _extends({}, categories[key].items, {
+      [i.itemID]: i
+    });
+  });
+
+  // Setup colors and rootCategories
+  let vizcolors = ['hsl(151, 100%, 42%)', 'hsl(42, 100%, 50%)', 'hsl(204, 100%, 43%)', 'hsl(0, 0%, 80%)'];
+  let rootCategories = _lodash2.default.map(_lodash2.default.filter(categories, { nodeDepth: '0' }), (rc, k) => {
+    rc.colorRange = (0, _d3Color.color)(vizcolors[k]);
+    return rc;
+  });
+
+  categories = _lodash2.default.map(categories, c => {
+    return _extends({}, c, {
+      statisticsSub: _extends(c.statisticsCat)
+    });
+  });
+
+  // Nesting the categories
+  let sortedCategories = _lodash2.default.sortBy(categories, 'nodeDepth').reverse();
+  _lodash2.default.forEach(sortedCategories, c => {
+    // Assign color
+    _lodash2.default.map(rootCategories, rc => {
+      if (parseInt(rc.leftNode) <= parseInt(c.leftNode) && parseInt(rc.rightNode) >= parseInt(c.rightNode)) {
+        let colorBrightness = (parseInt(c.leftNode) - parseInt(rc.leftNode)) / (parseInt(rc.rightNode) - parseInt(rc.leftNode));
+        c.color = rc.colorRange.brighter(colorBrightness * 1.6).hex();
+      }
+    });
+
+    // Do nesting
+    let parentKey = _lodash2.default.findKey(sortedCategories, { categoryID: c.parentID });
+    if (c.parentID > -1) {
+      c.children = [...c.children, ..._lodash2.default.map(c.items, i => {
+        i.name = i.description;
+        i.color = c.color;
+        return i;
+      })];
+      c.items = {};
+      sortedCategories[parentKey].children = [...sortedCategories[parentKey].children, c];
+      sortedCategories[parentKey].statisticsSub = {
+        totalSold: sortedCategories[parentKey].statisticsSub.totalSold + c.statisticsSub.totalSold,
+        totalRevenue: sortedCategories[parentKey].statisticsSub.totalRevenue + c.statisticsSub.totalRevenue
+      };
+    }
+  });
+
+  let nestedCategories = _lodash2.default.filter(sortedCategories, { nodeDepth: '-1' });
+  return nestedCategories[0];
+};
 
 /***/ })
 /******/ ])));

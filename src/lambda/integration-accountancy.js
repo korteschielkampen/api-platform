@@ -1,7 +1,7 @@
 import moment from 'moment'
 
-import createBusinessReport from './action/create-business-report.js'
-import moneybirdCreate from './action/create-moneybird.js'
+import createBusinessReport from './actions/create-business-report.js'
+import moneybirdCreate from './actions/create-moneybird.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {

@@ -4,6 +4,7 @@ import _ from 'lodash'
 import styles from './index.module.css'
 
 import Card from '../components/Card'
+import notify from '../components/Flash/notify.js'
 
 const lambdaURL =
   process.env.NODE_ENV === 'production'
@@ -18,41 +19,16 @@ class IndexPage extends React.Component {
   }
 
   async triggerLambda(action) {
-    console.log('ACTION: ', action.name)
-
     try {
-      this.setState({
-        status: {
-          text: `${action.name} starting`,
-          color: 'grey',
-          sign: 'loading',
-          show: 10,
-        },
-      })
+      this.setState(notify('loading', action))
       const res = await fetch(action.url)
       if (!res.ok) {
         throw await res.json()
       }
       let data = await res.json()
-
-      data.body &&
-        this.setState({
-          status: {
-            text: `${action.name} succesvol`,
-            color: 'green',
-            sign: 'done',
-            show: 2,
-          },
-        })
+      data.body && this.setState(notify('success', action))
     } catch (err) {
-      this.setState({
-        status: {
-          text: `${action.name} ${JSON.stringify(err.body)}`,
-          color: 'red',
-          sign: 'cross',
-          show: 2,
-        },
-      })
+      this.setState(notify('error', action, err))
     }
   }
 

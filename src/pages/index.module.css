@@ -13,37 +13,6 @@
   padding: 1rem 2rem 2rem;
 }
 
-.box {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.buttonContainer {
-  display: flex;
-}
-
-.button {
-  margin: 0 1rem 0 1rem;
-  padding: 2rem 2rem 0;
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  border-bottom: none;
-  outline: 0;
-  transition: all 0.5s ease;
-  cursor: pointer;
-  background-image: radial-gradient(circle at 40px 40px, #c3dbee 0%, #fff 20%);
-  background-size: 100px 100px;
-  background-repeat: no-repeat;
-  font-size: 0.8rem;
-}
-
-.button:hover {
-  background-size: 120px 120px;
-  text-decoration: underline;
-}
-
 .datepickerWrapper {
   display: flex;
   border: solid black 1px;

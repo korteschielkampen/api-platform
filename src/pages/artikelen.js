@@ -90,9 +90,9 @@ class IndexPage extends React.Component {
   render() {
     let selected = this.state.selected
     let hovered = this.state.hovered
-    if (this.state.items) {
-      return (
-        <div className={styles.container}>
+    return (
+      <div className={styles.container}>
+        {this.state.items && (
           <div className={styles.content}>
             <Breadcrumbs selected={hovered || selected} />
             <div className={styles.starburstContainer}>
@@ -128,7 +128,9 @@ class IndexPage extends React.Component {
               </div>
             </div>
           </div>
+        )}
 
+        {this.state.items && (
           <div className={styles.content}>
             {this.determineCategories(selected) && [
               <h3 key="0">Subcategorieën:</h3>,
@@ -167,17 +169,9 @@ class IndexPage extends React.Component {
               </div>,
             ]}
           </div>
-        </div>
-      )
-    } else {
-      return (
-        <div className={styles.container}>
-          <div className={styles.content}>
-            <h1>Data aan het ophalen</h1>
-          </div>
-        </div>
-      )
-    }
+        )}
+      </div>
+    )
   }
 }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'lodash'
 
 import styles from './index.module.css'
 
@@ -10,6 +9,29 @@ const lambdaURL =
   process.env.NODE_ENV === 'production'
     ? '/.netlify/functions'
     : '/localhost:9000'
+
+const lambdas = [
+  {
+    text: 'Update sales, items and categories',
+    name: 'updateEverything',
+    url: `${lambdaURL}/algorithm-read`,
+  },
+  {
+    text: 'Tag all items',
+    name: 'tag',
+    url: `${lambdaURL}/algorithm-tag`,
+  },
+  {
+    text: 'Trigger accountancy integration',
+    name: 'accountancy',
+    url: `${lambdaURL}/integration-accountancy`,
+  },
+  {
+    text: 'Trigger report',
+    name: 'report',
+    url: `${lambdaURL}/integration-report`,
+  },
+]
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -38,58 +60,23 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <h1>Configuration</h1>
           <div className={styles.cards}>
-            <div className={styles.cardMedium}>
-              <Card
-                text="Update sales, items and categories"
-                button={{
-                  text: 'Go',
-                  handler: () =>
-                    this.triggerLambda({
-                      name: 'updateEverything',
-                      url: `${lambdaURL}/algorithm-read`,
-                    }),
-                }}
-              />
-            </div>
-            <div className={styles.cardMedium}>
-              <Card
-                text="Tag all items"
-                button={{
-                  text: 'Go',
-                  handler: () =>
-                    this.triggerLambda({
-                      name: 'tag',
-                      url: `${lambdaURL}/algorithm-tag`,
-                    }),
-                }}
-              />
-            </div>
-            <div className={styles.cardMedium}>
-              <Card
-                text="Trigger accountancy integration"
-                button={{
-                  text: 'Go',
-                  handler: () =>
-                    this.triggerLambda({
-                      name: 'accountancy',
-                      url: `${lambdaURL}/integration-accountancy`,
-                    }),
-                }}
-              />
-            </div>
-            <div className={styles.cardMedium}>
-              <Card
-                text="Trigger report"
-                button={{
-                  text: 'Go',
-                  handler: () =>
-                    this.triggerLambda({
-                      name: 'report',
-                      url: `${lambdaURL}/integration-report`,
-                    }),
-                }}
-              />
-            </div>
+            {lambdas.map((lambda, key) => {
+              return (
+                <div key={key} className={styles.cardMedium}>
+                  <Card
+                    text={lambda.text}
+                    button={{
+                      text: 'Go',
+                      handler: () =>
+                        this.triggerLambda({
+                          name: lambda.name,
+                          url: lambda.url,
+                        }),
+                    }}
+                  />
+                </div>
+              )
+            })}
             {this.state.status && (
               <div className={styles.cardBroad}>
                 <Card text={this.state.status.text} />

@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'gatsby-link'
 import queryString from 'query-string'
 
 import styles from './index.module.css'

@@ -34320,8 +34320,8 @@ exports.handler = (() => {
             account_id: account.Account.accountID,
             account_name: account.Account.name,
             account_link: account.Account.link['@attributes'].href,
-            access_token: token.access_token,
-            refresh_token: token.refresh_token
+            access_token: tokens.access_token,
+            refresh_token: tokens.refresh_token
           });
           console.log('Lightspeed authentication is done');
           break;

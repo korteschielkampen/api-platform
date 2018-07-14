@@ -12,7 +12,7 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Setup variables
-    let datesArray = _.times(3, i => {
+    let datesArray = _.times(31, i => {
       return {
         date: moment()
           .subtract(i, 'days')

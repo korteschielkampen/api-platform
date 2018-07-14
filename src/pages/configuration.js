@@ -10,6 +10,13 @@ const lambdaURL =
     ? '/.netlify/functions'
     : '/localhost:9000'
 
+const apiUrls = {
+  updateEverything: `${lambdaURL}/integration-accountancy`,
+  tag: `${lambdaURL}/algorithm-tag`,
+  accountancy: `${lambdaURL}/algorithm-read`,
+  report: `${lambdaURL}/integration-report`,
+}
+
 class IndexPage extends React.Component {
   constructor(props) {
     super(props)
@@ -18,104 +25,37 @@ class IndexPage extends React.Component {
         text: 'Geen status',
         color: 'grey',
         sign: 'dash',
+        show: 0,
       },
     }
-    this.updateEverything = this.updateEverything.bind(this)
-    this.tagItems = this.tagItems.bind(this)
-    this.triggerAccountancy = this.triggerAccountancy.bind(this)
+    this.trigger = this.trigger.bind(this)
   }
 
-  async updateEverything() {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    const apiUrl = `${lambdaURL}/algorithm-read`
-
+  async trigger(action) {
+    console.log('ACTION: ', action)
     try {
-      const res = await fetch(apiUrl, options)
+      const res = await fetch(apiUrls[action.name])
       if (!res.ok) {
         throw await res.json()
       }
       let data = await res.json()
+
       data.body &&
         this.setState({
           status: {
-            text: `Update succesvol`,
+            text: `${action.name} succesvol`,
             color: 'green',
             sign: 'done',
+            show: 2,
           },
         })
     } catch (err) {
       this.setState({
         status: {
-          text: `Update mislukt: ${JSON.stringify(err.body)}`,
+          text: `${action.name} ${JSON.stringify(err.body)}`,
           color: 'red',
           sign: 'cross',
-        },
-      })
-    }
-  }
-
-  async tagItems() {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    const apiUrl = `${lambdaURL}/algorithm-tag`
-
-    try {
-      const res = await fetch(apiUrl, options)
-      if (!res.ok) {
-        throw await res.json()
-      }
-      let data = await res.json()
-      data.body &&
-        this.setState({
-          status: {
-            text: `Tagging succesvol`,
-            color: 'green',
-            sign: 'done',
-          },
-        })
-    } catch (err) {
-      this.setState({
-        status: {
-          text: `Tagging mislukt: ${JSON.stringify(err.body)}`,
-          color: 'red',
-          sign: 'cross',
-        },
-      })
-    }
-  }
-
-  async triggerAccountancy() {
-    const options = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }
-    const apiUrl = `${lambdaURL}/integration-accountancy`
-
-    try {
-      const res = await fetch(apiUrl, options)
-      if (!res.ok) {
-        throw await res.json()
-      }
-      let data = await res.json()
-      data.body &&
-        this.setState({
-          status: {
-            text: `Accountancy Succesvol`,
-            color: 'green',
-            sign: 'done',
-          },
-        })
-    } catch (err) {
-      this.setState({
-        status: {
-          text: `Accountancy mislukt: ${JSON.stringify(err.body)}`,
-          color: 'red',
-          sign: 'cross',
+          show: 2,
         },
       })
     }
@@ -130,22 +70,42 @@ class IndexPage extends React.Component {
             <div className={styles.cardSmall}>
               <Card
                 text="Update sales, items and categories"
-                button={{ text: 'Go', handler: this.updateEverything }}
+                button={{
+                  text: 'Go',
+                  handler: () => this.trigger({ name: 'updateEverything' }),
+                }}
               />
             </div>
             <div className={styles.cardSmall}>
               <Card
                 text="Tag all items"
-                button={{ text: 'Go', handler: this.tagItems }}
+                button={{
+                  text: 'Go',
+                  handler: () => this.trigger({ name: 'tag' }),
+                }}
               />
             </div>
             <div className={styles.cardSmall}>
               <Card
                 text="Trigger accountancy integration"
-                button={{ text: 'Go', handler: this.triggerAccountancy }}
+                button={{
+                  text: 'Go',
+                  handler: () => this.trigger({ name: 'accountancy' }),
+                }}
               />
             </div>
-            <Card text={this.state.status.text} />
+            <div className={styles.cardSmall}>
+              <Card
+                text="Trigger report"
+                button={{
+                  text: 'Go',
+                  handler: () => this.trigger({ name: 'report' }),
+                }}
+              />
+            </div>
+            <div className={styles.cardBroad}>
+              <Card text={this.state.status.text} />
+            </div>
           </div>
         </div>
       </div>

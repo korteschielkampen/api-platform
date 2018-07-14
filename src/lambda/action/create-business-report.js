@@ -17,7 +17,7 @@ import createChartCategory from './create-chart-category.js'
 import createChartIncome from './create-chart-income.js'
 
 import createMessage from '../api/slack/create-message.js'
-import createDayReport from '../models/rapporten/day.js'
+import createDayReport from '../models/slack/report-sales/'
 
 const businessReportData = async (date, key) => {
   await delay(date.delay)

@@ -1,10 +1,9 @@
 .card {
   display: flex;
   justify-content: space-between;
-  margin: 3%;
   padding: 1rem;
   background: hsl(0, 0%, 95%);
-  width: 97%;
+  width: 100%;
 }
 
 .cardImportant {

@@ -40,24 +40,11 @@ export default ({ charts, financialReport: fR }) => {
           )}\nKrediet: €${parseFloat(fR.payments.credit.amount).toFixed(0)}`,
           short: true,
         },
-        // {
-        //   title: 'Boekhouding:',
-        //   value:
-        //     'Credite.: €xxx.xx\nDebite.: €xxx.xx\nKas: €xxx.xx\nBank: €xxx.xx\nToekomst: €xxx.xx',
-        //   short: true,
-        // },
       ],
 
       color: '#ef3945',
       attachment_type: 'default',
       image_url: charts.financial,
-      // actions: [
-      //   {
-      //     name: 'Button',
-      //     text: 'Voeg kasstorting toe',
-      //     type: 'button',
-      //   },
-      // ],
     },
   ]
 }

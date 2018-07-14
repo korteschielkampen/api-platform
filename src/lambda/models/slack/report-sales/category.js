@@ -123,23 +123,6 @@ export default ({ charts, categoryReport: cR }) => {
       image_url: charts.category,
       color: '#ef3945',
       attachment_type: 'default',
-      // actions: [
-      //   {
-      //     name: 'Button',
-      //     text: 'Aquarium',
-      //     type: 'button',
-      //   },
-      //   {
-      //     name: 'Button',
-      //     text: 'Hengelsport',
-      //     type: 'button',
-      //   },
-      //   {
-      //     name: 'Button',
-      //     text: 'Dierenspeciaalzaak',
-      //     type: 'button',
-      //   },
-      // ],
     },
   ]
 }

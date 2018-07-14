@@ -75,11 +75,13 @@
 }
 
 .cardSmall {
-  width: 25%;
+  width: 23%;
+  margin: 1%;
 }
 
 .cardBroad {
-  width: 100%;
+  width: 99%;
+  margin: 1%;
 }
 
 .starburstContainer {

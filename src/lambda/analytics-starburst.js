@@ -11,9 +11,6 @@ import createSpecialDayReports from './transformation/day-reports--to--day-repor
 import createChartCategory from './action/create-chart-category.js'
 import createChartIncome from './action/create-chart-income.js'
 
-import createMessage from './api/slack/create-message.js'
-import createDayReport from './models/rapporten/day.js'
-
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
     callback(null, {

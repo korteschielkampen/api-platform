@@ -101,7 +101,6 @@ class IndexPage extends React.Component {
       if (!res.ok) {
         throw await res.json()
       }
-      console.log('success')
       let data = await res.json()
       data.body &&
         this.setState({
@@ -112,7 +111,6 @@ class IndexPage extends React.Component {
           },
         })
     } catch (err) {
-      console.log('error')
       this.setState({
         status: {
           text: `Accountancy mislukt: ${JSON.stringify(err.body)}`,

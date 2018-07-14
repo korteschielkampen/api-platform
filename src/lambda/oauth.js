@@ -57,6 +57,7 @@ exports.handler = async (event, context, callback) => {
         break
       default:
         console.log('Onbekende oauth provider')
+        throw { message: 'Platform: Onbekende oauth provider' }
     }
 
     respond({ status: 200, body: { message: 'succes' } })

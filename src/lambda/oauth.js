@@ -15,7 +15,7 @@ exports.handler = async (event, context, callback) => {
 
   try {
     let oauth = event.queryStringParameters
-    let token, auth
+    let tokens, account
     switch (oauth.state) {
       case 'Moneybird':
         console.log('Moneybird authentication is starting')
@@ -31,8 +31,8 @@ exports.handler = async (event, context, callback) => {
         break
       case 'Lightspeed':
         console.log('Lightspeed authentication is starting')
-        token = await LightspeedCreateToken(oauth.code)
-        account = await LightspeedReadAccount(token.access_token)
+        tokens = await LightspeedCreateToken(oauth.code)
+        account = await LightspeedReadAccount(tokens.access_token)
         await updateDynamo({
           account_id: account.Account.accountID,
           account_name: account.Account.name,

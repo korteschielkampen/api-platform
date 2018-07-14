@@ -38,7 +38,6 @@ class IndexPage extends React.Component {
         throw await res.json()
       }
       let data = await res.json()
-
       data.body &&
         this.setState({
           status: {
@@ -71,7 +70,6 @@ class IndexPage extends React.Component {
         throw await res.json()
       }
       let data = await res.json()
-
       data.body &&
         this.setState({
           status: {
@@ -103,6 +101,8 @@ class IndexPage extends React.Component {
       if (!res.ok) {
         throw await res.json()
       }
+      console.log('success')
+      let data = await res.json()
       data.body &&
         this.setState({
           status: {
@@ -112,6 +112,7 @@ class IndexPage extends React.Component {
           },
         })
     } catch (err) {
+      console.log('error')
       this.setState({
         status: {
           text: `Accountancy mislukt: ${JSON.stringify(err.body)}`,
@@ -131,7 +132,7 @@ class IndexPage extends React.Component {
             <div className={styles.cardSmall}>
               <Card
                 text="Update sales, items and categories"
-                button={{ handler: this.updateEverything, text: 'Go' }}
+                button={{ text: 'Go', handler: this.updateEverything }}
               />
             </div>
             <div className={styles.cardSmall}>

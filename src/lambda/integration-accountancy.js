@@ -33,7 +33,7 @@ exports.handler = async (event, context, callback) => {
 
     let postSlack = {
       post: false,
-      channel: 'CAPCPRW6B',
+      channel: 'G8ZUNLXC5',
     }
 
     // Generate business reports by day

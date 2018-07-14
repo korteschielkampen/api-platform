@@ -34298,7 +34298,7 @@ exports.handler = (() => {
 
     try {
       let oauth = event.queryStringParameters;
-      let token, auth;
+      let tokens, account;
       switch (oauth.state) {
         case 'Moneybird':
           console.log('Moneybird authentication is starting');
@@ -34314,8 +34314,8 @@ exports.handler = (() => {
           break;
         case 'Lightspeed':
           console.log('Lightspeed authentication is starting');
-          token = yield (0, _createToken4.default)(oauth.code);
-          account = yield (0, _readAccount2.default)(token.access_token);
+          tokens = yield (0, _createToken4.default)(oauth.code);
+          account = yield (0, _readAccount2.default)(tokens.access_token);
           yield (0, _update2.default)({
             account_id: account.Account.accountID,
             account_name: account.Account.name,

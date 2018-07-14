@@ -34378,7 +34378,7 @@ exports.default = (() => {
     const payload = {
       client_id: process.env.MONEYBIRD_CLIENT,
       client_secret: process.env.MONEYBIRD_SECRET,
-      redirect_uri: encodeURI('https://integration-platform.korteschielkampen.nl/moneybird-redirect/'),
+      redirect_uri: encodeURI('https://integration-platform.korteschielkampen.nl/oauth/'),
       code: temporary_access_token,
       grant_type: 'authorization_code'
     };
@@ -34536,7 +34536,7 @@ exports.default = (() => {
   var _ref = _asyncToGenerator(function* (temporary_access_token) {
     const client_id = process.env.SLACK_CLIENT;
     const client_secret = process.env.SLACK_SECRET;
-    const redirect_uri = encodeURI('https://integration-platform.korteschielkampen.nl/slack-redirect/');
+    const redirect_uri = encodeURI('https://integration-platform.korteschielkampen.nl/oauth/');
 
     const options = {
       method: 'GET',

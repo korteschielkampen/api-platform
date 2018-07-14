@@ -4,7 +4,9 @@ export default async temporary_access_token => {
   const payload = {
     client_id: process.env.MONEYBIRD_CLIENT,
     client_secret: process.env.MONEYBIRD_SECRET,
-    redirect_uri: encodeURI('https://integration-platform.korteschielkampen.nl/moneybird-redirect/'),
+    redirect_uri: encodeURI(
+      'https://integration-platform.korteschielkampen.nl/oauth/'
+    ),
     code: temporary_access_token,
     grant_type: 'authorization_code',
   }

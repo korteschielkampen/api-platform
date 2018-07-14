@@ -14,13 +14,15 @@ class IndexPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      items: {},
-      current: {},
-      status: "Haven't done anything yet",
-      statusColor: 'lightgrey',
+      status: {
+        text: 'Geen status',
+        color: 'grey',
+        sign: 'dash',
+      },
     }
     this.updateEverything = this.updateEverything.bind(this)
     this.tagItems = this.tagItems.bind(this)
+    this.triggerAccountancy = this.triggerAccountancy.bind(this)
   }
 
   async updateEverything() {
@@ -39,13 +41,19 @@ class IndexPage extends React.Component {
 
       data.body &&
         this.setState({
-          status: 'Succesvol items opgehaald',
-          statusColor: 'lightgreen',
+          status: {
+            text: `Update succesvol`,
+            color: 'green',
+            sign: 'done',
+          },
         })
     } catch (err) {
       this.setState({
-        status: `${JSON.stringify(err.body)}`,
-        statusColor: 'red',
+        status: {
+          text: `Update mislukt: ${JSON.stringify(err.body)}`,
+          color: 'red',
+          sign: 'cross',
+        },
       })
     }
   }
@@ -66,13 +74,50 @@ class IndexPage extends React.Component {
 
       data.body &&
         this.setState({
-          status: 'Succesvol items opgehaald',
-          statusColor: 'lightgreen',
+          status: {
+            text: `Tagging succesvol`,
+            color: 'green',
+            sign: 'done',
+          },
         })
     } catch (err) {
       this.setState({
-        status: `${JSON.stringify(err.body)}`,
-        statusColor: 'red',
+        status: {
+          text: `Tagging mislukt: ${JSON.stringify(err.body)}`,
+          color: 'red',
+          sign: 'cross',
+        },
+      })
+    }
+  }
+
+  async triggerAccountancy() {
+    const options = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    const apiUrl = `${lambdaURL}/integration-accountancy`
+
+    try {
+      const res = await fetch(apiUrl, options)
+      if (!res.ok) {
+        throw await res.json()
+      }
+      data.body &&
+        this.setState({
+          status: {
+            text: `Accountancy Succesvol`,
+            color: 'green',
+            sign: 'done',
+          },
+        })
+    } catch (err) {
+      this.setState({
+        status: {
+          text: `Accountancy mislukt: ${JSON.stringify(err.body)}`,
+          color: 'red',
+          sign: 'cross',
+        },
       })
     }
   }
@@ -81,7 +126,7 @@ class IndexPage extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <h1>Oauth</h1>
+          <h1>Configuration</h1>
           <div className={styles.cards}>
             <div className={styles.cardSmall}>
               <Card
@@ -95,6 +140,13 @@ class IndexPage extends React.Component {
                 button={{ text: 'Go', handler: this.tagItems }}
               />
             </div>
+            <div className={styles.cardSmall}>
+              <Card
+                text="Trigger accountancy integration"
+                button={{ text: 'Go', handler: this.triggerAccountancy }}
+              />
+            </div>
+            <Card text={this.state.status.text} />
           </div>
         </div>
       </div>

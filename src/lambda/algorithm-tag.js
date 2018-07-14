@@ -8,7 +8,7 @@ import readItems from './api/lightspeed/read-items.js'
 import updateItems from './action/update-items.js'
 import createSoldItems from './transformation/lightspeed-sales--to--sold-items.js'
 
-const addTag = (items, tag) => {
+const addTagToItems = (items, tag) => {
   let newTag = tag
   let itemsToBeUpdated = []
   _.forEach(items, item => {
@@ -70,7 +70,7 @@ const mergeSalesAndItems = (items, soldItems) => {
     itemsHashed[i.itemID] = i
   })
 
-  let itemsMerged = _.map(soldItemsHashed, i => {
+  return _.map(soldItemsHashed, i => {
     return {
       ...itemsHashed[i.itemID],
       ...i,
@@ -98,7 +98,7 @@ exports.handler = async (event, context, callback) => {
     itemsWithStats.splice(_.findIndex(itemsWithStats, { itemID: '0' }), 1)
 
     // Add tags
-    let itemsToBeUpdated = addTag(itemsWithStats, 'verkocht2018')
+    let itemsToBeUpdated = addTagToItems(itemsWithStats, 'verkocht2018')
 
     // Upload items
     await updateItems(itemsToBeUpdated)

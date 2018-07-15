@@ -21,7 +21,6 @@ exports.handler = async (event, context, callback) => {
 
     let starburstData = createStarburst(sales, items, categories)
 
-    // console.log(util.inspect(starburstData, { colors: true, depth: 3 }))
     // Storing the file locally, which is then pushed up to the live version
     // -> Need to build in S3 storage or a more permanent solution.
     // -> Might be interesting to build my own GraphQL Apollo endpoint.

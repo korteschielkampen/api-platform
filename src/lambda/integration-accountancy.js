@@ -19,7 +19,6 @@ exports.handler = async (event, context, callback) => {
     It'll need to take:
     1. Dates array, which preferrable needs to be validated
     2. Needs to a boolean, which decides wether or not to activate Moneybird
-
     */
 
     // Setup date

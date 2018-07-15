@@ -60,8 +60,10 @@ class IndexPage extends React.Component {
   }
 
   sortingFunction(prev, next) {
-    if (next.statisticsSub) {
-      return next.statisticsSub.totalRevenue - prev.statisticsSub.totalRevenue
+    if (next.statisticsNested) {
+      return (
+        next.statisticsNested.totalRevenue - prev.statisticsNested.totalRevenue
+      )
     } else {
       return next.statistics.totalRevenue - prev.statistics.totalRevenue
     }
@@ -107,7 +109,8 @@ class IndexPage extends React.Component {
                     <Card
                       name={selected.data.name}
                       statistics={
-                        selected.data.statisticsSub || selected.data.statistics
+                        selected.data.statisticsNested ||
+                        selected.data.statistics
                       }
                       type="statistics"
                     />
@@ -119,7 +122,7 @@ class IndexPage extends React.Component {
                     <Card
                       name={hovered.data.name}
                       statistics={
-                        hovered.data.statisticsSub || hovered.data.statistics
+                        hovered.data.statisticsNested || hovered.data.statistics
                       }
                       type="statistics"
                     />
@@ -140,7 +143,7 @@ class IndexPage extends React.Component {
                     <div className={styles.cardSmall} key={key}>
                       <Card
                         name={value.name}
-                        statistics={value.statisticsSub}
+                        statistics={value.statisticsNested}
                         type="statistics"
                       />
                     </div>

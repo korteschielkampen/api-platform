@@ -11,8 +11,19 @@ const TemplateWrapper = ({ data, children }) => (
     <Helmet
       title={data.site.siteMetadata.title}
       meta={[
-        { name: 'description', content: 'Sample' },
-        { name: 'keywords', content: 'sample, something' },
+        {
+          name: 'description',
+          content:
+            'Platform waarin integraties en algoritmes beheerd kunnen worden en analytics gebruikt',
+        },
+        { name: 'keywords', content: 'Analytics, integraties, algoritme' },
+      ]}
+      link={[
+        {
+          rel: 'shortcut icon',
+          href: '/static/favicon.png',
+          type: 'image/png',
+        },
       ]}
     />
     <Header siteTitle={data.site.siteMetadata.title} />

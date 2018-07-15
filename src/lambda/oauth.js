@@ -1,4 +1,4 @@
-import authenticate from './actions/oauth.js'
+import authenticate from './actions/authenticate-newuser.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {

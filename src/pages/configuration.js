@@ -12,12 +12,12 @@ const lambdaURL =
 
 const lambdas = [
   {
-    text: 'Update sales, items and categories',
+    text: 'Update sales, items and categories \n (5min)',
     name: 'updateEverything',
     url: `${lambdaURL}/algorithm-read`,
   },
   {
-    text: 'Tag all items',
+    text: "Tag all items. \n (Don't stay up)",
     name: 'tag',
     url: `${lambdaURL}/algorithm-tag`,
   },

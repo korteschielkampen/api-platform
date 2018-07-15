@@ -44,7 +44,11 @@ D3Sunburst.create = (el, data, configuration) => {
 
   let root = d3.hierarchy(data)
   root.sum(function(d) {
-    return d.statistics.totalRevenue
+    if (d.itemID) {
+      return d.statistics.totalRevenue
+    } else {
+      return 0
+    }
   })
 
   svg
@@ -59,11 +63,6 @@ D3Sunburst.create = (el, data, configuration) => {
     .on('click', click)
     .on('mouseover', hover)
     .append('title')
-
-  // Not nice, dubplicates the ammount of nodes
-  // .text(function(d) {
-  //   return d.data.name + '\n' + formatNumber(d.data.statistics.totalRevenue)
-  // })
 
   function click(d) {
     configuration.setParentState({

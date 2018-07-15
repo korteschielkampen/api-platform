@@ -26878,7 +26878,7 @@ module.exports = function(module) {
             try {
                 oldLocale = globalLocale._abbr;
                 var aliasedRequire = require;
-                __webpack_require__(231)("./" + name);
+                __webpack_require__(232)("./" + name);
                 getSetGlobalLocale(oldLocale);
             } catch (e) {}
         }
@@ -29554,7 +29554,7 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 231:
+/***/ 232:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -29819,11 +29819,11 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 231;
+webpackContext.id = 232;
 
 /***/ }),
 
-/***/ 31:
+/***/ 30:
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
@@ -33012,7 +33012,7 @@ module.exports = require("util");
 
 /***/ }),
 
-/***/ 883:
+/***/ 886:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33177,7 +33177,7 @@ exports.default = sales => {
 
 /***/ }),
 
-/***/ 890:
+/***/ 892:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33217,7 +33217,7 @@ exports.default = (soldItems, items, options) => {
 
 /***/ }),
 
-/***/ 891:
+/***/ 893:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33230,7 +33230,7 @@ exports.default = (soldItems, items, options) => {
 /* harmony export (immutable) */ __webpack_exports__["b"] = Rgb;
 /* unused harmony export hslConvert */
 /* harmony export (immutable) */ __webpack_exports__["f"] = hsl;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(892);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(894);
 
 
 function Color() {}
@@ -33576,7 +33576,7 @@ function hsl2rgb(h, m1, m2) {
 
 /***/ }),
 
-/***/ 892:
+/***/ 894:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33683,12 +33683,12 @@ function extend(parent, definition) {
 
 /***/ }),
 
-/***/ 905:
+/***/ 907:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_color__ = __webpack_require__(891);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_color__ = __webpack_require__(893);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "color", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["e"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "rgb", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["g"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "hsl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["f"]; });
@@ -33706,7 +33706,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 906:
+/***/ 908:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33813,7 +33813,7 @@ var _moment = __webpack_require__(2);
 
 var _moment2 = _interopRequireDefault(_moment);
 
-var _fs = __webpack_require__(31);
+var _fs = __webpack_require__(30);
 
 var _fs2 = _interopRequireDefault(_fs);
 
@@ -33878,11 +33878,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _soldItems = __webpack_require__(883);
+var _soldItems = __webpack_require__(886);
 
 var _soldItems2 = _interopRequireDefault(_soldItems);
 
-var _mergedItems = __webpack_require__(890);
+var _mergedItems = __webpack_require__(892);
 
 var _mergedItems2 = _interopRequireDefault(_mergedItems);
 
@@ -33944,7 +33944,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _d3Color = __webpack_require__(905);
+var _d3Color = __webpack_require__(907);
 
 exports.default = [{
   name: 'Winkeltotaal',
@@ -33994,9 +33994,9 @@ exports.default = [{
 /* harmony export (immutable) */ __webpack_exports__["d"] = lch;
 /* harmony export (immutable) */ __webpack_exports__["c"] = hcl;
 /* unused harmony export Hcl */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(892);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(891);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(906);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(894);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(893);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(908);
 
 
 
@@ -34199,9 +34199,9 @@ Object(__WEBPACK_IMPORTED_MODULE_0__define__["a" /* default */])(Hcl, hcl, Objec
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = cubehelix;
 /* unused harmony export Cubehelix */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(892);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(891);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(906);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(894);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(893);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(908);
 
 
 
@@ -34277,7 +34277,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _d3Color = __webpack_require__(905);
+var _d3Color = __webpack_require__(907);
 
 exports.default = categories => {
   let categoryColors = [{ name: 'Hengelsport', categoryID: '221', color: 'hsl(151, 100%, 42%)' }, { name: 'Dierenspeciaal', categoryID: '97', color: 'hsl(42, 100%, 50%)' }, { name: 'Aquarium', categoryID: '98', color: 'hsl(204, 100%, 43%)' }, {

@@ -2,7 +2,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import strictUriEncode from 'strict-uri-encode'
 
-import request from '../general/request.js'
+import request from './request-lightspeed.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
 
 export default async soldItems => {
@@ -25,7 +25,7 @@ export default async soldItems => {
     } else {
       apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Category.json?offset=${offset}`
     }
-    let tempItems = await request(apiUrl, options)
+    let tempItems = await request(apiUrl, options, 1)
     categories = _.concat(categories, tempItems.Category)
     count = parseInt(tempItems['@attributes'].count)
     offset += parseInt(tempItems['@attributes'].limit)

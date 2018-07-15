@@ -14,28 +14,34 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    console.log('-----sales start-----')
-    let sales = await readSales()
-    let json = JSON.stringify(sales)
-    fs.writeFile('./static/data/sales.json', json, 'utf8', () => {
+    // Up front because takes to long
+    respond({
+      status: 200,
+      body: { message: 'request received' },
+    })
+
+    console.log('-----start-----')
+    let sales = readSales()
+    let items = readItems()
+    let categories = readCategories()
+
+    let salesData = JSON.stringify(await sales)
+    fs.writeFile('./static/data/sales.json', salesData, 'utf8', () => {
       console.log('-----sales finnally done-----')
     })
-
-    console.log('-----items start-----')
-    let items = await readItems()
-    json = JSON.stringify(items)
-    fs.writeFile('./static/data/items.json', json, 'utf8', () => {
+    let itemsData = JSON.stringify(await items)
+    fs.writeFile('./static/data/items.json', itemsData, 'utf8', () => {
       console.log('-----items finnally done-----')
     })
-
-    console.log('-----categories start-----')
-    let categories = await readCategories()
-    json = JSON.stringify(categories)
-    fs.writeFile('./static/data/categories.json', json, 'utf8', () => {
-      console.log('-----categories finnally done-----')
-    })
-
-    respond({ status: 200, body: { message: 'succes' } })
+    let categoriesData = JSON.stringify(await categories)
+    fs.writeFile(
+      './static/data/categories.json',
+      categoriesData,
+      'utf8',
+      () => {
+        console.log('-----categories finnally done-----')
+      }
+    )
   } catch (err) {
     console.log(err)
     respond({ status: 422, body: err })

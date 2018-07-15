@@ -2,7 +2,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import strictUriEncode from 'strict-uri-encode'
 
-import request from '../general/request.js'
+import request from './request-lightspeed.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
 import cleanSales from './clean-sales.js'
 
@@ -44,7 +44,7 @@ export default async (startDate, endDate) => {
       apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines","SalePayments"]&offset=${offset}`
     }
 
-    let tempSales = await request(apiUrl, options)
+    let tempSales = await request(apiUrl, options, 1)
     if (tempSales.Sale) {
       sales = _.concat(sales, tempSales.Sale)
     }

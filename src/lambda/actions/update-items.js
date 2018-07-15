@@ -4,14 +4,11 @@ import { promisify } from 'util'
 const pmapLimit = promisify(mapLimit)
 
 import updateItem from '../api/lightspeed/update-item.js'
-import rateLimit from '../api/lightspeed/ratelimit.js'
 
 const uploadItem = async (item, key) => {
   console.log('Item Start:', item.itemID, 'Time:', new Date().toUTCString())
-  let res = await updateItem(item.itemID, item.payload)
-  await rateLimit(res)
-  let json = await res.json()
-  console.log('Item Done: ', await json.Item.itemID)
+  let data = await updateItem(item.itemID, item.payload)
+  console.log('Item Done: ', await data.Item.itemID)
 }
 
 export default async items => {

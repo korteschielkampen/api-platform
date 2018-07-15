@@ -1,8 +1,7 @@
 import _ from 'lodash'
-import { asyncify, map } from 'async'
+import { asyncify, mapLimit } from 'async'
 import { promisify } from 'util'
-const pmap = promisify(map)
-const delay = require('delay')
+const pmapLimit = promisify(mapLimit)
 
 import readSalesDay from '../api/lightspeed/read-sales.js'
 import readItems from '../api/lightspeed/read-items.js'
@@ -17,7 +16,6 @@ import createMessage from '../api/slack/create-message.js'
 import createDayReport from '../models/slack/report-sales/'
 
 const businessReportData = async (date, key) => {
-  await delay(date.delay)
   console.log('Starting: ', date.date)
 
   let sales = await readSalesDay(date.date, date.date)
@@ -61,7 +59,7 @@ const businessReportData = async (date, key) => {
 }
 
 export default async (datesArray, postSlack) => {
-  let dayReports = await pmap(datesArray, asyncify(businessReportData))
+  let dayReports = await pmapLimit(datesArray, 10, asyncify(businessReportData))
 
   dayReports = dayReports.reverse()
 

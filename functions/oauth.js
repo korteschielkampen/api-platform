@@ -8962,7 +8962,7 @@ const ratelimit = (() => {
     let lsdrip = parseFloat(res.headers.get('x-ls-api-drip-rate'));
     let lscost = cost * 10000 / lsdrip;
     let lsdelay = 0;
-    if (lsbucket[0] > lsbucket[1] / 3) {
+    if (lsbucket[0] > lsbucket[1] / 4) {
       lsdelay = Math.pow((lsbucket[0] + lsbucket[1] / 2) / lsbucket[1], 10) * lscost;
     }
     console.log('LSBucket:', lsbucket[0].toFixed(2), lsbucket[1].toFixed(2), 'LSRate:', lsdrip.toFixed(2), 'Decided Delay:', lsdelay.toFixed(2));

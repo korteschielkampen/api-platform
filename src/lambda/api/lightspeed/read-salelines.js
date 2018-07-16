@@ -1,13 +1,13 @@
 import _ from 'lodash'
 import moment from 'moment'
 import strictUriEncode from 'strict-uri-encode'
-import { asyncify, times } from 'async'
+import { asyncify, timesLimit } from 'async'
 import { promisify } from 'util'
-const ptimes = promisify(times)
+const ptimesLimit = promisify(timesLimit)
 
 import request from './request-lightspeed.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
-import cleanSales from './clean-sales.js'
+
 export default async ({
   dates = {
     start: moment().startOf('year'),
@@ -47,19 +47,23 @@ export default async ({
       },${dates.end}`
 
   // Get saleslines
-  let { count, limit } = (await request(apiUrl, options, 1))['@attributes']
-  console.log(parseInt(count), Math.ceil(parseInt(count) / parseInt(limit)))
+  let attributes = (await request(apiUrl, options, 1))['@attributes']
+  let count = parseInt(attributes.count)
+  let limit = parseInt(attributes.limit)
   let saleLines = []
-  let offset = 0
-  while (offset < count) {
-    apiUrl = apiUrl + `&offset=${offset}`
-    let tempSaleLines = await request(apiUrl, options, 1)
-    if (tempSaleLines.SaleLine) {
-      saleLines = _.concat(saleLines, tempSaleLines.SaleLine)
-    }
-    count = parseInt(tempSaleLines['@attributes'].count)
-    offset += parseInt(tempSaleLines['@attributes'].limit)
-  }
+
+  await ptimesLimit(
+    Math.ceil(count / limit),
+    10,
+    asyncify(async i => {
+      let offset = i * limit
+      apiUrl = apiUrl + `&offset=${offset}`
+      let tempSaleLines = await request(apiUrl, options, 1)
+      if (tempSaleLines.SaleLine) {
+        saleLines = _.concat(saleLines, tempSaleLines.SaleLine)
+      }
+    })
+  )
 
   return saleLines.length > 0 && (await saleLines)
 }

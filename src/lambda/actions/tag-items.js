@@ -3,7 +3,7 @@ import createMergedItems from '../models/sales/merged-items.js'
 import createTagPayloads from '../models/tag/create-tag-payloads.js'
 import updateItems from './update-items.js'
 
-export default async (sales, items) => {
+export default async (sales, items, tag) => {
   // Get the sold items statistics and add them to the items themselves
   let saleslines = getSaleslines(sales)
 
@@ -11,11 +11,16 @@ export default async (sales, items) => {
   items = createMergedItems(saleslines, items, {
     lightweight: false,
   })
-  items.splice(_.findIndex(items, { itemID: '0' }), 1)
+
+  if (tag === 'voorraadoverschot') {
+    console.log('Voorraadoverschot: Erg gecompliceerde rekensom')
+  } else if (tag === 'verkocht2018') {
+    console.log('Verkocht2018: Geen algoritme')
+  }
 
   // Create tag payload from original tags and the new one
-  let itemPayloads = createTagPayloads(items, 'verkocht2018')
+  let itemPayloads = createTagPayloads(items, tag)
 
   // Send the tags away
-  await updateItems(itemPayloads)
+  // await updateItems(itemPayloads)
 }

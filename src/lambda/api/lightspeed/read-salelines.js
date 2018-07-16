@@ -1,0 +1,65 @@
+import _ from 'lodash'
+import moment from 'moment'
+import strictUriEncode from 'strict-uri-encode'
+import { asyncify, times } from 'async'
+import { promisify } from 'util'
+const ptimes = promisify(times)
+
+import request from './request-lightspeed.js'
+import readAccessToken from '../lightspeed-auth/read-token.js'
+import cleanSales from './clean-sales.js'
+export default async ({
+  dates = {
+    start: moment().startOf('year'),
+    end: moment(),
+  },
+  itemID,
+}) => {
+  // Encode dates properly
+  dates = {
+    start: strictUriEncode(
+      moment(dates.start)
+        .startOf('d')
+        .format('YYYY-MM-DDTHH:mm:ssZ')
+    ),
+    end: strictUriEncode(
+      moment(dates.end)
+        .endOf('d')
+        .format('YYYY-MM-DDTHH:mm:ssZ')
+    ),
+  }
+
+  // Auth and header config
+  let access_token = await readAccessToken()
+  const options = {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  }
+
+  let apiUrl = itemID
+    ? `https://api.lightspeedapp.com/API/Account/159502/SaleLine.json?timeStamp=><,${
+        dates.start
+      },${dates.end}&itemID=${parseInt(itemID)}`
+    : `https://api.lightspeedapp.com/API/Account/159502/SaleLine.json?timeStamp=><,${
+        dates.start
+      },${dates.end}`
+
+  // Get saleslines
+  let { count, limit } = (await request(apiUrl, options, 1))['@attributes']
+  console.log(parseInt(count), Math.ceil(parseInt(count) / parseInt(limit)))
+  let saleLines = []
+  let offset = 0
+  while (offset < count) {
+    apiUrl = apiUrl + `&offset=${offset}`
+    let tempSaleLines = await request(apiUrl, options, 1)
+    if (tempSaleLines.SaleLine) {
+      saleLines = _.concat(saleLines, tempSaleLines.SaleLine)
+    }
+    count = parseInt(tempSaleLines['@attributes'].count)
+    offset += parseInt(tempSaleLines['@attributes'].limit)
+  }
+
+  return saleLines.length > 0 && (await saleLines)
+}

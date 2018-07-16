@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { asyncify, map, mapLimit } from 'async'
+import { asyncify, mapLimit } from 'async'
 import { promisify } from 'util'
 const pmapLimit = promisify(mapLimit)
 
@@ -12,6 +12,9 @@ const uploadItem = async (item, key) => {
 }
 
 export default async items => {
+  // Sort and remove 0 (cannot be updated)
   let itemsToBeUpdated = _.sortBy(items, ['itemID'])
+  itemsToBeUpdated.splice(_.findIndex(items, { itemID: '0' }), 1)
+
   let updatedItems = await pmapLimit(itemsToBeUpdated, 1, asyncify(uploadItem))
 }

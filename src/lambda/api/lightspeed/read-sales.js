@@ -6,9 +6,7 @@ import request from './request-lightspeed.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
 import cleanSales from './clean-sales.js'
 
-export default async (startDate, endDate) => {
-  let dates
-
+export default async ({ dates }) => {
   if (startDate) {
     dates = {
       start: strictUriEncode(

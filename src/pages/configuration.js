@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 
 import styles from './index.module.css'
 
@@ -10,28 +11,72 @@ const lambdaURL =
     ? '/.netlify/functions'
     : '/localhost:9000'
 
-const lambdas = [
+let lambdas = [
   {
-    text: 'Update sales, items and categories \n (5min)',
+    text: 'Update categories',
     name: 'updateEverything',
-    url: `${lambdaURL}/algorithm-read`,
+    url: `${lambdaURL}/algorithm-read?datatype=categories`,
+    status: 'dev',
   },
   {
-    text: "Tag all items. \n (Don't stay up)",
+    text: 'Update items',
+    name: 'updateEverything',
+    url: `${lambdaURL}/algorithm-read?datatype=items`,
+    status: 'dev',
+  },
+  {
+    text: 'Update salelines',
+    name: 'updateEverything',
+    url: `${lambdaURL}/algorithm-read?datatype=salelines`,
+    status: 'dev',
+  },
+  {
+    text: 'Update sales',
+    name: 'updateEverything',
+    url: `${lambdaURL}/algorithm-read?datatype=sales`,
+    status: 'dev',
+  },
+  {
+    text: 'Update sales, salelines, items and categories',
+    name: 'updateEverything',
+    url: `${lambdaURL}/algorithm-read?datatype=all`,
+    status: 'dev',
+  },
+  {
+    text: 'Tag all items',
     name: 'tag',
-    url: `${lambdaURL}/algorithm-tag`,
+    url: `${lambdaURL}/algorithm-tag?tag=verkocht2018`,
+    status: 'dev',
+  },
+  {
+    text: 'Tag excess stock',
+    name: 'reorder',
+    url: `${lambdaURL}/algorithm-tag?tag=voorraadoverschot`,
+    status: 'dev',
+  },
+  {
+    text: 'Update Reorderpoints',
+    name: 'reorder',
+    url: `${lambdaURL}/algorithm-reorder`,
+    status: 'dev',
   },
   {
     text: 'Trigger accountancy integration',
     name: 'accountancy',
     url: `${lambdaURL}/integration-accountancy`,
+    status: 'web',
   },
   {
     text: 'Trigger report',
     name: 'report',
     url: `${lambdaURL}/integration-report`,
+    status: 'web',
   },
 ]
+
+if (process.env.NODE_ENV === 'production') {
+  lambdas = _.filter(lambdas, { status: 'web' })
+}
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -71,6 +116,9 @@ class IndexPage extends React.Component {
                         this.triggerLambda({
                           name: lambda.name,
                           url: lambda.url,
+                          ...(lambda.querystring && {
+                            querystring: lambda.querystring,
+                          }),
                         }),
                     }}
                   />

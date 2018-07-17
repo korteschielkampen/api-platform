@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import strictUriEncode from 'strict-uri-encode'
+import queryString from 'query-string'
 
 import styles from './index.module.css'
 
@@ -58,7 +58,7 @@ let lambdas = [
   {
     text: 'Trigger accountancy integration yesterday',
     name: 'accountancy',
-    url: `${lambdaURL}/integration-accountancy?date=${strictUriEncode(
+    url: `${lambdaURL}/integration-accountancy?date=${queryString.stringify(
       '2018-07-16T17:09:51+02:00'
     )}`,
     status: 'web',

@@ -4,10 +4,10 @@ export default dayreport => {
   let invoice = {
     sales_invoice: {
       reference: `Automated Lightspeed Invoice - ${moment(
-        dayreport.date.date
+        dayreport.date
       ).format()}`,
       contact_id: '211718269128672982',
-      invoice_date: moment(dayreport.date.date).format('YYYY-MM-DD'),
+      invoice_date: moment(dayreport.date).format('YYYY-MM-DD'),
       state: 'open',
       prices_are_incl_tax: true,
       details_attributes: [],

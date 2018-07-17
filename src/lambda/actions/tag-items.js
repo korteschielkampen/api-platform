@@ -15,12 +15,11 @@ export default async (sales, items, tag) => {
   if (tag === 'voorraadoverschot') {
     console.log('Voorraadoverschot: Erg gecompliceerde rekensom')
   } else if (tag === 'verkocht2018') {
-    console.log('Verkocht2018: Geen algoritme')
+    console.log('Verkocht2018: Tagging op basis van solditems')
+    // Create tag payload from original tags and the new one
+    let itemPayloads = createTagPayloads(items, tag)
+
+    // Send the tags away
+    await updateItems(itemPayloads)
   }
-
-  // Create tag payload from original tags and the new one
-  let itemPayloads = createTagPayloads(items, tag)
-
-  // Send the tags away
-  // await updateItems(itemPayloads)
 }

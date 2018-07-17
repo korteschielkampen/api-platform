@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import strictUriEncode from 'strict-uri-encode'
 
 import styles from './index.module.css'
 
@@ -55,7 +56,15 @@ let lambdas = [
     status: 'dev',
   },
   {
-    text: 'Trigger accountancy integration',
+    text: 'Trigger accountancy integration yesterday',
+    name: 'accountancy',
+    url: `${lambdaURL}/integration-accountancy?date=${strictUriEncode(
+      '2018-07-16T17:09:51+02:00'
+    )}`,
+    status: 'web',
+  },
+  {
+    text: 'Trigger accountancy integration today',
     name: 'accountancy',
     url: `${lambdaURL}/integration-accountancy`,
     status: 'web',

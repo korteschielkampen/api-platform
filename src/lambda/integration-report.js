@@ -11,15 +11,12 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    // Setup variables
-    let datesArray = _.times(31, i => {
-      return {
-        date: moment()
-          .subtract(i, 'days')
-          .format(),
-        delay: 2000 * i,
-      }
-    })
+    let dates = {
+      start: moment()
+        .subtract(31, 'days')
+        .format(),
+      end: moment().format(),
+    }
 
     let postSlack = {
       post: true,
@@ -27,7 +24,7 @@ exports.handler = async (event, context, callback) => {
     }
 
     // Do the main action
-    await createBusinessReport(datesArray, postSlack)
+    await createBusinessReport(dates, postSlack)
 
     respond({ status: 200, body: { message: 'succes' } })
   } catch (err) {

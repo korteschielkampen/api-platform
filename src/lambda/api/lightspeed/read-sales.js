@@ -1,26 +1,35 @@
 import _ from 'lodash'
 import moment from 'moment'
 import strictUriEncode from 'strict-uri-encode'
+import { asyncify, timesLimit } from 'async'
+import { promisify } from 'util'
+const ptimesLimit = promisify(timesLimit)
 
 import request from './request-lightspeed.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
 import cleanSales from './clean-sales.js'
 
-export default async ({ dates }) => {
-  if (startDate) {
-    dates = {
-      start: strictUriEncode(
-        moment(startDate)
-          .startOf('d')
-          .format('YYYY-MM-DDTHH:mm:ssZ')
-      ),
-      end: strictUriEncode(
-        moment(endDate)
-          .endOf('d')
-          .format('YYYY-MM-DDTHH:mm:ssZ')
-      ),
-    }
+export default async ({
+  dates = {
+    start: moment().startOf('year'),
+    end: moment(),
+  },
+}) => {
+  // Encode dates properly
+  dates = {
+    start: strictUriEncode(
+      moment(dates.start)
+        .startOf('d')
+        .format('YYYY-MM-DDTHH:mm:ssZ')
+    ),
+    end: strictUriEncode(
+      moment(dates.end)
+        .endOf('d')
+        .format('YYYY-MM-DDTHH:mm:ssZ')
+    ),
   }
+
+  // Auth and header stuff
   let access_token = await readAccessToken()
   const options = {
     method: 'GET',
@@ -29,26 +38,29 @@ export default async ({ dates }) => {
     },
   }
 
-  let sales = []
-  let offset = 0
-  let count = 1
-  while (offset < count) {
-    let apiUrl
-    if (startDate) {
-      apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines","SalePayments"]&offset=${offset}&timeStamp=><,${
-        dates.start
-      },${dates.end}`
-    } else {
-      apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Sale.json?load_relations=["SaleLines","SalePayments"]&offset=${offset}`
-    }
+  let account = 159502
+  let relations = JSON.stringify(['SaleLines', 'SalePayments'])
+  let apiUrl = `https://api.lightspeedapp.com/API/Account/${account}/Sale.json?load_relations=${relations}&timeStamp=><,${
+    dates.start
+  },${dates.end}`
 
-    let tempSales = await request(apiUrl, options, 1)
-    if (tempSales.Sale) {
-      sales = _.concat(sales, tempSales.Sale)
-    }
-    count = parseInt(tempSales['@attributes'].count)
-    offset += parseInt(tempSales['@attributes'].limit)
-  }
+  // Get saleslines
+  let attributes = (await request(apiUrl, options, 1))['@attributes']
+  let count = parseInt(attributes.count)
+  let limit = parseInt(attributes.limit)
+  let sales = []
+  await ptimesLimit(
+    Math.ceil(count / limit),
+    10,
+    asyncify(async i => {
+      let offset = i * limit
+      apiUrl = apiUrl + `&offset=${offset}`
+      let tempSales = await request(apiUrl, options, 1)
+      if (tempSales.Sale) {
+        sales = _.concat(sales, tempSales.Sale)
+      }
+    })
+  )
 
   return sales.length > 0 && cleanSales(await sales)
 }

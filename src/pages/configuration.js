@@ -24,12 +24,12 @@ let lambdas = [
     url: `${lambdaURL}/algorithm-read?datatype=items`,
     status: 'dev',
   },
-  {
-    text: 'Update salelines',
-    name: 'updateEverything',
-    url: `${lambdaURL}/algorithm-read?datatype=salelines`,
-    status: 'dev',
-  },
+  // {
+  //   text: 'Update salelines',
+  //   name: 'updateEverything',
+  //   url: `${lambdaURL}/algorithm-read?datatype=salelines`,
+  //   status: 'dev',
+  // },
   {
     text: 'Update sales',
     name: 'updateEverything',
@@ -37,13 +37,7 @@ let lambdas = [
     status: 'dev',
   },
   {
-    text: 'Update sales, salelines, items and categories',
-    name: 'updateEverything',
-    url: `${lambdaURL}/algorithm-read?datatype=all`,
-    status: 'dev',
-  },
-  {
-    text: 'Tag all items',
+    text: 'Tag all sold items',
     name: 'tag',
     url: `${lambdaURL}/algorithm-tag?tag=verkocht2018`,
     status: 'dev',
@@ -55,7 +49,7 @@ let lambdas = [
     status: 'dev',
   },
   {
-    text: 'Update Reorderpoints',
+    text: 'Set Reorderpoints',
     name: 'reorder',
     url: `${lambdaURL}/algorithm-reorder`,
     status: 'dev',

@@ -14,7 +14,7 @@ export default async ({
     end: moment(),
   },
   itemID,
-}) => {
+} = {}) => {
   // Encode dates properly
   dates = {
     start: strictUriEncode(

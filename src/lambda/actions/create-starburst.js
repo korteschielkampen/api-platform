@@ -1,4 +1,4 @@
-import getSaleLines from '../models/sales/sold-items.js'
+import getSoldItems from '../models/sales/sold-items.js'
 import createMergedItems from '../models/sales/merged-items.js'
 import specialCategories from '../models/category/special-categories.js'
 import colorCategories from '../models/category/color-categories.js'
@@ -8,11 +8,11 @@ import nestCategories from '../models/category/nest-categories.js'
 export default (sales, items, categories) => {
   console.log('Get saleslines')
   // Saleline endpoint is not used yet, extracting them from sale saleline relation
-  let saleslines = getSaleLines(sales)
+  let soldItems = getSoldItems(sales)
 
   console.log('Merge items')
   // Salelines need to be merged with the items for the category foreign key
-  items = createMergedItems(saleslines, items, {
+  items = createMergedItems(soldItems, items, {
     lightweight: true,
   })
 

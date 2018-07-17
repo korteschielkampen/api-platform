@@ -14,7 +14,7 @@ export default async ({
     start: moment().startOf('year'),
     end: moment(),
   },
-}) => {
+} = {}) => {
   // Encode dates properly
   dates = {
     start: strictUriEncode(

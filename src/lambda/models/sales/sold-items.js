@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import util from 'util'
 
 export default sales => {
   let items = []
@@ -48,5 +49,6 @@ export default sales => {
       }
     }
   })
+
   return itemsHashed
 }

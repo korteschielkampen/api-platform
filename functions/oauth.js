@@ -1744,6 +1744,13 @@ module.exports = AWS.STS;
 /* 13 */
 /***/ (function(module, exports) {
 
+module.exports = require("util");
+
+/***/ }),
+/* 14 */,
+/* 15 */
+/***/ (function(module, exports) {
+
 module.exports = function(module) {
 	if(!module.webpackPolyfill) {
 		module.deprecate = function() {};
@@ -1769,7 +1776,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Symbol = __webpack_require__(24),
@@ -1803,7 +1810,7 @@ module.exports = baseGetTag;
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(23),
@@ -1842,12 +1849,12 @@ module.exports = isArrayLike;
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var arrayLikeKeys = __webpack_require__(278),
     baseKeys = __webpack_require__(194),
-    isArrayLike = __webpack_require__(15);
+    isArrayLike = __webpack_require__(17);
 
 /**
  * Creates an array of the own enumerable property names of `object`.
@@ -1885,7 +1892,7 @@ module.exports = keys;
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports) {
 
 /**
@@ -1918,13 +1925,6 @@ function isObjectLike(value) {
 
 module.exports = isObjectLike;
 
-
-/***/ }),
-/* 18 */,
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = require("util");
 
 /***/ }),
 /* 20 */
@@ -2444,7 +2444,7 @@ module.exports = {
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(14),
+var baseGetTag = __webpack_require__(16),
     isObject = __webpack_require__(6);
 
 /** `Object#toString` result references. */
@@ -3714,7 +3714,7 @@ module.exports = isPrototype;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsArguments = __webpack_require__(280),
-    isObjectLike = __webpack_require__(17);
+    isObjectLike = __webpack_require__(19);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -3794,7 +3794,7 @@ var isBuffer = nativeIsBuffer || stubFalse;
 
 module.exports = isBuffer;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)(module)))
 
 /***/ }),
 /* 47 */
@@ -3919,8 +3919,8 @@ module.exports = isKey;
 /* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(14),
-    isObjectLike = __webpack_require__(17);
+var baseGetTag = __webpack_require__(16),
+    isObjectLike = __webpack_require__(19);
 
 /** `Object#toString` result references. */
 var symbolTag = '[object Symbol]';
@@ -6067,7 +6067,7 @@ function FetchError(message, type, systemError) {
 	Error.captureStackTrace(this, this.constructor);
 }
 
-__webpack_require__(19).inherits(FetchError, Error);
+__webpack_require__(13).inherits(FetchError, Error);
 
 
 /***/ }),
@@ -6591,7 +6591,7 @@ module.exports = copyObject;
 /***/ (function(module, exports, __webpack_require__) {
 
 var eq = __webpack_require__(25),
-    isArrayLike = __webpack_require__(15),
+    isArrayLike = __webpack_require__(17),
     isIndex = __webpack_require__(43),
     isObject = __webpack_require__(6);
 
@@ -6738,7 +6738,7 @@ var DataView = __webpack_require__(292),
     Promise = __webpack_require__(293),
     Set = __webpack_require__(294),
     WeakMap = __webpack_require__(295),
-    baseGetTag = __webpack_require__(14),
+    baseGetTag = __webpack_require__(16),
     toSource = __webpack_require__(191);
 
 /** `Object#toString` result references. */
@@ -7049,7 +7049,7 @@ module.exports = Stack;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseIsEqualDeep = __webpack_require__(329),
-    isObjectLike = __webpack_require__(17);
+    isObjectLike = __webpack_require__(19);
 
 /**
  * The base implementation of `_.isEqual` which supports partial comparisons
@@ -12374,9 +12374,9 @@ module.exports = XmlBuilder;
 var assignValue = __webpack_require__(187),
     copyObject = __webpack_require__(192),
     createAssigner = __webpack_require__(270),
-    isArrayLike = __webpack_require__(15),
+    isArrayLike = __webpack_require__(17),
     isPrototype = __webpack_require__(44),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(18);
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -12964,8 +12964,8 @@ module.exports = baseTimes;
 /* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(14),
-    isObjectLike = __webpack_require__(17);
+var baseGetTag = __webpack_require__(16),
+    isObjectLike = __webpack_require__(19);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]';
@@ -13012,9 +13012,9 @@ module.exports = stubFalse;
 /* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(14),
+var baseGetTag = __webpack_require__(16),
     isLength = __webpack_require__(42),
-    isObjectLike = __webpack_require__(17);
+    isObjectLike = __webpack_require__(19);
 
 /** `Object#toString` result references. */
 var argsTag = '[object Arguments]',
@@ -13129,7 +13129,7 @@ var nodeUtil = (function() {
 
 module.exports = nodeUtil;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)(module)))
 
 /***/ }),
 /* 285 */
@@ -13420,7 +13420,7 @@ module.exports = overArg;
 /***/ (function(module, exports, __webpack_require__) {
 
 var copyObject = __webpack_require__(192),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(18);
 
 /**
  * The base implementation of `_.assign` without support for multiple sources
@@ -13482,7 +13482,7 @@ var baseKeys = __webpack_require__(194),
     getTag = __webpack_require__(196),
     isArguments = __webpack_require__(45),
     isArray = __webpack_require__(7),
-    isArrayLike = __webpack_require__(15),
+    isArrayLike = __webpack_require__(17),
     isBuffer = __webpack_require__(46),
     isPrototype = __webpack_require__(44),
     isTypedArray = __webpack_require__(47);
@@ -13752,7 +13752,7 @@ module.exports = baseEach;
 /***/ (function(module, exports, __webpack_require__) {
 
 var baseFor = __webpack_require__(301),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(18);
 
 /**
  * The base implementation of `_.forOwn` without support for iteratee shorthands.
@@ -13826,7 +13826,7 @@ module.exports = createBaseFor;
 /* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isArrayLike = __webpack_require__(15);
+var isArrayLike = __webpack_require__(17);
 
 /**
  * Creates a `baseEach` or `baseEachRight` function.
@@ -15071,7 +15071,7 @@ module.exports = equalObjects;
 
 var baseGetAllKeys = __webpack_require__(341),
     getSymbols = __webpack_require__(343),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(18);
 
 /**
  * Creates an array of own enumerable property names and symbols of `object`.
@@ -15240,7 +15240,7 @@ module.exports = stubArray;
 /***/ (function(module, exports, __webpack_require__) {
 
 var isStrictComparable = __webpack_require__(201),
-    keys = __webpack_require__(16);
+    keys = __webpack_require__(18);
 
 /**
  * Gets the property names, values, and compare flags of `object`.
@@ -17988,7 +17988,7 @@ AWS.EventListeners = {
           var inputShape = req.service.api.operations[req.operation].input;
           censoredParams = filterSensitiveLog(inputShape, req.params);
         }
-        var params = __webpack_require__(19).inspect(censoredParams, true, null);
+        var params = __webpack_require__(13).inspect(censoredParams, true, null);
         var message = '';
         if (ansi) message += '\x1B[33m';
         message += '[AWS ' + req.service.serviceIdentifier + ' ' + status;

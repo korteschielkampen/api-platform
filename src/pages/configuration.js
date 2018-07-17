@@ -15,26 +15,26 @@ const lambdaURL =
 let lambdas = [
   {
     text: 'Update categories',
-    name: 'updateEverything',
+    name: 'updateCategories',
     url: `${lambdaURL}/algorithm-read?datatype=categories`,
     status: 'dev',
   },
   {
     text: 'Update items',
-    name: 'updateEverything',
+    name: 'updateItems',
     url: `${lambdaURL}/algorithm-read?datatype=items`,
     status: 'dev',
   },
-  // {
-  //   text: 'Update salelines',
-  //   name: 'updateEverything',
-  //   url: `${lambdaURL}/algorithm-read?datatype=salelines`,
-  //   status: 'dev',
-  // },
   {
     text: 'Update sales',
-    name: 'updateEverything',
+    name: 'updateSales',
     url: `${lambdaURL}/algorithm-read?datatype=sales`,
+    status: 'dev',
+  },
+  {
+    text: 'Update sunburst',
+    name: 'updateSunburst',
+    url: `${lambdaURL}/algorithm-read?datatype=sunburst`,
     status: 'dev',
   },
   {

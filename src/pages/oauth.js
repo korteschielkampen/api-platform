@@ -68,13 +68,13 @@ class IndexPage extends React.Component {
   }
 
   async saveAuthData(code, state) {
-    let action = { name: 'auth' }
+    let action = {
+      name: 'AUTH',
+      url: `${lambdaURL}/oauth?${queryString.stringify(this.state.data.oauth)}`,
+    }
     try {
       this.setState(notify('loading', action))
-      let apiUrl = `${lambdaURL}/oauth?${queryString.stringify(
-        this.state.data.oauth
-      )}`
-      const res = await fetch(apiUrl)
+      const res = await fetch(action.url)
       if (!res.ok) {
         throw await res.json()
       }
@@ -96,7 +96,7 @@ class IndexPage extends React.Component {
                 <div key={key} className={styles.cardMedium}>
                   <Card
                     text={provider.name}
-                    button={{ text: 'start', link: provider.link }}
+                    buttons={[{ text: 'start', link: provider.link }]}
                   />
                 </div>
               )

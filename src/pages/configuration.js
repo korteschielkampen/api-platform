@@ -13,7 +13,7 @@ const lambdaURL =
     ? '/.netlify/functions'
     : '/localhost:9000'
 
-let functions = [
+let actionGroups = [
   {
     text: 'Update data',
     actions: [
@@ -150,8 +150,8 @@ let functions = [
 ]
 
 if (process.env.NODE_ENV === 'production') {
-  functions = _.map(functions, func => {
-    return _.filter(func.actions, { status: 'web' })
+  actionGroups = _.map(actionGroups, actionGroup => {
+    return _.filter(actionGroup.actions, { status: 'web' })
   })
 }
 
@@ -183,12 +183,12 @@ class IndexPage extends React.Component {
         <div className={styles.content}>
           <h1>Configuration</h1>
           <div className={styles.cards}>
-            {functions.map((lambda, key) => {
+            {actionGroups.map((actionGroup, key) => {
               return (
                 <div key={key} className={styles.cardMedium}>
                   <Card
-                    text={lambda.text}
-                    buttons={lambda.actions.map(action => {
+                    text={actionGroup.text}
+                    buttons={actionGroup.actions.map(action => {
                       return {
                         ...action,
                         handler:

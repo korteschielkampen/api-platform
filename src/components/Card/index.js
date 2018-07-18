@@ -25,9 +25,18 @@ export default props => {
             </span>
           </li>
           <li className={styles.listItem}>
-            <span>Aantallen: </span>
+            <span>Verkocht: </span>
             <span className={styles.number}>
               {(props.statistics && props.statistics.totalSold.toFixed(0)) ||
+                '--- '}
+            </span>
+          </li>
+          <li className={styles.listItem}>
+            <span>Voorraad: </span>
+            <span className={styles.number}>
+              {(props.statistics &&
+                props.statistics.totalStock &&
+                props.statistics.totalStock.toFixed(0)) ||
                 '--- '}
             </span>
           </li>

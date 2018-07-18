@@ -15,6 +15,7 @@ export default categories => {
       statisticsNested: Object.assign(c.statistics),
     }
   })
+  // console.log(util.inspect(categories, { colors: true, maxArrayLength: 1000 }))
 
   _.forEach(categories, c => {
     // Nesting of child in parent, taking note of previous element present
@@ -39,6 +40,12 @@ export default categories => {
 
       // Do accumation of category statistics to display totals, now only own values.
       // -> Might not be needed though, as the client needs to calucalate this anyways.
+      console.log(
+        categories[parentKey].statisticsNested.totalStock,
+        c.statisticsNested.totalStock,
+        categories[parentKey].statisticsNested.totalStock +
+          c.statisticsNested.totalStock
+      )
       categories[parentKey].statisticsNested = {
         totalSold:
           categories[parentKey].statisticsNested.totalSold +
@@ -46,6 +53,9 @@ export default categories => {
         totalRevenue:
           categories[parentKey].statisticsNested.totalRevenue +
           c.statisticsNested.totalRevenue,
+        totalStock:
+          categories[parentKey].statisticsNested.totalStock +
+          c.statisticsNested.totalStock,
       }
     }
   })

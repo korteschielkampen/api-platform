@@ -27,7 +27,7 @@ package:
 
 functions:
   automatedInvoice:
-    handler: functions/lightspeed-automated-invoice.handler
+    handler: functions/integration-accountancy.handler
     events:
       - schedule: "cron(0 22 * * ? *)"
   dayReport:

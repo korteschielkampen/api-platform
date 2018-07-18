@@ -23,7 +23,7 @@ backups. I'm doingdangerous shit with the itemdatabase.
 const dataURL =
   process.env.NODE_ENV === 'production'
     ? '/data/sunburst.json'
-    : `${lambdaURL}/analytics-starburst`
+    : `${lambdaURL}/analytics-inventory`
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -90,6 +90,7 @@ class IndexPage extends React.Component {
   }
 
   render() {
+    console.log(this.state.items)
     let selected = this.state.selected
     let hovered = this.state.hovered
     return (

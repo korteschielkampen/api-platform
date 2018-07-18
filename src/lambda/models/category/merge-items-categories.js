@@ -6,10 +6,12 @@ export default (items, categories) => {
       statistics: {
         totalSold: 0,
         totalRevenue: 0,
+        totalStock: 0,
       },
       statisticsNested: {
         totalSold: 0,
         totalRevenue: 0,
+        totalStock: 0,
       },
       children: [],
       items: {},
@@ -37,7 +39,6 @@ export default (items, categories) => {
         categoryID: 'special-notfound',
       })
     }
-
     categories[key] = {
       ...categories[key],
       statistics: {
@@ -45,6 +46,9 @@ export default (items, categories) => {
           categories[key].statistics.totalSold + i.statistics.totalSold,
         totalRevenue:
           categories[key].statistics.totalRevenue + i.statistics.totalRevenue,
+        totalStock: i.statistics.totalStock
+          ? categories[key].statistics.totalStock + i.statistics.totalStock
+          : 0,
       },
       items: {
         ...categories[key].items,
@@ -52,6 +56,5 @@ export default (items, categories) => {
       },
     }
   })
-
   return categories
 }

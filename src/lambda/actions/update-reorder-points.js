@@ -1,9 +1,12 @@
+import util from 'util'
+import _ from 'lodash'
+
 import getSalelines from '../models/sales/sold-items.js'
 import createMergedItems from '../models/sales/merged-items.js'
 import updateItems from './update-items.js'
 
 export default async (sales, items) => {
-  console.log('Retrieving and merging data')
+  console.log('Merging data')
   // Get the sold items statistics and add them to the items themselves
   let saleslines = getSalelines(sales)
 
@@ -12,7 +15,15 @@ export default async (sales, items) => {
     lightweight: false,
   })
 
+  let itemShopID = '47939'
   console.log('Calulating reorderpoints')
+  items.splice(0, 1)
+  _.times(100, n => {
+    console.log(
+      util.inspect(items[n].ItemShops.ItemShop, { depth: null, colors: true })
+    )
+  })
+
   /*
 
   Sooooo I've got 3500 items here. What now? How to calculate three months of stock?
@@ -31,7 +42,5 @@ export default async (sales, items) => {
 
   */
 
-  // Create tag payload from original tags and the new one
-  // Send the tags away
-  // await updateItems(itemPayloads)
+  console.log('Pushing reorderpoints')
 }

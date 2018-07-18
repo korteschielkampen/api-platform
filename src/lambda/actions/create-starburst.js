@@ -16,6 +16,8 @@ export default (sales, items, categories) => {
     lightweight: true,
   })
 
+  console.log(items)
+
   console.log('Adding special categories')
   // Setting up flare, and other special categories with appropriate nodes
   categories = categories.concat(specialCategories)

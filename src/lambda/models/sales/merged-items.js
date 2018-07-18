@@ -14,9 +14,18 @@ export default (soldItems, items, options) => {
       }
     } else if (itemsHashed[i.itemID] && options.lightweight === true) {
       return {
+        ...i,
         categoryID: itemsHashed[i.itemID].categoryID,
         description: itemsHashed[i.itemID].description,
-        ...i,
+        shiitee: 39423,
+        statistics: {
+          totalStock: parseInt(
+            _.find(itemsHashed[i.itemID].ItemShops.ItemShop, {
+              shopID: '1',
+            }).qoh
+          ),
+          ...i.statistics,
+        },
       }
     } else {
       return i

@@ -12,15 +12,6 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    /*
-    This function needs to start taking arguments. I want it to be used for the
-    admin interface, and I want it to do it's own logging.
-
-    It'll need to take:
-    1. Dates array, which preferrable needs to be validated
-    2. Needs to a boolean, which decides wether or not to activate Moneybird
-    */
-
     // Setup date
     let dates = event.queryStringParameters.date
       ? {

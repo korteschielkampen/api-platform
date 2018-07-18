@@ -11,7 +11,7 @@ exports.handler = async (event, context, callback) => {
   }
   try {
     // Fire off confimation of event
-    respond({ status: 200, body: { message: 'request received' } })
+    respond({ status: 201, body: { message: 'request received' } })
 
     // Read data from querystring
     let tag = event.queryStringParameters.tag

@@ -46,8 +46,15 @@ export default props => {
   } else {
     return (
       <div className={styles.card}>
-        <p>{props.text}</p>
-        {props.button && <Button options={props.button} />}
+        <div className={styles.cardSection}>
+          <p>{props.text}</p>
+        </div>
+        <div className={styles.cardSection}>
+          {props.buttons &&
+            props.buttons.map((action, key) => {
+              return <Button key={key} options={action} />
+            })}
+        </div>
       </div>
     )
   }

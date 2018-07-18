@@ -40,12 +40,6 @@ export default categories => {
 
       // Do accumation of category statistics to display totals, now only own values.
       // -> Might not be needed though, as the client needs to calucalate this anyways.
-      console.log(
-        categories[parentKey].statisticsNested.totalStock,
-        c.statisticsNested.totalStock,
-        categories[parentKey].statisticsNested.totalStock +
-          c.statisticsNested.totalStock
-      )
       categories[parentKey].statisticsNested = {
         totalSold:
           categories[parentKey].statisticsNested.totalSold +

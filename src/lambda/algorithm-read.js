@@ -34,6 +34,11 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Up front because takes to long
+    respond({
+      status: 201,
+      body: { message: 'request received' },
+    })
+
     let datatype = event.queryStringParameters.datatype
     if (readers[datatype]) {
       storeData(datatype, await readers[datatype]({}))
@@ -44,11 +49,6 @@ exports.handler = async (event, context, callback) => {
       storeData('Items', await readItems({ itemIDs: soldItems }))
       storeData('Categories', await readCategories())
     }
-
-    respond({
-      status: 200,
-      body: { message: 'request received' },
-    })
   } catch (err) {
     console.log(err)
     respond({ status: 422, body: err })

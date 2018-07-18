@@ -33997,8 +33997,6 @@ exports.default = (sales, items, categories) => {
     lightweight: true
   });
 
-  console.log(items);
-
   console.log('Adding special categories');
   // Setting up flare, and other special categories with appropriate nodes
   categories = categories.concat(_specialCategories2.default);
@@ -34437,7 +34435,6 @@ exports.default = categories => {
 
       // Do accumation of category statistics to display totals, now only own values.
       // -> Might not be needed though, as the client needs to calucalate this anyways.
-      console.log(categories[parentKey].statisticsNested.totalStock, c.statisticsNested.totalStock, categories[parentKey].statisticsNested.totalStock + c.statisticsNested.totalStock);
       categories[parentKey].statisticsNested = {
         totalSold: categories[parentKey].statisticsNested.totalSold + c.statisticsNested.totalSold,
         totalRevenue: categories[parentKey].statisticsNested.totalRevenue + c.statisticsNested.totalRevenue,

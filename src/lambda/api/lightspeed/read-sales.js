@@ -19,12 +19,12 @@ export default async ({
   dates = {
     start: strictUriEncode(
       moment(dates.start)
-        .startOf('d')
+        .startOf('day')
         .format('YYYY-MM-DDTHH:mm:ssZ')
     ),
     end: strictUriEncode(
       moment(dates.end)
-        .endOf('d')
+        .endOf('day')
         .format('YYYY-MM-DDTHH:mm:ssZ')
     ),
   }

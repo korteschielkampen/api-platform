@@ -10,6 +10,7 @@ exports.handler = async (event, context, callback) => {
     })
   }
   try {
+    respond({ status: 201, body: { message: 'request received' } })
     // Read the data from static
     let sales = JSON.parse(fs.readFileSync('./static/data/sales.json'))
     let items = JSON.parse(fs.readFileSync('./static/data/items.json'))
@@ -18,8 +19,6 @@ exports.handler = async (event, context, callback) => {
     )
 
     await updateReorderPoints(sales, items, categories)
-
-    respond({ status: 200, body: { message: 'request received' } })
   } catch (err) {
     console.log(err)
     respond({ status: 422, body: err })

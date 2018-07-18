@@ -1,13 +1,13 @@
 .card {
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   padding: 1rem;
   background: hsl(0, 0%, 95%);
   width: 100%;
 }
 
-.cardImportant {
-  border: 5px solid grey;
+.cardSection {
 }
 
 .list {
@@ -23,45 +23,4 @@
 .title {
   color: black;
   height: 2.9rem;
-}
-
-.title {
-  color: black;
-  min-height: 2.9rem;
-}
-
-.cardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 0 2rem 0;
-}
-
-.cardHeading {
-  background: grey;
-  padding: 1rem 1rem;
-  margin-bottom: 0;
-  border-radius: 2rem;
-}
-
-.cardHeadingText {
-  margin: 0;
-}
-
-.cardBody {
-  display: flex;
-  justify-content: space-between;
-}
-
-.cardText {
-  padding: 0 0 1rem;
-  margin: 0;
-}
-
-.cardText:last-of-type {
-  padding: 0 0 0;
-}
-
-.button {
-  min-width: 4rem;
 }

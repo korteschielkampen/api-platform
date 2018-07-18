@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
-import queryString from 'query-string'
+import qS from 'query-string'
+import moment from 'moment'
 
 import styles from './index.module.css'
 
@@ -14,66 +15,137 @@ const lambdaURL =
 
 let lambdas = [
   {
-    text: 'Update categories',
-    name: 'updateCategories',
-    url: `${lambdaURL}/algorithm-read?datatype=categories`,
-    status: 'dev',
+    text: 'Update data',
+    actions: [
+      {
+        text: 'Sunburst',
+        name: 'UPDATE_DATA',
+        type: 'lambda',
+        url: `${lambdaURL}/algorithm-read?${qS.stringify({
+          datatype: 'sunburst',
+        })}`,
+        status: 'dev',
+      },
+      {
+        text: 'Categories',
+        name: 'UPDATE_DATA',
+        type: 'lambda',
+        url: `${lambdaURL}/algorithm-read?${qS.stringify({
+          datatype: 'categories',
+        })}`,
+        status: 'dev',
+      },
+      {
+        text: 'Items',
+        name: 'UPDATE_DATA',
+        type: 'lambda',
+        url: `${lambdaURL}/algorithm-read?${qS.stringify({
+          datatype: 'items',
+        })}`,
+        status: 'dev',
+      },
+      {
+        text: 'Sales',
+        name: 'UPDATE_DATA',
+        type: 'lambda',
+        url: `${lambdaURL}/algorithm-read?${qS.stringify({
+          datatype: 'sales',
+        })}`,
+        status: 'dev',
+      },
+    ],
   },
   {
-    text: 'Update items',
-    name: 'updateItems',
-    url: `${lambdaURL}/algorithm-read?datatype=items`,
-    status: 'dev',
+    text: 'Tagging',
+    actions: [
+      {
+        text: 'Sold items',
+        name: 'TAG_SOLD_ITEMS',
+        type: 'lambda',
+        url: `${lambdaURL}/algorithm-tag?${qS.stringify({
+          tag: 'verkocht2018',
+        })}`,
+        status: 'dev',
+      },
+      {
+        text: 'Excess stock',
+        name: 'TAG_EXCESS_STOCK',
+        type: 'lambda',
+        url: `${lambdaURL}/algorithm-tag?${qS.stringify({
+          tag: 'voorraadoverschot',
+        })}`,
+        status: 'dev',
+      },
+    ],
   },
   {
-    text: 'Update sales',
-    name: 'updateSales',
-    url: `${lambdaURL}/algorithm-read?datatype=sales`,
-    status: 'dev',
+    text: 'Accountancy',
+    actions: [
+      {
+        text: 'Three ago',
+        name: 'TRIGGER_ACCOUNTANCY',
+        type: 'lambda',
+        url: `${lambdaURL}/integration-accountancy?${qS.stringify({
+          date: moment()
+            .subtract(3, 'day')
+            .format(),
+        })}`,
+        status: 'web',
+      },
+      {
+        text: 'Two ago',
+        name: 'TRIGGER_ACCOUNTANCY',
+        type: 'lambda',
+        url: `${lambdaURL}/integration-accountancy?${qS.stringify({
+          date: moment()
+            .subtract(2, 'day')
+            .format(),
+        })}`,
+        status: 'web',
+      },
+      {
+        text: 'Yesterday',
+        name: 'TRIGGER_ACCOUNTANCY',
+        type: 'lambda',
+        url: `${lambdaURL}/integration-accountancy?${qS.stringify({
+          date: moment()
+            .subtract(1, 'day')
+            .format(),
+        })}`,
+        status: 'web',
+      },
+      {
+        text: 'Today',
+        name: 'TRIGGER_ACCOUNTANCY',
+        type: 'lambda',
+        url: `${lambdaURL}/integration-accountancy`,
+        status: 'web',
+      },
+    ],
   },
   {
-    text: 'Update sunburst',
-    name: 'updateSunburst',
-    url: `${lambdaURL}/algorithm-read?datatype=sunburst`,
-    status: 'dev',
+    text: 'Reordering',
+    actions: [
+      {
+        text: 'Set Reorderpoints',
+        name: 'UPDATE_REORDERPOINTS',
+        type: 'lambda',
+        url: `${lambdaURL}/algorithm-reorder`,
+        status: 'dev',
+      },
+    ],
   },
   {
-    text: 'Tag all sold items',
-    name: 'tag',
-    url: `${lambdaURL}/algorithm-tag?tag=verkocht2018`,
-    status: 'dev',
-  },
-  {
-    text: 'Tag excess stock',
-    name: 'reorder',
-    url: `${lambdaURL}/algorithm-tag?tag=voorraadoverschot`,
-    status: 'dev',
-  },
-  {
-    text: 'Set Reorderpoints',
-    name: 'reorder',
-    url: `${lambdaURL}/algorithm-reorder`,
-    status: 'dev',
-  },
-  {
-    text: 'Trigger accountancy integration yesterday',
-    name: 'accountancy',
-    url: `${lambdaURL}/integration-accountancy?date=${queryString.stringify(
-      '2018-07-16T17:09:51+02:00'
-    )}`,
-    status: 'web',
-  },
-  {
-    text: 'Trigger accountancy integration today',
-    name: 'accountancy',
-    url: `${lambdaURL}/integration-accountancy`,
-    status: 'web',
-  },
-  {
-    text: 'Trigger report',
-    name: 'report',
-    url: `${lambdaURL}/integration-report`,
-    status: 'web',
+    text: 'Reports',
+    actions: [
+      {
+        text: 'Financial Report',
+        name: 'TRIGGER_FINANCIAL_REPORT',
+        type: 'lambda',
+        url: `${lambdaURL}/integration-report`,
+        status: 'web',
+      },
+    ],
   },
 ]
 
@@ -89,6 +161,7 @@ class IndexPage extends React.Component {
   }
 
   async triggerLambda(action) {
+    console.log('Action triggered: ', action)
     try {
       this.setState(notify('loading', action))
       const res = await fetch(action.url)
@@ -113,17 +186,20 @@ class IndexPage extends React.Component {
                 <div key={key} className={styles.cardMedium}>
                   <Card
                     text={lambda.text}
-                    button={{
-                      text: 'Go',
-                      handler: () =>
-                        this.triggerLambda({
-                          name: lambda.name,
-                          url: lambda.url,
-                          ...(lambda.querystring && {
-                            querystring: lambda.querystring,
-                          }),
-                        }),
-                    }}
+                    buttons={lambda.actions.map(action => {
+                      return {
+                        ...action,
+                        handler:
+                          action.type === 'lambda'
+                            ? () => {
+                                return this.triggerLambda({
+                                  name: action.name,
+                                  url: action.url,
+                                })
+                              }
+                            : undefined,
+                      }
+                    })}
                   />
                 </div>
               )

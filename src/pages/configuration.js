@@ -188,7 +188,7 @@ class IndexPage extends React.Component {
                 <div key={key} className={styles.cardMedium}>
                   <Card
                     text={actionGroup.text}
-                    buttons={actionGroup.actions.map(action => {
+                    buttons={_.map(actionGroup.actions, action => {
                       return {
                         ...action,
                         handler:

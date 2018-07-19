@@ -29,7 +29,7 @@ functions:
   automatedInvoice:
     handler: functions/integration-accountancy.handler
     events:
-      - schedule: "cron(0 22 * * ? *)"
+      - schedule: "cron(0 21 * * ? *)"
   dayReport:
     handler: functions/create-business-report.handler
     events:

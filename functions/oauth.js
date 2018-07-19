@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 939);
+/******/ 	return __webpack_require__(__webpack_require__.s = 940);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -34255,13 +34255,14 @@ exports.default = (() => {
 /* 936 */,
 /* 937 */,
 /* 938 */,
-/* 939 */
+/* 939 */,
+/* 940 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _authenticateNewuser = __webpack_require__(940);
+var _authenticateNewuser = __webpack_require__(941);
 
 var _authenticateNewuser2 = _interopRequireDefault(_authenticateNewuser);
 
@@ -34296,7 +34297,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 940 */
+/* 941 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34306,23 +34307,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createToken = __webpack_require__(941);
+var _createToken = __webpack_require__(942);
 
 var _createToken2 = _interopRequireDefault(_createToken);
 
-var _readAdministration = __webpack_require__(942);
+var _readAdministration = __webpack_require__(943);
 
 var _readAdministration2 = _interopRequireDefault(_readAdministration);
 
-var _createToken3 = __webpack_require__(943);
+var _createToken3 = __webpack_require__(944);
 
 var _createToken4 = _interopRequireDefault(_createToken3);
 
-var _readAccount = __webpack_require__(944);
+var _readAccount = __webpack_require__(945);
 
 var _readAccount2 = _interopRequireDefault(_readAccount);
 
-var _createToken5 = __webpack_require__(945);
+var _createToken5 = __webpack_require__(946);
 
 var _createToken6 = _interopRequireDefault(_createToken5);
 
@@ -34388,7 +34389,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 941 */
+/* 942 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34431,7 +34432,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 942 */
+/* 943 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34468,7 +34469,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 943 */
+/* 944 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34510,7 +34511,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 944 */
+/* 945 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34547,7 +34548,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 945 */
+/* 946 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

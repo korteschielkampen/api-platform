@@ -17,7 +17,6 @@ exports.handler = async (event, context, callback) => {
     let categories = JSON.parse(
       fs.readFileSync('./static/data/categories.json')
     )
-
     await updateReorderPoints(sales, items, categories)
   } catch (err) {
     console.log(err)

@@ -1,4 +1,4 @@
-import getSoldItems from '../models/sales/sold-items.js'
+import getSoldItems from '../models/item/sold-items.js'
 import createMergedItems from '../models/item/merged-items.js'
 import specialCategories from '../models/category/special-categories.js'
 import colorCategories from '../models/category/color-categories.js'

@@ -6,7 +6,6 @@ import Button from '../Button'
 
 export default props => {
   if (props.type === 'statistics') {
-    console.log(props.statistics)
     return (
       <div className={styles.card}>
         <ul className={styles.list}>

@@ -35,7 +35,7 @@ export default sales => {
           totalSold: itemsHashed[l.itemID].statistics.totalSold + l.totalSold,
           totalRevenue:
             itemsHashed[l.itemID].statistics.totalRevenue + l.revenue,
-          totalProfit: itemsHashed[l.itemID].statistics.totalRevenue + l.profit,
+          totalProfit: itemsHashed[l.itemID].statistics.totalProfit + l.profit,
         },
       }
     } else {

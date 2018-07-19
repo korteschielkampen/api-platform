@@ -7,7 +7,7 @@ import readSales from './api/lightspeed/read-sales.js'
 import readSaleLines from './api/lightspeed/read-salelines.js'
 import readItems from './api/lightspeed/read-items.js'
 import readCategories from './api/lightspeed/read-categories.js'
-import getSoldItems from './models/sales/sold-items.js'
+import getSoldItems from './models/item/sold-items.js'
 
 const readers = {
   sales: readSales,

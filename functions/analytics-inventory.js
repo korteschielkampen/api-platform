@@ -33032,77 +33032,6 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 886:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _lodash = __webpack_require__(14);
-
-var _lodash2 = _interopRequireDefault(_lodash);
-
-var _util = __webpack_require__(13);
-
-var _util2 = _interopRequireDefault(_util);
-
-var _guessCost = __webpack_require__(229);
-
-var _guessCost2 = _interopRequireDefault(_guessCost);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = sales => {
-  let lines = [];
-  _lodash2.default.map(sales, (sale, saleID) => {
-    if (sale.completed == 'true' && sale.SaleLines) {
-      // Sometimes object, sometimes array. Now always array.
-      if (!Array.isArray(sale.SaleLines.SaleLine)) {
-        sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine];
-      }
-      _lodash2.default.map(sale.SaleLines.SaleLine, (line, lineID) => {
-        lines.push({
-          itemID: line.itemID,
-          totalSold: parseFloat(line.unitQuantity),
-          revenue: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
-          profit: parseFloat(line.unitPrice) / (1 + parseFloat(line.tax1Rate)) - (0, _guessCost2.default)(parseFloat(line.avgCost), parseFloat(line.unitPrice) / (1 + parseFloat(line.tax1Rate)))
-        });
-      });
-    }
-  });
-
-  let itemsHashed = {};
-  lines.forEach(l => {
-    if (itemsHashed[l.itemID]) {
-      itemsHashed[l.itemID] = {
-        itemID: l.itemID,
-        statistics: {
-          totalSold: itemsHashed[l.itemID].statistics.totalSold + l.totalSold,
-          totalRevenue: itemsHashed[l.itemID].statistics.totalRevenue + l.revenue,
-          totalProfit: itemsHashed[l.itemID].statistics.totalRevenue + l.profit
-        }
-      };
-    } else {
-      itemsHashed[l.itemID] = {
-        itemID: l.itemID,
-        statistics: {
-          totalSold: l.totalSold,
-          totalRevenue: l.revenue,
-          totalProfit: l.profit
-        }
-      };
-    }
-  });
-
-  return itemsHashed;
-};
-
-/***/ }),
-
 /***/ 89:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -33989,7 +33918,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _soldItems = __webpack_require__(886);
+var _soldItems = __webpack_require__(946);
 
 var _soldItems2 = _interopRequireDefault(_soldItems);
 
@@ -34709,6 +34638,77 @@ exports.default = categories => {
 
 })));
 
+
+/***/ }),
+
+/***/ 946:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _lodash = __webpack_require__(14);
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _util = __webpack_require__(13);
+
+var _util2 = _interopRequireDefault(_util);
+
+var _guessCost = __webpack_require__(229);
+
+var _guessCost2 = _interopRequireDefault(_guessCost);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = sales => {
+  let lines = [];
+  _lodash2.default.map(sales, (sale, saleID) => {
+    if (sale.completed == 'true' && sale.SaleLines) {
+      // Sometimes object, sometimes array. Now always array.
+      if (!Array.isArray(sale.SaleLines.SaleLine)) {
+        sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine];
+      }
+      _lodash2.default.map(sale.SaleLines.SaleLine, (line, lineID) => {
+        lines.push({
+          itemID: line.itemID,
+          totalSold: parseFloat(line.unitQuantity),
+          revenue: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
+          profit: parseFloat(line.unitPrice) / (1 + parseFloat(line.tax1Rate)) - (0, _guessCost2.default)(parseFloat(line.avgCost), parseFloat(line.unitPrice) / (1 + parseFloat(line.tax1Rate)))
+        });
+      });
+    }
+  });
+
+  let itemsHashed = {};
+  lines.forEach(l => {
+    if (itemsHashed[l.itemID]) {
+      itemsHashed[l.itemID] = {
+        itemID: l.itemID,
+        statistics: {
+          totalSold: itemsHashed[l.itemID].statistics.totalSold + l.totalSold,
+          totalRevenue: itemsHashed[l.itemID].statistics.totalRevenue + l.revenue,
+          totalProfit: itemsHashed[l.itemID].statistics.totalProfit + l.profit
+        }
+      };
+    } else {
+      itemsHashed[l.itemID] = {
+        itemID: l.itemID,
+        statistics: {
+          totalSold: l.totalSold,
+          totalRevenue: l.revenue,
+          totalProfit: l.profit
+        }
+      };
+    }
+  });
+
+  return itemsHashed;
+};
 
 /***/ }),
 

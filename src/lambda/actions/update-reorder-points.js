@@ -1,7 +1,7 @@
 import util from 'util'
 import _ from 'lodash'
 
-import getSoldItems from '../models/sales/sold-items.js'
+import getSoldItems from '../models/item/sold-items.js'
 import createMergedItems from '../models/item/merged-items.js'
 import updateItems from './update-items.js'
 

@@ -1,4 +1,5 @@
 export default (status, action, err) => {
+  console.log('Action triggered: ', action, status)
   let notification
   switch (status) {
     case 'loading':

@@ -20,18 +20,23 @@ export default async (sales, items) => {
 
   /*
 
-  Sooooo I've got 3500 items here. What now? How to calculate three months of stock?
-  Firstoff, lets be clear where the "verkocht 2018" tag starts and ends. It's also
-  leaning on december 2017, it simply get all sales. Besides that, talking to
-  the salesline API could be nicer to avoid headaches. A sale does not have
-  itemID's a saleline might just have that. Which will be benificial in the future.
-  if I want to update data more acurrately.
+  Okay. A lot further now. Many headaches are out of the way.
+  - Faster datapulling
+  - Good limit on dates
+  - Much more consistent codebase
+  - Easy triggering of functions (better layout and templating)
 
-  1. Rebuild "solditems" from the salesline API
-  2. Get a 3 month avarage from yearly stats. Test which number works best
-    - Last month time 3 feels best
-    - Six month average as context
-  3. Update reorder point to this
+  But now the real feature. I need segmented sales again, this time by month.
+  Previously day was done, mabey some code is reusable.
+
+  1. Segment sales by month
+  2. Calculate the amount of units sold in those periods
+  3. Calculate the three reoderpoint candidates
+  - Last month time 3 feels best
+  - Three month avarage feels interesting too
+  - Six month average as context
+  4. Update reorder point to this
+  5. Set stocklevel to match this value
 
 
   */

@@ -3,8 +3,16 @@ import * as d3 from 'd3'
 
 const D3Sunburst = {}
 
-D3Sunburst.create = (el, data, configuration) => {
-  console.log('creating graph')
+const modes = {
+  totalStock: d => d.statistics.totalStock,
+  totalStockValue: d => d.statistics.totalStockValue,
+  totalRevenue: d => d.statistics.totalRevenue,
+  totalProfit: d => d.statistics.totalProfit,
+  totalSold: d => d.statistics.totalSold,
+}
+
+D3Sunburst.create = (el, data, config) => {
+  // console.log('creating graph', config.mode)
   var width = 700,
     height = 700,
     radius = Math.min(width, height) / 2 - 10
@@ -43,12 +51,9 @@ D3Sunburst.create = (el, data, configuration) => {
     .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
 
   let root = d3.hierarchy(data)
+
   root.sum(function(d) {
-    if (d.itemID) {
-      return d.statistics.totalRevenue
-    } else {
-      return 0
-    }
+    return d.itemID && d.statistics ? modes[config.mode](d) : 0
   })
 
   svg
@@ -65,7 +70,7 @@ D3Sunburst.create = (el, data, configuration) => {
     .append('title')
 
   function click(d) {
-    configuration.setParentState({
+    config.setParentState({
       selected: d,
     })
     svg
@@ -89,16 +94,17 @@ D3Sunburst.create = (el, data, configuration) => {
   }
 
   function hover(d) {
-    configuration.setParentState({
+    config.setParentState({
       hovered: d,
     })
   }
 
   d3.select(self.frameElement).style('height', height + 'px')
+  return svg
 }
 
-D3Sunburst.update = (el, data, configuration, chart) => {
-  // D3 Code to update the chart
+D3Sunburst.update = (el, data, config, chart) => {
+  console.log('updating graph', config.mode)
 }
 
 D3Sunburst.destroy = () => {

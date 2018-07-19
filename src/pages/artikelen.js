@@ -25,11 +25,50 @@ const dataURL =
     ? '/data/sunburst.json'
     : `${lambdaURL}/analytics-inventory`
 
+const sunburstModes = [
+  {
+    text: 'Omzet',
+    name: 'CHANGE_MODE',
+    type: 'state',
+    mode: 'totalRevenue',
+    status: 'dev',
+  },
+  {
+    text: 'Winst',
+    name: 'CHANGE_MODE',
+    type: 'state',
+    mode: 'totalProfit',
+    status: 'dev',
+  },
+  {
+    text: 'Aantal',
+    name: 'CHANGE_MODE',
+    type: 'state',
+    mode: 'totalSold',
+    status: 'dev',
+  },
+  {
+    text: 'Voorraad',
+    name: 'CHANGE_MODE',
+    type: 'state',
+    mode: 'totalStock',
+    status: 'dev',
+  },
+  {
+    text: 'Waarde',
+    name: 'CHANGE_MODE',
+    type: 'state',
+    mode: 'totalStockValue',
+    status: 'dev',
+  },
+]
+
 class IndexPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = { mode: 'totalRevenue' }
     this.getData = this.getData.bind(this)
+    this.setMode = this.setMode.bind(this)
     this.determineCategories = this.determineCategories.bind(this)
     this.determineItems = this.determineItems.bind(this)
   }
@@ -39,7 +78,7 @@ class IndexPage extends React.Component {
   }
 
   async getData() {
-    let action = { name: 'fetching' }
+    let action = { name: 'FETCHING_SUNBURST_DATA' }
     try {
       this.setState(notify('loading', action))
       const res = await fetch(dataURL)
@@ -57,6 +96,10 @@ class IndexPage extends React.Component {
       console.log(err)
       this.setState(notify('error', action, err))
     }
+  }
+
+  setMode(action) {
+    this.setState({ ...notify('success', action), mode: action.mode })
   }
 
   sortingFunction(prev, next) {
@@ -92,6 +135,7 @@ class IndexPage extends React.Component {
   render() {
     let selected = this.state.selected
     let hovered = this.state.hovered
+    let mode = this.state.mode
     return (
       <div className={styles.container}>
         {this.state.items && (
@@ -101,9 +145,32 @@ class IndexPage extends React.Component {
               <Sunburst
                 data={this.state.items}
                 size={[700, 700]}
-                config={{ setParentState: this.setState.bind(this) }}
+                config={{
+                  setParentState: this.setState.bind(this),
+                  mode: this.state.mode,
+                }}
               />
               <div className={styles.cardsVertical}>
+                <div className={styles.cardBroad}>
+                  <Card
+                    name={mode}
+                    buttons={_.map(sunburstModes, action => {
+                      return {
+                        ...action,
+                        handler:
+                          action.type === 'state'
+                            ? () => {
+                                return this.setMode({
+                                  name: action.name,
+                                  mode: action.mode,
+                                })
+                              }
+                            : undefined,
+                      }
+                    })}
+                  />
+                </div>
+
                 {selected && (
                   <div className={styles.cardBroad}>
                     <Card

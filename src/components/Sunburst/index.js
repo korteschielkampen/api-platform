@@ -4,23 +4,36 @@ import D3Sunburst from './sunburst.js'
 class Sunburst extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      chart: {},
+    }
   }
 
   componentDidMount() {
     // D3 Code to create the chart
-    this._chart = D3Sunburst.create(
+    let chart = D3Sunburst.create(
+      this._rootNode,
+      this.props.data,
+      this.props.config
+    )
+    this.setState({ chart: chart })
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.config.mode !== this.props.config.mode
+  }
+
+  componentDidUpdate(props) {
+    this._rootNode.innerHTML = ''
+    D3Sunburst.create.call(
+      this,
       this._rootNode,
       this.props.data,
       this.props.config
     )
   }
 
-  componentDidUpdate() {
-    // D3 Code to update the chart
-    // D3Sunburst.update(this._rootNode, this.props.data, this.props.config).apply(
-    //   this
-    // )
-  }
+  will
 
   componentWillUnmount() {
     D3Sunburst.destroy(this._rootNode)

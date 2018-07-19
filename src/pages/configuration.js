@@ -172,7 +172,6 @@ class IndexPage extends React.Component {
   }
 
   async triggerLambda(action) {
-    console.log('Action triggered: ', action)
     try {
       this.setState(notify('loading', action))
       const res = await fetch(action.url)

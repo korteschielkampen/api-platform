@@ -61,6 +61,20 @@ export default props => {
         </ul>
       </div>
     )
+  } else if (props.type === 'input') {
+    return (
+      <div className={styles.card}>
+        <div className={styles.cardSection}>
+          <p>{props.text}</p>
+        </div>
+        <div className={styles.cardSection}>
+          {props.buttons &&
+            props.buttons.map((action, key) => {
+              return <Button key={key} options={action} />
+            })}
+        </div>
+      </div>
+    )
   } else {
     return (
       <div className={styles.card}>

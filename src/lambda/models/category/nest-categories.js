@@ -56,10 +56,16 @@ export default categories => {
         totalProfit:
           categories[parentKey].statisticsNested.totalProfit +
           c.statisticsNested.totalProfit,
+        totalReorderpoints:
+          categories[parentKey].statisticsNested.totalReorderpoints +
+          c.statisticsNested.totalReorderpoints,
+        totalReorderpointsValue:
+          categories[parentKey].statisticsNested.totalReorderpointsValue +
+          c.statisticsNested.totalReorderpointsValue,
       }
     }
   })
-
+  console.log(_.find(categories, { nodeDepth: '-1' }).statistics)
   // Return only the root category, which now holds all the nested categories
   return _.find(categories, { nodeDepth: '-1' })
 }

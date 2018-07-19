@@ -9,6 +9,8 @@ export default (items, categories) => {
         totalProfit: 0,
         totalStock: 0,
         totalStockValue: 0,
+        totalReorderpoints: 0,
+        totalReorderpointsValue: 0,
       },
       statisticsNested: {
         totalSold: 0,
@@ -16,6 +18,8 @@ export default (items, categories) => {
         totalProfit: 0,
         totalStock: 0,
         totalStockValue: 0,
+        totalReorderpoints: 0,
+        totalReorderpointsValue: 0,
       },
       children: [],
       items: {},
@@ -56,10 +60,17 @@ export default (items, categories) => {
         totalStock: i.statistics.totalStock
           ? categories[key].statistics.totalStock + i.statistics.totalStock
           : 0,
-
         totalStockValue: i.statistics.totalStockValue
           ? categories[key].statistics.totalStockValue +
             i.statistics.totalStockValue
+          : 0,
+        totalReorderpoints: i.statistics.totalReorderpoint
+          ? categories[key].statistics.totalReorderpoints +
+            i.statistics.totalReorderpoint
+          : 0,
+        totalReorderpointsValue: i.statistics.reorderpointValue
+          ? categories[key].statistics.totalReorderpointsValue +
+            i.statistics.reorderpointValue
           : 0,
       },
       items: {

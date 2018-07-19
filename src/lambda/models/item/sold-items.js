@@ -27,6 +27,7 @@ export default sales => {
   })
 
   let itemsHashed = {}
+
   lines.forEach(l => {
     if (itemsHashed[l.itemID]) {
       itemsHashed[l.itemID] = {

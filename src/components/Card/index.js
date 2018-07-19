@@ -58,6 +58,24 @@ export default props => {
                 '--- '}€
             </span>
           </li>
+          <li className={styles.listItem}>
+            <span>Reorderpoint: </span>
+            <span className={styles.number}>
+              {(props.statistics &&
+                props.statistics.totalReorderpoints &&
+                props.statistics.totalReorderpoints.toFixed(0)) ||
+                '--- '}€
+            </span>
+          </li>
+          <li className={styles.listItem}>
+            <span>Reorderwaarde: </span>
+            <span className={styles.number}>
+              {(props.statistics &&
+                props.statistics.totalReorderpointsValue &&
+                props.statistics.totalReorderpointsValue.toFixed(0)) ||
+                '--- '}€
+            </span>
+          </li>
         </ul>
       </div>
     )

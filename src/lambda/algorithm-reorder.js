@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import updateReorderPoints from './actions/update-reorder-points.js'
+import updateReorderPoints from './actions/create-reorder-points.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {

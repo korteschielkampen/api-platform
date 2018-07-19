@@ -1,7 +1,7 @@
 import _ from 'lodash'
 
 import guessCost from './guess-cost.js'
-import getReorderPoint from './reorderpoint.js'
+import getReorderPoint from './reorderpoints.js'
 
 export default (soldItems, items, options) => {
   let itemsHashed = {}
@@ -9,7 +9,7 @@ export default (soldItems, items, options) => {
     itemsHashed[i.itemID] = i
   })
 
-  return _.map(soldItems, i => {
+  items = _.map(soldItems, i => {
     if (itemsHashed[i.itemID]) {
       // Set additional statistics for stock:
       let salesPrice = parseFloat(
@@ -17,18 +17,15 @@ export default (soldItems, items, options) => {
           .amount
       )
       let costCorr = guessCost(
-        parseFloat(itemsHashed[i.itemID].avgCost, salesPrice)
+        parseFloat(itemsHashed[i.itemID].avgCost),
+        parseFloat(salesPrice)
       )
       i.statistics.totalStock = parseInt(
         _.find(itemsHashed[i.itemID].ItemShops.ItemShop, {
           shopID: '1',
         }).qoh
       )
-
-      // let newReorderPoint = getReorderPoint()
-
       i.statistics.totalStockValue = costCorr * i.statistics.totalStock
-      // console.log(i.statistics)
       if (options.lightweight === false) {
         // return everything
         return {
@@ -47,4 +44,6 @@ export default (soldItems, items, options) => {
       return i
     }
   })
+
+  return items
 }

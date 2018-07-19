@@ -17,12 +17,6 @@ export default async (sales, items) => {
 
   let itemShopID = '47939'
   console.log('Calulating reorderpoints')
-  // items.splice(0, 1)
-  // _.times(100, n => {
-  //   console.log(
-  //     util.inspect(items[n].ItemShops.ItemShop, { depth: null, colors: true })
-  //   )
-  // })
 
   /*
 

@@ -33149,6 +33149,10 @@ var _guessCost = __webpack_require__(229);
 
 var _guessCost2 = _interopRequireDefault(_guessCost);
 
+var _reorderpoint = __webpack_require__(947);
+
+var _reorderpoint2 = _interopRequireDefault(_reorderpoint);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (soldItems, items, options) => {
@@ -33165,6 +33169,8 @@ exports.default = (soldItems, items, options) => {
       i.statistics.totalStock = parseInt(_lodash2.default.find(itemsHashed[i.itemID].ItemShops.ItemShop, {
         shopID: '1'
       }).qoh);
+
+      // let newReorderPoint = getReorderPoint()
 
       i.statistics.totalStockValue = costCorr * i.statistics.totalStock;
       // console.log(i.statistics)
@@ -34708,6 +34714,26 @@ exports.default = sales => {
   });
 
   return itemsHashed;
+};
+
+/***/ }),
+
+/***/ 947:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = (sale, item) => {
+  /*
+  What to do here. Might be best to throw in an item and return a verdict
+  This is the preferred lvl, this is the reorder point.
+  */
+  return items;
 };
 
 /***/ }),

@@ -1,6 +1,7 @@
 import _ from 'lodash'
 
 import guessCost from './guess-cost.js'
+import getReorderPoint from './reorderpoint.js'
 
 export default (soldItems, items, options) => {
   let itemsHashed = {}
@@ -23,6 +24,8 @@ export default (soldItems, items, options) => {
           shopID: '1',
         }).qoh
       )
+
+      // let newReorderPoint = getReorderPoint()
 
       i.statistics.totalStockValue = costCorr * i.statistics.totalStock
       // console.log(i.statistics)

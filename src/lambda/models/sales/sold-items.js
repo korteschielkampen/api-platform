@@ -1,50 +1,50 @@
 import _ from 'lodash'
 import util from 'util'
+import guessCost from '../item/guess-cost.js'
 
 export default sales => {
-  let items = []
+  let lines = []
   _.map(sales, (sale, saleID) => {
     if (sale.completed == 'true' && sale.SaleLines) {
-      if (Array.isArray(sale.SaleLines.SaleLine)) {
-        _.map(sale.SaleLines.SaleLine, (line, lineID) => {
-          items.push({
-            id: line.itemID,
-            value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
-            valueWithTax: parseFloat(line.calcTotal),
-            quantity: parseFloat(line.unitQuantity),
-          })
-        })
-      } else {
-        let line = sale.SaleLines.SaleLine
-        items.push({
-          id: line.itemID,
-          value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
-          valueWithTax: parseFloat(line.calcTotal),
-          quantity: parseFloat(line.unitQuantity),
-        })
+      // Sometimes object, sometimes array. Now always array.
+      if (!Array.isArray(sale.SaleLines.SaleLine)) {
+        sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine]
       }
+      _.map(sale.SaleLines.SaleLine, (line, lineID) => {
+        lines.push({
+          itemID: line.itemID,
+          totalSold: parseFloat(line.unitQuantity),
+          revenue: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
+          profit:
+            parseFloat(line.unitPrice) / (1 + parseFloat(line.tax1Rate)) -
+            guessCost(
+              parseFloat(line.avgCost),
+              parseFloat(line.unitPrice) / (1 + parseFloat(line.tax1Rate))
+            ),
+        })
+      })
     }
   })
 
   let itemsHashed = {}
-  items.forEach(i => {
-    if (itemsHashed[i.id]) {
-      itemsHashed[i.id] = {
-        itemID: i.id,
+  lines.forEach(l => {
+    if (itemsHashed[l.itemID]) {
+      itemsHashed[l.itemID] = {
+        itemID: l.itemID,
         statistics: {
-          totalSold: itemsHashed[i.id].statistics.totalSold + i.quantity,
-          totalRevenue: itemsHashed[i.id].statistics.totalRevenue + i.value,
-          valueWithTax:
-            itemsHashed[i.id].statistics.valueWithTax + i.valueWithTax,
+          totalSold: itemsHashed[l.itemID].statistics.totalSold + l.totalSold,
+          totalRevenue:
+            itemsHashed[l.itemID].statistics.totalRevenue + l.revenue,
+          totalProfit: itemsHashed[l.itemID].statistics.totalRevenue + l.profit,
         },
       }
     } else {
-      itemsHashed[i.id] = {
-        itemID: i.id,
+      itemsHashed[l.itemID] = {
+        itemID: l.itemID,
         statistics: {
-          totalSold: i.quantity,
-          totalRevenue: i.value,
-          valueWithTax: i.valueWithTax,
+          totalSold: l.totalSold,
+          totalRevenue: l.revenue,
+          totalProfit: l.profit,
         },
       }
     }

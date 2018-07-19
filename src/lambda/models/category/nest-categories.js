@@ -50,6 +50,12 @@ export default categories => {
         totalStock:
           categories[parentKey].statisticsNested.totalStock +
           c.statisticsNested.totalStock,
+        totalStockValue:
+          categories[parentKey].statisticsNested.totalStockValue +
+          c.statisticsNested.totalStockValue,
+        totalProfit:
+          categories[parentKey].statisticsNested.totalProfit +
+          c.statisticsNested.totalProfit,
       }
     }
   })

@@ -6,6 +6,7 @@ import Button from '../Button'
 
 export default props => {
   if (props.type === 'statistics') {
+    console.log(props.statistics)
     return (
       <div className={styles.card}>
         <ul className={styles.list}>
@@ -25,6 +26,15 @@ export default props => {
             </span>
           </li>
           <li className={styles.listItem}>
+            <span>Winst: </span>
+            <span className={styles.number}>
+              {(props.statistics &&
+                props.statistics.totalProfit &&
+                props.statistics.totalProfit.toFixed(0)) ||
+                '--- '}
+            </span>
+          </li>
+          <li className={styles.listItem}>
             <span>Verkocht: </span>
             <span className={styles.number}>
               {(props.statistics && props.statistics.totalSold.toFixed(0)) ||
@@ -38,6 +48,15 @@ export default props => {
                 props.statistics.totalStock &&
                 props.statistics.totalStock.toFixed(0)) ||
                 '--- '}
+            </span>
+          </li>
+          <li className={styles.listItem}>
+            <span>Waarde: </span>
+            <span className={styles.number}>
+              {(props.statistics &&
+                props.statistics.totalStockValue &&
+                props.statistics.totalStockValue.toFixed(0)) ||
+                '--- '}€
             </span>
           </li>
         </ul>

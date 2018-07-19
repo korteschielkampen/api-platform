@@ -76,6 +76,15 @@ let actionGroups = [
         })}`,
         status: 'dev',
       },
+      {
+        text: 'Impossible cost',
+        name: 'TAG_IMPOSSIBLE_COST',
+        type: 'lambda',
+        url: `${lambdaURL}/algorithm-tag?${qS.stringify({
+          tag: 'verkeerdeinkoop',
+        })}`,
+        status: 'dev',
+      },
     ],
   },
   {
@@ -139,7 +148,7 @@ let actionGroups = [
     text: 'Reports',
     actions: [
       {
-        text: 'Financial Report',
+        text: 'Financial',
         name: 'TRIGGER_FINANCIAL_REPORT',
         type: 'lambda',
         url: `${lambdaURL}/integration-report`,

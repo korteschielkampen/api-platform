@@ -1,17 +1,17 @@
 import util from 'util'
 import _ from 'lodash'
 
-import getSalelines from '../models/sales/sold-items.js'
-import createMergedItems from '../models/sales/merged-items.js'
+import getSoldItems from '../models/sales/sold-items.js'
+import createMergedItems from '../models/item/merged-items.js'
 import updateItems from './update-items.js'
 
 export default async (sales, items) => {
   console.log('Merging data')
   // Get the sold items statistics and add them to the items themselves
-  let saleslines = getSalelines(sales)
+  let soldItems = getSoldItems(sales)
 
   // Merge saleslines with items and remove '0' because it cannot be updated
-  items = createMergedItems(saleslines, items, {
+  items = createMergedItems(soldItems, items, {
     lightweight: false,
   })
 

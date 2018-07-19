@@ -1,6 +1,6 @@
 import getSaleslines from '../models/sales/sold-items.js'
-import createMergedItems from '../models/sales/merged-items.js'
-import createTagPayloads from '../models/tag/create-tag-payloads.js'
+import createMergedItems from '../models/item/merged-items.js'
+import createTagPayloads from '../models/item/payload-tag.js'
 import updateItems from './update-items.js'
 
 export default async (sales, items, tag) => {

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 919);
+/******/ 	return __webpack_require__(__webpack_require__.s = 920);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -26885,7 +26885,7 @@ module.exports = function(module) {
             try {
                 oldLocale = globalLocale._abbr;
                 var aliasedRequire = require;
-                __webpack_require__(233)("./" + name);
+                __webpack_require__(234)("./" + name);
                 getSetGlobalLocale(oldLocale);
             } catch (e) {}
         }
@@ -29561,7 +29561,27 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 233:
+/***/ 229:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = (cost, price) => {
+  let costCorr = parseFloat(cost);
+  if (!costCorr || costCorr > price) {
+    costCorr = 0.5 * price;
+  }
+  return costCorr;
+};
+
+/***/ }),
+
+/***/ 234:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -29826,7 +29846,7 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 233;
+webpackContext.id = 234;
 
 /***/ }),
 
@@ -33012,7 +33032,7 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 885:
+/***/ 886:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33030,51 +33050,49 @@ var _util = __webpack_require__(13);
 
 var _util2 = _interopRequireDefault(_util);
 
+var _guessCost = __webpack_require__(229);
+
+var _guessCost2 = _interopRequireDefault(_guessCost);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = sales => {
-  let items = [];
+  let lines = [];
   _lodash2.default.map(sales, (sale, saleID) => {
     if (sale.completed == 'true' && sale.SaleLines) {
-      if (Array.isArray(sale.SaleLines.SaleLine)) {
-        _lodash2.default.map(sale.SaleLines.SaleLine, (line, lineID) => {
-          items.push({
-            id: line.itemID,
-            value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
-            valueWithTax: parseFloat(line.calcTotal),
-            quantity: parseFloat(line.unitQuantity)
-          });
-        });
-      } else {
-        let line = sale.SaleLines.SaleLine;
-        items.push({
-          id: line.itemID,
-          value: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
-          valueWithTax: parseFloat(line.calcTotal),
-          quantity: parseFloat(line.unitQuantity)
-        });
+      // Sometimes object, sometimes array. Now always array.
+      if (!Array.isArray(sale.SaleLines.SaleLine)) {
+        sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine];
       }
+      _lodash2.default.map(sale.SaleLines.SaleLine, (line, lineID) => {
+        lines.push({
+          itemID: line.itemID,
+          totalSold: parseFloat(line.unitQuantity),
+          revenue: parseFloat(line.calcTotal) / (1 + parseFloat(line.tax1Rate)),
+          profit: parseFloat(line.unitPrice) / (1 + parseFloat(line.tax1Rate)) - (0, _guessCost2.default)(parseFloat(line.avgCost), parseFloat(line.unitPrice) / (1 + parseFloat(line.tax1Rate)))
+        });
+      });
     }
   });
 
   let itemsHashed = {};
-  items.forEach(i => {
-    if (itemsHashed[i.id]) {
-      itemsHashed[i.id] = {
-        itemID: i.id,
+  lines.forEach(l => {
+    if (itemsHashed[l.itemID]) {
+      itemsHashed[l.itemID] = {
+        itemID: l.itemID,
         statistics: {
-          totalSold: itemsHashed[i.id].statistics.totalSold + i.quantity,
-          totalRevenue: itemsHashed[i.id].statistics.totalRevenue + i.value,
-          valueWithTax: itemsHashed[i.id].statistics.valueWithTax + i.valueWithTax
+          totalSold: itemsHashed[l.itemID].statistics.totalSold + l.totalSold,
+          totalRevenue: itemsHashed[l.itemID].statistics.totalRevenue + l.revenue,
+          totalProfit: itemsHashed[l.itemID].statistics.totalRevenue + l.profit
         }
       };
     } else {
-      itemsHashed[i.id] = {
-        itemID: i.id,
+      itemsHashed[l.itemID] = {
+        itemID: l.itemID,
         statistics: {
-          totalSold: i.quantity,
-          totalRevenue: i.value,
-          valueWithTax: i.valueWithTax
+          totalSold: l.totalSold,
+          totalRevenue: l.revenue,
+          totalProfit: l.profit
         }
       };
     }
@@ -33182,7 +33200,7 @@ exports.default = sales => {
 
 /***/ }),
 
-/***/ 890:
+/***/ 891:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33198,6 +33216,10 @@ var _lodash = __webpack_require__(14);
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _guessCost = __webpack_require__(229);
+
+var _guessCost2 = _interopRequireDefault(_guessCost);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = (soldItems, items, options) => {
@@ -33207,19 +33229,26 @@ exports.default = (soldItems, items, options) => {
   });
 
   return _lodash2.default.map(soldItems, i => {
-    if (itemsHashed[i.itemID] && options.lightweight === false) {
-      return _extends({}, itemsHashed[i.itemID], i);
-    } else if (itemsHashed[i.itemID] && options.lightweight === true) {
-      return _extends({}, i, {
-        categoryID: itemsHashed[i.itemID].categoryID,
-        description: itemsHashed[i.itemID].description,
-        shiitee: 39423,
-        statistics: _extends({
-          totalStock: parseInt(_lodash2.default.find(itemsHashed[i.itemID].ItemShops.ItemShop, {
-            shopID: '1'
-          }).qoh)
-        }, i.statistics)
-      });
+    if (itemsHashed[i.itemID]) {
+      // Set additional statistics for stock:
+      let salesPrice = parseFloat(_lodash2.default.find(itemsHashed[i.itemID].Prices.ItemPrice, { useType: 'Default' }).amount);
+      let costCorr = (0, _guessCost2.default)(parseFloat(itemsHashed[i.itemID].avgCost, salesPrice));
+      i.statistics.totalStock = parseInt(_lodash2.default.find(itemsHashed[i.itemID].ItemShops.ItemShop, {
+        shopID: '1'
+      }).qoh);
+
+      i.statistics.totalStockValue = costCorr * i.statistics.totalStock;
+      // console.log(i.statistics)
+      if (options.lightweight === false) {
+        // return everything
+        return _extends({}, itemsHashed[i.itemID], i);
+      } else if (options.lightweight === true) {
+        // Only return essential values
+        return _extends({}, i, {
+          categoryID: itemsHashed[i.itemID].categoryID,
+          description: itemsHashed[i.itemID].description
+        });
+      }
     } else {
       return i;
     }
@@ -33228,7 +33257,7 @@ exports.default = (soldItems, items, options) => {
 
 /***/ }),
 
-/***/ 894:
+/***/ 895:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33241,7 +33270,7 @@ exports.default = (soldItems, items, options) => {
 /* harmony export (immutable) */ __webpack_exports__["b"] = Rgb;
 /* unused harmony export hslConvert */
 /* harmony export (immutable) */ __webpack_exports__["f"] = hsl;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(895);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(896);
 
 
 function Color() {}
@@ -33587,7 +33616,7 @@ function hsl2rgb(h, m1, m2) {
 
 /***/ }),
 
-/***/ 895:
+/***/ 896:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -33694,37 +33723,25 @@ function extend(parent, definition) {
 
 /***/ }),
 
-/***/ 908:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_color__ = __webpack_require__(894);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "color", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["e"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "rgb", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["g"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "hsl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["f"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_lab__ = __webpack_require__(922);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "lab", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["a"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "hcl", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["c"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "lch", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["d"]; });
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "gray", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["b"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__ = __webpack_require__(923);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "cubehelix", function() { return __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__["a"]; });
-
-
-
-
-
-/***/ }),
-
 /***/ 909:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return deg2rad; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return rad2deg; });
-var deg2rad = Math.PI / 180;
-var rad2deg = 180 / Math.PI;
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_color__ = __webpack_require__(895);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "color", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["e"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "rgb", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["g"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "hsl", function() { return __WEBPACK_IMPORTED_MODULE_0__src_color__["f"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_lab__ = __webpack_require__(923);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "lab", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "hcl", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["c"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "lch", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["d"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "gray", function() { return __WEBPACK_IMPORTED_MODULE_1__src_lab__["b"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__ = __webpack_require__(924);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "cubehelix", function() { return __WEBPACK_IMPORTED_MODULE_2__src_cubehelix__["a"]; });
+
+
+
 
 
 /***/ }),
@@ -33814,68 +33831,15 @@ var rad2deg = 180 / Math.PI;
 
 /***/ }),
 
-/***/ 919:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 910:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return deg2rad; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return rad2deg; });
+var deg2rad = Math.PI / 180;
+var rad2deg = 180 / Math.PI;
 
-
-var _moment = __webpack_require__(2);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _fs = __webpack_require__(31);
-
-var _fs2 = _interopRequireDefault(_fs);
-
-var _util = __webpack_require__(13);
-
-var _util2 = _interopRequireDefault(_util);
-
-var _createStarburst = __webpack_require__(920);
-
-var _createStarburst2 = _interopRequireDefault(_createStarburst);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.handler = (() => {
-  var _ref = _asyncToGenerator(function* (event, context, callback) {
-    const respond = function ({ status, body }) {
-      callback(null, {
-        statusCode: status,
-        body: JSON.stringify({ body })
-      });
-    };
-
-    try {
-      let sales = JSON.parse(_fs2.default.readFileSync('./static/data/sales.json'));
-      let items = JSON.parse(_fs2.default.readFileSync('./static/data/items.json'));
-      let categories = JSON.parse(_fs2.default.readFileSync('./static/data/categories.json'));
-
-      let starburstData = (0, _createStarburst2.default)(sales, items, categories);
-
-      // Storing the file locally, which is then pushed up to the live version
-      // -> Need to build in S3 storage or a more permanent solution.
-      // -> Might be interesting to build my own GraphQL Apollo endpoint.
-      var json = JSON.stringify({ body: { data: starburstData } });
-      _fs2.default.writeFileSync('./static/data/sunburst.json', json);
-
-      respond({
-        status: 200,
-        body: { message: 'succes', data: starburstData }
-      });
-    } catch (err) {
-      console.log(err);
-      respond({ status: 422, body: err });
-    }
-  });
-
-  return function (_x, _x2, _x3) {
-    return _ref.apply(this, arguments);
-  };
-})();
 
 /***/ }),
 
@@ -33956,31 +33920,96 @@ exports.handler = (() => {
 "use strict";
 
 
+var _moment = __webpack_require__(2);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _fs = __webpack_require__(31);
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _util = __webpack_require__(13);
+
+var _util2 = _interopRequireDefault(_util);
+
+var _createStarburst = __webpack_require__(921);
+
+var _createStarburst2 = _interopRequireDefault(_createStarburst);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.handler = (() => {
+  var _ref = _asyncToGenerator(function* (event, context, callback) {
+    const respond = function ({ status, body }) {
+      callback(null, {
+        statusCode: status,
+        body: JSON.stringify({ body })
+      });
+    };
+
+    try {
+      let sales = JSON.parse(_fs2.default.readFileSync('./static/data/sales.json'));
+      let items = JSON.parse(_fs2.default.readFileSync('./static/data/items.json'));
+      let categories = JSON.parse(_fs2.default.readFileSync('./static/data/categories.json'));
+
+      let starburstData = (0, _createStarburst2.default)(sales, items, categories);
+
+      // Storing the file locally, which is then pushed up to the live version
+      // -> Need to build in S3 storage or a more permanent solution.
+      // -> Might be interesting to build my own GraphQL Apollo endpoint.
+      var json = JSON.stringify({ body: { data: starburstData } });
+      _fs2.default.writeFileSync('./static/data/sunburst.json', json);
+
+      respond({
+        status: 200,
+        body: { message: 'succes', data: starburstData }
+      });
+    } catch (err) {
+      console.log(err);
+      respond({ status: 422, body: err });
+    }
+  });
+
+  return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+})();
+
+/***/ }),
+
+/***/ 921:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _soldItems = __webpack_require__(885);
+var _soldItems = __webpack_require__(886);
 
 var _soldItems2 = _interopRequireDefault(_soldItems);
 
-var _mergedItems = __webpack_require__(890);
+var _mergedItems = __webpack_require__(891);
 
 var _mergedItems2 = _interopRequireDefault(_mergedItems);
 
-var _specialCategories = __webpack_require__(921);
+var _specialCategories = __webpack_require__(922);
 
 var _specialCategories2 = _interopRequireDefault(_specialCategories);
 
-var _colorCategories = __webpack_require__(924);
+var _colorCategories = __webpack_require__(925);
 
 var _colorCategories2 = _interopRequireDefault(_colorCategories);
 
-var _mergeItemsCategories = __webpack_require__(925);
+var _mergeItemsCategories = __webpack_require__(926);
 
 var _mergeItemsCategories2 = _interopRequireDefault(_mergeItemsCategories);
 
-var _nestCategories = __webpack_require__(926);
+var _nestCategories = __webpack_require__(927);
 
 var _nestCategories2 = _interopRequireDefault(_nestCategories);
 
@@ -34016,7 +34045,7 @@ exports.default = (sales, items, categories) => {
 
 /***/ }),
 
-/***/ 921:
+/***/ 922:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34026,7 +34055,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _d3Color = __webpack_require__(908);
+var _d3Color = __webpack_require__(909);
 
 exports.default = [{
   name: 'Winkeltotaal',
@@ -34066,7 +34095,7 @@ exports.default = [{
 
 /***/ }),
 
-/***/ 922:
+/***/ 923:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -34076,9 +34105,9 @@ exports.default = [{
 /* harmony export (immutable) */ __webpack_exports__["d"] = lch;
 /* harmony export (immutable) */ __webpack_exports__["c"] = hcl;
 /* unused harmony export Hcl */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(895);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(894);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(909);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(896);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(895);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(910);
 
 
 
@@ -34204,15 +34233,15 @@ Object(__WEBPACK_IMPORTED_MODULE_0__define__["a" /* default */])(Hcl, hcl, Objec
 
 /***/ }),
 
-/***/ 923:
+/***/ 924:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = cubehelix;
 /* unused harmony export Cubehelix */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(895);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(894);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(909);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__define__ = __webpack_require__(896);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__color__ = __webpack_require__(895);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__math__ = __webpack_require__(910);
 
 
 
@@ -34278,7 +34307,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__define__["a" /* default */])(Cubehelix, cube
 
 /***/ }),
 
-/***/ 924:
+/***/ 925:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34288,7 +34317,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _d3Color = __webpack_require__(908);
+var _d3Color = __webpack_require__(909);
 
 exports.default = categories => {
   let categoryColors = [{ name: 'Hengelsport', categoryID: '221', color: 'hsl(151, 100%, 42%)' }, { name: 'Dierenspeciaal', categoryID: '97', color: 'hsl(42, 100%, 50%)' }, { name: 'Aquarium', categoryID: '98', color: 'hsl(204, 100%, 43%)' }, {
@@ -34316,7 +34345,7 @@ exports.default = categories => {
 
 /***/ }),
 
-/***/ 925:
+/***/ 926:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34335,12 +34364,16 @@ exports.default = (items, categories) => {
       statistics: {
         totalSold: 0,
         totalRevenue: 0,
-        totalStock: 0
+        totalProfit: 0,
+        totalStock: 0,
+        totalStockValue: 0
       },
       statisticsNested: {
         totalSold: 0,
         totalRevenue: 0,
-        totalStock: 0
+        totalProfit: 0,
+        totalStock: 0,
+        totalStockValue: 0
       },
       children: [],
       items: {}
@@ -34368,7 +34401,10 @@ exports.default = (items, categories) => {
       statistics: {
         totalSold: categories[key].statistics.totalSold + i.statistics.totalSold,
         totalRevenue: categories[key].statistics.totalRevenue + i.statistics.totalRevenue,
-        totalStock: i.statistics.totalStock ? categories[key].statistics.totalStock + i.statistics.totalStock : 0
+        totalProfit: i.statistics.totalProfit ? categories[key].statistics.totalProfit + i.statistics.totalProfit : 0,
+        totalStock: i.statistics.totalStock ? categories[key].statistics.totalStock + i.statistics.totalStock : 0,
+
+        totalStockValue: i.statistics.totalStockValue ? categories[key].statistics.totalStockValue + i.statistics.totalStockValue : 0
       },
       items: _extends({}, categories[key].items, {
         [i.itemID]: i
@@ -34380,7 +34416,7 @@ exports.default = (items, categories) => {
 
 /***/ }),
 
-/***/ 926:
+/***/ 927:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34438,7 +34474,9 @@ exports.default = categories => {
       categories[parentKey].statisticsNested = {
         totalSold: categories[parentKey].statisticsNested.totalSold + c.statisticsNested.totalSold,
         totalRevenue: categories[parentKey].statisticsNested.totalRevenue + c.statisticsNested.totalRevenue,
-        totalStock: categories[parentKey].statisticsNested.totalStock + c.statisticsNested.totalStock
+        totalStock: categories[parentKey].statisticsNested.totalStock + c.statisticsNested.totalStock,
+        totalStockValue: categories[parentKey].statisticsNested.totalStockValue + c.statisticsNested.totalStockValue,
+        totalProfit: categories[parentKey].statisticsNested.totalProfit + c.statisticsNested.totalProfit
       };
     }
   });

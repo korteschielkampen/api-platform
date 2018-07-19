@@ -6,12 +6,16 @@ export default (items, categories) => {
       statistics: {
         totalSold: 0,
         totalRevenue: 0,
+        totalProfit: 0,
         totalStock: 0,
+        totalStockValue: 0,
       },
       statisticsNested: {
         totalSold: 0,
         totalRevenue: 0,
+        totalProfit: 0,
         totalStock: 0,
+        totalStockValue: 0,
       },
       children: [],
       items: {},
@@ -46,8 +50,16 @@ export default (items, categories) => {
           categories[key].statistics.totalSold + i.statistics.totalSold,
         totalRevenue:
           categories[key].statistics.totalRevenue + i.statistics.totalRevenue,
+        totalProfit: i.statistics.totalProfit
+          ? categories[key].statistics.totalProfit + i.statistics.totalProfit
+          : 0,
         totalStock: i.statistics.totalStock
           ? categories[key].statistics.totalStock + i.statistics.totalStock
+          : 0,
+
+        totalStockValue: i.statistics.totalStockValue
+          ? categories[key].statistics.totalStockValue +
+            i.statistics.totalStockValue
           : 0,
       },
       items: {

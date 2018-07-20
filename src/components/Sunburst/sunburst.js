@@ -9,6 +9,8 @@ const modes = {
   totalRevenue: d => d.statistics.totalRevenue,
   totalProfit: d => d.statistics.totalProfit,
   totalSold: d => d.statistics.totalSold,
+  totalReorderpoint: d => d.statistics.totalReorderpoint,
+  totalReorderpointValue: d => d.statistics.totalReorderpointValue,
 }
 
 D3Sunburst.create = (el, data, config) => {

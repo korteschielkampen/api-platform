@@ -6,7 +6,6 @@ import Button from '../Button'
 
 export default props => {
   if (props.type === 'statistics') {
-    console.log(props.statistics)
     return (
       <div className={styles.card}>
         <ul className={styles.list}>
@@ -60,7 +59,7 @@ export default props => {
             </span>
           </li>
           <li className={styles.listItem}>
-            <span>Reorderpoint: </span>
+            <span>Ink.punt: </span>
             <span className={styles.number}>
               {(props.statistics &&
                 props.statistics.totalReorderpoint &&
@@ -69,7 +68,7 @@ export default props => {
             </span>
           </li>
           <li className={styles.listItem}>
-            <span>Reorderwaarde: </span>
+            <span>Ink.waarde: </span>
             <span className={styles.number}>
               {(props.statistics &&
                 props.statistics.totalReorderpointValue &&

@@ -61,6 +61,20 @@ const sunburstModes = [
     mode: 'totalStockValue',
     status: 'dev',
   },
+  {
+    text: 'Ink.pnt',
+    name: 'CHANGE_MODE',
+    type: 'state',
+    mode: 'totalReorderpoint',
+    status: 'dev',
+  },
+  {
+    text: 'Ink.waarde',
+    name: 'CHANGE_MODE',
+    type: 'state',
+    mode: 'totalReorderpointValue',
+    status: 'dev',
+  },
 ]
 
 class IndexPage extends React.Component {

@@ -1,26 +1,22 @@
+const statistics = () => {
+  return {
+    totalSold: 0,
+    totalRevenue: 0,
+    totalProfit: 0,
+    totalStock: 0,
+    totalStockValue: 0,
+    totalReorderpoint: 0,
+    totalReorderpointValue: 0,
+  }
+}
+
 export default (items, categories) => {
   // Preparing the categories to avoid checks and nasty errors
   categories = _.map(categories, c => {
     return {
       ...c,
-      statistics: {
-        totalSold: 0,
-        totalRevenue: 0,
-        totalProfit: 0,
-        totalStock: 0,
-        totalStockValue: 0,
-        totalReorderpoints: 0,
-        totalReorderpointsValue: 0,
-      },
-      statisticsNested: {
-        totalSold: 0,
-        totalRevenue: 0,
-        totalProfit: 0,
-        totalStock: 0,
-        totalStockValue: 0,
-        totalReorderpoints: 0,
-        totalReorderpointsValue: 0,
-      },
+      statistics: statistics(),
+      statisticsNested: statistics(),
       children: [],
       items: {},
     }
@@ -47,37 +43,16 @@ export default (items, categories) => {
         categoryID: 'special-notfound',
       })
     }
-    categories[key] = {
-      ...categories[key],
-      statistics: {
-        totalSold:
-          categories[key].statistics.totalSold + i.statistics.totalSold,
-        totalRevenue:
-          categories[key].statistics.totalRevenue + i.statistics.totalRevenue,
-        totalProfit: i.statistics.totalProfit
-          ? categories[key].statistics.totalProfit + i.statistics.totalProfit
-          : 0,
-        totalStock: i.statistics.totalStock
-          ? categories[key].statistics.totalStock + i.statistics.totalStock
-          : 0,
-        totalStockValue: i.statistics.totalStockValue
-          ? categories[key].statistics.totalStockValue +
-            i.statistics.totalStockValue
-          : 0,
-        totalReorderpoints: i.statistics.totalReorderpoint
-          ? categories[key].statistics.totalReorderpoints +
-            i.statistics.totalReorderpoint
-          : 0,
-        totalReorderpointsValue: i.statistics.reorderpointValue
-          ? categories[key].statistics.totalReorderpointsValue +
-            i.statistics.reorderpointValue
-          : 0,
-      },
-      items: {
-        ...categories[key].items,
-        [i.itemID]: i,
-      },
+
+    categories[key].items = {
+      ...categories[key].items,
+      [i.itemID]: i,
     }
+    _.forEach(categories[key].statistics, (statValue, statName) => {
+      categories[key].statistics[statName] =
+        categories[key].statistics[statName] + (i.statistics[statName] || 0)
+    })
   })
+
   return categories
 }

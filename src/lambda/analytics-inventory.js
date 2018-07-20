@@ -2,7 +2,7 @@ import moment from 'moment'
 import fs from 'fs'
 import util from 'util'
 
-import createStarburst from './actions/create-starburst.js'
+import createAnalyticsInventory from './actions/create-analytics-inventory.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -12,6 +12,10 @@ exports.handler = async (event, context, callback) => {
     })
   }
 
+  if (!callback) {
+    var callback = () => {}
+  }
+
   try {
     let sales = JSON.parse(fs.readFileSync('./static/data/sales.json'))
     let items = JSON.parse(fs.readFileSync('./static/data/items.json'))
@@ -19,7 +23,7 @@ exports.handler = async (event, context, callback) => {
       fs.readFileSync('./static/data/categories.json')
     )
 
-    let starburstData = createStarburst(sales, items, categories)
+    let starburstData = createAnalyticsInventory(sales, items, categories)
 
     // Storing the file locally, which is then pushed up to the live version
     // -> Need to build in S3 storage or a more permanent solution.

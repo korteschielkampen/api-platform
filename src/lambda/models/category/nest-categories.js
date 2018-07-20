@@ -7,15 +7,13 @@ export default categories => {
   categories = _.sortBy(categories, 'nodeDepth').reverse()
 
   // Duplicating the statistics to seperate nested values from own values. It
-  // makes sense to display the accumated values, not the own values. While the
-  // visualisationcode prefers the first.
+  // makes sense to display the accumated values, not the own values.
   categories = _.map(categories, c => {
     return {
       ...c,
       statisticsNested: Object.assign(c.statistics),
     }
   })
-  // console.log(util.inspect(categories, { colors: true, maxArrayLength: 1000 }))
 
   _.forEach(categories, c => {
     // Nesting of child in parent, taking note of previous element present
@@ -26,7 +24,7 @@ export default categories => {
       c.children = [
         ...c.children,
         // Adding values to make items more like categories, allowing them to be
-        // visualized in the same place. Also a good place to reduce the datasize
+        // visualized without to many conditionals.
         ..._.map(c.items, i => {
           i.name = i.description
           i.color = c.color
@@ -38,34 +36,18 @@ export default categories => {
       c.items = {}
       categories[parentKey].children = [...categories[parentKey].children, c]
 
-      // Do accumation of category statistics to display totals, now only own values.
-      // -> Might not be needed though, as the client needs to calucalate this anyways.
-      categories[parentKey].statisticsNested = {
-        totalSold:
-          categories[parentKey].statisticsNested.totalSold +
-          c.statisticsNested.totalSold,
-        totalRevenue:
-          categories[parentKey].statisticsNested.totalRevenue +
-          c.statisticsNested.totalRevenue,
-        totalStock:
-          categories[parentKey].statisticsNested.totalStock +
-          c.statisticsNested.totalStock,
-        totalStockValue:
-          categories[parentKey].statisticsNested.totalStockValue +
-          c.statisticsNested.totalStockValue,
-        totalProfit:
-          categories[parentKey].statisticsNested.totalProfit +
-          c.statisticsNested.totalProfit,
-        totalReorderpoints:
-          categories[parentKey].statisticsNested.totalReorderpoints +
-          c.statisticsNested.totalReorderpoints,
-        totalReorderpointsValue:
-          categories[parentKey].statisticsNested.totalReorderpointsValue +
-          c.statisticsNested.totalReorderpointsValue,
-      }
+      // Calculate accumulated values
+      _.forEach(
+        categories[parentKey].statisticsNested,
+        (statValue, statName) => {
+          categories[parentKey].statisticsNested[statName] =
+            categories[parentKey].statisticsNested[statName] +
+            c.statisticsNested[statName]
+        }
+      )
     }
   })
-  console.log(_.find(categories, { nodeDepth: '-1' }).statistics)
+
   // Return only the root category, which now holds all the nested categories
   return _.find(categories, { nodeDepth: '-1' })
 }

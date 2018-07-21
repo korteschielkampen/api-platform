@@ -205,6 +205,7 @@ class IndexPage extends React.Component {
                       statistics={
                         hovered.data.statisticsNested || hovered.data.statistics
                       }
+                      titlePadding
                       type="statistics"
                     />
                   </div>

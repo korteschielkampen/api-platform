@@ -1,7 +1,7 @@
 .crumbs {
-  width: 55rem;
-  padding: 1rem 1rem 0 3.8rem;
+  width: 100%;
   display: flex;
+  padding: 1rem 1rem 0 3.8rem;
 }
 
 .crumb {

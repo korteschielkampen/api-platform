@@ -18,9 +18,14 @@
 .listItem {
   display: flex;
   justify-content: space-between;
+  font-size: 0.7rem;
+  line-height: 1.2rem;
 }
 
 .title {
   color: black;
+}
+
+.titlePadding {
   height: 2.9rem;
 }

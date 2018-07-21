@@ -26,7 +26,7 @@ const TemplateWrapper = ({ data, children }) => (
         },
       ]}
     />
-    <Header siteTitle={data.site.siteMetadata.title} />
+    <Header />
     {children()}
   </div>
 )

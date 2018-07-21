@@ -1,15 +1,35 @@
 import React from 'react'
 import classNames from 'classnames'
+import _ from 'lodash'
 
 import styles from './index.module.css'
 import Button from '../Button'
 
 export default props => {
   if (props.type === 'statistics') {
+    let prettyPrint = {
+      totalRevenue: { text: 'Omzet:', sign: true },
+      totalProfit: { text: 'Winst:', sign: true },
+      totalSold: { text: 'Aantal:', sign: false },
+      totalStock: { text: 'Voorraad:', sign: false },
+      totalStockValue: { text: 'Voorraadwaarde:', sign: true },
+      totalReorderpoint: { text: 'Nabestelpunt:', sign: false },
+      totalReorderpointValue: { text: 'Nabestelwaarde:', sign: true },
+    }
+
     return (
       <div className={styles.card}>
         <ul className={styles.list}>
-          {!props.link && <li className={styles.title}>{props.name}</li>}
+          {!props.link && (
+            <li
+              className={classNames(
+                styles.title,
+                props.titlePadding && styles.titlePadding
+              )}
+            >
+              {props.name}
+            </li>
+          )}
           {props.link && (
             <li>
               <a className={styles.title} href={props.link}>
@@ -17,65 +37,17 @@ export default props => {
               </a>
             </li>
           )}
-          <li className={styles.listItem}>
-            <span>Omzet: </span>
-            <span className={styles.number}>
-              {(props.statistics && props.statistics.totalRevenue.toFixed(0)) ||
-                '---'}€
-            </span>
-          </li>
-          <li className={styles.listItem}>
-            <span>Winst: </span>
-            <span className={styles.number}>
-              {(props.statistics &&
-                props.statistics.totalProfit &&
-                props.statistics.totalProfit.toFixed(0)) ||
-                '--- '}
-            </span>
-          </li>
-          <li className={styles.listItem}>
-            <span>Verkocht: </span>
-            <span className={styles.number}>
-              {(props.statistics && props.statistics.totalSold.toFixed(0)) ||
-                '--- '}
-            </span>
-          </li>
-          <li className={styles.listItem}>
-            <span>Voorraad: </span>
-            <span className={styles.number}>
-              {(props.statistics &&
-                props.statistics.totalStock &&
-                props.statistics.totalStock.toFixed(0)) ||
-                '--- '}
-            </span>
-          </li>
-          <li className={styles.listItem}>
-            <span>Waarde: </span>
-            <span className={styles.number}>
-              {(props.statistics &&
-                props.statistics.totalStockValue &&
-                props.statistics.totalStockValue.toFixed(0)) ||
-                '--- '}€
-            </span>
-          </li>
-          <li className={styles.listItem}>
-            <span>Ink.punt: </span>
-            <span className={styles.number}>
-              {(props.statistics &&
-                props.statistics.totalReorderpoint &&
-                props.statistics.totalReorderpoint.toFixed(0)) ||
-                '--- '}
-            </span>
-          </li>
-          <li className={styles.listItem}>
-            <span>Ink.waarde: </span>
-            <span className={styles.number}>
-              {(props.statistics &&
-                props.statistics.totalReorderpointValue &&
-                props.statistics.totalReorderpointValue.toFixed(0)) ||
-                '--- '}€
-            </span>
-          </li>
+          {_.map(props.statistics, (value, key) => {
+            return (
+              <li key={key} className={styles.listItem}>
+                <span>{prettyPrint[key].text} </span>
+                <span className={styles.number}>
+                  {value.toFixed(0) || '---'}
+                  {prettyPrint[key].sign && '€'}
+                </span>
+              </li>
+            )
+          })}
         </ul>
       </div>
     )

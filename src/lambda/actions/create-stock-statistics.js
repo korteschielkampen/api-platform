@@ -22,7 +22,6 @@ export default (sales, items) => {
   // Merge saleslines with items
   let reorderSaleStatsByItem = getSaleStatsByItem(reorderSales)
   let reorderItems = createMergedItems(reorderSaleStatsByItem, items)
-
   // Setting reorderpoint to half
   return createStockStatistics(reorderItems)
 }

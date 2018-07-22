@@ -367,7 +367,7 @@ var util = {
 
   readFileSync: function readFileSync(path) {
     if (util.isBrowser()) return null;
-    return __webpack_require__(31).readFileSync(path, 'utf-8');
+    return __webpack_require__(32).readFileSync(path, 'utf-8');
   },
 
   base64: {
@@ -447,7 +447,7 @@ var util = {
       } else if (typeof string.size === 'number') {
         return string.size;
       } else if (typeof string.path === 'string') {
-        return __webpack_require__(31).lstatSync(string.path).size;
+        return __webpack_require__(32).lstatSync(string.path).size;
       } else {
         throw util.error(new Error('Cannot determine length of ' + string),
           { object: string });
@@ -975,7 +975,7 @@ var util = {
   computeSha256: function computeSha256(body, done) {
     if (util.isNode()) {
       var Stream = util.stream.Stream;
-      var fs = __webpack_require__(31);
+      var fs = __webpack_require__(32);
       if (body instanceof Stream) {
         if (typeof body.path === 'string') { // assume file object
           var settings = {};
@@ -2668,12 +2668,6 @@ module.exports = toKey;
 
 /***/ }),
 /* 31 */
-/***/ (function(module, exports) {
-
-module.exports = require("fs");
-
-/***/ }),
-/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -2948,6 +2942,12 @@ Fetch.Response = Response;
 Fetch.Headers = Headers;
 Fetch.Request = Request;
 
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports) {
+
+module.exports = require("fs");
 
 /***/ }),
 /* 33 */
@@ -5866,7 +5866,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _nodeFetch = __webpack_require__(32);
+var _nodeFetch = __webpack_require__(31);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
 
@@ -9051,7 +9051,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _nodeFetch = __webpack_require__(32);
+var _nodeFetch = __webpack_require__(31);
 
 var _nodeFetch2 = _interopRequireDefault(_nodeFetch);
 
@@ -34171,7 +34171,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-const fetch = __webpack_require__(32);
+const fetch = __webpack_require__(31);
 const AWS = __webpack_require__(103);
 
 exports.default = (() => {

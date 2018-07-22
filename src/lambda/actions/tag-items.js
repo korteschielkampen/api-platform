@@ -1,14 +1,14 @@
-import getSaleslines from '../models/item/sold-items.js'
+import getSaleStatsByItem from '../models/item/statistics-sales-byitem.js'
 import createMergedItems from '../models/item/merged-items.js'
 import createTagPayloads from '../models/item/payload-tag.js'
 import updateItems from './update-items.js'
 
 export default async (sales, items, tag) => {
   // Get the sold items statistics and add them to the items themselves
-  let saleslines = getSaleslines(sales)
+  let saleStatsByItem = getSaleStatsByItem(sales)
 
   // Merge saleslines with items and remove '0' because it cannot be updated
-  items = createMergedItems(saleslines, items, {
+  items = createMergedItems(saleStatsByItem, items, {
     lightweight: false,
   })
 

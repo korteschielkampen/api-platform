@@ -1,5 +1,5 @@
 // Set additional statistics for stock
-import cleanCost from './clean-cost.js'
+import cleanCost from './guess-cost.js'
 
 export default items => {
   items = _.map(items, i => {

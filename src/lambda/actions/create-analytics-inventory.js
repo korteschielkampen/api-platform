@@ -1,4 +1,4 @@
-import getSaleStatsByItem from '../models/item/sold-items.js'
+import getSaleStatsByItem from '../models/item/statistics-sales-byitem.js'
 import createMergedItems from '../models/item/merged-items.js'
 import createStockStatistics from './create-stock-statistics.js'
 import specialCategories from '../models/category/special-categories.js'

@@ -2,10 +2,10 @@ import util from 'util'
 import _ from 'lodash'
 import moment from 'moment'
 
-import getSaleStatsByItem from '../models/item/sold-items.js'
 import createMergedItems from '../models/item/merged-items.js'
 import updateItems from './update-items.js'
 
+import getSaleStatsByItem from '../models/item/statistics-sales-byitem.js'
 import createStockStatistics from '../models/item/statistics-stock.js'
 
 export default (sales, items) => {

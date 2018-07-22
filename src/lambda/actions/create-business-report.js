@@ -7,7 +7,6 @@ import moment from 'moment'
 
 import readSales from '../api/lightspeed/read-sales.js'
 
-import createSoldItems from '../models/item/sold-items.js'
 import createFinancialReport from '../models/financial/tax-and-payments.js'
 import createSpecialDayReports from '../models/financial/specials.js'
 

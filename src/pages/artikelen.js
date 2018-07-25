@@ -55,7 +55,7 @@ const sunburstModes = [
     status: 'dev',
   },
   {
-    text: 'Waarde',
+    text: 'Voorr.waarde',
     name: 'CHANGE_MODE',
     type: 'state',
     mode: 'totalStockValue',

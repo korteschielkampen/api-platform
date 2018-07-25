@@ -1,10 +1,16 @@
 export default (saleStatsByItem, items, options) => {
-  let mergedItems = items.reduce((acc, i) => {
-    saleStatsByItem[i.itemID] &&
-      acc.push({
-        ...i,
-        ...saleStatsByItem[i.itemID],
-      })
+  // Making a dictionairy (not expanding with spread and literal 'cuz perf)
+  let itemsHashed = items.reduce((acc, i) => {
+    acc[i.itemID] = i
+    return acc
+  }, {})
+
+  // Do the actual merging by reduce, but use the dictionary for quick search
+  let mergedItems = saleStatsByItem.reduce((acc, i) => {
+    acc.push({
+      ...itemsHashed[i.itemID],
+      ...i,
+    })
     return acc
   }, [])
   return mergedItems

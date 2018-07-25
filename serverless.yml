@@ -31,6 +31,6 @@ functions:
     events:
       - schedule: "cron(0 21 * * ? *)"
   dayReport:
-    handler: functions/create-business-report.handler
+    handler: functions/integration-report.handler
     events:
       - schedule: "cron(0 17 * * ? *)"

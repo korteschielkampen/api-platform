@@ -1,11 +1,14 @@
 import cleanSaleLines from '../../api/lightspeed/clean-saleslines.js'
-import guessCost from '../item/guess-cost.js'
+import prognosedCost from '../item/prognosed-cost.js'
 
 const calcStats = line => {
   // Seperation of actual numeric calculation, which is distinctive from
   // traversal of the datastructure. Guesscost is seperated again, because it is
   // quite problematic, can distort views quite bit.
-  let totalCost = guessCost(line.avgCost, line.unitPrice / (1 + line.tax1Rate))
+  let totalCost = prognosedCost(
+    line.avgCost,
+    line.unitPrice / (1 + line.tax1Rate)
+  )
   return {
     totalSold: line.unitQuantity,
     totalRevenue: line.calcTotal / (1 + line.tax1Rate),

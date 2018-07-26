@@ -46,7 +46,7 @@ exports.handler = async (event, context, callback) => {
       console.log('--> Sunburst starting')
       let sales = storeData('Sales', await readSales())
       let soldItems = getSoldItems(sales)
-      storeData('Items', await readItems({ itemIDs: soldItems }))
+      storeData('Items', await readItems())
       storeData('Categories', await readCategories())
     }
   } catch (err) {

@@ -10,11 +10,11 @@ export default props => {
     let prettyPrint = {
       totalRevenue: { text: 'Omzet:', sign: '€' },
       totalProfit: { text: 'Winst:', sign: '€' },
-      totalSold: { text: 'Aantal:', sign: false },
-      totalStock: { text: 'Voorraad:', sign: false },
+      totalSold: { text: 'Verkocht:', sign: 'stuks' },
+      totalStock: { text: 'Voorraad:', sign: 'stuks' },
       totalStockValue: { text: 'Voorraadwaarde:', sign: '€' },
-      totalDuration: { text: 'Voorraadduur:', sign: 'week' },
-      totalReorderpoint: { text: 'Nabestelpunt:', sign: false },
+      totalDuration: { text: 'Voorraadduur:', sign: 'weken' },
+      totalReorderpoint: { text: 'Nabestelpunt:', sign: 'stuks' },
       totalReorderpointValue: { text: 'Nabestelwaarde:', sign: '€' },
     }
 
@@ -43,7 +43,7 @@ export default props => {
               <li key={key} className={styles.listItem}>
                 <span>{prettyPrint[key].text} </span>
                 <span className={styles.number}>
-                  {value.toFixed(0) || '---'}
+                  {(value && value.toFixed(0)) || '---'}
                   {prettyPrint[key].sign && ' ' + prettyPrint[key].sign}
                 </span>
               </li>

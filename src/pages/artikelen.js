@@ -27,28 +27,28 @@ const dataURL =
 
 const sunburstModes = [
   {
-    text: 'Omzet',
+    text: 'S.Omzet',
     name: 'CHANGE_MODE',
     type: 'state',
     mode: 'totalRevenue',
     status: 'dev',
   },
   {
-    text: 'Winst',
+    text: 'S.Winst',
     name: 'CHANGE_MODE',
     type: 'state',
     mode: 'totalProfit',
     status: 'dev',
   },
   {
-    text: 'Aantal',
+    text: 'S.Aantal',
     name: 'CHANGE_MODE',
     type: 'state',
     mode: 'totalSold',
     status: 'dev',
   },
   {
-    text: 'Voorraad',
+    text: 'V.aantal',
     name: 'CHANGE_MODE',
     type: 'state',
     mode: 'totalStock',
@@ -76,7 +76,7 @@ const sunburstModes = [
     status: 'dev',
   },
   {
-    text: 'Ink.waarde',
+    text: 'Ink. waarde',
     name: 'CHANGE_MODE',
     type: 'state',
     mode: 'totalReorderpointValue',

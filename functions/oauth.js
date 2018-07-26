@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 941);
+/******/ 	return __webpack_require__(__webpack_require__.s = 943);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -367,7 +367,7 @@ var util = {
 
   readFileSync: function readFileSync(path) {
     if (util.isBrowser()) return null;
-    return __webpack_require__(31).readFileSync(path, 'utf-8');
+    return __webpack_require__(32).readFileSync(path, 'utf-8');
   },
 
   base64: {
@@ -447,7 +447,7 @@ var util = {
       } else if (typeof string.size === 'number') {
         return string.size;
       } else if (typeof string.path === 'string') {
-        return __webpack_require__(31).lstatSync(string.path).size;
+        return __webpack_require__(32).lstatSync(string.path).size;
       } else {
         throw util.error(new Error('Cannot determine length of ' + string),
           { object: string });
@@ -975,7 +975,7 @@ var util = {
   computeSha256: function computeSha256(body, done) {
     if (util.isNode()) {
       var Stream = util.stream.Stream;
-      var fs = __webpack_require__(31);
+      var fs = __webpack_require__(32);
       if (body instanceof Stream) {
         if (typeof body.path === 'string') { // assume file object
           var settings = {};
@@ -2943,13 +2943,13 @@ Fetch.Request = Request;
 
 
 /***/ }),
-/* 31 */
+/* 31 */,
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
-/* 32 */,
 /* 33 */
 /***/ (function(module, exports) {
 
@@ -34257,13 +34257,15 @@ exports.default = (() => {
 /* 938 */,
 /* 939 */,
 /* 940 */,
-/* 941 */
+/* 941 */,
+/* 942 */,
+/* 943 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _authenticateNewuser = __webpack_require__(942);
+var _authenticateNewuser = __webpack_require__(944);
 
 var _authenticateNewuser2 = _interopRequireDefault(_authenticateNewuser);
 
@@ -34298,7 +34300,7 @@ exports.handler = (() => {
 })();
 
 /***/ }),
-/* 942 */
+/* 944 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34308,23 +34310,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createToken = __webpack_require__(943);
+var _createToken = __webpack_require__(945);
 
 var _createToken2 = _interopRequireDefault(_createToken);
 
-var _readAdministration = __webpack_require__(944);
+var _readAdministration = __webpack_require__(946);
 
 var _readAdministration2 = _interopRequireDefault(_readAdministration);
 
-var _createToken3 = __webpack_require__(945);
+var _createToken3 = __webpack_require__(947);
 
 var _createToken4 = _interopRequireDefault(_createToken3);
 
-var _readAccount = __webpack_require__(946);
+var _readAccount = __webpack_require__(948);
 
 var _readAccount2 = _interopRequireDefault(_readAccount);
 
-var _createToken5 = __webpack_require__(947);
+var _createToken5 = __webpack_require__(949);
 
 var _createToken6 = _interopRequireDefault(_createToken5);
 
@@ -34390,7 +34392,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 943 */
+/* 945 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34433,7 +34435,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 944 */
+/* 946 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34470,7 +34472,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 945 */
+/* 947 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34512,7 +34514,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 946 */
+/* 948 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34549,7 +34551,7 @@ exports.default = (() => {
 })();
 
 /***/ }),
-/* 947 */
+/* 949 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

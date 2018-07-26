@@ -1,25 +1,51 @@
 // Set additional statistics for stock
-import cleanCost from './guess-cost.js'
+import prognosedCost from './prognosed-cost.js'
 
-const reorderOptions = {
-  tight: n => n / 6, // 1 maand
-  normal: n => n / 2, // 3 maand
-  long: n => n, // 6 maand
-  specialistic: n => 1, // 1 constant
-  exit: n => 0, // 0 constant
-  remarkable: n => undefined, // handmatig
-}
+const reorderOptions = [
+  {
+    name: 'tight',
+    function: n => n / 6, // 1 maand
+    optionID: '29',
+  },
+  {
+    name: 'normal',
+    function: n => n / 2, // 3 maand
+    optionID: '15',
+  },
+  {
+    name: 'long',
+    function: n => n, // 6 maand
+    optionID: '30',
+  },
+  {
+    name: 'specialistic',
+    function: n => 1, // 1 constant
+    optionID: '28',
+  },
+  {
+    name: 'exit',
+    function: n => 0, // 0 constant
+    optionID: '16',
+  },
+  {
+    name: 'remarkable',
+    function: n => undefined, // handmatig
+    optionID: '31',
+  },
+]
 
-const calculateReorderpoint = (i, status) => {
-  let reorderpoint
+const calculateReorderpoint = (i, selectedReorderOption) => {
+  let reorderFunc = (
+    reorderOptions.find(o => {
+      return o.optionID === selectedReorderOption
+    }) ||
+    reorderOptions.find(o => {
+      return o.optionID === '15'
+    })
+  ).function
 
   // Calculate flags
-  if (reorderOptions[status]) {
-    reorderpoint = Math.round(reorderOptions[status](i.statistics.totalSold))
-  } else {
-    reorderpoint = reorderOptions.normal(i.statistics.totalSold)
-  }
-
+  let reorderpoint = Math.round(reorderFunc(i.statistics.totalSold))
   return reorderpoint
 }
 
@@ -38,10 +64,21 @@ export default items => {
       let salesPrice = parseInt(
         i.Prices.ItemPrice.find(i => i.useType == 'Default' && i).amount
       )
-      let costCorr = cleanCost(i.avgCost, salesPrice)
+      let costCorr = prognosedCost(i.avgCost, salesPrice)
+
       i.statistics.totalStock = qoh
       i.statistics.totalStockValue = costCorr * i.statistics.totalStock
-      i.statistics.totalReorderpoint = calculateReorderpoint(i, 'normal')
+
+      let reorderOptionsField =
+        i.CustomFieldValues &&
+        i.CustomFieldValues.CustomFieldValue.find(c => {
+          return c.customFieldID === '5'
+        })
+
+      let reorderOption =
+        reorderOptionsField && reorderOptionsField.value.customFieldChoiceID
+
+      i.statistics.totalReorderpoint = calculateReorderpoint(i, reorderOption)
       i.statistics.totalReorderpointValue =
         i.statistics.totalReorderpoint * costCorr
       i.statistics.totalDuration = calculateDuration(i, 'normal')

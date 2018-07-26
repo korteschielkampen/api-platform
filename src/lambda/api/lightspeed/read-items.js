@@ -7,8 +7,9 @@ const ptimesLimit = promisify(timesLimit)
 
 import request from './request-lightspeed.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
+import cleanItems from './clean-items.js'
 
-export default async ({ itemIDs }) => {
+export default async ({ itemIDs = undefined }) => {
   let access_token = await readAccessToken()
   const options = {
     method: 'GET',
@@ -19,10 +20,10 @@ export default async ({ itemIDs }) => {
 
   let account = 159502
   let relations = JSON.stringify([
-    'Category',
     'ItemShops',
     'TagRelations.Tag',
     'TaxClass',
+    'CustomFieldValues',
   ])
 
   let apiUrl = `https://api.lightspeedapp.com/API/Account/${account}/Item.json?load_relations=${relations}`
@@ -46,6 +47,7 @@ export default async ({ itemIDs }) => {
         items = _.concat(items, tempItems.Item)
       })
     )
+
     // Get all items
   } else {
     console.log('Getting all items')
@@ -63,5 +65,5 @@ export default async ({ itemIDs }) => {
       })
     )
   }
-  return await items
+  return await cleanItems(items)
 }

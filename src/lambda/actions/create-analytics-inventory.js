@@ -5,6 +5,7 @@ import specialCategories from '../models/category/special-categories.js'
 import colorCategories from '../models/category/color-categories.js'
 import mergeItemsAndCategories from '../models/category/merge-items-categories.js'
 import nestCategories from '../models/category/nest-categories.js'
+import getOptions from '../api/lightspeed/read-customfieldoptions.js'
 
 export default (sales, items, categories) => {
   console.log('Get saleslines')
@@ -12,7 +13,7 @@ export default (sales, items, categories) => {
   let saleStatsByItem = getSaleStatsByItem(sales)
 
   console.log('Merge items')
-  // Salelines need to be merged with the items for the category foreign key
+  // Merging with complete item stats
   let itemsWithStats = createMergedItems(saleStatsByItem, items)
 
   console.log('Get stockstats')

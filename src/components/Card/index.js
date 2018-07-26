@@ -8,13 +8,14 @@ import Button from '../Button'
 export default props => {
   if (props.type === 'statistics') {
     let prettyPrint = {
-      totalRevenue: { text: 'Omzet:', sign: true },
-      totalProfit: { text: 'Winst:', sign: true },
+      totalRevenue: { text: 'Omzet:', sign: '€' },
+      totalProfit: { text: 'Winst:', sign: '€' },
       totalSold: { text: 'Aantal:', sign: false },
       totalStock: { text: 'Voorraad:', sign: false },
-      totalStockValue: { text: 'Voorraadwaarde:', sign: true },
+      totalStockValue: { text: 'Voorraadwaarde:', sign: '€' },
+      totalDuration: { text: 'Voorraadduur:', sign: 'week' },
       totalReorderpoint: { text: 'Nabestelpunt:', sign: false },
-      totalReorderpointValue: { text: 'Nabestelwaarde:', sign: true },
+      totalReorderpointValue: { text: 'Nabestelwaarde:', sign: '€' },
     }
 
     return (
@@ -43,7 +44,7 @@ export default props => {
                 <span>{prettyPrint[key].text} </span>
                 <span className={styles.number}>
                   {value.toFixed(0) || '---'}
-                  {prettyPrint[key].sign && '€'}
+                  {prettyPrint[key].sign && ' ' + prettyPrint[key].sign}
                 </span>
               </li>
             )

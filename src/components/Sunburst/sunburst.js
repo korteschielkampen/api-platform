@@ -11,10 +11,24 @@ const modes = {
   totalSold: d => d.statistics.totalSold,
   totalReorderpoint: d => d.statistics.totalReorderpoint,
   totalReorderpointValue: d => d.statistics.totalReorderpointValue,
+  totalDuration: d => d.statistics.totalReorderpoint,
 }
 
 D3Sunburst.create = (el, data, config) => {
-  // console.log('creating graph', config.mode)
+  // Setting the colors for the total duration
+  var color = d3
+    .scaleLinear()
+    .domain([0, 4, 13, 52, 416])
+    .interpolate(d3.interpolateHcl)
+    .range([
+      d3.rgb('#ff4101'),
+      d3.rgb('#ff4101'),
+      d3.rgb('#00d86f'),
+      d3.rgb('#6f6f6e'),
+      d3.rgb('#000000'),
+    ])
+
+  // Setting basics
   var width = 700,
     height = 700,
     radius = Math.min(width, height) / 2 - 10
@@ -24,8 +38,6 @@ D3Sunburst.create = (el, data, config) => {
   var x = d3.scaleLinear().range([0, 2 * Math.PI])
 
   var y = d3.scaleSqrt().range([0, radius])
-
-  var color = d3.scaleOrdinal(d3.schemeCategory20)
 
   var partition = d3.partition()
 
@@ -55,7 +67,13 @@ D3Sunburst.create = (el, data, config) => {
   let root = d3.hierarchy(data)
 
   root.sum(function(d) {
-    return d.itemID && d.statistics ? modes[config.mode](d) : 0
+    if (d.itemID && d.statistics) {
+      if (config.mode == 'totalDuration') {
+        return d.statistics ? d.statistics.totalReorderpoint : 0
+      } else {
+        return d.statistics ? modes[config.mode](d) : 0
+      }
+    }
   })
 
   svg
@@ -65,7 +83,14 @@ D3Sunburst.create = (el, data, config) => {
     .append('path')
     .attr('d', arc)
     .style('fill', function(d) {
-      return d.data.color || color((d.children ? d : d.parent).data.name)
+      if (config.mode == 'totalDuration') {
+        let duration =
+          (d.data.statisticsNested && d.data.statisticsNested.totalDuration) ||
+          d.data.statistics.totalDuration
+        return color(duration)
+      } else {
+        return d.data.color
+      }
     })
     .on('click', click)
     .on('mouseover', hover)

@@ -11,7 +11,7 @@ export default categories => {
   categories = _.map(categories, c => {
     return {
       ...c,
-      statisticsNested: Object.assign(c.statistics),
+      statisticsNested: { ...c.statistics },
     }
   })
 
@@ -49,5 +49,19 @@ export default categories => {
   })
 
   // Return only the root category, which now holds all the nested categories
-  return _.find(categories, { nodeDepth: '-1' })
+  let rootCategory = _.find(categories, { nodeDepth: '-1' })
+
+  const durationCorrection = element => {
+    if (!element.itemID) {
+      debugger
+      let sellingSpeedInWeeks = element.statisticsNested.totalSold / 26
+      element.statisticsNested.totalDuration = Math.floor(
+        element.statisticsNested.totalStock / sellingSpeedInWeeks
+      )
+      element.children.forEach(durationCorrection)
+    }
+  }
+  durationCorrection(rootCategory)
+
+  return rootCategory
 }

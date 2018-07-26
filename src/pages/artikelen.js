@@ -55,10 +55,17 @@ const sunburstModes = [
     status: 'dev',
   },
   {
-    text: 'Voorr.waarde',
+    text: 'V.waarde',
     name: 'CHANGE_MODE',
     type: 'state',
     mode: 'totalStockValue',
+    status: 'dev',
+  },
+  {
+    text: 'V.duur',
+    name: 'CHANGE_MODE',
+    type: 'state',
+    mode: 'totalDuration',
     status: 'dev',
   },
   {
@@ -197,7 +204,11 @@ class IndexPage extends React.Component {
                     />
                   </div>
                 )}
-
+                {/* {hovered &&
+                  console.log(
+                    hovered.data.statistics,
+                    hovered.data.statisticsNested
+                  )} */}
                 {hovered && (
                   <div className={styles.cardBroad}>
                     <Card

@@ -5,6 +5,7 @@ const statistics = () => {
     totalProfit: 0,
     totalStock: 0,
     totalStockValue: 0,
+    totalDuration: 0,
     totalReorderpoint: 0,
     totalReorderpointValue: 0,
   }

@@ -27,5 +27,10 @@ export default (saleStatsByItem, items, options) => {
 
     return acc
   }, [])
+
+  // Do not forget 0.
+  if (saleStatsByItemHashed['0']) {
+    mergedItems.push(saleStatsByItemHashed['0'])
+  }
   return mergedItems
 }

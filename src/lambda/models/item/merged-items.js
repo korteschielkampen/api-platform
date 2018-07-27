@@ -1,36 +1,44 @@
+import _ from 'lodash'
+
 export default (saleStatsByItem, items, options) => {
   // Making a dictionairy (not expanding with spread and literal 'cuz perf)
-  let saleStatsByItemHashed = saleStatsByItem.reduce((acc, i) => {
+  let itemsHashed = items.reduce((acc, i) => {
     acc[i.itemID] = i
     return acc
   }, {})
 
-  // Do the actual merging by reduce, but use the dictionary for quick search
-  let mergedItems = items.reduce((acc, i) => {
-    if (saleStatsByItemHashed[i.itemID]) {
+  // Merge item statistics from the salelines
+  let mergedSalesItems = saleStatsByItem.reduce((acc, i) => {
+    if (itemsHashed[i.itemID]) {
       acc.push({
-        ...saleStatsByItemHashed[i.itemID],
+        ...itemsHashed[i.itemID],
         ...i,
       })
-    } else if (
-      parseInt(i.ItemShops.ItemShop.find(i => i.shopID == '1' && i).qoh) !== 0
-    ) {
-      acc.push({
-        ...i,
-        statistics: {
-          totalSold: 0,
-          totalRevenue: 0,
-          totalProfit: 0,
-        },
-      })
+    } else {
+      acc.push(i)
     }
-
     return acc
   }, [])
 
-  // Do not forget 0.
-  if (saleStatsByItemHashed['0']) {
-    mergedItems.push(saleStatsByItemHashed['0'])
-  }
+  // Merge items by stock availability
+  let mergedItems = _.differenceBy(items, mergedSalesItems, 'itemID').reduce(
+    (acc, i) => {
+      if (
+        parseInt(i.ItemShops.ItemShop.find(i => i.shopID == '1' && i).qoh) !== 0
+      ) {
+        acc.push({
+          ...i,
+          statistics: {
+            totalSold: 0,
+            totalRevenue: 0,
+            totalProfit: 0,
+          },
+        })
+      }
+      return acc
+    },
+    mergedSalesItems
+  )
+  debugger
   return mergedItems
 }

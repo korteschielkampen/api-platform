@@ -16,7 +16,7 @@ export default (sales, items, categories) => {
   // Merging with complete item stats
   let itemsWithStats = createMergedItems(saleStatsByItem, items)
 
-  console.log('Get stockstats')
+  console.log('Generate Stock Statistics')
   itemsWithStats = createStockStatistics(sales, items)
 
   console.log('Adding special categories')

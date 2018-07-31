@@ -39,6 +39,5 @@ export default (saleStatsByItem, items, options) => {
     },
     mergedSalesItems
   )
-  debugger
   return mergedItems
 }

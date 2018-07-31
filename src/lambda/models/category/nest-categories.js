@@ -53,7 +53,6 @@ export default categories => {
 
   const durationCorrection = element => {
     if (!element.itemID) {
-      debugger
       let sellingSpeedInWeeks = element.statisticsNested.totalSold / 26
       element.statisticsNested.totalDuration = Math.floor(
         element.statisticsNested.totalStock / sellingSpeedInWeeks

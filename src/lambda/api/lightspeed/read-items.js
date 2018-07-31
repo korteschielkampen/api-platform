@@ -24,6 +24,7 @@ export default async ({ itemIDs = undefined }) => {
     'TagRelations.Tag',
     'TaxClass',
     'CustomFieldValues',
+    'Category',
   ])
 
   let apiUrl = `https://api.lightspeedapp.com/API/Account/${account}/Item.json?load_relations=${relations}`

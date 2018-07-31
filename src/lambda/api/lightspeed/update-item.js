@@ -1,6 +1,4 @@
-import _ from 'lodash'
-import moment from 'moment'
-import strictUriEncode from 'strict-uri-encode'
+import util from 'util'
 
 import request from './request-lightspeed.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
@@ -14,6 +12,11 @@ export default async (itemID, payload) => {
     },
     body: JSON.stringify(payload),
   }
-  let apiUrl = `https://api.lightspeedapp.com/API/Account/159502/Item/${itemID}.json?load_relations=["TagRelations.Tag"]`
+
+  let account = 159502
+  let relations = JSON.stringify(['ItemShops', 'TagRelations.Tag'])
+
+  // console.log(util.inspect(payload, { colors: true, depth: 4 }))
+  let apiUrl = `https://api.lightspeedapp.com/API/Account/${account}/Item/${itemID}.json?load_relations=${relations}`
   return await request(apiUrl, options, 1)
 }

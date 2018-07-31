@@ -1,6 +1,7 @@
 import fs from 'fs'
 
-import updateReorderPoints from './actions/create-stock-statistics.js'
+import createStockStatistics from './actions/create-stock-statistics.js'
+import updateReorderPoints from './actions/update-reorderpoints.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -8,6 +9,9 @@ exports.handler = async (event, context, callback) => {
       statusCode: status,
       body: JSON.stringify({ body }),
     })
+  }
+  if (!callback) {
+    var callback = () => {}
   }
   try {
     respond({ status: 201, body: { message: 'request received' } })
@@ -19,7 +23,7 @@ exports.handler = async (event, context, callback) => {
     )
     await updateReorderPoints(sales, items, categories)
   } catch (err) {
-    console.log(err)
+    console.error(err)
     respond({ status: 422, body: err })
   }
 }

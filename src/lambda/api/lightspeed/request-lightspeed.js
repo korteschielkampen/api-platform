@@ -1,5 +1,6 @@
 import request from '../general/request-with-headers.js'
 import delay from 'delay'
+import util from 'util'
 
 const ratelimit = async (res, cost) => {
   let lsbucket = res.headers
@@ -31,5 +32,6 @@ const ratelimit = async (res, cost) => {
 export default async (apiUrl, options, cost) => {
   let res = await request(apiUrl, options)
   await ratelimit(res, cost)
-  return await res.json()
+  let json = await res.json()
+  return await json
 }

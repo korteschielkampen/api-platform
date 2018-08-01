@@ -14,18 +14,27 @@ export default sales => {
         }
       })
 
-      // Normalize salelines and salespayments to array
-      if (sale.SaleLines && !(sale.SaleLines.SaleLine.constructor === Array)) {
-        sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine]
+      // Normalize and parse salelines and salespayments to array
+      if (sale.SaleLines) {
+        if (!(sale.SaleLines.SaleLine.constructor === Array)) {
+          sale.SaleLines.SaleLine = [sale.SaleLines.SaleLine]
+        }
+        sale.SaleLines.SaleLine.map((line, lineID) => {
+          line.unitQuantity = parseFloat(line.unitQuantity)
+          line.unitPrice = parseFloat(line.unitPrice)
+          line.calcTotal = parseFloat(line.calcTotal)
+          line.tax1Rate = parseFloat(line.tax1Rate)
+          line.avgCost = parseFloat(line.avgCost)
+        })
       }
+
+      // Normalize and parse payment empty keys for dynamo
       if (
         sale.SalePayments &&
         !(sale.SalePayments.SalePayment.constructor === Array)
       ) {
         sale.SalePayments.SalePayment = [sale.SalePayments.SalePayment]
       }
-
-      // Normalize payment empty keys for dynamo
       sale.SalePayments &&
         _.each(sale.SalePayments.SalePayment, payment => {
           _.each(payment, (paymentValue, paymentKey) => {

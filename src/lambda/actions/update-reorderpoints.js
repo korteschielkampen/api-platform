@@ -13,10 +13,11 @@ export default async (sales, items, categories) => {
   console.log('Generate Payloads')
   let payloads = createReorderPayload(itemsStockStatistics)
 
-  debugger
-
-  console.log('Updating Lightspeed')
+  console.log(
+    `Updating Lightspeed: there are ${payloads.length} items to be updated`
+  )
   let status = await updateItems(payloads)
+
   console.log('Done')
   return true
 }

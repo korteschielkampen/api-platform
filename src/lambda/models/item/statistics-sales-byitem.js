@@ -1,4 +1,3 @@
-import cleanSaleLines from '../../api/lightspeed/clean-saleslines.js'
 import prognosedCost from '../item/prognosed-cost.js'
 
 const calcStats = line => {
@@ -22,7 +21,6 @@ export default sales => {
   let itemsHashed = {}
   sales.forEach((sale, saleID) => {
     if (sale.completed == 'true' && sale.SaleLines) {
-      sale = cleanSaleLines(sale)
       sale.SaleLines.SaleLine.forEach(line => {
         let statistics = calcStats(line)
         // Mutate the items

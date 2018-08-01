@@ -4,17 +4,17 @@ import prognosedCost from './prognosed-cost.js'
 const reorderOptions = [
   {
     name: 'tight',
-    function: n => n / 6, // 1 maand
+    function: n => n / 12, // 2 weken
     optionID: '29',
   },
   {
     name: 'normal',
-    function: n => n / 2, // 3 maand
+    function: n => n / 6, // 1 maand
     optionID: '15',
   },
   {
     name: 'long',
-    function: n => n, // 6 maand
+    function: n => n / 3, // 3 maand
     optionID: '30',
   },
   {
@@ -83,7 +83,7 @@ export default items => {
     }
     if (
       i.ItemShops &&
-      (i.Category && !excludedCategories[i.Category.leftNode])
+      (i.Category ? !excludedCategories[i.Category.leftNode] : true)
     ) {
       let qoh = parseInt(
         i.ItemShops.ItemShop.find(i => i.shopID == '1' && i).qoh

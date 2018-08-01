@@ -9,6 +9,21 @@ export default items => {
         item.CustomFieldValues.CustomFieldValue,
       ]
     }
+
+    if (item.ItemShops) {
+      if (!Array.isArray(item.ItemShops.ItemShop)) {
+        item.CustomFieldValues.CustomFieldValue = [
+          item.CustomFieldValues.CustomFieldValue,
+        ]
+      }
+      item.ItemShops.ItemShop = item.ItemShops.ItemShop.map(s => {
+        s.qoh = parseInt(s.qoh)
+        s.reorderPoint = parseInt(s.reorderPoint)
+        s.reorderLevel = parseInt(s.reorderLevel)
+        return s
+      })
+    }
+
     return item
   })
 }

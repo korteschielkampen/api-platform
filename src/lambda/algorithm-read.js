@@ -1,7 +1,4 @@
-import moment from 'moment'
 import fs from 'fs'
-import _ from 'lodash'
-import util from 'util'
 
 import readSales from './api/lightspeed/read-sales.js'
 import readSaleLines from './api/lightspeed/read-salelines.js'

@@ -10,6 +10,7 @@ exports.handler = async (event, context, callback) => {
     })
   }
   try {
+    throw { message: 'UNTESTED' }
     // Fire off confimation of event
     respond({ status: 201, body: { message: 'request received' } })
 

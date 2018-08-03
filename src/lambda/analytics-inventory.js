@@ -1,6 +1,5 @@
 import moment from 'moment'
 import fs from 'fs'
-import util from 'util'
 
 import createAnalyticsInventory from './actions/create-analytics-inventory.js'
 
@@ -15,7 +14,6 @@ exports.handler = async (event, context, callback) => {
   if (!callback) {
     var callback = () => {}
   }
-
   try {
     let sales = JSON.parse(fs.readFileSync('./static/data/sales.json'))
     let items = JSON.parse(fs.readFileSync('./static/data/items.json'))

@@ -157,6 +157,7 @@ class IndexPage extends React.Component {
     let selected = this.state.selected
     let hovered = this.state.hovered
     let mode = this.state.mode
+    console.log(selected)
     return (
       <div className={styles.container}>
         {this.state.items && (
@@ -204,11 +205,6 @@ class IndexPage extends React.Component {
                     />
                   </div>
                 )}
-                {/* {hovered &&
-                  console.log(
-                    hovered.data.statistics,
-                    hovered.data.statisticsNested
-                  )} */}
                 {hovered && (
                   <div className={styles.cardBroad}>
                     <Card

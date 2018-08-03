@@ -1,5 +1,3 @@
-import util from 'util'
-
 import request from './request-lightspeed.js'
 import readAccessToken from '../lightspeed-auth/read-token.js'
 

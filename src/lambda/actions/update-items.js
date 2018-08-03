@@ -12,10 +12,9 @@ const uploadItem = async (item, key) => {
 }
 
 export default async items => {
-  // Sort and remove 0 (cannot be updated)
+  // Sort to make order understandable
   let itemsToBeUpdated = _.sortBy(items, ['itemID'])
-  itemsToBeUpdated.find(i => {
-    return i.itemID == '0'
-  }) && itemsToBeUpdated.splice(_.findIndex(items, { itemID: '0' }), 1)
+
+  // do individual items
   let updatedItems = await pmapLimit(itemsToBeUpdated, 1, asyncify(uploadItem))
 }

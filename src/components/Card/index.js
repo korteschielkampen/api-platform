@@ -15,6 +15,7 @@ export default props => {
       totalStockValue: { text: 'Voorraadwaarde:', sign: '€' },
       totalDuration: { text: 'Voorraadduur:', sign: 'weken' },
       totalReorderpoint: { text: 'Nabestelpunt:', sign: 'stuks' },
+      totalReorderLevel: { text: 'Gewenst voorraadniveau:', sign: '€' },
       totalReorderpointValue: { text: 'Nabestelwaarde:', sign: '€' },
     }
 

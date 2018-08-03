@@ -1,6 +1,6 @@
-import request from '../general/request-with-headers.js'
 import delay from 'delay'
-import util from 'util'
+
+import request from '../general/request-with-headers.js'
 
 const ratelimit = async (res, cost) => {
   let lsbucket = res.headers

@@ -24,6 +24,12 @@ export default items => {
       })
     }
 
+    if (item.Tags) {
+      if (!Array.isArray(item.Tags.tag)) {
+        item.Tags.tag = [item.Tags.tag]
+      }
+    }
+
     return item
   })
 }

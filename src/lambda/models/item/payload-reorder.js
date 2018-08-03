@@ -1,4 +1,4 @@
-import util from 'util'
+import { concatTag } from './payload-tag.js'
 
 export default items => {
   items.map(i => {
@@ -37,23 +37,29 @@ export default items => {
       reorderPoint: currentItemShop.reorderPoint,
       reorderLevel: currentItemShop.reorderLevel,
       totalDurationText: oldCustomField ? oldCustomField.value : undefined,
+      tags: concatTag(i.Tags || false).find(t => {
+        return t.tag === 'auto-bestel'
+      }),
     }
 
     let newItem = {
-      qoh: i.statistics.totalReorderpoint,
+      qoh: i.statistics.totalReorderLevel
+        ? i.statistics.totalReorderpoint + 1
+        : 0,
       reorderPoint: i.statistics.totalReorderpoint,
-      reorderLevel: Math.round(i.statistics.totalReorderpoint * 2),
+      reorderLevel: i.statistics.totalReorderLevel, // Chosen because 1 will round to 1
       totalDurationText: `${i.statistics.totalDuration} weken`,
+      tags: concatTag(i.Tags || false, 'auto-bestel').find(t => {
+        return t.tag === 'auto-bestel'
+      }),
     }
 
     // Do the actual comparison: Limited option is enough and the
     // writing, only needed when reorderpoint is beyond 0
-    if (
-      i.statistics.totalReorderpoint > 0 &&
-      JSON.stringify(oldItem) !== JSON.stringify(newItem)
-    ) {
+    if (JSON.stringify(oldItem) !== JSON.stringify(newItem)) {
       acc.push({
         itemID: i.itemID,
+        data: i,
         payload: {
           ItemShops: {
             ItemShop: [
@@ -73,6 +79,7 @@ export default items => {
               },
             ],
           },
+          Tags: concatTag(i.Tags || false, 'auto-bestel'),
         },
       })
     }

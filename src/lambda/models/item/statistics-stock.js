@@ -34,22 +34,6 @@ const reorderOptions = [
   },
 ]
 
-const range = (start, end) => {
-  let length = end - start + 1
-  return Array.from({ length: length }, (_, i) => i).reduce((acc, i) => {
-    acc[i + start] = true
-    return acc
-  }, {})
-}
-
-// exclusion categories:
-const excludedCategories = {
-  ...range(50, 87), // '102': Planten 50
-  ...range(32, 39), // '110': Planten 32
-  ...range(246, 263), // '170': Levend Aas
-  ...range(308, 309), // '154': Visvergunning
-}
-
 const calculateReorderpoint = (i, selectedReorderOption) => {
   let reorderFunc = (
     reorderOptions.find(o => {
@@ -61,13 +45,13 @@ const calculateReorderpoint = (i, selectedReorderOption) => {
   ).function
 
   // Calculate flags
-  let reorderpoint = Math.round(reorderFunc(i.statistics.totalSold))
+  let reorderpoint = reorderFunc(i.statistics.totalSold)
   return reorderpoint
 }
 
 const calculateDuration = i => {
   let sellingSpeedInWeeks = i.statistics.totalSold / 26
-  let duration = Math.floor(i.statistics.totalStock / sellingSpeedInWeeks)
+  let duration = Math.round(i.statistics.totalStock / sellingSpeedInWeeks)
   return duration
 }
 
@@ -77,14 +61,12 @@ export default items => {
       ...i.statistics,
       totalDuration: 0,
       totalReorderpoint: 0,
+      totalReorderLevel: 0,
       totalReorderpointValue: 0,
       totalStock: 0,
       totalStockValue: 0,
     }
-    if (
-      i.ItemShops &&
-      (i.Category ? !excludedCategories[i.Category.leftNode] : true)
-    ) {
+    if (i.ItemShops && i.itemType === 'default') {
       let qoh = parseInt(
         i.ItemShops.ItemShop.find(i => i.shopID == '1' && i).qoh
       )
@@ -105,9 +87,14 @@ export default items => {
       let reorderOption =
         reorderOptionsField && reorderOptionsField.value.customFieldChoiceID
 
-      i.statistics.totalReorderpoint = calculateReorderpoint(i, reorderOption)
+      i.statistics.totalReorderpoint = Math.floor(
+        calculateReorderpoint(i, reorderOption)
+      )
       i.statistics.totalReorderpointValue =
         i.statistics.totalReorderpoint * costCorr
+      i.statistics.totalReorderLevel = Math.round(
+        calculateReorderpoint(i, reorderOption) * 2
+      )
       i.statistics.totalDuration = calculateDuration(i, 'normal')
     }
     return i

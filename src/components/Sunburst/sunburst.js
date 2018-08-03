@@ -18,7 +18,7 @@ D3Sunburst.create = (el, data, config) => {
   // Setting the colors for the total duration
   var color = d3
     .scaleLinear()
-    .domain([0, 4, 13, 52, 416])
+    .domain([0, 2, 4, 26, 208])
     .interpolate(d3.interpolateHcl)
     .range([
       d3.rgb('#ff4101'),

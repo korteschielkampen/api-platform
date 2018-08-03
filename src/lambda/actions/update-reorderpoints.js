@@ -18,10 +18,10 @@ export default async (sales, items, categories) => {
   console.log(
     `Updating Lightspeed: there are ${payloads.length} items to be updated`
   )
-  let status = await updateItems(payloads.slice(0, 10))
+  let status = await updateItems(payloads.slice(0, 50))
 
   console.log('Reporting to Slack')
-  await createMessage(createStockReport(payloads.slice(0, 10), 'CAPCPRW6B'))
+  await createMessage(createStockReport(payloads.slice(0, 50), 'CAPCPRW6B'))
 
   console.log('Done')
   return true

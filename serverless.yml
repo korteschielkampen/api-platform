@@ -34,3 +34,7 @@ functions:
     handler: functions/integration-report.handler
     events:
       - schedule: "cron(0 17 * * ? *)"
+  automatedReorder:
+    handler: functions/algorithm-reorder.handler
+    events:
+      - schedule: "rate(1 hour)"

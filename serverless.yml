@@ -19,7 +19,6 @@ package:
     - public/**
     - .git/**
     - .cache/**
-    - functions/**
   include:
     - functions/integration-accountancy.js
     - functions/integration-report.js

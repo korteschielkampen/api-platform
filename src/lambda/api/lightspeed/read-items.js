@@ -30,7 +30,6 @@ export default async ({ itemIDs = undefined }) => {
   // Get items by ID -> Needs to be handled differently due to querylength limitations
   let items = []
   if (itemIDs) {
-    console.log('Getting items by ID')
     itemIDs = _.map(itemIDs, item => {
       return item.itemID
     })
@@ -49,7 +48,6 @@ export default async ({ itemIDs = undefined }) => {
 
     // Get all items
   } else {
-    console.log('Getting all items')
     let attributes = (await request(apiUrl, options, 1))['@attributes']
     let count = parseInt(attributes.count)
     let limit = parseInt(attributes.limit)

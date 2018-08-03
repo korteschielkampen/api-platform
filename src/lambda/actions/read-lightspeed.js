@@ -26,10 +26,14 @@ export default async datatype => {
   if (readers[datatype]) {
     storeDataLocal(datatype, await readers[datatype]({}))
   } else if (datatype == 'all') {
-    console.log('--> Sunburst starting')
+    console.log('--> All starting')
+    console.log('--> Sales')
     data.sales = await readSales()
+    console.log('--> Items')
     data.items = await readItems({})
+    console.log('--> Categories')
     data.categories = await readCategories()
+    console.log('--> Done')
 
     if (false) {
       storeDataLocal('Sales', data.sales)

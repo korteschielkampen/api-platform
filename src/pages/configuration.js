@@ -19,16 +19,16 @@ let actionGroups = [
     actions: [
       {
         text: 'Sunburst',
-        name: 'UPDATE_DATA',
+        name: 'UPDATE_DATA_ALL',
         type: 'lambda',
         url: `${lambdaURL}/algorithm-read?${qS.stringify({
-          datatype: 'sunburst',
+          datatype: 'all',
         })}`,
         status: 'dev',
       },
       {
         text: 'Categories',
-        name: 'UPDATE_DATA',
+        name: 'UPDATE_DATA_CATEGORIES',
         type: 'lambda',
         url: `${lambdaURL}/algorithm-read?${qS.stringify({
           datatype: 'categories',
@@ -37,7 +37,7 @@ let actionGroups = [
       },
       {
         text: 'Items',
-        name: 'UPDATE_DATA',
+        name: 'UPDATE_DATA_ITEMS',
         type: 'lambda',
         url: `${lambdaURL}/algorithm-read?${qS.stringify({
           datatype: 'items',
@@ -46,7 +46,7 @@ let actionGroups = [
       },
       {
         text: 'Sales',
-        name: 'UPDATE_DATA',
+        name: 'UPDATE_DATA_SALES',
         type: 'lambda',
         url: `${lambdaURL}/algorithm-read?${qS.stringify({
           datatype: 'sales',

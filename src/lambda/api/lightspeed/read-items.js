@@ -58,8 +58,8 @@ export default async ({ itemIDs = undefined }) => {
       10,
       asyncify(async i => {
         let offset = i * limit
-        apiUrl = apiUrl + `&offset=${offset}`
-        let tempItems = await request(apiUrl, options, 1)
+        let localApiUrl = apiUrl + `&offset=${offset}`
+        let tempItems = await request(localApiUrl, options, 1)
         items = _.concat(items, tempItems.Item)
       })
     )

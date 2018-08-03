@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 export default ({ charts, financialReport: fR }) => {
   return [
     {

@@ -54,8 +54,8 @@ export default async ({
     10,
     asyncify(async i => {
       let offset = i * limit
-      apiUrl = apiUrl + `&offset=${offset}`
-      let tempSales = await request(apiUrl, options, 1)
+      let localApiUrl = apiUrl + `&offset=${offset}`
+      let tempSales = await request(localApiUrl, options, 1)
       if (tempSales.Sale) {
         sales = _.concat(sales, tempSales.Sale)
       }

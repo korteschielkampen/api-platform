@@ -33,7 +33,6 @@ export default items => {
       })
 
     let oldItem = {
-      qoh: currentItemShop.qoh,
       reorderPoint: currentItemShop.reorderPoint,
       reorderLevel: currentItemShop.reorderLevel,
       totalDurationText: oldCustomField ? oldCustomField.value : undefined,
@@ -43,9 +42,6 @@ export default items => {
     }
 
     let newItem = {
-      qoh: i.statistics.totalReorderLevel
-        ? i.statistics.totalReorderpoint + 1
-        : 0,
       reorderPoint: i.statistics.totalReorderpoint,
       reorderLevel: i.statistics.totalReorderLevel, // Chosen because 1 will round to 1
       totalDurationText: `${i.statistics.totalDuration} weken`,
@@ -65,7 +61,6 @@ export default items => {
             ItemShop: [
               {
                 itemShopID: currentItemShop.itemShopID,
-                qoh: newItem.qoh,
                 reorderPoint: newItem.reorderPoint,
                 reorderLevel: newItem.reorderLevel,
               },

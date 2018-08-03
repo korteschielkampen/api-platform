@@ -23,6 +23,7 @@ package:
   include:
     - functions/integration-accountancy.js
     - functions/integration-report.js
+    - functions/algorithm-reorder.js
     - src/data/**
 
 functions:

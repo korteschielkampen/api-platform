@@ -39,21 +39,30 @@ functions:
     events:
       - schedule:
           rate: "cron(15 3 * * ? *)"
-          input:
-            datatype: 'sales'
-  automatedRead:
-    handler: functions/algorithm-read.handler
+  automatedUpdate:
+    handler: functions/algorithm-update-data.handler
     events:
       - schedule:
           rate: "cron(0 3 * * ? *)"
           input:
-            datatype: 'sales'
+            queryStringParameters:
+              datatype: 'sales'
+              dataTimeStamp: 'year'
       - schedule:
           rate: "cron(5 3 * * ? *)"
           input:
-            datatype: 'items'
+            queryStringParameters:
+              datatype: 'items'
+              dataTimeStamp: 'year'
       - schedule:
           rate: "cron(10 3 * * ? *)"
           input:
-            datatype:
-              queryStringParameters: 'categories'
+            queryStringParameters:
+              datatype: 'categories'
+              dataTimeStamp: 'year'
+      - schedule:
+          rate: "rate(5 minutes)"
+          input:
+            queryStringParameters:
+              datatype: 'all'
+              dataTimeStamp: 'day'

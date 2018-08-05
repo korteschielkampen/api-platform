@@ -1,7 +1,7 @@
 const AWS = require('aws-sdk')
 
 export default async (datatype, data) => {
-  console.log(`---> ${datatype} S3 start`)
+  console.log(`---> Updating ${datatype} S3 start`)
 
   // Setup AWS
   AWS.config.update({
@@ -24,11 +24,11 @@ export default async (datatype, data) => {
   // Put it in bucket
   try {
     data = await s3.putObject(params).promise()
-    console.log(`---> ${datatype} S3 done!`)
+    console.log(`---> Updating ${datatype} S3 done!`)
   } catch (err) {
     console.error(err)
   }
 
   // Return data for further use
-  return data
+  return await data
 }

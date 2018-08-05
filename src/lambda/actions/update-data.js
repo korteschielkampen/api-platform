@@ -1,5 +1,7 @@
 import fs from 'fs'
+import moment from 'moment'
 
+import readData from './read-data.js'
 import updateS3 from '../store/s3/integration-platform-data/update.js'
 import readSales from '../api/lightspeed/read-sales.js'
 import readItems from '../api/lightspeed/read-items.js'
@@ -11,41 +13,40 @@ const readers = {
   categories: readCategories,
 }
 
-// const storeDataLocal = (datatype, data) => {
-//   console.log(`---> ${datatype} start`)
-//   let json = JSON.stringify(data)
-//   fs.writeFileSync(`./static/data/${datatype}.json`, json, 'utf8')
-//   console.log(`---> ${datatype} done`)
-//   return data
-// }
-
-export default async datatype => {
+export default async (datatype, time) => {
   let data = {}
-
+  let readerList = []
   if (readers[datatype]) {
-    // storeDataLocal(datatype, await readers[datatype]({}))
-    updateS3(datatype, await readers[datatype]({}))
-  } else if (datatype == 'all') {
-    console.log('--> All starting')
-    console.log('--> Sales')
-    data.sales = await readers['sales']({})
-    console.log('--> Items')
-    data.items = await readers['items']({})
-    console.log('--> Categories')
-    data.categories = await readers['categories']({})
-    console.log('--> Done')
-
-    // console.log('--> Storing locally')
-    // storeDataLocal('Sales', data.sales)
-    // storeDataLocal('Items', data.items)
-    // storeDataLocal('Categories', data.categories)
-    // console.log('--> Done')
-
-    console.log('--> Storing in S3')
-    updateS3(datatype, data.sales)
-    updateS3(datatype, data.items)
-    updateS3(datatype, data.categories)
-    console.log('--> Done')
+    readerList.push(datatype)
+  } else if (datatype === 'all') {
+    readerList = readerList.concat(Object.keys(readers))
   }
+
+  let timeStamp
+  if (time === 'year') {
+    timeStamp = { start: moment().startOf('y'), end: moment().endOf('y') }
+  } else if (time === 'day') {
+    timeStamp = { start: moment().startOf('d'), end: moment().endOf('d') }
+    data = await readData('all')
+  }
+
+  console.log('--> Start reading')
+  readerList.map(async r => {
+    if (readers[r]) {
+      console.log(`--> ${r} starting`)
+      let tempData = await readers[r]({ timeStamp: timeStamp })
+      console.log(`--> ${r} merging`)
+      let mergedData = [
+        ...(data[r] ? data[r] : []),
+        ...(tempData ? tempData : []),
+      ]
+      console.log(`--> ${r} uniq`)
+      data[r] = [...new Set(mergedData)]
+      console.log(`--> ${r} storing`)
+      await updateS3(r, data[r])
+      console.log(`--> ${r} done!`)
+    }
+  })
+
   return await data
 }

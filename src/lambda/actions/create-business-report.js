@@ -16,7 +16,7 @@ import createMessage from '../api/slack/create-message.js'
 import createDayReport from '../models/slack/report-sales/'
 
 export default async (dates, postSlack) => {
-  let sales = await readSales({ dates: dates })
+  let sales = await readSales({ timeStamp: dates })
 
   let days = _.times(
     Math.ceil(moment.duration(moment(dates.end).diff(dates.start)).as('days')),

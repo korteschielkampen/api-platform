@@ -17,25 +17,16 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    console.time('Starting Reorder Algorithm')
+    console.log('Starting Reorder Algorithm')
     respond({ status: 201, body: { message: 'request received' } })
-
-    // Read the data from static
-    // let sales = JSON.parse(fs.readFileSync('./static/data/sales.json'))
-    // let items = JSON.parse(fs.readFileSync('./static/data/items.json'))
-    // let categories = JSON.parse(
-    //   fs.readFileSync('./static/data/categories.json')
-    // )
 
     console.time('Getting data from AWS')
     let { sales, items, categories } = await readData('all')
 
-    debugger
-
     console.log('Start Reorder')
     await updateReorderPoints(sales, items, categories)
 
-    console.timeEnd('reorder')
+    console.log('Reorder Done!')
   } catch (err) {
     console.error(err)
     respond({ status: 422, body: err })

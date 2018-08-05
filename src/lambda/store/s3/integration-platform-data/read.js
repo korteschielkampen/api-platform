@@ -30,5 +30,5 @@ export default async datatype => {
   }
 
   // Return data for further use
-  return data
+  return await data
 }

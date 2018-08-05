@@ -10,20 +10,20 @@ import readAccessToken from '../lightspeed-auth/read-token.js'
 import cleanSales from './clean-sales.js'
 
 export default async ({
-  dates = {
+  timeStamp = {
     start: moment().startOf('year'),
     end: moment(),
   },
 } = {}) => {
-  // Encode dates properly
-  dates = {
+  // Encode timeStamp properly
+  timeStamp = {
     start: strictUriEncode(
-      moment(dates.start)
+      moment(timeStamp.start)
         .startOf('day')
         .format('YYYY-MM-DDTHH:mm:ssZ')
     ),
     end: strictUriEncode(
-      moment(dates.end)
+      moment(timeStamp.end)
         .endOf('day')
         .format('YYYY-MM-DDTHH:mm:ssZ')
     ),
@@ -41,26 +41,27 @@ export default async ({
   let account = 159502
   let relations = JSON.stringify(['SaleLines', 'SalePayments'])
   let apiUrl = `https://api.lightspeedapp.com/API/Account/${account}/Sale.json?load_relations=${relations}&timeStamp=><,${
-    dates.start
-  },${dates.end}`
+    timeStamp.start
+  },${timeStamp.end}`
 
   // Get saleslines
   let attributes = (await request(apiUrl, options, 1))['@attributes']
   let count = parseInt(attributes.count)
   let limit = parseInt(attributes.limit)
   let sales = []
-  await ptimesLimit(
-    Math.ceil(count / limit),
-    10,
-    asyncify(async i => {
-      let offset = i * limit
-      let localApiUrl = apiUrl + `&offset=${offset}`
-      let tempSales = await request(localApiUrl, options, 1)
-      if (tempSales.Sale) {
-        sales = _.concat(sales, tempSales.Sale)
-      }
-    })
-  )
+  count &&
+    (await ptimesLimit(
+      Math.ceil(count / limit),
+      10,
+      asyncify(async i => {
+        let offset = i * limit
+        let localApiUrl = apiUrl + `&offset=${offset}`
+        let tempSales = await request(localApiUrl, options, 1)
+        if (tempSales.Sale) {
+          sales = _.concat(sales, tempSales.Sale)
+        }
+      })
+    ))
 
   return sales.length > 0 && cleanSales(await sales)
 }

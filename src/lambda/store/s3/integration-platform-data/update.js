@@ -31,6 +31,7 @@ export default async (datatype, data) => {
   // Put it in bucket
   try {
     data = await s3.putObject(params).promise()
+    console.log(`---> ${datatype} S3 done!`)
   } catch (err) {
     console.error(err)
   }

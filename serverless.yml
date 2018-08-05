@@ -34,13 +34,13 @@ functions:
     handler: functions/integration-report.handler
     events:
       - schedule: "cron(0 17 * * ? *)"
-  # automatedReorder:
-  #   handler: functions/algorithm-reorder.handler
-  #   events:
-  #     - schedule:
-  #         rate: rate(1 hour)
-  #         input:
-  #           datatype: 'sales'
+  automatedReorder:
+    handler: functions/algorithm-reorder.handler
+    events:
+      - schedule:
+          rate: "cron(15 3 * * ? *)"
+          input:
+            datatype: 'sales'
   automatedRead:
     handler: functions/algorithm-read.handler
     events:

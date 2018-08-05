@@ -18,10 +18,12 @@ exports.handler = async (event, context, callback) => {
       dataType = 'all'
       dataTimeStamp = 'day'
     }
+    console.log(dataType, dataTimeStamp)
 
     if (!callback) {
       var callback = () => {}
     }
+    console.log(event)
 
     updateData(dataType, dataTimeStamp)
 

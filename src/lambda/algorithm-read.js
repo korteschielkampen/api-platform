@@ -8,9 +8,10 @@ exports.handler = async (event, context, callback) => {
     })
   }
   try {
-    console.log(event)
     let datatype = event.queryStringParameters.datatype
+
     updateData(datatype)
+
     respond({
       status: 201,
       body: { message: 'request received' },

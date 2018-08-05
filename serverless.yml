@@ -55,4 +55,5 @@ functions:
       - schedule:
           rate: "rate(1 hour)"
           input:
-            datatype: 'categories'
+            datatype:
+              queryStringParameters: 'categories'

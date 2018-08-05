@@ -17,7 +17,7 @@ exports.handler = async (event, context, callback) => {
   }
 
   try {
-    console.time('reorder')
+    console.time('Starting Reorder Algorithm')
     respond({ status: 201, body: { message: 'request received' } })
 
     // Read the data from static
@@ -27,8 +27,10 @@ exports.handler = async (event, context, callback) => {
     //   fs.readFileSync('./static/data/categories.json')
     // )
 
-    // console.log('Getting fresh data')
-    let { sales, items, categories } = await updateData('all')
+    console.time('Getting data from AWS')
+    let { sales, items, categories } = await readData('all')
+
+    debugger
 
     console.log('Start Reorder')
     await updateReorderPoints(sales, items, categories)

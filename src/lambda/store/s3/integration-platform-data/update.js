@@ -1,6 +1,6 @@
 const AWS = require('aws-sdk')
 
-export default (datatype, data) => {
+export default async (datatype, data) => {
   console.log(`---> ${datatype} S3 start`)
 
   // Setup AWS
@@ -21,12 +21,19 @@ export default (datatype, data) => {
     Key: `${datatype}.json`,
   }
 
+  // // Put it in bucket
+  // s3.putObject(params, function(err, data) {
+  //   if (err)
+  //     console.log(err, err.stack) // an error occurred
+  //   else console.log(`---> ${datatype} S3 done`) // successful response
+  // })
+
   // Put it in bucket
-  s3.putObject(params, function(err, data) {
-    if (err)
-      console.log(err, err.stack) // an error occurred
-    else console.log(`---> ${datatype} S3 done`) // successful response
-  })
+  try {
+    data = await s3.putObject(params).promise()
+  } catch (err) {
+    console.error(err)
+  }
 
   // Return data for further use
   return data

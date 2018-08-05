@@ -1,47 +1,20 @@
 import fs from 'fs'
-import updateS3 from '../store/s3/integration-platform-data/update.js'
-
-import readSales from '../api/lightspeed/read-sales.js'
-import readSaleLines from '../api/lightspeed/read-salelines.js'
-import readItems from '../api/lightspeed/read-items.js'
-import readCategories from '../api/lightspeed/read-categories.js'
-import getSoldItems from '../models/item/statistics-sales-byitem.js'
+import readS3 from '../store/s3/integration-platform-data/read.js'
 
 const readers = {
-  sales: readSales,
-  salelines: readSaleLines,
-  items: readItems,
-  categories: readCategories,
-}
-
-const storeDataLocal = (datatype, data) => {
-  console.log(`---> ${datatype} start`)
-  let json = JSON.stringify(data)
-  fs.writeFileSync(`./static/data/${datatype}.json`, json, 'utf8')
-  console.log(`---> ${datatype} done`)
-  return data
+  sales: true,
+  items: true,
+  categories: true,
 }
 
 export default async datatype => {
   let data = {}
   if (readers[datatype]) {
-    // storeDataLocal(datatype, await readers[datatype]({}))
-    updateS3(datatype, await readers[datatype]({}))
+    data[datatype] = await readS3(datatype)
   } else if (datatype == 'all') {
-    console.log('--> All starting')
-    console.log('--> Sales')
-    data.sales = await readSales()
-    console.log('--> Items')
-    data.items = await readItems({})
-    console.log('--> Categories')
-    data.categories = await readCategories()
-    console.log('--> Done')
-
-    console.log('--> Storing locally')
-    storeDataLocal('Sales', data.sales)
-    storeDataLocal('Items', data.items)
-    storeDataLocal('Categories', data.categories)
-    console.log('--> Done')
+    data.sales = await readS3('sales')
+    data.items = await readS3('items')
+    data.categories = await readS3('categories')
   }
   return await data
 }

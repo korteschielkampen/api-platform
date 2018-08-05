@@ -34,25 +34,25 @@ functions:
     handler: functions/integration-report.handler
     events:
       - schedule: "cron(0 17 * * ? *)"
-  automatedReorder:
-    handler: functions/algorithm-reorder.handler
+  # automatedReorder:
+  #   handler: functions/algorithm-reorder.handler
   #   events:
   #     - schedule:
   #         rate: rate(1 hour)
   #         input:
   #           datatype: 'sales'
-  # automatedRead:
-  #   handler: functions/algorithm-read.handler
-  #   events:
-  #     - schedule:
-  #         rate: "cron(0 3 * * ? *)"
-  #         input:
-  #           datatype: 'sales'
-  #     - schedule:
-  #         rate: "cron(5 3 * * ? *)"
-  #         input:
-  #           datatype: 'items'
-  #     - schedule:
-  #         rate: "cron(10 3 * * ? *)"
-  #         input:
-  #           datatype: 'categories'
+  automatedRead:
+    handler: functions/algorithm-read.handler
+    events:
+      # - schedule:
+      #     rate: "cron(0 3 * * ? *)"
+      #     input:
+      #       datatype: 'sales'
+      # - schedule:
+      #     rate: "cron(5 3 * * ? *)"
+      #     input:
+      #       datatype: 'items'
+      - schedule:
+          rate: "rate(1 hour)"
+          input:
+            datatype: 'categories'

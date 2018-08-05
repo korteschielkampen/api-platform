@@ -1,4 +1,4 @@
-import readData from './actions/update-data.js'
+import updateData from './actions/update-data.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -8,8 +8,9 @@ exports.handler = async (event, context, callback) => {
     })
   }
   try {
+    console.log(event)
     let datatype = event.queryStringParameters.datatype
-    readData(datatype)
+    updateData(datatype)
     respond({
       status: 201,
       body: { message: 'request received' },

@@ -52,9 +52,7 @@ export default items => {
     let oldItem = {
       reorderPoint: currentItemShop.reorderPoint,
       reorderLevel: currentItemShop.reorderLevel,
-      totalDuration: oldCustomField
-        ? parseInt(oldCustomField.value)
-        : undefined,
+      totalDuration: oldCustomField ? parseInt(oldCustomField.value) : 0,
       tags: concatTag(i.Tags || false).find(t => {
         return t.tag === 'auto-bestel'
       }),
@@ -70,10 +68,10 @@ export default items => {
     }
 
     let reasons = {
-      growthReorderPoint: `\n - :moneybag::sparkle: Nabestelpunt is verhoogd naar ${
+      growthReorderPoint: `\n - :moneybag::green_heart: Nabestelpunt is verhoogd naar ${
         newItem.reorderPoint
       } (${oldItem.reorderPoint})`,
-      growthReorderLevel: `\n - :moneybag::sparkle: Nabestelniveau is verhoogd naar ${
+      growthReorderLevel: `\n - :moneybag::green_heart: Nabestelniveau is verhoogd naar ${
         newItem.reorderLevel
       } (${oldItem.reorderLevel})`,
       recessReorderPoint: `\n - :moneybag::small_red_triangle_down: Nabestelpunt is verlaagd naar ${
@@ -83,7 +81,7 @@ export default items => {
         newItem.reorderLevel
       } (${oldItem.reorderLevel})`,
       stop: `\n - :x: Nabestelpunt en niveau zijn op nul gezet`,
-      newStock: `\n - :package::sparkle: Voorraadtermijn is verhoogd naar ${
+      newStock: `\n - :package::green_heart:3 Voorraadtermijn is verhoogd naar ${
         newItem.totalDuration
       } (${oldItem.totalDuration})`,
       lowerStock: `\n - :package::small_red_triangle_down: Voorraadtermijn is verlaagd naar ${

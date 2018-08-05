@@ -52,6 +52,15 @@ const calculateReorderpoint = (i, selectedReorderOption) => {
 const calculateDuration = i => {
   let sellingSpeedInWeeks = i.statistics.totalSold / 26
   let duration = Math.round(i.statistics.totalStock / sellingSpeedInWeeks)
+
+  if (!isFinite(duration)) {
+    duration = 26 // Articles that are never sold should be given a decent chance
+    if (isNaN(duration)) {
+      // Articles that are not in stock, and are never sold,
+      // yet somehow end up being evaluated
+      duration = 0
+    }
+  }
   return duration
 }
 
@@ -66,6 +75,7 @@ export default items => {
       totalStock: 0,
       totalStockValue: 0,
     }
+
     if (i.ItemShops && i.itemType === 'default') {
       let qoh = parseInt(
         i.ItemShops.ItemShop.find(i => i.shopID == '1' && i).qoh

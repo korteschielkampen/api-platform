@@ -1,4 +1,4 @@
-import readData from './actions/read-lightspeed.js'
+import readData from './actions/update-data.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {

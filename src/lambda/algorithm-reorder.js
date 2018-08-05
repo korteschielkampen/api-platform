@@ -1,7 +1,8 @@
 import fs from 'fs'
 
 import updateReorderPoints from './actions/update-reorderpoints.js'
-import readData from './actions/read-lightspeed.js'
+import updateData from './actions/update-data.js'
+import readData from './actions/read-data.js'
 
 exports.handler = async (event, context, callback) => {
   const respond = ({ status, body }) => {
@@ -10,9 +11,11 @@ exports.handler = async (event, context, callback) => {
       body: JSON.stringify({ body }),
     })
   }
+  // Avoid errors when excecuting in Lambda
   if (!callback) {
     var callback = () => {}
   }
+
   try {
     console.time('reorder')
     respond({ status: 201, body: { message: 'request received' } })
@@ -24,8 +27,8 @@ exports.handler = async (event, context, callback) => {
     //   fs.readFileSync('./static/data/categories.json')
     // )
 
-    console.log('Getting fresh data')
-    let { sales, items, categories } = await readData('all')
+    // console.log('Getting fresh data')
+    let { sales, items, categories } = await updateData('all')
 
     console.log('Start Reorder')
     await updateReorderPoints(sales, items, categories)

@@ -18,11 +18,22 @@ let actionGroups = [
     text: 'Update data',
     actions: [
       {
-        text: 'Sunburst',
+        text: 'All',
         name: 'UPDATE_DATA_ALL',
         type: 'lambda',
         url: `${lambdaURL}/algorithm-update-data?${qS.stringify({
           datatype: 'all',
+          dataTimeStamp: 'all',
+        })}`,
+        status: 'dev',
+      },
+      {
+        text: 'All day',
+        name: 'UPDATE_DATA_ALL',
+        type: 'lambda',
+        url: `${lambdaURL}/algorithm-update-data?${qS.stringify({
+          datatype: 'all',
+          dataTimeStamp: 'day',
         })}`,
         status: 'dev',
       },
@@ -32,6 +43,7 @@ let actionGroups = [
         type: 'lambda',
         url: `${lambdaURL}/algorithm-update-data?${qS.stringify({
           datatype: 'categories',
+          dataTimeStamp: 'all',
         })}`,
         status: 'dev',
       },
@@ -41,6 +53,7 @@ let actionGroups = [
         type: 'lambda',
         url: `${lambdaURL}/algorithm-update-data?${qS.stringify({
           datatype: 'items',
+          dataTimeStamp: 'all',
         })}`,
         status: 'dev',
       },
@@ -50,6 +63,7 @@ let actionGroups = [
         type: 'lambda',
         url: `${lambdaURL}/algorithm-update-data?${qS.stringify({
           datatype: 'sales',
+          dataTimeStamp: 'all',
         })}`,
         status: 'dev',
       },

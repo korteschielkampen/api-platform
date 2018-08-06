@@ -9,6 +9,7 @@ const ratelimit = async (res, cost) => {
     .map(item => {
       return parseFloat(item)
     })
+
   let lsdrip = parseFloat(res.headers.get('x-ls-api-drip-rate'))
   let lscost = cost * 10000 / lsdrip
   let lsdelay = 0
@@ -16,6 +17,8 @@ const ratelimit = async (res, cost) => {
     lsdelay =
       Math.pow((lsbucket[0] + lsbucket[1] / 2) / lsbucket[1], 10) * lscost
   }
+
+  console.log(res.url)
   console.log(
     'LSBucket:',
     lsbucket[0].toFixed(2),

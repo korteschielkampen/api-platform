@@ -97,7 +97,7 @@ export default items => {
       let reorderOption =
         reorderOptionsField && reorderOptionsField.value.customFieldChoiceID
 
-      i.statistics.totalReorderpoint = Math.floor(
+      i.statistics.totalReorderpoint = Math.round(
         calculateReorderpoint(i, reorderOption)
       )
       i.statistics.totalReorderpointValue =

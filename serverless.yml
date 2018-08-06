@@ -39,12 +39,8 @@ functions:
     events:
       - schedule:
           rate: "cron(20 3 * * ? *)"
-          input:
-            queryStringParameters:
-              datatype: 'sales'
-              dataTimeStamp: 'year'
-      # - schedule:
-      #     rate: "rate(5 minutes)"
+      - schedule:
+          rate: "rate(5 minutes)"
   automatedUpdate:
     handler: functions/algorithm-update-data.handler
     memorySize: 2048
@@ -67,9 +63,9 @@ functions:
             queryStringParameters:
               datatype: 'categories'
               dataTimeStamp: 'year'
-      # - schedule:
-      #     rate: "rate(5 minutes)"
-      #     input:
-      #       queryStringParameters:
-      #         datatype: 'all'
-      #         dataTimeStamp: 'day'
+      - schedule:
+          rate: "rate(5 minutes)"
+          input:
+            queryStringParameters:
+              datatype: 'all'
+              dataTimeStamp: 'day'

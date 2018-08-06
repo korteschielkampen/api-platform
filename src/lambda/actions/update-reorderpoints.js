@@ -16,13 +16,17 @@ export default async (sales, items, categories) => {
   let payloads = createReorderPayload(itemsStockStatistics)
 
   console.log(
-    `Updating Lightspeed: there are ${payloads.length} items to be updated`
+    `Updating Lightspeed: there are ${
+      payloads.length
+    } items to be updated, only 20 will be`
   )
   // let status = await updateItems(payloads.slice(0, 50))
-  let status = await updateItems(payloads)
+  let status = await updateItems(payloads.slice(0, 20))
 
   console.log('Reporting to Slack')
-  await createMessage(createStockReport(payloads.slice(0, 50), 'CAPCPRW6B'))
+  if (payloads.length !== 0) {
+    await createMessage(createStockReport(payloads.slice(0, 20), 'CAPCPRW6B'))
+  }
 
   console.log('Reordering adjustments done')
   debugger

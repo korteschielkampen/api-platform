@@ -11,19 +11,23 @@ exports.handler = async (event, context, callback) => {
     let dataType, dataTimeStamp
 
     if (event) {
-      console.log(event)
       dataType = event.queryStringParameters.datatype
       dataTimeStamp = event.queryStringParameters.dataTimeStamp
     } else {
       dataType = 'all'
       dataTimeStamp = 'day'
     }
-    console.log(dataType, dataTimeStamp)
+
+    console.log(
+      '---> Activating updateData with type: ',
+      dataType,
+      ' and timestamp: ',
+      dataTimeStamp
+    )
 
     if (!callback) {
       var callback = () => {}
     }
-    console.log(event)
 
     updateData(dataType, dataTimeStamp)
 

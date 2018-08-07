@@ -25,7 +25,7 @@ export default async (sales, items, categories) => {
 
   console.log('Reporting to Slack')
   if (payloads.length !== 0) {
-    await createMessage(createStockReport(payloads.slice(0, 20), 'CAPCPRW6B'))
+    await createMessage(createStockReport(payloads.slice(0, 20), 'CC596HWES'))
   }
 
   console.log('Reordering adjustments done')

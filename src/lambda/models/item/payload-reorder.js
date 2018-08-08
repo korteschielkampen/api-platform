@@ -81,7 +81,7 @@ export default items => {
         newItem.reorderLevel
       } (${oldItem.reorderLevel})`,
       stop: `\n - :x: Nabestelpunt en niveau zijn op nul gezet`,
-      newStock: `\n - :package::green_heart:3 Voorraadtermijn is verhoogd naar ${
+      newStock: `\n - :package::green_heart: Voorraadtermijn is verhoogd naar ${
         newItem.totalDuration
       } (${oldItem.totalDuration})`,
       lowerStock: `\n - :package::small_red_triangle_down: Voorraadtermijn is verlaagd naar ${

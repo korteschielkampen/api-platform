@@ -5859,6 +5859,19 @@ AWS.HttpClient.getInstance = function getInstance() {
 /* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(1);
+
+var AWS = __webpack_require__(0);
+
+// Load all service classes
+__webpack_require__(415);
+module.exports = AWS;
+
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
@@ -5889,19 +5902,6 @@ exports.default = (() => {
     return _ref.apply(this, arguments);
   };
 })();
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(1);
-
-var AWS = __webpack_require__(0);
-
-// Load all service classes
-__webpack_require__(415);
-module.exports = AWS;
-
 
 /***/ }),
 /* 56 */
@@ -34175,7 +34175,7 @@ Object.defineProperty(exports, "__esModule", {
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 const fetch = __webpack_require__(32);
-const AWS = __webpack_require__(55);
+const AWS = __webpack_require__(54);
 
 exports.default = (() => {
   var _ref = _asyncToGenerator(function* (params) {
@@ -34413,7 +34413,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(54);
+var _request = __webpack_require__(55);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -34456,7 +34456,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(54);
+var _request = __webpack_require__(55);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -34493,7 +34493,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(54);
+var _request = __webpack_require__(55);
 
 var _request2 = _interopRequireDefault(_request);
 
@@ -34572,7 +34572,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _request = __webpack_require__(54);
+var _request = __webpack_require__(55);
 
 var _request2 = _interopRequireDefault(_request);
 

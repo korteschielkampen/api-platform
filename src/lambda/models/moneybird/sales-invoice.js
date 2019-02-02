@@ -23,15 +23,17 @@ export default dayreport => {
       price: dayreport.financialReport.tax.hoog.amount,
     })
   }
+
   // Laag BTW
   if (parseFloat(dayreport.financialReport.tax.laag.amount) !== 0) {
     invoice.sales_invoice.details_attributes.push({
       description: 'Laag BTW tarief',
-      tax_rate_id: '211688738875508007',
-      ledger_account_id: '218027538317837859',
+      tax_rate_id: '242334259090556135',
+      ledger_account_id: '243892803759768652',
       price: dayreport.financialReport.tax.laag.amount,
     })
   }
+
   // Nul BTW
   if (parseFloat(dayreport.financialReport.tax.onbelast.amount) !== 0) {
     invoice.sales_invoice.details_attributes.push({
@@ -51,11 +53,14 @@ export default dayreport => {
       price: -dayreport.financialReport.payments.gift.amount,
     })
   }
+
   // Kredietaccount
   if (parseFloat(dayreport.financialReport.payments.credit.amount) !== 0) {
     invoice.sales_invoice.details_attributes.push({
       description: 'Betalingen met of uitgifte van klantkredieten',
       price: -dayreport.financialReport.payments.credit.amount,
+      tax_rate_id: '212145631538448378',
+      ledger_account_id: '212174619871807198',
     })
   }
 

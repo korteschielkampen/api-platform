@@ -40,6 +40,7 @@ export default (items, categories) => {
         categoryID: 'special-uncategorised',
       })
     } else {
+      console.log(i)
       key = _.findKey(categories, {
         categoryID: 'special-notfound',
       })

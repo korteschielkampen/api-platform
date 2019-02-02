@@ -158,7 +158,7 @@ export default items => {
     return acc
   }, [])
 
-  // Remove non-default items
+  // Remove items
   payloads = payloads.filter(i => {
     return (
       i.data.itemType === 'default' &&

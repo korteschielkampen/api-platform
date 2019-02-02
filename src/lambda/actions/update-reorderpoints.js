@@ -20,6 +20,7 @@ export default async (sales, items, categories) => {
       payloads.length
     } items to be updated, only 20 will be`
   )
+
   // let status = await updateItems(payloads.slice(0, 50))
   let status = await updateItems(payloads.slice(0, 20))
 

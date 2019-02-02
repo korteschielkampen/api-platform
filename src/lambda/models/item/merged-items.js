@@ -8,7 +8,7 @@ export default (saleStatsByItem, items, options) => {
   }, {})
 
   // Merge item statistics from the salelines
-  let mergedSalesItems = saleStatsByItem.reduce((acc, i) => {
+  let mergedSoldItems = saleStatsByItem.reduce((acc, i) => {
     if (itemsHashed[i.itemID]) {
       acc.push({
         ...itemsHashed[i.itemID],
@@ -21,7 +21,7 @@ export default (saleStatsByItem, items, options) => {
   }, [])
 
   // Merge items by stock availability
-  let mergedItems = _.differenceBy(items, mergedSalesItems, 'itemID').reduce(
+  let mergedItems = _.differenceBy(items, mergedSoldItems, 'itemID').reduce(
     (acc, i) => {
       if (
         parseInt(i.ItemShops.ItemShop.find(i => i.shopID == '1' && i).qoh) !== 0
@@ -37,7 +37,10 @@ export default (saleStatsByItem, items, options) => {
       }
       return acc
     },
-    mergedSalesItems
+    mergedSoldItems
   )
+
+  debugger
+
   return mergedItems
 }

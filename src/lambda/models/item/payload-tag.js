@@ -26,7 +26,6 @@ export default (items, newTag) => {
         payload: {},
       }
 
-      // This can be a little bit more efficient, but doens't need to
       if (item.Tags) {
         itemToBeUpdated.payload = concatTag(item.Tags, newTag)
       } else {

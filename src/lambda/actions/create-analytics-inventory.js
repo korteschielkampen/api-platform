@@ -33,5 +33,7 @@ export default (sales, items, categories) => {
 
   console.log('Nest categories')
   // Nesting the categories to the starburst datastructure and return it
-  return nestCategories(categories)
+  let nestedCategories = nestCategories(categories)
+  debugger
+  return nestedCategories
 }

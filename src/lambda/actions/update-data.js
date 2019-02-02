@@ -41,8 +41,6 @@ export default async (datatype, time) => {
     data = await readData('all')
   }
 
-  debugger
-
   console.log('--> Start reading')
   readerList.map(async r => {
     if (readers[r]) {

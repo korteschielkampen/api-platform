@@ -18,7 +18,6 @@ export default props => {
       totalReorderLevel: { text: 'Gewenst voorraadniveau:', sign: '€' },
       totalReorderpointValue: { text: 'Nabestelwaarde:', sign: '€' },
     }
-
     return (
       <div className={styles.card}>
         <ul className={styles.list}>
@@ -29,13 +28,13 @@ export default props => {
                 props.titlePadding && styles.titlePadding
               )}
             >
-              {props.name}
+              {props.name || props.itemID}
             </li>
           )}
           {props.link && (
             <li>
               <a className={styles.title} href={props.link}>
-                {props.name}
+                {props.name || props.itemID}
               </a>
             </li>
           )}

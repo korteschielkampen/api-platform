@@ -208,6 +208,7 @@ class IndexPage extends React.Component {
                   <div className={styles.cardBroad}>
                     <Card
                       name={hovered.data.name}
+                      itemID={hovered.data.itemID}
                       statistics={
                         hovered.data.statisticsNested || hovered.data.statistics
                       }
@@ -248,6 +249,7 @@ class IndexPage extends React.Component {
                     <div className={styles.cardSmall} key={key}>
                       <Card
                         name={value.name}
+                        itemID={value.itemID}
                         statistics={value.statistics}
                         link={`https://us.lightspeedapp.com/?name=item.views.item&form_name=view&id=${
                           value.itemID

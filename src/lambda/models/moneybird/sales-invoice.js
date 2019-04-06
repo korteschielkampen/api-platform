@@ -59,8 +59,9 @@ export default dayreport => {
     invoice.sales_invoice.details_attributes.push({
       description: 'Betalingen met of uitgifte van klantkredieten',
       price: -dayreport.financialReport.payments.credit.amount,
+      tax_rate_id: '212145631538448378',
+      ledger_account_id: '212174619871807198',
     })
   }
-  console.log(invoice)
   return invoice
 }

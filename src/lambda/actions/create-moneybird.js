@@ -12,7 +12,6 @@ export default async dayReport => {
     // Creating and sending invoice in Moneybird
     console.log('creating invoice')
     const invoice = parseInvoice(dayReport)
-    console.log(invoice)
     let createdInvoice = await createInvoice(invoice)
 
     console.log('sending invoice')

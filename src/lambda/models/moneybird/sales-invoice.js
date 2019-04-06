@@ -28,7 +28,7 @@ export default dayreport => {
   if (parseFloat(dayreport.financialReport.tax.laag.amount) !== 0) {
     invoice.sales_invoice.details_attributes.push({
       description: 'Laag BTW tarief',
-      tax_rate_id: '242334259090556135',
+      tax_rate_id: '242334258951095404',
       ledger_account_id: '243892803759768652',
       price: dayreport.financialReport.tax.laag.amount,
     })

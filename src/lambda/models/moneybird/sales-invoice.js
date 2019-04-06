@@ -63,6 +63,6 @@ export default dayreport => {
       ledger_account_id: '212174619871807198',
     })
   }
-
+  console.log(invoice)
   return invoice
 }
